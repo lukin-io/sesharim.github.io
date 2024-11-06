@@ -1,0 +1,77 @@
+---
+layout: default
+---
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h5 class="font-weight-light text-center">
+        Send a message, project idea or just hello!
+      </h5>
+    </div>
+  </div>
+
+  <div class="clearfix">&nbsp;</div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div id="my-form-status"></div>
+
+      <form action="https://formspree.io/f/xoqkdzvl" method="POST" id="contact-form">
+        <div class="form-group">
+          <label>Your email:</label>
+          <input type="text" name="_replyto" class="form-control">
+          <small id="emailHelp" class="form-text text-muted">
+            Your email will never share with anyone else.
+          </small>
+        </div>
+
+        <div class="clearfix">&nbsp;</div>
+        <div class="g-recaptcha" data-sitekey="6Ley0WIaAAAAAARaaBCeFD0OtgEZOD1-PizO8nrB"></div>
+
+        <div class="form-group">
+          <label>Your message:</label>
+          <textarea name="message" class="form-control" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="clearfix">&nbsp;</div>
+          <button type="submit" class="btn btn-success btn-lg">Send</button>
+        </div>
+      </form>
+
+      <!-- Place this script at the end of the body tag -->
+      <script>
+        var form = document.getElementById("contact-form");
+
+        async function handleSubmit(event) {
+          event.preventDefault();
+          var status = document.getElementById("my-form-status");
+          var data = new FormData(event.target);
+          fetch(event.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+              'Accept': 'application/json'
+            }
+          }).then(response => {
+            if (response.ok) {
+              status.innerHTML = "Thanks for your submission!";
+              form.reset()
+            } else {
+              response.json().then(data => {
+                if (Object.hasOwn(data, 'errors')) {
+                  status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+                } else {
+                  status.innerHTML = "Oops! There was a problem submitting your form"
+                }
+              })
+            }
+          }).catch(error => {
+            status.innerHTML = "Oops! There was a problem submitting your form"
+          });
+        }
+        form.addEventListener("submit", handleSubmit)
+      </script>
+    </div>
+  </div>
+</div>
