@@ -1,6 +1,14 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,76 +21,99 @@
   <meta name="author" content="Max Lukin">
   <meta name="theme-color">
 
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
   <link rel="canonical" href="http://localhost:4000/">
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000 /feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
-  <!-- Main CSS -->
   <link rel="stylesheet" href=" /css/main.css">
-
-  <!-- Latest compiled and minified CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 
-<body>
+<body class="col-lg-8 mx-auto py-md-2">
   <header>
+    <ul class="nav justify-content-center p-2 m-2">
+  <li class="nav-item">
+    <a class="nav-link fs-4" href="/">Main</a>
+  </li>
+  <li class="nav-item">
+    <a href="/services" class="nav-link fs-4">Services</a>
+  </li>
+  <li class="nav-item">
+    <a href="/tools" class="nav-link fs-4">Tools</a>
+  </li>
+  <li class="nav-item">
+    <a href="/projects" class="nav-link fs-4">Projects</a>
+  </li>
+  <li class="nav-item">
+    <a href="/blog" class="nav-link fs-4">Blog</a>
+  </li>
+  <li class="nav-item">
+    <a href="/contacts" class="nav-link fs-4">Contacts</a>
+  </li>
+</ul>
+
   </header>
 
   <main>
-    <div class="container">
-      <div class="clearfix">&nbsp;</div>
-      <div class="row">
-  <div class="col-12">
-    <img class="photo img-thumbnail" src="photo.jpg" alt="photo">
     <div class="clearfix">&nbsp;</div>
 
-    <p class="lead">
-      Hello, i'm Max Lukin
-    </p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-body-emphasis">
+        Hello, i'm Max Lukin
+      </h2>
 
-    <p class="lead">
-      I help business and companies to grow by consulting, developing and supporting using Software Engineering
-      practices.
-    </p>
+      <div class="clearfix">&nbsp;</div>
 
-    <p class="lead">
-      My area of interests includes large-scale web services, operational practices such as on-call and monitoring,
-      effective developer tools and engineering leadership.
-    </p>
+      <p class="fs-5">
+        I help business and companies to grow by consulting, developing and supporting using Software Engineering
+        practices using cost effective solutions.
+      </p>
 
-    <p class="lead">
-      I enjoy working with open source (<a href="https://rubyonrails.org" targt="_blanK">Ruby on Rails</a>, <a
-        href="https://golang.org" target="_blank">Golang</a>), <a href="/blog">writing</a> about
-      technologies I work with.
-    </p>
+      <p class="fs-5">
+        From <a href="https://en.wikipedia.org/wiki/Minimum_viable_product" target="_blank" class="fw-semibold">MVP</a>,
+        <a href="https://en.wikipedia.org/wiki/Proof_of_concept" target="_blank" class="fw-semibold">proof of
+          concept</a>
+        to working
+        <a href="https://en.wikipedia.org/wiki/Software_as_a_service" target="_blank" class="fw-semibold">SaaS</a>
+        products and supporting
+        them. <br />
+        My area of interests includes large-scale web services, operational practices such as on-call and monitoring,
+        effective developer tools and engineering leadership.
+      </p>
 
-    <p class="lead">
-      Feel free to email me at <a target="_blank" href="mailto:lukin.maksim@gmail.com">lukin.maksim@gmail.com</a>,
-      check my linkedin <a href="https://linkedin.com/in/lukin-io" target="_blank">profile</a>
-      (<small>experience/recommendations</small>)
-      or <a href="https://github.com/lukin-io" target="_blank">github</a>
-    </p>
-  </div>
-</div>
+      <p class="fs-5">
+        Currently i am focused on <span class="fw-semibold">AI</span> since it’s first release, and now i have
+        good experience with building SaaS based on <span class="fw-semibold">AI</span> using <a
+          href="https://nextjs.org" target="_blank" class="fw-semibold">Next.js</a>
+        and <a href="https://react.dev" target="_blank" class="fw-semibold">React.js</a> <br />
+
+        I enjoy working with open source using <a href="https://react.dev" target="_blank"
+          class="fw-semibold">JavaScript/TypeScript</a>, <a href="https://rubyonrails.org" target="_blank"
+          class="fw-semibold">Ruby on
+          Rails</a> and <a href="https://go.dev" target="_blank" class="fw-semibold">Golang</a>. <br />
+      </p>
+
+      <p class="fs-5">
+        Sometimes <a href="/blog" class="fw-semibold">writing</a> about technologies I work with. <br />
+        You can also find me on <a href="https://linkedin.com/in/lukin-io" target="_blank"
+          class="fw-semibold">Linkedin</a> or <a href="https://github.com/lukin-io" target="_blank"
+          class="fw-semibold">github</a>
+      </p>
 
     </div>
+  </div>
+
+</div>
+
   </main>
 
   <footer>
-    <div class="clearfix">&nbsp;</div>
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
   </footer>
 </body>
