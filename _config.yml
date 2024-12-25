@@ -1,7 +1,7 @@
 # Site settings
 title: Software Engineering consultant
 email: lukin.maksim@gmail.com
-description: Agile Web development
+description: Experienced Ruby on Rails and Go developer specializing in scalable web applications
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://lukin.io"
 twitter_username: lukin_io
