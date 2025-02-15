@@ -105,11 +105,11 @@ Minimalism allows you to have hobbies, sports, and a lean lifestyle almost right
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/now/workspace.jpeg" alt="Woman" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/workspace.jpeg" alt="workspace" width="30%">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/now/bags.jpeg" alt="Bridge" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/bags.jpeg" alt="bags" width="30%">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/now/coffee.jpeg" alt="Plane wing" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/coffee.jpeg" alt="coffee" width="30%">
   </div>
 </div>
 
