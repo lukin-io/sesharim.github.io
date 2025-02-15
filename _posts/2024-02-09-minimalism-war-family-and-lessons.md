@@ -24,7 +24,7 @@ The war had begun.
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/bags.jpg" alt="Bags before evacuation" width="70%">
+    <img src="{{ site.baseurl }}/minimalist/bags.jpg" alt="Bags before evacuation" width="70%">
   </div>
 </div>
 <br />
@@ -40,9 +40,9 @@ We realized we were stuck.
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/train_evac.jpg" alt="Train evac 1" width="32%">
+    <img src="{{ site.baseurl }}/minimalist/train_evac.jpg" alt="Train evac 1" width="32%">
     &nbsp;
-    <img src="/minimalist/train_evac_2.jpg" alt="Train evac 2" width="50%">
+    <img src="{{ site.baseurl }}/minimalist/train_evac_2.jpg" alt="Train evac 2" width="50%">
   </div>
 </div>
 <br />
@@ -57,7 +57,7 @@ I knew we had to try again. Thankfully, we got lucky and managed to board a trai
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/way_out_of_city.jpg" alt="Lviv fire" width="70%">
+    <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpg" alt="Lviv fire" width="70%">
   </div>
 </div>
 <br />
@@ -71,7 +71,7 @@ After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though w
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/lviv_fire.jpg" alt="Lviv fire" width="70%">
+    <img src="{{ site.baseurl }}/minimalist/lviv_fire.jpg" alt="Lviv fire" width="70%">
   </div>
 </div>
 <br />
@@ -105,11 +105,11 @@ Minimalism allows you to have hobbies, sports, and a lean lifestyle almost right
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/now/workspace.jpeg" alt="Woman" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/workspace.jpeg" alt="Woman" width="30%">
     &nbsp;
-    <img src="/minimalist/now/bags.jpeg" alt="Bridge" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/bags.jpeg" alt="Bridge" width="30%">
     &nbsp;
-    <img src="/minimalist/now/coffee.jpg" alt="Plane wing" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/coffee.jpg" alt="Plane wing" width="30%">
   </div>
 </div>
 
@@ -122,22 +122,22 @@ Being a minimalist also helps you stay calm, reducing distractions and allowing 
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/woman_with_rifle.jpg" alt="Woman" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/woman_with_rifle.jpg" alt="Woman" width="25%">
     &nbsp;
-    <img src="/minimalist/bridge.jpg" alt="Bridge" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/bridge.jpg" alt="Bridge" width="25%">
     &nbsp;
-    <img src="/minimalist/plane_wing.jpg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/plane_wing.jpg" alt="Plane wing" width="25%">
     &nbsp;
-    <img src="/minimalist/kyiv.jpg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/kyiv.jpg" alt="Plane wing" width="25%">
   </div>
 
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/building.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/building.jpeg" alt="Plane wing" width="25%">
     &nbsp;
-    <img src="/minimalist/kyiv_2.jpg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/kyiv_2.jpg" alt="Plane wing" width="25%">
     &nbsp;
-    <img src="/minimalist/odessa.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Plane wing" width="25%">
     &nbsp;
-    <img src="/minimalist/bucha.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Plane wing" width="25%">
   </div>
 </div>
