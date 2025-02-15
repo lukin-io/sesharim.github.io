@@ -3,10 +3,10 @@
   <channel>
     <title>Software Engineering consultant</title>
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 15 Feb 2025 23:43:37 +0200</pubDate>
-    <lastBuildDate>Sat, 15 Feb 2025 23:43:37 +0200</lastBuildDate>
+    <link>https://lukin.io/</link>
+    <atom:link href="https://lukin.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 15 Feb 2025 23:51:17 +0200</pubDate>
+    <lastBuildDate>Sat, 15 Feb 2025 23:51:17 +0200</lastBuildDate>
     <generator>Jekyll v4.3.4</generator>
     
       <item>
@@ -151,8 +151,8 @@ Being a minimalist also helps you stay calm, reducing distractions and allowing 
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 09 Feb 2024 02:01:01 +0200</pubDate>
-        <link>http://localhost:4000/blog/minimalism-war-family-and-lessons</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/minimalism-war-family-and-lessons</guid>
+        <link>https://lukin.io/blog/minimalism-war-family-and-lessons</link>
+        <guid isPermaLink="true">https://lukin.io/blog/minimalism-war-family-and-lessons</guid>
         
         
       </item>
@@ -195,8 +195,8 @@ Being a minimalist also helps you stay calm, reducing distractions and allowing 
 
 </description>
         <pubDate>Sat, 12 Sep 2020 15:00:00 +0300</pubDate>
-        <link>http://localhost:4000/blog/principles-for-writing-maintainable-code</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/principles-for-writing-maintainable-code</guid>
+        <link>https://lukin.io/blog/principles-for-writing-maintainable-code</link>
+        <guid isPermaLink="true">https://lukin.io/blog/principles-for-writing-maintainable-code</guid>
         
         
       </item>
