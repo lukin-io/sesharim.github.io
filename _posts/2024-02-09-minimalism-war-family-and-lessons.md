@@ -51,7 +51,7 @@ With our baby in a hip carrier, two laptops, two suitcases, and a backpack, my w
 
 That night, rocket attacks continued without pause, and logistics hubs and grocery warehouses were destroyed. Cash ran out at ATMs, and with the cellular network failing, cash became the only way to pay for essentials.
 
-I realized one thing: food was running out, including baby food. Enemy tanks and aircraft were getting closer, and more roads were blocked. We started sleeping in our apartment’s corridor, following the [“rule of two walls”](https://delano.lu/article/the-rule-of-two-walls-and-othe) (which, as we later learned, doesn’t work well against powerful weapons). I also failed to find a gun to defend my family from marauders, even though AK-15s were scattered on the streets due to daily shootings.
+I realized one thing: food was running out, including baby food. Enemy tanks and aircraft were getting closer, and more roads were blocked. We started sleeping in our apartment’s corridor, following the [“rule of two walls”](https://delano.lu/article/the-rule-of-two-walls-and-othe) (which, as we later learned, doesn’t work well against powerful weapons). I also failed to find a gun to defend my family from marauders, even though AK-like riffles were scattered on the streets due to daily shootings or given by GOVs to defent capital.
 
 I knew we had to try again. Thankfully, we got lucky and managed to board a train. I had never seen so many people in one place. The train was so crowded that it moved at 20 km/h instead of the usual 80+ km/h, and the trip took 20-25 hours instead of 10h. My big toe lost sensation because of the cold—I stood for the entire trip without sleep, food, or water.
 
@@ -105,11 +105,11 @@ Minimalism allows you to have hobbies, sports, and a lean lifestyle almost right
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/now/workspace.jpeg" alt="workspace" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/workspace.jpeg" alt="Workspace" width="30%">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/now/bags.jpeg" alt="bags" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/bags.jpeg" alt="Bags" width="30%">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/now/coffee.jpeg" alt="coffee" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/now/coffee.jpeg" alt="Coffee" width="30%">
   </div>
 </div>
 
@@ -136,8 +136,8 @@ Being a minimalist also helps you stay calm, reducing distractions and allowing 
     &nbsp;
     <img src="{{ site.baseurl }}/minimalist/kyiv_2.jpeg" alt="Plane wing" width="25%">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Odessa" width="25%">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Bucha" width="25%">
   </div>
 </div>
