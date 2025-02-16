@@ -3,16 +3,16 @@
   <channel>
     <title>Software Engineering consultant</title>
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
-    <link>https://lukin.io/</link>
-    <atom:link href="https://lukin.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 16 Feb 2025 11:13:01 +0200</pubDate>
-    <lastBuildDate>Sun, 16 Feb 2025 11:13:01 +0200</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 16 Feb 2025 17:25:11 +0200</pubDate>
+    <lastBuildDate>Sun, 16 Feb 2025 17:25:11 +0200</lastBuildDate>
     <generator>Jekyll v4.3.4</generator>
     
       <item>
         <title>Minimalism, Family, war and lessons</title>
         <description>&lt;p&gt;In 2014, I decided to move to Kyiv, Ukraine.
-I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At the time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.&lt;/p&gt;
+I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At that time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.&lt;/p&gt;
 
 &lt;p&gt;However, I was a big fan of the movie &lt;em&gt;Up in the Air&lt;/em&gt; with George Clooney, especially a couple of quotes like this one:&lt;/p&gt;
 
@@ -27,14 +27,14 @@ The war had begun.&lt;/p&gt;
 
 &lt;div class=&quot;row&quot;&gt;
   &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/bags.jpeg&quot; alt=&quot;Bags before evacuation&quot; width=&quot;70%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/bags.jpeg&quot; alt=&quot;Bags before evacuation&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;I woke up to the sound of explosions and rockets (the entire sky was crisscrossed with rockets and Russian jets). Immediately, my wife and I began preparing our bags, gathering clothes, documents, passports, and some cash in one place.&lt;/p&gt;
 
-&lt;p&gt;At the same time, I started doing a kind of “after-action review” in the same time (a habit from my software engineering background, where I constantly analyzing about how to improve some processes). &lt;br /&gt;
+&lt;p&gt;At the same time, I started doing a kind of “after-action review” (a habit from my software engineering background, where I constantly analyze how to improve some processes). &lt;br /&gt;
 I realized some good practices, patterns, and habits that could be useful in everyday life. Stress can negatively impact logical thinking, so many useful actions or items can be overlooked. That’s why it’s important to do the right things at the right time, later one it might be much “expensive”.&lt;/p&gt;
 
 &lt;p&gt;With multiple bags, our 10-month-old son, a cat, and a baby stroller, we tried to evacuate by train. At the time, most roads were blocked by tanks and active assault operations (including aviation), so the train was the only way out—except for one problem: millions of people had the same idea. The trains became so overcrowded that the only way for police to manage the chaos was to fire shots into the air (yes, like in a zombie movie).&lt;/p&gt;
@@ -42,11 +42,13 @@ I realized some good practices, patterns, and habits that could be useful in eve
 &lt;p&gt;We realized we were stuck.&lt;/p&gt;
 
 &lt;div class=&quot;row&quot;&gt;
-  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/train_evac.jpeg&quot; alt=&quot;Train evac 1&quot; width=&quot;32%&quot; /&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
+  &lt;div class=&quot;col-4 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/train_evac.jpeg&quot; alt=&quot;Train evac 1&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/train_evac_2.jpeg&quot; alt=&quot;Train evac 2&quot; width=&quot;50%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/train_evac_2.jpeg&quot; alt=&quot;Train evac 2&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
@@ -60,7 +62,7 @@ I realized some good practices, patterns, and habits that could be useful in eve
 
 &lt;div class=&quot;row&quot;&gt;
   &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/way_out_of_city.jpeg&quot; alt=&quot;Lviv fire&quot; width=&quot;70%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/way_out_of_city.jpeg&quot; alt=&quot;Lviv fire&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
@@ -74,7 +76,7 @@ After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though w
 
 &lt;div class=&quot;row&quot;&gt;
   &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/lviv_fire.jpeg&quot; alt=&quot;Lviv fire&quot; width=&quot;70%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/lviv_fire.jpeg&quot; alt=&quot;Lviv fire&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
@@ -82,7 +84,7 @@ After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though w
 &lt;p&gt;We decided to go to Poland (I still think the Polish people are true heroes). We rented a hotel (which was nearly impossible to get because all hotels were full of refugees) and eventually flew back to Central Asia.&lt;/p&gt;
 
 &lt;p&gt;A month or two later, we returned back to Kyiv. &lt;br /&gt;
-The Russian army had left the city, and while air defense improved. &lt;br /&gt;
+The Russian army had left the city, and air defense improved. &lt;br /&gt;
 Sadly, we got used to hundreds of rocket and drone attacks, sometimes daily.
 This became the “new normal” (like a plan to go for a shopping might be canceled because of air raid alert or drone attack, or midnight ballistic rocket wakes you up).&lt;/p&gt;
 
@@ -102,64 +104,75 @@ Prepare it in calm times so you don’t forget anything under stress.&lt;/li&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Diversify your assets:&lt;/strong&gt; Don’t put all your eggs in one basket. Having 2-3 passports, properties, and bank accounts in different countries is a smart idea. Start today.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;After-action reviews (&lt;a href=&quot;https://en.wikipedia.org/wiki/After-action_review&quot;&gt;AAR&lt;/a&gt;):&lt;/strong&gt; Regularly analyze your actions and decisions to improve efficiency in all aspects of life.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Create patterns and rules:&lt;/strong&gt; Develop habits and workflows that works best for you, for your daily stuff, it saves time and reduce stress by not keeping that in your mind.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Create patterns and rules:&lt;/strong&gt; Develop habits and workflows that work best for you, for your daily stuff, it saves time and reduce stress by not keeping that in your mind.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;P.S:&lt;/p&gt;
 
-&lt;p&gt;Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also finds minutes to enjoy life. &lt;br /&gt;
-Minimalism allows you to have hobbies, sports, and a lean lifestyle almost right from your luggage. &lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also find minutes to enjoy life. &lt;br /&gt;
+Minimalism lets you enjoy hobbies, sports, and a streamlined lifestyle with just what fits in your luggage. &lt;br /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;row&quot;&gt;
-  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/workspace.jpeg&quot; alt=&quot;Workspace&quot; width=&quot;30%&quot; /&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
+  &lt;div class=&quot;col-4 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/workspace.jpeg&quot; alt=&quot;Workspace&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/bags_now.jpeg&quot; alt=&quot;Bags&quot; width=&quot;30%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/bags_now.jpeg&quot; alt=&quot;Bags&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/coffee.jpeg&quot; alt=&quot;Coffee&quot; width=&quot;30%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/coffee.jpeg&quot; alt=&quot;Coffee&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;p&gt;&lt;br /&gt;
 “Tomorrow” might not come, so enjoy today—but always have a plan for the future. Don’t invest your life in things.
-Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters.&lt;/p&gt;
+Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters. &lt;br /&gt;
+Stoics encourage us to actively cultivate gratitude for that which we already have.
+They recommend making a concerted effort to imagine what it would be like if something you currently have was no longer there. &lt;br /&gt;
+&lt;strong&gt;How much would we miss it?&lt;/strong&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;&lt;em&gt;Some “memories”:&lt;/em&gt;&lt;/p&gt;
 
 &lt;div class=&quot;row&quot;&gt;
-  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/woman_with_rifle.jpeg&quot; alt=&quot;Woman&quot; width=&quot;25%&quot; /&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
+  &lt;div class=&quot;col-4 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/woman_with_rifle.jpeg&quot; alt=&quot;Woman&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/bridge.jpeg&quot; alt=&quot;Bridge&quot; width=&quot;25%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/bridge.jpeg&quot; alt=&quot;Bridge&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/plane_wing.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/plane_wing.jpeg&quot; alt=&quot;Plane wing&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/kyiv.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/kyiv.jpeg&quot; alt=&quot;Plane wing&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/div&gt;
 
-  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
-    &lt;img src=&quot;/minimalist/building.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
+  &lt;div class=&quot;col-4 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/building.jpeg&quot; alt=&quot;Plane wing&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/kyiv_2.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/kyiv_2.jpeg&quot; alt=&quot;Plane wing&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/odessa.jpeg&quot; alt=&quot;Odessa&quot; width=&quot;25%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/odessa.jpeg&quot; alt=&quot;Odessa&quot; class=&quot;img-thumbnail&quot; /&gt;
     &amp;nbsp;
-    &lt;img src=&quot;/minimalist/bucha.jpeg&quot; alt=&quot;Bucha&quot; width=&quot;25%&quot; /&gt;
+    &lt;img src=&quot;/minimalist/bucha.jpeg&quot; alt=&quot;Bucha&quot; class=&quot;img-thumbnail&quot; /&gt;
   &lt;/div&gt;
+  &lt;div class=&quot;col-4&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 09 Feb 2024 02:01:01 +0200</pubDate>
-        <link>https://lukin.io/blog/minimalism-war-family-and-lessons</link>
-        <guid isPermaLink="true">https://lukin.io/blog/minimalism-war-family-and-lessons</guid>
+        <link>http://localhost:4000/blog/minimalism-war-family-and-lessons</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/minimalism-war-family-and-lessons</guid>
         
         
       </item>
     
       <item>
         <title>Principles for Writing Maintainable Code</title>
-        <description>&lt;p&gt;Applications always change, and writing maintainable code is very important in software engineering. Here in CustomGears we decided to gather most important best practices with Ruby on Rails, examples and definations in one place.&lt;/p&gt;
+        <description>&lt;p&gt;Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important best practices with Ruby on Rails, examples and definations in one place.&lt;/p&gt;
 
 &lt;p&gt;In my work i’m using principles like: &lt;a href=&quot;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&quot; target=&quot;_blank&quot;&gt;DRY (Don’t repeat youself)&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/KISS_principle&quot; target=&quot;_blank&quot;&gt;KISS (Keep it simple, stupid)&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it&quot; target=&quot;_blank&quot;&gt;YAGNI (You aren’t gonna need it)&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Eating_your_own_dog_food&quot; target=&quot;_blank&quot;&gt;Eating your own dog food&lt;/a&gt;, but in this post i’ll highlight most important ones.&lt;/p&gt;
 
@@ -195,8 +208,8 @@ Being a minimalist also helps you stay calm, reducing distractions and allowing 
 
 </description>
         <pubDate>Sat, 12 Sep 2020 15:00:00 +0300</pubDate>
-        <link>https://lukin.io/blog/principles-for-writing-maintainable-code</link>
-        <guid isPermaLink="true">https://lukin.io/blog/principles-for-writing-maintainable-code</guid>
+        <link>http://localhost:4000/blog/principles-for-writing-maintainable-code</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/principles-for-writing-maintainable-code</guid>
         
         
       </item>

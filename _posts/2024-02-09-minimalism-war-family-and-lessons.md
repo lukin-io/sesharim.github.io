@@ -9,7 +9,7 @@ author: Max Lukin
 ---
 
 In 2014, I decided to move to Kyiv, Ukraine.
-I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At the time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.
+I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At that time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.
 
 However, I was a big fan of the movie *Up in the Air* with George Clooney, especially a couple of quotes like this one:
 
@@ -24,14 +24,14 @@ The war had begun.
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/bags.jpeg" alt="Bags before evacuation" width="70%">
+    <img src="{{ site.baseurl }}/minimalist/bags.jpeg" alt="Bags before evacuation" class="img-thumbnail">
   </div>
 </div>
 <br />
 
 I woke up to the sound of explosions and rockets (the entire sky was crisscrossed with rockets and Russian jets). Immediately, my wife and I began preparing our bags, gathering clothes, documents, passports, and some cash in one place.
 
-At the same time, I started doing a kind of “after-action review” in the same time (a habit from my software engineering background, where I constantly analyzing about how to improve some processes). <br />
+At the same time, I started doing a kind of “after-action review” (a habit from my software engineering background, where I constantly analyze how to improve some processes). <br />
 I realized some good practices, patterns, and habits that could be useful in everyday life. Stress can negatively impact logical thinking, so many useful actions or items can be overlooked. That’s why it’s important to do the right things at the right time, later one it might be much "expensive".
 
 With multiple bags, our 10-month-old son, a cat, and a baby stroller, we tried to evacuate by train. At the time, most roads were blocked by tanks and active assault operations (including aviation), so the train was the only way out—except for one problem: millions of people had the same idea. The trains became so overcrowded that the only way for police to manage the chaos was to fire shots into the air (yes, like in a zombie movie).
@@ -39,11 +39,13 @@ With multiple bags, our 10-month-old son, a cat, and a baby stroller, we tried t
 We realized we were stuck.
 
 <div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/train_evac.jpeg" alt="Train evac 1" width="32%">
+  <div class="col-4">&nbsp;</div>
+  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
+    <img src="{{ site.baseurl }}/minimalist/train_evac.jpeg" alt="Train evac 1" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/train_evac_2.jpeg" alt="Train evac 2" width="50%">
+    <img src="{{ site.baseurl }}/minimalist/train_evac_2.jpeg" alt="Train evac 2" class="img-thumbnail">
   </div>
+  <div class="col-4">&nbsp;</div>
 </div>
 <br />
 
@@ -57,7 +59,7 @@ I knew we had to try again. Thankfully, we got lucky and managed to board a trai
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpeg" alt="Lviv fire" width="70%">
+    <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpeg" alt="Lviv fire" class="img-thumbnail">
   </div>
 </div>
 <br />
@@ -71,7 +73,7 @@ After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though w
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/lviv_fire.jpeg" alt="Lviv fire" width="70%">
+    <img src="{{ site.baseurl }}/minimalist/lviv_fire.jpeg" alt="Lviv fire" class="img-thumbnail">
   </div>
 </div>
 <br />
@@ -79,7 +81,7 @@ After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though w
 We decided to go to Poland (I still think the Polish people are true heroes). We rented a hotel (which was nearly impossible to get because all hotels were full of refugees) and eventually flew back to Central Asia.
 
 A month or two later, we returned back to Kyiv. <br />
-The Russian army had left the city, and while air defense improved. <br />
+The Russian army had left the city, and air defense improved. <br />
 Sadly, we got used to hundreds of rocket and drone attacks, sometimes daily.
 This became the “new normal” (like a plan to go for a shopping might be canceled because of air raid alert or drone attack, or midnight ballistic rocket wakes you up).
 
@@ -96,48 +98,59 @@ Prepare it in calm times so you don’t forget anything under stress.
 ### Additional Lessons:
 - **Diversify your assets:** Don’t put all your eggs in one basket. Having 2-3 passports, properties, and bank accounts in different countries is a smart idea. Start today.
 - **After-action reviews ([AAR](https://en.wikipedia.org/wiki/After-action_review)):** Regularly analyze your actions and decisions to improve efficiency in all aspects of life.
-- **Create patterns and rules:** Develop habits and workflows that works best for you, for your daily stuff, it saves time and reduce stress by not keeping that in your mind.
+- **Create patterns and rules:** Develop habits and workflows that work best for you, for your daily stuff, it saves time and reduce stress by not keeping that in your mind.
 
 P.S:
 
-Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also finds minutes to enjoy life. <br />
-Minimalism allows you to have hobbies, sports, and a lean lifestyle almost right from your luggage. <br />
+Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also find minutes to enjoy life. <br />
+Minimalism lets you enjoy hobbies, sports, and a streamlined lifestyle with just what fits in your luggage. <br />
 
 <div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/workspace.jpeg" alt="Workspace" width="30%">
+  <div class="col-4">&nbsp;</div>
+  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
+    <img src="{{ site.baseurl }}/minimalist/workspace.jpeg" alt="Workspace" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bags_now.jpeg" alt="Bags" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/bags_now.jpeg" alt="Bags" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/coffee.jpeg" alt="Coffee" width="30%">
+    <img src="{{ site.baseurl }}/minimalist/coffee.jpeg" alt="Coffee" class="img-thumbnail">
   </div>
+  <div class="col-4">&nbsp;</div>
 </div>
 
 <br />
 "Tomorrow" might not come, so enjoy today—but always have a plan for the future. Don’t invest your life in things.
-Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters.
+Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters. <br />
+Stoics encourage us to actively cultivate gratitude for that which we already have.
+They recommend making a concerted effort to imagine what it would be like if something you currently have was no longer there. <br />
+**How much would we miss it?**
 
 <hr />
 *Some "memories":*
 
 <div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/woman_with_rifle.jpeg" alt="Woman" width="25%">
+  <div class="col-4">&nbsp;</div>
+  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
+    <img src="{{ site.baseurl }}/minimalist/woman_with_rifle.jpeg" alt="Woman" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bridge.jpeg" alt="Bridge" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/bridge.jpeg" alt="Bridge" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/plane_wing.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/plane_wing.jpeg" alt="Plane wing" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/kyiv.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/kyiv.jpeg" alt="Plane wing" class="img-thumbnail">
   </div>
+  <div class="col-4">&nbsp;</div>
+</div>
 
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/building.jpeg" alt="Plane wing" width="25%">
+<div class="row">
+  <div class="col-4">&nbsp;</div>
+  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
+    <img src="{{ site.baseurl }}/minimalist/building.jpeg" alt="Plane wing" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/kyiv_2.jpeg" alt="Plane wing" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/kyiv_2.jpeg" alt="Plane wing" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Odessa" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Odessa" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Bucha" width="25%">
+    <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Bucha" class="img-thumbnail">
   </div>
+  <div class="col-4">&nbsp;</div>
 </div>
