@@ -136,7 +136,7 @@ They recommend making a concerted effort to imagine what it would be like if som
     &nbsp;
     <img src="{{ site.baseurl }}/minimalist/plane_wing.jpeg" alt="Plane wing" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/kyiv.jpeg" alt="Plane wing" class="img-thumbnail">
+    <img src="{{ site.baseurl }}/minimalist/kyiv.jpeg" alt="Kyiv" class="img-thumbnail">
   </div>
   <div class="col-4">&nbsp;</div>
 </div>
