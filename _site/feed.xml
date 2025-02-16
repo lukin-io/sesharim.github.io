@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Software Engineering consultant</title>
+    <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
+    <link>https://lukin.io/</link>
+    <atom:link href="https://lukin.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 16 Feb 2025 11:13:01 +0200</pubDate>
+    <lastBuildDate>Sun, 16 Feb 2025 11:13:01 +0200</lastBuildDate>
+    <generator>Jekyll v4.3.4</generator>
+    
+      <item>
+        <title>Minimalism, Family, war and lessons</title>
+        <description>&lt;p&gt;In 2014, I decided to move to Kyiv, Ukraine.
+I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At the time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.&lt;/p&gt;
+
+&lt;p&gt;However, I was a big fan of the movie &lt;em&gt;Up in the Air&lt;/em&gt; with George Clooney, especially a couple of quotes like this one:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;“How much does your life weigh? Imagine for a second that you’re carrying a backpack. I want you to feel the straps on your shoulders. Feel ’em? Now I want you to pack it with all the stuff that you have in your life. You start with the little things. The things on shelves and in drawers, the knick-knacks, the collectibles. Feel the weight as that adds up. Then you start adding larger stuff, clothes, table-top appliances, lamps, linens, your TV.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The backpack should be getting pretty heavy now. And you go bigger. Your couch, bed, your kitchen table. Stuff it all in there. Your car, get it in there. Your home, whether it’s a studio apartment or a two-bedroom house. I want you to stuff it all into that backpack. Now try to walk. It’s kind of hard, isn’t it? This is what we do to ourselves on a daily basis. We weigh ourselves down until we can’t even move. And make no mistake, moving is living.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Now, I’m gonna set that backpack on fire. What do you want to take out of it? Photos? Photos are for people who can’t remember. Drink some ginkgo and let the photos burn. In fact, let everything burn and imagine waking up tomorrow with nothing. It’s kind of exhilarating, isn’t it?”&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;My “backpack” was set on fire at 4:30 in the early morning of February 24, 2022, in Kyiv, Ukraine.
+The war had begun.&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/bags.jpeg&quot; alt=&quot;Bags before evacuation&quot; width=&quot;70%&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;I woke up to the sound of explosions and rockets (the entire sky was crisscrossed with rockets and Russian jets). Immediately, my wife and I began preparing our bags, gathering clothes, documents, passports, and some cash in one place.&lt;/p&gt;
+
+&lt;p&gt;At the same time, I started doing a kind of “after-action review” in the same time (a habit from my software engineering background, where I constantly analyzing about how to improve some processes). &lt;br /&gt;
+I realized some good practices, patterns, and habits that could be useful in everyday life. Stress can negatively impact logical thinking, so many useful actions or items can be overlooked. That’s why it’s important to do the right things at the right time, later one it might be much “expensive”.&lt;/p&gt;
+
+&lt;p&gt;With multiple bags, our 10-month-old son, a cat, and a baby stroller, we tried to evacuate by train. At the time, most roads were blocked by tanks and active assault operations (including aviation), so the train was the only way out—except for one problem: millions of people had the same idea. The trains became so overcrowded that the only way for police to manage the chaos was to fire shots into the air (yes, like in a zombie movie).&lt;/p&gt;
+
+&lt;p&gt;We realized we were stuck.&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/train_evac.jpeg&quot; alt=&quot;Train evac 1&quot; width=&quot;32%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/train_evac_2.jpeg&quot; alt=&quot;Train evac 2&quot; width=&quot;50%&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;With our baby in a hip carrier, two laptops, two suitcases, and a backpack, my wife carried our cat and another backpack. The air raid sirens blared non-stop, and explosions continued somewhere in the city. We had to return home; boarding the train was impossible.&lt;/p&gt;
+
+&lt;p&gt;That night, rocket attacks continued without pause, and logistics hubs and grocery warehouses were destroyed. Cash ran out at ATMs, and with the cellular network failing, cash became the only way to pay for essentials.&lt;/p&gt;
+
+&lt;p&gt;I realized one thing: food was running out, including baby food. Enemy tanks and aircraft were getting closer, and more roads were blocked. We started sleeping in our apartment’s corridor, following the &lt;a href=&quot;https://delano.lu/article/the-rule-of-two-walls-and-othe&quot;&gt;“rule of two walls”&lt;/a&gt; (which, as we later learned, doesn’t work well against powerful weapons). I also failed to find a gun to defend my family from marauders, even though AK-like riffles were scattered on the streets due to daily shootings or given by GOVs to defent capital.&lt;/p&gt;
+
+&lt;p&gt;I knew we had to try again. Thankfully, we got lucky and managed to board a train. I had never seen so many people in one place. The train was so crowded that it moved at 20 km/h instead of the usual 80+ km/h, and the trip took 20-25 hours instead of 10h. My big toe lost sensation because of the cold—I stood for the entire trip without sleep, food, or water.&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/way_out_of_city.jpeg&quot; alt=&quot;Lviv fire&quot; width=&quot;70%&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;My wife stayed in the warmer middle part of the train with our baby, while I stayed on the stairs with our luggage, laptops, and backpacks. An elderly woman warned me, “Oh my… so many bags—you’re in trouble. People at the next stops will try to throw your bags (and you) off the train to get in”&lt;/p&gt;
+
+&lt;p&gt;I immediately started planning which bags bag I could sacrifice first. The baby stroller was the obvious choice—it had no documents or money inside—so I left it between the train cars. I understood that my luggage wasn’t blocking anyone’s way, but in moments of panic, logic disappears, people will do anything to survive.&lt;/p&gt;
+
+&lt;p&gt;At each stop, I fought to keep my small space on the train with my family.
+After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though we didn’t know that rockets would hit Lviv the next morning).&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/lviv_fire.jpeg&quot; alt=&quot;Lviv fire&quot; width=&quot;70%&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We decided to go to Poland (I still think the Polish people are true heroes). We rented a hotel (which was nearly impossible to get because all hotels were full of refugees) and eventually flew back to Central Asia.&lt;/p&gt;
+
+&lt;p&gt;A month or two later, we returned back to Kyiv. &lt;br /&gt;
+The Russian army had left the city, and while air defense improved. &lt;br /&gt;
+Sadly, we got used to hundreds of rocket and drone attacks, sometimes daily.
+This became the “new normal” (like a plan to go for a shopping might be canceled because of air raid alert or drone attack, or midnight ballistic rocket wakes you up).&lt;/p&gt;
+
+&lt;h3 id=&quot;what-i-learned-about-minimalism&quot;&gt;What I Learned About Minimalism:&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Before buying something, ask yourself: Do I really need this? If you can’t decide, the answer is no&lt;/strong&gt; (works in any area of your life).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;YAGNI (&lt;a href=&quot;https://en.wikipedia.org/wiki/YAGNI&quot;&gt;&lt;em&gt;You Ain’t Gonna Need It&lt;/em&gt;&lt;/a&gt;):&lt;/strong&gt; A principle from software engineering that I’ve applied to life. It simplifies decision-making.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Pragmatic living and constant audits everything:&lt;/strong&gt; Regularly review your time, belongings (any things you have), habits. This has helped me manage my life and my family’s needs effectively. If you haven’t used something in 3–6 months, get rid of it.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Choose multi-purpose clothing:&lt;/strong&gt; Brands like Columbia or Asics offer versatile clothing and footwear for all seasons. A simple three-layer can keep you warm in winter and adaptable in all seasons or use each layer for each season, it can be worn for work, sports, and casual outings, daily basis.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Digital over physical:&lt;/strong&gt; Buy digital versions of games and books (my Kindle is one of the best devices I own).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Grab-and-go bag:&lt;/strong&gt; If you live near “hot spots” (war zones, volcanoes, earthquake-prone areas, etc.), prepare a bag with essentials: passports, cash, silver blankets, water, protein bars, and essential medications (Check ‘best before date’ monthly).
+Prepare it in calm times so you don’t forget anything under stress.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Invest in knowledge, health, and relationships:&lt;/strong&gt; Minimalism isn’t about deprivation—it’s about focusing on what truly matters.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;additional-lessons&quot;&gt;Additional Lessons:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Diversify your assets:&lt;/strong&gt; Don’t put all your eggs in one basket. Having 2-3 passports, properties, and bank accounts in different countries is a smart idea. Start today.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;After-action reviews (&lt;a href=&quot;https://en.wikipedia.org/wiki/After-action_review&quot;&gt;AAR&lt;/a&gt;):&lt;/strong&gt; Regularly analyze your actions and decisions to improve efficiency in all aspects of life.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Create patterns and rules:&lt;/strong&gt; Develop habits and workflows that works best for you, for your daily stuff, it saves time and reduce stress by not keeping that in your mind.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;P.S:&lt;/p&gt;
+
+&lt;p&gt;Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also finds minutes to enjoy life. &lt;br /&gt;
+Minimalism allows you to have hobbies, sports, and a lean lifestyle almost right from your luggage. &lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/workspace.jpeg&quot; alt=&quot;Workspace&quot; width=&quot;30%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/bags_now.jpeg&quot; alt=&quot;Bags&quot; width=&quot;30%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/coffee.jpeg&quot; alt=&quot;Coffee&quot; width=&quot;30%&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;
+“Tomorrow” might not come, so enjoy today—but always have a plan for the future. Don’t invest your life in things.
+Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;Some “memories”:&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/woman_with_rifle.jpeg&quot; alt=&quot;Woman&quot; width=&quot;25%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/bridge.jpeg&quot; alt=&quot;Bridge&quot; width=&quot;25%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/plane_wing.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/kyiv.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;col-12 d-flex flex-row justify-content-center align-items-center&quot;&gt;
+    &lt;img src=&quot;/minimalist/building.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/kyiv_2.jpeg&quot; alt=&quot;Plane wing&quot; width=&quot;25%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/odessa.jpeg&quot; alt=&quot;Odessa&quot; width=&quot;25%&quot; /&gt;
+    &amp;nbsp;
+    &lt;img src=&quot;/minimalist/bucha.jpeg&quot; alt=&quot;Bucha&quot; width=&quot;25%&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 09 Feb 2024 02:01:01 +0200</pubDate>
+        <link>https://lukin.io/blog/minimalism-war-family-and-lessons</link>
+        <guid isPermaLink="true">https://lukin.io/blog/minimalism-war-family-and-lessons</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Principles for Writing Maintainable Code</title>
+        <description>&lt;p&gt;Applications always change, and writing maintainable code is very important in software engineering. Here in CustomGears we decided to gather most important best practices with Ruby on Rails, examples and definations in one place.&lt;/p&gt;
+
+&lt;p&gt;In my work i’m using principles like: &lt;a href=&quot;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&quot; target=&quot;_blank&quot;&gt;DRY (Don’t repeat youself)&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/KISS_principle&quot; target=&quot;_blank&quot;&gt;KISS (Keep it simple, stupid)&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it&quot; target=&quot;_blank&quot;&gt;YAGNI (You aren’t gonna need it)&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Eating_your_own_dog_food&quot; target=&quot;_blank&quot;&gt;Eating your own dog food&lt;/a&gt;, but in this post i’ll highlight most important ones.&lt;/p&gt;
+
+&lt;p&gt;First one is &lt;strong&gt;SOLID&lt;/strong&gt;. Those principles of OOP consist of:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;: Single Responsibility Principle - a class or method should serve a single purpose.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;O&lt;/strong&gt;: Open/closed Principle - classes or methods should be open for extension, but closed for modification&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;L&lt;/strong&gt;: Liskov substitution principle - replacing any instances of a parent class with an instance of one of its children without creating any unexpected or incorrect behaviors.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;I&lt;/strong&gt;: Interface Segregation Principle - any client specific classes are better than one general purpose class. Less relevant in dynamic languages.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;D&lt;/strong&gt;: Dependency Inversion Principle - High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend upon details. Details should depend upon abstractions.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Second one is &lt;strong&gt;LoD&lt;/strong&gt;, or &lt;strong&gt;The Law of Demeter&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The Law of Demeter, or Principle of Least Knowledge is a well-known software design principle for reducing coupling between collaborating objects.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The code you write should have the following qualities.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt;ransparent The consequences of change should be obvious in the code that is changing and in distant code that relies upon it;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt;easonable The cost of any change should be proportional to the benefits the change achieves;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;U&lt;/strong&gt;sable Existing code should be usable in new and unexpected contexts;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;E&lt;/strong&gt;xemplary The code itself should encourage those who change it to perpetuate these qualities;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Code that is Transparent, Reasonable, Usable, and Exemplary (&lt;strong&gt;TRUE&lt;/strong&gt;) not only meets today’s needs but can also be changed to meet the needs of the future. The first step in creating code that is TRUE is to ensure that each class has a single, well-defined responsibility.&lt;/p&gt;
+
+&lt;p&gt;And the most important part is testing:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;BDD&lt;/strong&gt; - Behavior-driven development is a software development practice of working in a short feedback loop, where we consistently apply test-driven development to every new feature we are exploring and working on.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TDD&lt;/strong&gt; - Test-driven development is a programming technique that requires you to write test.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sat, 12 Sep 2020 15:00:00 +0300</pubDate>
+        <link>https://lukin.io/blog/principles-for-writing-maintainable-code</link>
+        <guid isPermaLink="true">https://lukin.io/blog/principles-for-writing-maintainable-code</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
