@@ -59,7 +59,7 @@ I knew we had to try again. Thankfully, we got lucky and managed to board a trai
 
 <div class="row">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpeg" alt="Lviv fire" class="img-thumbnail">
+    <img src="{{ site.baseurl }}/minimalist/bridge.jpeg" alt="Bridge" class="img-thumbnail">
   </div>
 </div>
 <br />
@@ -132,7 +132,7 @@ They recommend making a concerted effort to imagine what it would be like if som
   <div class="col-4 d-flex flex-row justify-content-center align-items-center">
     <img src="{{ site.baseurl }}/minimalist/woman_with_rifle.jpeg" alt="Woman" class="img-thumbnail">
     &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bridge.jpeg" alt="Bridge" class="img-thumbnail">
+    <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpeg" alt="Out of city" class="img-thumbnail">
     &nbsp;
     <img src="{{ site.baseurl }}/minimalist/plane_wing.jpeg" alt="Plane wing" class="img-thumbnail">
     &nbsp;
