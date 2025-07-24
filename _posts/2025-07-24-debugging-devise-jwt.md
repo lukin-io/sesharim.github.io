@@ -25,6 +25,7 @@ into your own Rails 8 API‑only project.
 7. [Custom Sessions & Registrations controllers](#7-controllers)
 8. [cURL cookbook](#8-curl-cookbook)
 9. [Common pitfalls & their fixes](#9-pitfalls)
+10. [RSpec tests](#9-rspec)
 
 ---
 
@@ -280,3 +281,116 @@ curl http://localhost:3000/api/v1/users   -H "Authorization: Bearer <TOKEN>"
 
 And that’s all: Rails 8 + Devise + JWT, with uniform JSON errors,
 cookie‑free, and cURL‑/Postman‑compatible.
+
+## 10  RSpec test suite <a name="10-rspec"></a>
+
+### 1 Factory
+
+```ruby
+# spec/factories/users.rb
+FactoryBot.define do
+  factory :user do
+    email    { Faker::Internet.unique.email }
+    password { 'password123' }
+  end
+end
+```
+
+### 2 Spec helper for JWT header
+
+```ruby
+# spec/support/jwt_helpers.rb
+module JwtHelpers
+  def auth_header_for(user)
+    post '/api/v1/sessions/sign_in',
+         params: { user: { email: user.email, password: 'password123' } }.to_json,
+         headers: { 'Content-Type' => 'application/json' }
+
+    token = response.headers['Authorization'].split.last
+    { 'Authorization' => "Bearer #{token}" }
+  end
+end
+
+RSpec.configure { |c| c.include JwtHelpers, type: :request }
+```
+
+### 3.1 Request specs
+```ruby
+# spec/requests/auth_flow_spec.rb
+require 'rails_helper'
+
+RSpec.describe 'Auth flow', type: :request do
+  describe 'sign‑up → sign‑in → protected → sign‑out' do
+    let(:user_attrs) do
+      { email: 'alice@example.com',
+        password: 'password123',
+        password_confirmation: 'password123' }
+    end
+
+    it 'issues and revokes JWT' do
+      # 1) sign‑up (no auto‑login)
+      post '/api/v1/users',
+           params: { user: user_attrs }.to_json,
+           headers: { 'Content-Type' => 'application/json' }
+      expect(response).to have_http_status(:ok)
+
+      # 2) sign‑in (get token in header)
+      post '/api/v1/sessions/sign_in',
+           params: { user: user_attrs.slice(:email, :password) }.to_json,
+           headers: { 'Content-Type' => 'application/json' }
+      expect(response).to have_http_status(:ok)
+      token = response.headers['Authorization'].split.last
+      auth  = { 'Authorization' => "Bearer #{token}" }
+
+      # 3) hit protected endpoint
+      get '/api/v1/users', headers: auth
+      expect(response).to have_http_status(:ok)
+
+      # 4) sign‑out
+      delete '/api/v1/sessions/sign_out', headers: auth
+      expect(response).to have_http_status(:ok)
+
+      # 5) token should now be invalid
+      get '/api/v1/users', headers: auth
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
+end
+```
+
+### 3.2 Bad token spec
+```ruby
+require 'rails_helper'
+
+RSpec.describe 'JWT failure cases', type: :request do
+  let(:headers) { { 'Authorization' => 'Bearer bad.token' } }
+
+  it 'rejects malformed token' do
+    get '/api/v1/users', headers: headers
+    expect(response).to have_http_status(:unauthorized)
+    body = JSON.parse(response.body)
+    expect(body.dig('error', 'code')).to eq('UNAUTHORIZED')
+  end
+end
+```
+
+### 4 Model spec
+```ruby
+# spec/models/user_spec.rb
+require 'rails_helper'
+
+RSpec.describe User, type: :model do
+  describe '.revoke_jwt / .jwt_revoked?' do
+    let(:user) { create(:user) }
+    let(:old_jti) { user.jti }
+
+    it 'marks existing token invalid by changing jti' do
+      payload = { 'jti' => old_jti }
+      described_class.revoke_jwt(payload, user)
+      expect(user.reload.jti).not_to eq(old_jti)
+      expect(described_class.jwt_revoked?(payload, user)).to be true
+    end
+  end
+end
+
+```
