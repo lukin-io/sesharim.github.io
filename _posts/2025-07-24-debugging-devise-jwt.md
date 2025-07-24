@@ -25,7 +25,7 @@ into your own Rails 8 API‑only project.
 7. [Custom Sessions & Registrations controllers](#7-controllers)
 8. [cURL cookbook](#8-curl-cookbook)
 9. [Common pitfalls & their fixes](#9-pitfalls)
-10. [RSpec tests](#9-rspec)
+10. [RSpec tests](#10-rspec)
 
 ---
 
