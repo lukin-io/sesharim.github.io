@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys
-date: 2025-07-30
-<!-- description: Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys. -->
+date: 2025-07-30 00:01:01
 author: Max Lukin
-<!-- tags: [rails, jwt, devise, doorkeeper, security, rsa] -->
+<!-- tags: rails, jwt, devise, doorkeeper, security, rsa -->
 ---
+Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
 
 In Rails API authentication, using JWT tokens with Devise and Devise-JWT provides simplicity and efficiency. But when security requirements become stricter, shared secrets (`HS256`) may not suffice. Instead, RSA asymmetric keys (`RS256`) provide stronger cryptographic protection by separating the token issuer (private key holder) from the verifier (public key holder).
 
