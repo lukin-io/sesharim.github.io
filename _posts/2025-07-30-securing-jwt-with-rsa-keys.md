@@ -1,9 +1,8 @@
-
 ---
 layout: post
 title: Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys
 date: 2025-07-30
-description: Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
+<!-- description: Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys. -->
 author: Max Lukin
 <!-- tags: [rails, jwt, devise, doorkeeper, security, rsa] -->
 ---
