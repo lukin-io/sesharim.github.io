@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Aug 2025 12:36:41 +0000</pubDate>
-    <lastBuildDate>Mon, 11 Aug 2025 12:36:41 +0000</lastBuildDate>
+    <pubDate>Mon, 11 Aug 2025 12:41:33 +0000</pubDate>
+    <lastBuildDate>Mon, 11 Aug 2025 12:41:33 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -182,8 +182,8 @@
 &lt;p&gt;&lt;em&gt;Mastering these internals means fewer surprises, faster debugging, and Rails that scales with you.&lt;/em&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 11 Aug 2025 00:01:01 +0000</pubDate>
-        <link>http://localhost:4000/blog/rails-under-the-hood</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/rails-under-the-hood</guid>
+        <link>http://localhost:4000/rails-under-the-hood</link>
+        <guid isPermaLink="true">http://localhost:4000/rails-under-the-hood</guid>
         
         
       </item>
@@ -324,8 +324,8 @@
 &lt;p&gt;Switching to RSA keys (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RS256&lt;/code&gt;) strengthens JWT token security in your Rails API, clearly separating token generation and verification responsibilities and simplifying key management at scale.&lt;/p&gt;
 </description>
         <pubDate>Wed, 30 Jul 2025 00:01:01 +0000</pubDate>
-        <link>http://localhost:4000/blog/securing-jwt-with-rsa-keys</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/securing-jwt-with-rsa-keys</guid>
+        <link>http://localhost:4000/securing-jwt-with-rsa-keys</link>
+        <guid isPermaLink="true">http://localhost:4000/securing-jwt-with-rsa-keys</guid>
         
         
       </item>
@@ -715,8 +715,8 @@ cookie‑free, and cURL‑/Postman‑compatible.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Thu, 24 Jul 2025 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/blog/debugging-devise-jwt</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/debugging-devise-jwt</guid>
+        <link>http://localhost:4000/debugging-devise-jwt</link>
+        <guid isPermaLink="true">http://localhost:4000/debugging-devise-jwt</guid>
         
         <category>rails</category>
         
@@ -886,8 +886,8 @@ They recommend making a concerted effort to imagine what it would be like if som
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 09 Feb 2024 00:01:01 +0000</pubDate>
-        <link>http://localhost:4000/blog/minimalism-war-family-and-lessons</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/minimalism-war-family-and-lessons</guid>
+        <link>http://localhost:4000/minimalism-war-family-and-lessons</link>
+        <guid isPermaLink="true">http://localhost:4000/minimalism-war-family-and-lessons</guid>
         
         
       </item>
@@ -930,8 +930,8 @@ They recommend making a concerted effort to imagine what it would be like if som
 
 </description>
         <pubDate>Sat, 12 Sep 2020 12:00:00 +0000</pubDate>
-        <link>http://localhost:4000/blog/principles-for-writing-maintainable-code</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/principles-for-writing-maintainable-code</guid>
+        <link>http://localhost:4000/principles-for-writing-maintainable-code</link>
+        <guid isPermaLink="true">http://localhost:4000/principles-for-writing-maintainable-code</guid>
         
         
       </item>

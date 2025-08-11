@@ -6,6 +6,7 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://lukin.io"
 twitter_username: lukin_io
 github_username:  lukin-io
+baseurl: ""
 
 # Build settings
 markdown: kramdown
