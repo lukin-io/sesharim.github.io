@@ -1,0 +1,202 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Software Engineering consultant</title>
+  <meta name="description"
+    content="Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/securing-jwt-with-rsa-keys">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000 /feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="stylesheet" href=" /css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+
+<body class="col-lg-8 mx-auto py-md-2" style="background-color: #e0e1dd;">
+  <header>
+    &nbsp;
+  </header>
+
+  <main>
+    <div class="container">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center m-2">
+      <a href="https://lukin.io">Main</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://lukin.io/blog">Other posts</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</h4>
+      <small class="text-muted">Jul 30, 2025</small>
+      <hr />
+      <div><p>Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.</p>
+
+<p>In Rails API authentication, using JWT tokens with Devise and Devise-JWT provides simplicity and efficiency. But when security requirements become stricter, shared secrets (<code class="language-plaintext highlighter-rouge">HS256</code>) may not suffice. Instead, RSA asymmetric keys (<code class="language-plaintext highlighter-rouge">RS256</code>) provide stronger cryptographic protection by separating the token issuer (private key holder) from the verifier (public key holder).</p>
+
+<h2 id="why-rsa-keys-instead-of-hs256">Why RSA Keys instead of HS256?</h2>
+
+<ul>
+  <li><strong>Asymmetric cryptography</strong>: Private keys sign tokens; public keys verify tokens.</li>
+  <li><strong>Improved security</strong>: Private keys remain confidential, minimizing exposure risk.</li>
+  <li><strong>Scalable and maintainable</strong>: Easily rotate keys without downtime or disruptions.</li>
+</ul>
+
+<hr />
+
+<h2 id="step-by-step-implementation">Step-by-step implementation</h2>
+
+<h3 id="1-generate-rsa-key-pair">1. Generate RSA key pair</h3>
+
+<p>First, generate an RSA key pair:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rsa_private</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">generate</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+<span class="no">File</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s1">'jwt_rsa_private.pem'</span><span class="p">,</span> <span class="n">rsa_private</span><span class="p">.</span><span class="nf">to_pem</span><span class="p">)</span>
+<span class="no">File</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s1">'jwt_rsa_public.pem'</span><span class="p">,</span> <span class="n">rsa_private</span><span class="p">.</span><span class="nf">public_key</span><span class="p">.</span><span class="nf">to_pem</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Securely store these keys in Rails encrypted credentials (<code class="language-plaintext highlighter-rouge">rails credentials:edit</code>):</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">jwt_private_key</span><span class="pi">:</span> <span class="pi">|</span>
+  <span class="s">-----BEGIN RSA PRIVATE KEY-----</span>
+  <span class="s">your_private_key_here</span>
+  <span class="s">-----END RSA PRIVATE KEY-----</span>
+
+<span class="na">jwt_public_key</span><span class="pi">:</span> <span class="pi">|</span>
+  <span class="s">-----BEGIN PUBLIC KEY-----</span>
+  <span class="s">your_public_key_here</span>
+  <span class="s">-----END PUBLIC KEY-----</span>
+</code></pre></div></div>
+
+<h3 id="2-configure-devise-jwt-for-rs256">2. Configure Devise-JWT for RS256</h3>
+
+<p>Update your <code class="language-plaintext highlighter-rouge">config/initializers/devise.rb</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Devise</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">jwt</span> <span class="k">do</span> <span class="o">|</span><span class="n">jwt</span><span class="o">|</span>
+    <span class="n">jwt</span><span class="p">.</span><span class="nf">algorithm</span>  <span class="o">=</span> <span class="s1">'RS256'</span>
+    <span class="n">jwt</span><span class="p">.</span><span class="nf">secret</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">jwt_private_key</span>
+    <span class="p">)</span>
+    <span class="n">jwt</span><span class="p">.</span><span class="nf">public_key</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">jwt_public_key</span>
+    <span class="p">)</span>
+    <span class="n">jwt</span><span class="p">.</span><span class="nf">dispatch_requests</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="p">[</span><span class="s1">'POST'</span><span class="p">,</span> <span class="sr">%r{^/api/v1/sessions/sign_in$}</span><span class="p">],</span>
+      <span class="p">[</span><span class="s1">'POST'</span><span class="p">,</span> <span class="sr">%r{^/api/v1/users$}</span><span class="p">]</span>
+    <span class="p">]</span>
+    <span class="n">jwt</span><span class="p">.</span><span class="nf">revocation_requests</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="p">[</span><span class="s1">'DELETE'</span><span class="p">,</span> <span class="sr">%r{^/api/v1/sessions/sign_out$}</span><span class="p">]</span>
+    <span class="p">]</span>
+    <span class="n">jwt</span><span class="p">.</span><span class="nf">expiration_time</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="nf">day</span><span class="p">.</span><span class="nf">to_i</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="3-configure-doorkeeper-jwt-optional-if-using-oauth2">3. Configure Doorkeeper-JWT (Optional, if using OAuth2)</h3>
+
+<p>Ensure Doorkeeper-JWT issues tokens using the same RSA key:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/initializers/doorkeeper_jwt.rb</span>
+<span class="no">Doorkeeper</span><span class="o">::</span><span class="no">JWT</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
+  <span class="n">token_payload</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="ss">:resource_owner_id</span><span class="p">])</span>
+    <span class="p">{</span>
+      <span class="ss">iss: </span><span class="s1">'my-rails-api'</span><span class="p">,</span>
+      <span class="ss">sub: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">email: </span><span class="n">user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+      <span class="ss">scope: </span><span class="n">opts</span><span class="p">[</span><span class="ss">:scopes</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="n">secret_key</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">jwt_private_key</span>
+  <span class="p">)</span>
+  <span class="n">encryption_method</span> <span class="ss">:rs256</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="4-verify-rsa-based-jwt">4. Verify RSA-based JWT</h3>
+
+<p>Your application now automatically issues and verifies JWT tokens using RSA keys. Token verification uses only the public key, keeping your private key secret and secure.</p>
+
+<hr />
+
+<h2 id="key-rotation">Key Rotation</h2>
+
+<p>To rotate keys without downtime:</p>
+
+<ol>
+  <li>Generate a new RSA key pair.</li>
+  <li>Temporarily add the new public key to your application’s configuration alongside the old one.</li>
+  <li>Issue tokens with the new private key; verify tokens with both old and new public keys.</li>
+  <li>After all older tokens expire, remove the old keys.</li>
+</ol>
+
+<p>Example:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jwt</span><span class="p">.</span><span class="nf">public_key_set</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">new_public_key</span><span class="p">),</span>
+  <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">old_public_key</span><span class="p">)</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="test-via-curl">Test via cURL</h2>
+
+<p>Sign-in example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> POST http://localhost:3000/api/v1/sessions/sign_in <span class="se">\</span>
+<span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+<span class="nt">-d</span> <span class="s1">'{"user":{"email":"alice@example.com","password":"password123"}}'</span>
+</code></pre></div></div>
+
+<p>The response includes an RSA-signed JWT:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...
+</code></pre></div></div>
+
+<hr />
+
+<p><strong>Conclusion</strong></p>
+
+<p>Switching to RSA keys (<code class="language-plaintext highlighter-rouge">RS256</code>) strengthens JWT token security in your Rails API, clearly separating token generation and verification responsibilities and simplifying key management at scale.</p>
+</div>
+    </div>
+  </div>
+</div>
+
+  </main>
+
+  <footer>
+    <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank">cv</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  </footer>
+</body>
+
+</html>
