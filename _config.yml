@@ -9,7 +9,7 @@ github_username:  lukin-io
 
 # Build settings
 markdown: kramdown
-permalink: /blog/:title
+permalink: /:title
 
 # Plugins
 plugins:
