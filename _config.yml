@@ -11,6 +11,15 @@ github_username:  lukin-io
 markdown: kramdown
 permalink: /blog/:title
 
+# Plugins
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
