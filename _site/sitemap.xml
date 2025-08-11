@@ -1,42 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-  <loc>https://lukin.io/</loc>
-  <lastmod>2024-12-19T17:16:12+00:00</lastmod>
-  <priority>1.00</priority>
+<loc>http://localhost:4000/blog/principles-for-writing-maintainable-code</loc>
+<lastmod>2020-09-12T12:00:00+00:00</lastmod>
 </url>
 <url>
-  <loc>https://lukin.io/blog</loc>
-  <lastmod>2024-12-19T17:16:12+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>http://localhost:4000/blog/minimalism-war-family-and-lessons</loc>
+<lastmod>2024-02-09T00:01:01+00:00</lastmod>
 </url>
 <url>
-  <loc>https://lukin.io/cv.pdf</loc>
-  <lastmod>2024-12-19T17:16:12+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>http://localhost:4000/blog/debugging-devise-jwt</loc>
+<lastmod>2025-07-24T00:00:00+00:00</lastmod>
 </url>
 <url>
-  <loc>https://lukin.io/blog/big-o-notation</loc>
-  <lastmod>2024-12-19T17:16:12+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>http://localhost:4000/blog/securing-jwt-with-rsa-keys</loc>
+<lastmod>2025-07-30T00:01:01+00:00</lastmod>
 </url>
 <url>
-  <loc>https://lukin.io/blog/minimalism</loc>
-  <lastmod>2024-12-19T17:16:12+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>http://localhost:4000/blog/rails-under-the-hood</loc>
+<lastmod>2025-08-11T00:01:01+00:00</lastmod>
 </url>
 <url>
-  <loc>https://lukin.io/blog/principles-for-writing-maintainable-code</loc>
-  <lastmod>2024-12-19T17:16:12+00:00</lastmod>
-  <priority>0.64</priority>
+<loc>http://localhost:4000/contacts</loc>
 </url>
-
-
+<url>
+<loc>http://localhost:4000/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/projects</loc>
+</url>
+<url>
+<loc>http://localhost:4000/services</loc>
+</url>
+<url>
+<loc>http://localhost:4000/tools</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog.html</loc>
+<lastmod>2025-08-11T12:11:46+00:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/cover.pdf</loc>
+<lastmod>2025-07-24T12:16:20+00:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/cv.pdf</loc>
+<lastmod>2025-07-24T12:16:20+00:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/old_cv.pdf</loc>
+<lastmod>2025-07-24T12:16:20+00:00</lastmod>
+</url>
 </urlset>
