@@ -1,4 +1,5 @@
 ---
+layout: post
 title: "From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App"
 date: 2025-07-24
 description: >

@@ -5,9 +5,188 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 30 Jul 2025 11:28:14 +0000</pubDate>
-    <lastBuildDate>Wed, 30 Jul 2025 11:28:14 +0000</lastBuildDate>
+    <pubDate>Mon, 11 Aug 2025 12:05:54 +0000</pubDate>
+    <lastBuildDate>Mon, 11 Aug 2025 12:05:54 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>Under-the-Hood Mechanisms of Ruby on Rails You Should Know</title>
+        <description>&lt;p&gt;If you’re comfortable writing Rails apps but want to &lt;em&gt;really&lt;/em&gt; understand what’s going on under the hood—and use that knowledge to make better technical decisions—this is your map.&lt;/p&gt;
+
+&lt;h2 id=&quot;boot--code-loading&quot;&gt;Boot &amp;amp; Code Loading&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Railties / initializers&lt;/strong&gt; – Rails boots by loading frameworks via Railties, then &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/config/initializers/**/*&lt;/code&gt;.
+&lt;em&gt;Tip:&lt;/em&gt; Keep initializers idempotent; prefer &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.after_initialize&lt;/code&gt; when you need app code.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Zeitwerk autoloader&lt;/strong&gt; – Constant names map to file paths; reloading in dev runs through &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rails.application.reloader&lt;/code&gt;.
+&lt;em&gt;Command:&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails zeitwerk:check&lt;/code&gt; to catch autoloading mistakes.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;rack--middleware&quot;&gt;Rack &amp;amp; Middleware&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Rack request lifecycle&lt;/strong&gt; – Controllers are just Rack endpoints after a middleware pipeline.
+&lt;em&gt;Command:&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails middleware&lt;/code&gt; to see the stack; add custom middleware for cross-cutting concerns.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Useful built-ins&lt;/strong&gt; – &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rack::Deflater&lt;/code&gt; (gzip), &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rack::Attack&lt;/code&gt; (rate limit).
+&lt;em&gt;Note:&lt;/em&gt; Middleware runs for everything—including 404s and assets—so keep it lean.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;controllers--execution&quot;&gt;Controllers &amp;amp; Execution&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;ActionPack &amp;amp; executors&lt;/strong&gt; – Requests run inside an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActionController::Metal&lt;/code&gt; stack with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActiveSupport::Executor&lt;/code&gt;.
+&lt;em&gt;Tip:&lt;/em&gt; Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CurrentAttributes&lt;/code&gt; for per-request state.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Strong Parameters&lt;/strong&gt; – Permit/require guards data flow into models.
+&lt;em&gt;Gotcha:&lt;/em&gt; Nested params that &lt;em&gt;look&lt;/em&gt; permitted but aren’t.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;observability--instrumentation&quot;&gt;Observability &amp;amp; Instrumentation&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;ActiveSupport::Notifications&lt;/strong&gt; – Everything emits events: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sql.active_record&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process_action.action_controller&lt;/code&gt;.
+&lt;em&gt;Example:&lt;/em&gt;
+    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;ActiveSupport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Notifications&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sql.active_record&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;last&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[SQL] &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; (&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:duration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ms): &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:sql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;LogSubscribers&lt;/strong&gt; – Control how events are logged; easy to extend.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;active-record-internals&quot;&gt;Active Record Internals&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Connection pool&lt;/strong&gt; – Thread-safe pool; deadlocks often mean pool exhaustion.
+&lt;em&gt;Command:&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails r &apos;p ActiveRecord::Base.connection_pool.stat&apos;&lt;/code&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Query cache&lt;/strong&gt; – Per-request SELECT cache; invalidated on writes.
+&lt;em&gt;Tip:&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActiveRecord::Base.cache { … }&lt;/code&gt; for short-lived caching.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Lazy relations&lt;/strong&gt; – Chains don’t execute until used; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.load&lt;/code&gt; materializes.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Arel&lt;/strong&gt; – Query builder under AR for advanced SQL without string-SQL.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Transactions, savepoints, locking&lt;/strong&gt; – &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transaction(joinable: false)&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with_lock&lt;/code&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Dirty tracking&lt;/strong&gt; – &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;saved_change_to_attribute?&lt;/code&gt; shows changes after save.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;caching&quot;&gt;Caching&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Low-level cache&lt;/strong&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rails.cache.fetch&lt;/code&gt;), &lt;strong&gt;fragment caching&lt;/strong&gt;, &lt;strong&gt;Russian doll caching&lt;/strong&gt;.
+&lt;em&gt;Tip:&lt;/em&gt; Namespace keys with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;model/#{record.cache_key_with_version}&quot;&lt;/code&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;HTTP caching&lt;/strong&gt; – &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fresh_when&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stale?&lt;/code&gt;, ETags, Last-Modified.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;background--async&quot;&gt;Background &amp;amp; Async&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Active Job&lt;/strong&gt; – Adapter for Sidekiq, Resque, etc.
+&lt;em&gt;Tip:&lt;/em&gt; Pass IDs, not objects.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Async queries&lt;/strong&gt; – Offload long reports to background jobs.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;storage--files&quot;&gt;Storage &amp;amp; Files&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Active Storage&lt;/strong&gt; – Validations and content-type checks are your job.
+&lt;em&gt;Tip:&lt;/em&gt; Attach variants with strict processors.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;security--crypto&quot;&gt;Security &amp;amp; Crypto&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;MessageVerifier/Encryptor&lt;/strong&gt; – Signed &amp;amp; encrypted cookies.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Credentials&lt;/strong&gt; – &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails credentials:edit&lt;/code&gt; for secrets.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Active Record Encryption&lt;/strong&gt; – Column-level encryption.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;concurrency--performance&quot;&gt;Concurrency &amp;amp; Performance&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Puma threads/processes&lt;/strong&gt; – Tune &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WEB_CONCURRENCY × RAILS_MAX_THREADS&lt;/code&gt; to DB pool and CPU.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Bootsnap&lt;/strong&gt; – Speeds boot; clear cache when needed.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;routing&quot;&gt;Routing&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Constraints &amp;amp; mounts&lt;/strong&gt; – Route constraints for multi-tenancy, health checks.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;i18n-zones-and-time&quot;&gt;I18n, Zones, and Time&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Time zone awareness&lt;/strong&gt; – App zone vs UTC in DB.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;engines--modularization&quot;&gt;Engines &amp;amp; Modularization&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Rails Engines&lt;/strong&gt; – Mini apps inside your app for better boundaries.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hidden-but-killer-tools--gems&quot;&gt;Hidden (but killer) Tools &amp;amp; Gems&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strong_migrations&lt;/code&gt; – Detect unsafe migrations.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rack-mini-profiler&lt;/code&gt; – See endpoint SQL/N+1.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;derailed_benchmarks&lt;/code&gt; – Memory/boot breakdowns.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brakeman&lt;/code&gt; – Security scanning.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lograge&lt;/code&gt; – Structured logs.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;anyway_config&lt;/code&gt; – Typed runtime config.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scenic&lt;/code&gt; – DB views as migrations.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Quick Health Commands:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Middleware: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails middleware&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Routes: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails routes -g profiles&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;DB pool: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails r &apos;p ActiveRecord::Base.connection_pool.stat&apos;&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Eager load check: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/rails zeitwerk:check&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;Mastering these internals means fewer surprises, faster debugging, and Rails that scales with you.&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 11 Aug 2025 00:01:01 +0000</pubDate>
+        <link>http://localhost:4000/blog/rails-under-the-hood</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/rails-under-the-hood</guid>
+        
+        
+      </item>
     
       <item>
         <title>Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</title>

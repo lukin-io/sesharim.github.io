@@ -10,3 +10,7 @@ github_username:  lukin-io
 # Build settings
 markdown: kramdown
 permalink: /blog/:title
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap

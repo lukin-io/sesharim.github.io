@@ -14,7 +14,7 @@ layout: default
 
       <figure>
         <blockquote class="blockquote">
-          <p><a href="{{ post.url }}">{{ post.title }}</a></p>
+          <p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>
         </blockquote>
         <figcaption class="blockquote-footer">
           <cite title="Source Title">{{ post.date | date: "%-d %B %Y" }}</cite>
