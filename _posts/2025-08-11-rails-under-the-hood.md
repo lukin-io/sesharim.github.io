@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Under-the-Hood Mechanisms of Ruby on Rails You Should Know"
-date: 2025-08-11  00:01:01
+date: 2025-08-11 00:01:01
 author: Max Lukin
 <!-- tags: rails, jwt, tools -->
 # categories: ruby-on-rails rails-internals performance optimization
