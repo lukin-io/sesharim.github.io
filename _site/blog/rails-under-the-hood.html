@@ -110,15 +110,11 @@
 <ul>
   <li><strong>ActiveSupport::Notifications</strong> – Everything emits events: <code class="language-plaintext highlighter-rouge">sql.active_record</code>, <code class="language-plaintext highlighter-rouge">process_action.action_controller</code>.
 <em>Example:</em>
-    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s2">"sql.active_record"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s2">"sql.active_record"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
   <span class="n">payload</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nf">last</span>
   <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">debug</span><span class="p">(</span><span class="s2">"[SQL] </span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="ss">:name</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="ss">:duration</span><span class="p">].</span><span class="nf">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">ms): </span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="ss">:sql</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
+</code></pre></div>    </div>
   </li>
   <li><strong>LogSubscribers</strong> – Control how events are logged; easy to extend.</li>
 </ul>

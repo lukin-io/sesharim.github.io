@@ -84,26 +84,14 @@
 
 <p>First, generate an RSA key pair:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="n">rsa_private</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">generate</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rsa_private</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">generate</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
 <span class="no">File</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s1">'jwt_rsa_private.pem'</span><span class="p">,</span> <span class="n">rsa_private</span><span class="p">.</span><span class="nf">to_pem</span><span class="p">)</span>
 <span class="no">File</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s1">'jwt_rsa_public.pem'</span><span class="p">,</span> <span class="n">rsa_private</span><span class="p">.</span><span class="nf">public_key</span><span class="p">.</span><span class="nf">to_pem</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <p>Securely store these keys in Rails encrypted credentials (<code class="language-plaintext highlighter-rouge">rails credentials:edit</code>):</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="na">jwt_private_key</span><span class="pi">:</span> <span class="pi">|</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">jwt_private_key</span><span class="pi">:</span> <span class="pi">|</span>
   <span class="s">-----BEGIN RSA PRIVATE KEY-----</span>
   <span class="s">your_private_key_here</span>
   <span class="s">-----END RSA PRIVATE KEY-----</span>
@@ -112,32 +100,13 @@
   <span class="s">-----BEGIN PUBLIC KEY-----</span>
   <span class="s">your_public_key_here</span>
   <span class="s">-----END PUBLIC KEY-----</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <h3 id="2-configure-devise-jwt-for-rs256">2. Configure Devise-JWT for RS256</h3>
 
 <p>Update your <code class="language-plaintext highlighter-rouge">config/initializers/devise.rb</code>:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-</pre></td><td class="rouge-code"><pre><span class="no">Devise</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Devise</span><span class="p">.</span><span class="nf">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">jwt</span> <span class="k">do</span> <span class="o">|</span><span class="n">jwt</span><span class="o">|</span>
     <span class="n">jwt</span><span class="p">.</span><span class="nf">algorithm</span>  <span class="o">=</span> <span class="s1">'RS256'</span>
     <span class="n">jwt</span><span class="p">.</span><span class="nf">secret</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
@@ -156,30 +125,13 @@
     <span class="n">jwt</span><span class="p">.</span><span class="nf">expiration_time</span> <span class="o">=</span> <span class="mi">1</span><span class="p">.</span><span class="nf">day</span><span class="p">.</span><span class="nf">to_i</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <h3 id="3-configure-doorkeeper-jwt-optional-if-using-oauth2">3. Configure Doorkeeper-JWT (Optional, if using OAuth2)</h3>
 
 <p>Ensure Doorkeeper-JWT issues tokens using the same RSA key:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-</pre></td><td class="rouge-code"><pre><span class="c1"># config/initializers/doorkeeper_jwt.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/initializers/doorkeeper_jwt.rb</span>
 <span class="no">Doorkeeper</span><span class="o">::</span><span class="no">JWT</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
   <span class="n">token_payload</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
     <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="ss">:resource_owner_id</span><span class="p">])</span>
@@ -196,7 +148,7 @@
   <span class="p">)</span>
   <span class="n">encryption_method</span> <span class="ss">:rs256</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <h3 id="4-verify-rsa-based-jwt">4. Verify RSA-based JWT</h3>
 
@@ -217,15 +169,11 @@
 
 <p>Example:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre><span class="n">jwt</span><span class="p">.</span><span class="nf">public_key_set</span> <span class="o">=</span> <span class="p">[</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jwt</span><span class="p">.</span><span class="nf">public_key_set</span> <span class="o">=</span> <span class="p">[</span>
   <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">new_public_key</span><span class="p">),</span>
   <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">old_public_key</span><span class="p">)</span>
 <span class="p">]</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
@@ -233,19 +181,15 @@
 
 <p>Sign-in example:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre>curl <span class="nt">-X</span> POST http://localhost:3000/api/v1/sessions/sign_in <span class="se">\</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> POST http://localhost:3000/api/v1/sessions/sign_in <span class="se">\</span>
 <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
 <span class="nt">-d</span> <span class="s1">'{"user":{"email":"alice@example.com","password":"password123"}}'</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <p>The response includes an RSA-signed JWT:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...
-</pre></td></tr></tbody></table></code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...
+</code></pre></div></div>
 
 <hr />
 

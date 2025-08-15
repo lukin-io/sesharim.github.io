@@ -13,7 +13,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   text-rendering: optimizeLegibility;
 }
 
@@ -22,16 +22,18 @@ svg,
 video {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 a {
   color: var(--link);
+  text-decoration-color: color-mix(in oklab, var(--link), transparent 60%);
   text-decoration-thickness: .08em;
-  text-underline-offset: .2em;
+  text-underline-offset: .22em;
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 a:visited {
@@ -44,15 +46,15 @@ h3,
 h4 {
   line-height: 1.15;
   margin: var(--space-5) 0 var(--space-3);
-}
-
-h1 {
-  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
   letter-spacing: -0.01em;
 }
 
+h1 {
+  font-size: clamp(2.25rem, 2rem + 1.4vw, 3.25rem);
+}
+
 h2 {
-  font-size: clamp(1.5rem, 1.6rem + .5vw, 2rem);
+  font-size: clamp(1.6rem, 1.4rem + .6vw, 2.1rem);
 }
 
 h3 {
@@ -62,7 +64,8 @@ h3 {
 p,
 ul,
 ol,
-blockquote {
+blockquote,
+pre {
   margin: var(--space-3) 0;
 }
 
@@ -75,12 +78,7 @@ hr {
 blockquote {
   border-left: 3px solid var(--border);
   padding: .01px 1rem;
-  /* contain margin collapse */
   color: var(--muted);
-}
-
-.table {
-  overflow-x: auto;
 }
 
 code,
@@ -88,4 +86,17 @@ pre,
 kbd,
 samp {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Compat while you migrate existing Bootstrap classes site-wide */
+.fs-5 {
+  font-size: 1.125rem;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-body-emphasis {
+  color: var(--fg);
 }

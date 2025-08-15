@@ -84,18 +84,7 @@
 
 <h3 id="rspec">RSpec</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-</pre></td><td class="rouge-code"><pre><span class="c1"># spec/rails_helper.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/rails_helper.rb</span>
 <span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">include</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Testing</span><span class="o">::</span><span class="no">TimeHelpers</span>
 
@@ -106,36 +95,23 @@
     <span class="n">travel_back</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <p>You can also use block forms of <code class="language-plaintext highlighter-rouge">freeze_time</code>/<code class="language-plaintext highlighter-rouge">travel_to</code> to avoid needing <code class="language-plaintext highlighter-rouge">travel_back</code>.</p>
 
 <h3 id="minitest">Minitest</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre><span class="c1"># test/test_helper.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># test/test_helper.rb</span>
 <span class="k">class</span> <span class="nc">ActiveSupport::TestCase</span>
   <span class="kp">include</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Testing</span><span class="o">::</span><span class="no">TimeHelpers</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="1-stabilize-timestamps-in-model-specs">1) Stabilize Timestamps in Model Specs</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Profile</span><span class="p">,</span> <span class="ss">type: :model</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Profile</span><span class="p">,</span> <span class="ss">type: :model</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"sets deterministic timestamps"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
       <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
@@ -144,29 +120,13 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="2-token-generation--expiration">2) Token Generation &amp; Expiration</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">JwtIssuer</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">JwtIssuer</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"sets exp 15 minutes from now and expires correctly"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
       <span class="n">token</span> <span class="o">=</span> <span class="no">JwtIssuer</span><span class="p">.</span><span class="nf">issue</span><span class="p">(</span><span class="ss">sub: </span><span class="mi">123</span><span class="p">)</span>
@@ -182,31 +142,13 @@
     <span class="n">travel_back</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="3-cache-keys--expirations">3) Cache Keys &amp; Expirations</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">CachedFinder</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">CachedFinder</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"caches and expires as expected"</span> <span class="k">do</span>
     <span class="n">profile</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span>
 
@@ -224,26 +166,13 @@
     <span class="n">travel_back</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="4-time-dependent-scopes">4) Time-Dependent Scopes</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Session</span><span class="p">,</span> <span class="ss">type: :model</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Session</span><span class="p">,</span> <span class="ss">type: :model</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"moves from active to expired over time"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
       <span class="n">session</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:session</span><span class="p">,</span> <span class="ss">expires_at: </span><span class="mi">10</span><span class="p">.</span><span class="nf">minutes</span><span class="p">.</span><span class="nf">from_now</span><span class="p">)</span>
@@ -256,27 +185,13 @@
     <span class="n">travel_back</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="5-background-jobs">5) Background Jobs</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ReminderScheduler</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ReminderScheduler</span> <span class="k">do</span>
   <span class="kp">include</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">TestHelper</span>
 
   <span class="n">it</span> <span class="s2">"schedules a reminder exactly 24 hours before"</span> <span class="k">do</span>
@@ -290,22 +205,13 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="6-humanized-times">6) Humanized Times</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ActivityPresenter</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ActivityPresenter</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"renders stable relative time"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
       <span class="n">activity</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:activity</span><span class="p">,</span> <span class="ss">created_at: </span><span class="mi">5</span><span class="p">.</span><span class="nf">minutes</span><span class="p">.</span><span class="nf">ago</span><span class="p">)</span>
@@ -314,23 +220,13 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="7-dst--time-zones">7) DST &amp; Time Zones</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s2">"DST boundary"</span><span class="p">,</span> <span class="ss">type: :system</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s2">"DST boundary"</span><span class="p">,</span> <span class="ss">type: :system</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"shows local times correctly across DST change"</span> <span class="k">do</span>
     <span class="no">Time</span><span class="p">.</span><span class="nf">use_zone</span><span class="p">(</span><span class="s2">"Europe/Kyiv"</span><span class="p">)</span> <span class="k">do</span>
       <span class="n">freeze_time</span> <span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"2025-03-30 02:30"</span><span class="p">)</span> <span class="k">do</span>
@@ -340,26 +236,13 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="8-grace-periods">8) Grace Periods</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Orders</span><span class="o">::</span><span class="no">CancellationPolicy</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Orders</span><span class="o">::</span><span class="no">CancellationPolicy</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"rejects cancellation after 24 hours"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
       <span class="n">order</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">created_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">)</span>
@@ -372,23 +255,13 @@
     <span class="n">travel_back</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 
 <h2 id="9-deterministic-factories">9) Deterministic Factories</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">AttachmentBlueprint</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">AttachmentBlueprint</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"serializes with fixed timestamps"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
       <span class="n">attachment</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:attachment</span><span class="p">,</span> <span class="ss">:with_file</span><span class="p">)</span>
@@ -398,7 +271,7 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+</code></pre></div></div>
 
 <hr />
 

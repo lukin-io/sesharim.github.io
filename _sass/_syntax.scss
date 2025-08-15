@@ -1,164 +1,32 @@
-// /* Custom Rouge theme — Light only */
-// :root {
-//   --code-bg: color-mix(in oklab, var(--bg), #000 8%);
-//   /* very light slate */
-//   --code-fg: #111827;
-//   --code-border: color-mix(in oklab, var(--code-bg), #000 12%);
-//   --code-radius: 8px;
-
-//   /* token colors (light) */
-//   --tok-comment: #6b7280;
-//   --tok-keyword: #7c3aed;
-//   --tok-operator: #374151;
-//   --tok-string: #065f46;
-//   --tok-number: #1d4ed8;
-//   --tok-attr: #b45309;
-//   --tok-symbol: #0d9488;
-// }
-
-// /* (Delete the entire @media (prefers-color-scheme: dark) block if you still have it) */
-
-// /* Block code */
-// .highlighter-rouge,
-// .highlight {
-//   position: relative;
-//   margin: 1.25rem 0;
-// }
-
-// .highlight>pre,
-// .highlighter-rouge pre {
-//   background: var(--code-bg);
-//   color: var(--code-fg);
-//   border: 1px solid var(--code-border);
-//   border-radius: var(--code-radius);
-//   padding: 1rem 1.25rem;
-//   overflow: auto;
-//   line-height: 1.55;
-//   font-size: 0.935rem;
-//   -webkit-font-smoothing: antialiased;
-// }
-
-// .highlight pre code,
-// .highlighter-rouge pre code {
-//   background: transparent;
-//   padding: 0;
-// }
-
-// /* Inline code */
-// p code,
-// li code,
-// dd code {
-//   background: var(--code-bg);
-//   color: var(--code-fg);
-//   border: 1px solid var(--code-border);
-//   border-radius: 6px;
-//   padding: .15em .35em;
-//   font-size: .92em;
-//   white-space: nowrap;
-// }
-
-// /* Tokens */
-// .highlight .c {
-//   color: var(--tok-comment);
-//   font-style: italic;
-// }
-
-// .highlight .k {
-//   color: var(--tok-keyword);
-// }
-
-// .highlight .o {
-//   color: var(--tok-operator);
-// }
-
-// .highlight .s {
-//   color: var(--tok-string);
-// }
-
-// .highlight .na {
-//   color: var(--tok-attr);
-// }
-
-// .highlight .nb {
-//   color: var(--tok-symbol);
-// }
-
-// .highlight .nc {
-//   color: var(--tok-attr);
-//   font-weight: 600;
-// }
-
-// .highlight .nf {
-//   color: var(--tok-symbol);
-// }
-
-// .highlight .nt {
-//   color: var(--tok-keyword);
-// }
-
-// .highlight .mi,
-// .highlight .m {
-//   color: var(--tok-number);
-// }
-
-// .highlight table {
-//   width: 100%;
-//   border-collapse: collapse;
-// }
-
-// .highlight td.gutter {
-//   user-select: none;
-//   opacity: .6;
-//   padding-right: .75rem;
-//   border-right: 1px solid var(--code-border);
-// }
-
-// .highlight td.code {
-//   padding-left: .75rem;
-// }
-
-// new
-
-/* _sass/_syntax.scss — REPLACE FILE CONTENTS */
-
-/* ---------- Theme knobs (light only) ---------- */
-:root{
-  /* Static fallbacks (used if color-mix not supported) */
-  --code-card-bg: #f6f8fa;      /* very light, not bright white */
-  --code-card-border: #e5e7eb;  /* subtle frame */
-  --code-card-accent: #d5dbe3;  /* left accent strip */
+/* Interstitial code cards (light Rails-Guides vibe) */
+:root {
+  --code-card-bg: #f6f8fa;
+  --code-card-border: #e5e7eb;
+  --code-card-accent: #d5dbe3;
   --code-card-radius: 10px;
   --code-card-pad-y: 0.875rem;
   --code-card-pad-x: 1rem;
-
-  --code-fg: #111827;           /* text color inside code blocks */
-
-  /* Token colors (Rouge/Pygments classes) */
+  --code-fg: #111827;
   --tok-comment: #64748b;
   --tok-keyword: #7c3aed;
   --tok-operator: #374151;
-  --tok-string:  #065f46;
-  --tok-number:  #1d4ed8;
-  --tok-attr:    #b45309;
-  --tok-symbol:  #0d9488;
+  --tok-string: #065f46;
+  --tok-number: #1d4ed8;
+  --tok-attr: #b45309;
+  --tok-symbol: #0d9488;
 }
 
-/* Prefer adaptive tints if supported; adjust the % to taste:
-   3–6% keeps it light, 7–10% makes it dimmer. */
-@supports (color: color-mix(in oklab, white, black)){
-  :root{
-    --code-card-bg: color-mix(in oklab, var(--bg, #ffffff), #000 4%);
+@supports (color: color-mix(in oklab, white, black)) {
+  :root {
+    --code-card-bg: color-mix(in oklab, var(--bg), #000 4%);
     --code-card-border: color-mix(in oklab, var(--code-card-bg), #000 10%);
     --code-card-accent: color-mix(in oklab, var(--code-card-bg), #000 18%);
   }
 }
 
-/* ---------- Block code as interstitial card ---------- */
-/* Many Jekyll/Rouge outputs nest: .highlighter-rouge > .highlight > pre > code
-   We style the OUTER wrapper as the card and neutralize the inner .highlight. */
-
-/* Default card look when only .highlight is present */
-.highlight{
+/* Card wrapper on the outer code container */
+.highlight,
+.highlighter-rouge {
   position: relative;
   margin: 1.25rem 0;
   background: var(--code-card-bg);
@@ -168,30 +36,17 @@
   padding: var(--code-card-pad-y) var(--code-card-pad-x);
 }
 
-/* If Rouge adds an outer .highlighter-rouge wrapper, make THAT the card */
-.highlighter-rouge{
-  position: relative;
-  margin: 1.25rem 0;
-  background: var(--code-card-bg);
-  border: 1px solid var(--code-card-border);
-  border-left: 4px solid var(--code-card-accent);
-  border-radius: var(--code-card-radius);
-  padding: var(--code-card-pad-y) var(--code-card-pad-x);
-}
-
-/* Neutralize the inner .highlight when nested (avoid double boxes) */
-.highlighter-rouge .highlight{
+/* Avoid double boxing for nested .highlight */
+.highlighter-rouge .highlight {
   background: transparent;
   border: 0;
-  border-left: 0;
-  border-radius: 0;
   padding: 0;
   margin: 0;
 }
 
-/* Pre must not draw its own box; it just scrolls if needed */
-.highlight > pre,
-.highlighter-rouge pre{
+/* Pre content */
+.highlight>pre,
+.highlighter-rouge pre {
   background: transparent;
   color: var(--code-fg);
   border: 0;
@@ -204,93 +59,97 @@
 }
 
 .highlight pre code,
-.highlighter-rouge pre code{
+.highlighter-rouge pre code {
   background: transparent;
   padding: 0;
 }
 
-/* ---------- Inline code ---------- */
-p code, li code, dd code, td code{
-    background: var(--code-card-bg);
-    color: var(--code-fg);
-    border: 1px solid var(--code-card-border);
-    border-radius: 6px;
-
-    /* increased padding so the chip feels roomier */
-    padding: .22em .55em;
-    /* was .15em .35em */
-
-    /* NEW: tiny gap so adjacent chips/parentheses don't touch */
-    margin: .06em .18em;
-
-    /* make margins apply consistently in list items */
-    display: inline-block;
-    white-space: nowrap;
-    vertical-align: baseline;
-    font-size: .92em;
-  // old
-  // background: var(--code-card-bg);
-  // color: var(--code-fg);
-  // border: 1px solid var(--code-card-border);
-  // border-radius: 6px;
-  // padding: .15em .35em;
-  // font-size: .92em;
-  // white-space: nowrap;
+/* Inline code as chips (with forgiving spacing) */
+p code,
+li code,
+dd code,
+td code {
+  background: var(--code-card-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-card-border);
+  border-radius: 6px;
+  padding: .22em .55em;
+  margin: .06em .18em;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+  font-size: .92em;
 }
 
-/* ---------- Line numbers / table layout (Rouge) ---------- */
+/* Line numbers table (Rouge) */
 .highlighter-rouge .highlight table,
-.highlight table{
+.highlight table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .highlighter-rouge .highlight td.gutter,
-.highlight td.gutter{
+.highlight td.gutter {
   user-select: none;
   opacity: .7;
   padding-right: .75rem;
   border-right: 1px solid var(--code-card-border);
-  /* Slightly darker than the card bg, with fallback */
   background: #f1f4f8;
 }
 
-@supports (color: color-mix(in oklab, white, black)){
+@supports (color: color-mix(in oklab, white, black)) {
+
   .highlighter-rouge .highlight td.gutter,
-  .highlight td.gutter{
+  .highlight td.gutter {
     background: color-mix(in oklab, var(--code-card-bg), #000 4%);
   }
 }
 
 .highlighter-rouge .highlight td.code,
-.highlight td.code{
+.highlight td.code {
   padding-left: .75rem;
 }
 
-/* ---------- Rouge token colors ---------- */
-.highlight .c  { color: var(--tok-comment); font-style: italic; } /* Comment */
-.highlight .k  { color: var(--tok-keyword); }                    /* Keyword */
-.highlight .o  { color: var(--tok-operator); }                   /* Operator */
-.highlight .s  { color: var(--tok-string); }                     /* String */
-.highlight .na { color: var(--tok-attr); }                       /* Name.Attribute */
-.highlight .nb { color: var(--tok-symbol); }                     /* Name.Builtin */
-.highlight .nc { color: var(--tok-attr); font-weight: 600; }     /* Name.Class */
-.highlight .nf { color: var(--tok-symbol); }                     /* Name.Function */
-.highlight .nt { color: var(--tok-keyword); }                    /* Name.Tag/Keyword */
-.highlight .mi,
-.highlight .m  { color: var(--tok-number); }                     /* Number */
-
-/* Extra gap when block code cards stack */
-.highlight+.highlight,
-.highlighter-rouge+.highlighter-rouge,
-.highlighter-rouge+.highlight,
-.highlight+.highlighter-rouge {
-  margin-top: .75rem;
-  /* or 1rem for more space */
+/* Tokens */
+.highlight .c {
+  color: var(--tok-comment);
+  font-style: italic;
 }
 
-ul>li+li,
-ol>li+li {
-  margin-top: .35rem;
-  /* adjust to taste: .25rem–.5rem */
+.highlight .k {
+  color: var(--tok-keyword);
+}
+
+.highlight .o {
+  color: var(--tok-operator);
+}
+
+.highlight .s {
+  color: var(--tok-string);
+}
+
+.highlight .na {
+  color: var(--tok-attr);
+}
+
+.highlight .nb {
+  color: var(--tok-symbol);
+}
+
+.highlight .nc {
+  color: var(--tok-attr);
+  font-weight: 600;
+}
+
+.highlight .nf {
+  color: var(--tok-symbol);
+}
+
+.highlight .nt {
+  color: var(--tok-keyword);
+}
+
+.highlight .mi,
+.highlight .m {
+  color: var(--tok-number);
 }

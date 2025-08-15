@@ -1,28 +1,61 @@
 @charset "UTF-8";
-/* Light, neutral palette — no dark-mode overrides */
+/* Rails-like tokens (light theme) */
 :root {
-  --bg: #cecece;
+  /* Core palette */
+  --bg: #ffffff;
   --fg: #0f172a;
-  /* near-black */
-  --muted: #64748b;
-  /* slate-500 */
+  /* near-black (slate-900) */
+  --muted: #475569;
+  /* slate-600 */
   --border: #e5e7eb;
   /* gray-200 */
+  /* Rails accent */
+  --accent: #cc0000;
+  /* Rails red */
+  --accent-ink: #ffffff;
+  /* Links */
   --link: #0f172a;
-  /* subtle, not blue-heavy */
   --link-visited: #4c1d95;
-  /* a11y-safe */
-  /* WIDTH: 50% of viewport on large screens, but never too narrow/wide */
-  /* This is the only change you need for “make it wide 50%” */
+  /* Layout width: ~50% viewport on large screens, with sensible min/max */
   --maxw: clamp(60ch, 50vw, 110ch);
+  /* Spacing scale */
   --space-1: 0.375rem;
   --space-2: 0.75rem;
   --space-3: 1rem;
   --space-4: 1.5rem;
   --space-5: 2rem;
   --space-6: 3rem;
+  --radius-1: 6px;
+  --radius-2: 10px;
 }
 
+/* Code card variables (Rails Guides “interstitial” vibe, lighter) */
+:root {
+  --code-card-bg: #f6f8fa;
+  --code-card-border: #e5e7eb;
+  --code-card-accent: #d5dbe3;
+  --code-card-radius: var(--radius-2);
+  --code-card-pad-y: 0.875rem;
+  --code-card-pad-x: 1rem;
+  --code-fg: #111827;
+  /* Tokens */
+  --tok-comment: #64748b;
+  --tok-keyword: #7c3aed;
+  --tok-operator: #374151;
+  --tok-string: #065f46;
+  --tok-number: #1d4ed8;
+  --tok-attr: #b45309;
+  --tok-symbol: #0d9488;
+}
+
+/* Gentle adaptivity if supported */
+@supports (color: color-mix(in oklab, white, black)) {
+  :root {
+    --code-card-bg: color-mix(in oklab, var(--bg), #000 4%);
+    --code-card-border: color-mix(in oklab, var(--code-card-bg), #000 10%);
+    --code-card-accent: color-mix(in oklab, var(--code-card-bg), #000 18%);
+  }
+}
 /* Minimal reset */
 *,
 *::before,
@@ -38,7 +71,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   text-rendering: optimizeLegibility;
 }
 
@@ -47,16 +80,18 @@ svg,
 video {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 a {
   color: var(--link);
+  text-decoration-color: color-mix(in oklab, var(--link), transparent 60%);
   text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 0.22em;
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 a:visited {
@@ -69,15 +104,15 @@ h3,
 h4 {
   line-height: 1.15;
   margin: var(--space-5) 0 var(--space-3);
-}
-
-h1 {
-  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
   letter-spacing: -0.01em;
 }
 
+h1 {
+  font-size: clamp(2.25rem, 2rem + 1.4vw, 3.25rem);
+}
+
 h2 {
-  font-size: clamp(1.5rem, 1.6rem + 0.5vw, 2rem);
+  font-size: clamp(1.6rem, 1.4rem + 0.6vw, 2.1rem);
 }
 
 h3 {
@@ -87,7 +122,8 @@ h3 {
 p,
 ul,
 ol,
-blockquote {
+blockquote,
+pre {
   margin: var(--space-3) 0;
 }
 
@@ -100,12 +136,7 @@ hr {
 blockquote {
   border-left: 3px solid var(--border);
   padding: 0.01px 1rem;
-  /* contain margin collapse */
   color: var(--muted);
-}
-
-.table {
-  overflow-x: auto;
 }
 
 code,
@@ -115,6 +146,20 @@ samp {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/* Compat while you migrate existing Bootstrap classes site-wide */
+.fs-5 {
+  font-size: 1.125rem;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-body-emphasis {
+  color: var(--fg);
+}
+
+/* Container and page spacing */
 .wrap {
   max-width: var(--maxw);
   margin-inline: auto;
@@ -125,26 +170,49 @@ samp {
   padding-block: var(--space-6);
 }
 
+/* Header: minimalist like rubyonrails.org */
 .header {
-  padding-block: var(--space-3);
   border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 
-.footer {
-  padding-block: var(--space-3);
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.9375rem;
+.header .bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 64px;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
 }
 
 .nav a {
-  margin-right: 1rem;
   text-decoration: none;
+  color: var(--fg);
+  opacity: 0.9;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-1);
 }
 
-/* “Prose” defaults for readable posts */
-.article {
-  margin: 0 auto;
+.nav a:hover {
+  opacity: 1;
+  background: color-mix(in oklab, var(--bg), #000 3%);
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9375rem;
+  padding-block: var(--space-3);
 }
 
 .article .prose {
@@ -166,7 +234,7 @@ samp {
 }
 
 .article img {
-  border-radius: 6px;
+  border-radius: var(--radius-1);
 }
 
 .article .lead {
@@ -174,25 +242,21 @@ samp {
   color: var(--muted);
 }
 
-.article .callout {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: var(--space-3);
-  background: color-mix(in lab, var(--bg), var(--border) 10%);
+/* Lists: give stacked bullets breathing room */
+ul > li + li,
+ol > li + li {
+  margin-top: 0.35rem;
 }
 
-/* _sass/_syntax.scss — REPLACE FILE CONTENTS */
-/* ---------- Theme knobs (light only) ---------- */
+/* Interstitial code cards (light Rails-Guides vibe) */
 :root {
-  /* Static fallbacks (used if color-mix not supported) */
-  --code-card-bg: #f6f8fa; /* very light, not bright white */
-  --code-card-border: #e5e7eb; /* subtle frame */
-  --code-card-accent: #d5dbe3; /* left accent strip */
+  --code-card-bg: #f6f8fa;
+  --code-card-border: #e5e7eb;
+  --code-card-accent: #d5dbe3;
   --code-card-radius: 10px;
   --code-card-pad-y: 0.875rem;
   --code-card-pad-x: 1rem;
-  --code-fg: #111827; /* text color inside code blocks */
-  /* Token colors (Rouge/Pygments classes) */
+  --code-fg: #111827;
   --tok-comment: #64748b;
   --tok-keyword: #7c3aed;
   --tok-operator: #374151;
@@ -202,30 +266,15 @@ samp {
   --tok-symbol: #0d9488;
 }
 
-/* Prefer adaptive tints if supported; adjust the % to taste:
-   3–6% keeps it light, 7–10% makes it dimmer. */
 @supports (color: color-mix(in oklab, white, black)) {
   :root {
-    --code-card-bg: color-mix(in oklab, var(--bg, #ffffff), #000 4%);
+    --code-card-bg: color-mix(in oklab, var(--bg), #000 4%);
     --code-card-border: color-mix(in oklab, var(--code-card-bg), #000 10%);
     --code-card-accent: color-mix(in oklab, var(--code-card-bg), #000 18%);
   }
 }
-/* ---------- Block code as interstitial card ---------- */
-/* Many Jekyll/Rouge outputs nest: .highlighter-rouge > .highlight > pre > code
-   We style the OUTER wrapper as the card and neutralize the inner .highlight. */
-/* Default card look when only .highlight is present */
-.highlight {
-  position: relative;
-  margin: 1.25rem 0;
-  background: var(--code-card-bg);
-  border: 1px solid var(--code-card-border);
-  border-left: 4px solid var(--code-card-accent);
-  border-radius: var(--code-card-radius);
-  padding: var(--code-card-pad-y) var(--code-card-pad-x);
-}
-
-/* If Rouge adds an outer .highlighter-rouge wrapper, make THAT the card */
+/* Card wrapper on the outer code container */
+.highlight,
 .highlighter-rouge {
   position: relative;
   margin: 1.25rem 0;
@@ -236,17 +285,15 @@ samp {
   padding: var(--code-card-pad-y) var(--code-card-pad-x);
 }
 
-/* Neutralize the inner .highlight when nested (avoid double boxes) */
+/* Avoid double boxing for nested .highlight */
 .highlighter-rouge .highlight {
   background: transparent;
   border: 0;
-  border-left: 0;
-  border-radius: 0;
   padding: 0;
   margin: 0;
 }
 
-/* Pre must not draw its own box; it just scrolls if needed */
+/* Pre content */
 .highlight > pre,
 .highlighter-rouge pre {
   background: transparent;
@@ -266,25 +313,24 @@ samp {
   padding: 0;
 }
 
-/* ---------- Inline code ---------- */
-p code, li code, dd code, td code {
+/* Inline code as chips (with forgiving spacing) */
+p code,
+li code,
+dd code,
+td code {
   background: var(--code-card-bg);
   color: var(--code-fg);
   border: 1px solid var(--code-card-border);
   border-radius: 6px;
-  /* increased padding so the chip feels roomier */
   padding: 0.22em 0.55em;
-  /* was .15em .35em */
-  /* NEW: tiny gap so adjacent chips/parentheses don't touch */
   margin: 0.06em 0.18em;
-  /* make margins apply consistently in list items */
   display: inline-block;
   white-space: nowrap;
   vertical-align: baseline;
   font-size: 0.92em;
 }
 
-/* ---------- Line numbers / table layout (Rouge) ---------- */
+/* Line numbers table (Rouge) */
 .highlighter-rouge .highlight table,
 .highlight table {
   width: 100%;
@@ -297,7 +343,6 @@ p code, li code, dd code, td code {
   opacity: 0.7;
   padding-right: 0.75rem;
   border-right: 1px solid var(--code-card-border);
-  /* Slightly darker than the card bg, with fallback */
   background: #f1f4f8;
 }
 
@@ -312,109 +357,107 @@ p code, li code, dd code, td code {
   padding-left: 0.75rem;
 }
 
-/* ---------- Rouge token colors ---------- */
+/* Tokens */
 .highlight .c {
   color: var(--tok-comment);
   font-style: italic;
-} /* Comment */
+}
+
 .highlight .k {
   color: var(--tok-keyword);
-} /* Keyword */
+}
+
 .highlight .o {
   color: var(--tok-operator);
-} /* Operator */
+}
+
 .highlight .s {
   color: var(--tok-string);
-} /* String */
+}
+
 .highlight .na {
   color: var(--tok-attr);
-} /* Name.Attribute */
+}
+
 .highlight .nb {
   color: var(--tok-symbol);
-} /* Name.Builtin */
+}
+
 .highlight .nc {
   color: var(--tok-attr);
   font-weight: 600;
-} /* Name.Class */
+}
+
 .highlight .nf {
   color: var(--tok-symbol);
-} /* Name.Function */
+}
+
 .highlight .nt {
   color: var(--tok-keyword);
-} /* Name.Tag/Keyword */
+}
+
 .highlight .mi,
 .highlight .m {
   color: var(--tok-number);
-} /* Number */
-/* Extra gap when block code cards stack */
-.highlight + .highlight,
-.highlighter-rouge + .highlighter-rouge,
-.highlighter-rouge + .highlight,
-.highlight + .highlighter-rouge {
-  margin-top: 0.75rem;
-  /* or 1rem for more space */
 }
 
-ul > li + li,
-ol > li + li {
-  margin-top: 0.35rem;
-  /* adjust to taste: .25rem–.5rem */
-}
-
-/* Post list (blog index) */
-.post-list {
-  list-style: none;
-  padding: 0;
-  margin: var(--space-5) 0;
-}
-
-.post-list li {
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.post-list a {
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.post-list time {
-  color: var(--muted);
+/* interstitial code cards (already matches Rails Guides vibe) */
+/* Buttons */
+.btn {
   display: inline-block;
-  margin-top: 0.25rem;
+  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius-1);
+  text-decoration: none;
+  border: 1px solid var(--border);
 }
 
-/* Top “eyebrow” nav, minimalist like sales.co */
-.brand {
-  font-weight: 800;
-  letter-spacing: -0.01em;
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
 }
 
-.header .nav {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
+.btn--primary:hover {
+  filter: brightness(1.05);
 }
 
-.header .nav a {
+.btn--ghost {
+  background: transparent;
   color: var(--fg);
-  opacity: 0.9;
 }
 
-.header .nav a:hover {
-  opacity: 1;
+.btn--ghost:hover {
+  background: color-mix(in oklab, var(--bg), #000 4%);
 }
 
-/* Home page presentation */
+/* Simple badge/chip (used in lists) */
+.badge {
+  display: inline-block;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--bg), #000 5%);
+}
+
+/* Quiet card wrapper (used for lists, callouts) */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  padding: var(--space-3);
+  background: color-mix(in oklab, var(--bg), #000 3%);
+}
+
+/* buttons, badges, chips */
+/* Home page hero-like spacing (keeps your current text) */
 .home h1 {
   margin: 0 0 var(--space-3);
-  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
-  letter-spacing: -0.01em;
+  font-size: clamp(2.2rem, 2rem + 1.2vw, 3rem);
 }
 
 .home .prose {
   font-size: 1.0625rem;
-  /* a touch larger than body */
 }
 
 .home .lead {
@@ -423,9 +466,6 @@ ol > li + li {
   margin-top: var(--space-2);
 }
 
-/* Vertical rhythm */
-.home .prose p {
-  margin: var(--space-3) 0;
-}
+/* optional homepage tweaks */
 
 /*# sourceMappingURL=styles.css.map */

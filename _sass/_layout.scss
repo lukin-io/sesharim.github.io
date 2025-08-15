@@ -1,3 +1,4 @@
+/* Container and page spacing */
 .wrap {
   max-width: var(--maxw);
   margin-inline: auto;
@@ -8,19 +9,47 @@
   padding-block: var(--space-6);
 }
 
+/* Header: minimalist like rubyonrails.org */
 .header {
-  padding-block: var(--space-3);
   border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 
-.footer {
-  padding-block: var(--space-3);
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: .9375rem;
+.header .bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 64px;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
 }
 
 .nav a {
-  margin-right: 1rem;
   text-decoration: none;
+  color: var(--fg);
+  opacity: .9;
+  padding: .35rem .5rem;
+  border-radius: var(--radius-1);
+}
+
+.nav a:hover {
+  opacity: 1;
+  background: color-mix(in oklab, var(--bg), #000 3%);
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .9375rem;
+  padding-block: var(--space-3);
 }

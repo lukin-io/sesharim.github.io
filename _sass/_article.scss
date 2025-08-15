@@ -1,7 +1,4 @@
-/* “Prose” defaults for readable posts */
-.article {
-  margin: 0 auto;
-}
+.article {}
 
 .article .prose {
   max-width: var(--maxw);
@@ -22,7 +19,7 @@
 }
 
 .article img {
-  border-radius: 6px;
+  border-radius: var(--radius-1);
 }
 
 .article .lead {
@@ -30,9 +27,8 @@
   color: var(--muted);
 }
 
-.article .callout {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: var(--space-3);
-  background: color-mix(in lab, var(--bg), var(--border) 10%);
+/* Lists: give stacked bullets breathing room */
+ul>li+li,
+ol>li+li {
+  margin-top: .35rem;
 }

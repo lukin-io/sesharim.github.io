@@ -1,22 +1,15 @@
-/* Home page presentation */
+/* Home page hero-like spacing (keeps your current text) */
 .home h1 {
   margin: 0 0 var(--space-3);
-  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
-  letter-spacing: -0.01em;
+  font-size: clamp(2.2rem, 2rem + 1.2vw, 3rem);
 }
 
 .home .prose {
   font-size: 1.0625rem;
-  /* a touch larger than body */
 }
 
 .home .lead {
   font-size: 1.2rem;
   color: var(--muted);
   margin-top: var(--space-2);
-}
-
-/* Vertical rhythm */
-.home .prose p {
-  margin: var(--space-3) 0;
 }
