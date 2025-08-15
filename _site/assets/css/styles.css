@@ -298,7 +298,6 @@ dd code {
   padding-left: 0.75rem;
 }
 
-/* from Phase 1 */
 /* Post list (blog index) */
 .post-list {
   list-style: none;
@@ -341,6 +340,29 @@ dd code {
 
 .header .nav a:hover {
   opacity: 1;
+}
+
+/* Home page presentation */
+.home h1 {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
+  letter-spacing: -0.01em;
+}
+
+.home .prose {
+  font-size: 1.0625rem;
+  /* a touch larger than body */
+}
+
+.home .lead {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin-top: var(--space-2);
+}
+
+/* Vertical rhythm */
+.home .prose p {
+  margin: var(--space-3) 0;
 }
 
 /*# sourceMappingURL=styles.css.map */
