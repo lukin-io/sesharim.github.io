@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>https://lukin.io/</link>
     <atom:link href="https://lukin.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 15 Aug 2025 07:51:26 +0000</pubDate>
-    <lastBuildDate>Fri, 15 Aug 2025 07:51:26 +0000</lastBuildDate>
+    <pubDate>Fri, 15 Aug 2025 07:53:35 +0000</pubDate>
+    <lastBuildDate>Fri, 15 Aug 2025 07:53:35 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -584,104 +584,6 @@ Completed 200 OK in 46ms (Views: 0.3ms | ActiveRecord: 22.0ms (27 queries, 0 cac
         <category>ransack</category>
         
         <category>caching</category>
-        
-      </item>
-    
-      <item>
-        <title>Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design</title>
-        <description>&lt;p&gt;When you have a &lt;strong&gt;Rails endpoint&lt;/strong&gt; returning a large object graph — like a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile&lt;/code&gt; model with many nested relationships — it’s easy to fall into the &lt;strong&gt;N+1 query trap&lt;/strong&gt; or generate &lt;em&gt;one giant SQL JOIN&lt;/em&gt; that’s slow and hard for the DB to optimize.&lt;/p&gt;
-
-&lt;p&gt;This post walks you through a &lt;strong&gt;practical strategy&lt;/strong&gt; for optimizing such endpoints, using a real-world &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/api/v1/profiles/:id&lt;/code&gt; example.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-dont-load-everything--make-it-opt-in&quot;&gt;1. Don’t Load Everything — Make It Opt-In&lt;/h2&gt;
-
-&lt;p&gt;We can expose &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;include=&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fields=&lt;/code&gt; parameters (JSON:API-style) so that clients request only the data they need.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;IncludeParams&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;ALLOWED_INCLUDES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%w[user contact_infos skills work_experiences.work_references]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;freeze&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;parsed_includes&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;raw&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;,&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;raw&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ALLOWED_INCLUDES&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;2-preload-only-whats-requested&quot;&gt;2. Preload Only What’s Requested&lt;/h2&gt;
-
-&lt;p&gt;By default, use &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;preload&lt;/code&gt;&lt;/strong&gt; to avoid giant JOINs. Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;joins&lt;/code&gt; only for associations you filter/sort on.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;preload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;preload_tree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parsed_includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;3-serializer-views-compact--standard--extended&quot;&gt;3. Serializer Views: Compact → Standard → Extended&lt;/h2&gt;
-
-&lt;p&gt;Using Blueprinter, define multiple views. Clients choose what detail level they want.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;view&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:compact&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:role&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;view&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:extended&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;include_view&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:compact&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;association&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:work_experiences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;blueprint: &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;WorkExperienceBlueprint&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;4-separate-filtering-joins-from-preloads&quot;&gt;4. Separate Filtering JOINs from Preloads&lt;/h2&gt;
-
-&lt;p&gt;This keeps the query planner happy and avoids over-fetching.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;joins_needed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;joins_needed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filter_on_user?&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;joins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;joins_needed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;preload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;preload_tree&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parsed_includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;5-http-caching&quot;&gt;5. HTTP Caching&lt;/h2&gt;
-
-&lt;p&gt;Leverage ETag and Last-Modified headers for unchanged profiles.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fresh_when&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;etag: &lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cache_key_with_version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;last_modified: &lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;updated_at&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;6-async-preloading-rails-7&quot;&gt;6. Async Preloading (Rails 7+)&lt;/h2&gt;
-
-&lt;p&gt;Run queries in parallel to shave off latency.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;preload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:skills&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:languages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;load_async&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;7-paginate-heavy-nested-associations&quot;&gt;7. Paginate Heavy Nested Associations&lt;/h2&gt;
-
-&lt;p&gt;Cap child record counts to avoid huge payloads.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;MAX_CHILDREN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;8-sideload-heavy-data&quot;&gt;8. Sideload Heavy Data&lt;/h2&gt;
-
-&lt;p&gt;Return IDs in the main payload, then let the client fetch details in a separate endpoint.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;In short:&lt;/strong&gt; Make the API payload &lt;em&gt;client-driven&lt;/em&gt;, load data selectively, and avoid both N+1 queries and monster JOINs.&lt;/p&gt;
-
-&lt;p&gt;Performance gains can be huge, and maintainability improves because you’re explicit about what’s being fetched.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 14 Aug 2025 12:01:00 +0000</pubDate>
-        <link>https://lukin.io/blog/optimizing-complex-rails-endpoint-performance</link>
-        <guid isPermaLink="true">https://lukin.io/blog/optimizing-complex-rails-endpoint-performance</guid>
-        
-        <category>rails-8</category>
-        
-        <category>performance</category>
-        
-        
-        <category>rails</category>
-        
-        <category>performance</category>
-        
-        <category>optimization</category>
         
       </item>
     
@@ -3012,6 +2914,50 @@ They recommend making a concerted effort to imagine what it would be like if som
         <pubDate>Fri, 09 Feb 2024 00:01:01 +0000</pubDate>
         <link>https://lukin.io/blog/minimalism-war-family-and-lessons</link>
         <guid isPermaLink="true">https://lukin.io/blog/minimalism-war-family-and-lessons</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Principles for Writing Maintainable Code</title>
+        <description>&lt;p&gt;Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important best practices with Ruby on Rails, examples and definations in one place.&lt;/p&gt;
+
+&lt;p&gt;In my work i’m using principles like: &lt;a href=&quot;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&quot; target=&quot;_blank&quot;&gt;DRY (Don’t repeat youself)&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/KISS_principle&quot; target=&quot;_blank&quot;&gt;KISS (Keep it simple, stupid)&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it&quot; target=&quot;_blank&quot;&gt;YAGNI (You aren’t gonna need it)&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Eating_your_own_dog_food&quot; target=&quot;_blank&quot;&gt;Eating your own dog food&lt;/a&gt;, but in this post i’ll highlight most important ones.&lt;/p&gt;
+
+&lt;p&gt;First one is &lt;strong&gt;SOLID&lt;/strong&gt;. Those principles of OOP consist of:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;S&lt;/strong&gt;: Single Responsibility Principle - a class or method should serve a single purpose.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;O&lt;/strong&gt;: Open/closed Principle - classes or methods should be open for extension, but closed for modification&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;L&lt;/strong&gt;: Liskov substitution principle - replacing any instances of a parent class with an instance of one of its children without creating any unexpected or incorrect behaviors.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;I&lt;/strong&gt;: Interface Segregation Principle - any client specific classes are better than one general purpose class. Less relevant in dynamic languages.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;D&lt;/strong&gt;: Dependency Inversion Principle - High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend upon details. Details should depend upon abstractions.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Second one is &lt;strong&gt;LoD&lt;/strong&gt;, or &lt;strong&gt;The Law of Demeter&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The Law of Demeter, or Principle of Least Knowledge is a well-known software design principle for reducing coupling between collaborating objects.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The code you write should have the following qualities.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;T&lt;/strong&gt;ransparent The consequences of change should be obvious in the code that is changing and in distant code that relies upon it;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;R&lt;/strong&gt;easonable The cost of any change should be proportional to the benefits the change achieves;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;U&lt;/strong&gt;sable Existing code should be usable in new and unexpected contexts;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;E&lt;/strong&gt;xemplary The code itself should encourage those who change it to perpetuate these qualities;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Code that is Transparent, Reasonable, Usable, and Exemplary (&lt;strong&gt;TRUE&lt;/strong&gt;) not only meets today’s needs but can also be changed to meet the needs of the future. The first step in creating code that is TRUE is to ensure that each class has a single, well-defined responsibility.&lt;/p&gt;
+
+&lt;p&gt;And the most important part is testing:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;BDD&lt;/strong&gt; - Behavior-driven development is a software development practice of working in a short feedback loop, where we consistently apply test-driven development to every new feature we are exploring and working on.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TDD&lt;/strong&gt; - Test-driven development is a programming technique that requires you to write test.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sat, 12 Sep 2020 12:00:00 +0000</pubDate>
+        <link>https://lukin.io/blog/principles-for-writing-maintainable-code</link>
+        <guid isPermaLink="true">https://lukin.io/blog/principles-for-writing-maintainable-code</guid>
         
         
       </item>
