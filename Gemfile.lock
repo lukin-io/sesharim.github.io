@@ -79,9 +79,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  jekyll
+  jekyll (~> 4.3)
+  jekyll-sass-converter (~> 3.0)
   jekyll-seo-tag
   jekyll-sitemap
+  sass-embedded (~> 1.79)
   webrick
 
 RUBY VERSION
