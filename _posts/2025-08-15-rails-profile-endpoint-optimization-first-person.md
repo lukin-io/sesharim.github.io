@@ -1,8 +1,11 @@
 ---
 layout: post
-title: "Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes (with all code)"
-date: 2025-08-15
+author: Max Lukin
+title: Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes
+date: 2025-08-15 09:00:00
+tags: [rails-8, rack, healthcheck, devops, reliability]
 categories: rails performance api optimization blueprinter ransack caching
+excerpt: Optimizing a Complex Rails Profile Endpoint
 ---
 
 I had an API endpoint that returned a **Profile** and a lot of nested associations. It worked, but the shape of the data made it easy to trigger N+1s or force a single **monster JOIN** that Postgres struggled to optimize.
@@ -162,7 +165,7 @@ end
 
 **How I call it:**
 
-- `GET /api/v1/profiles/1` → **compact** default payload.  
+- `GET /api/v1/profiles/1` → **compact** default payload.
 - `GET /api/v1/profiles/1?include=project_items.images,education_items.files` → only those heavy bits are expanded.
 
 ---

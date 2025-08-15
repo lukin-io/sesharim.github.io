@@ -1,0 +1,169 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="https://lukin.io/blog/optimizing-complex-rails-endpoint-performance">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="https://lukin.io/%20/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="https://lukin.io/%20/favicon.png">
+
+  <link rel="stylesheet" href="/%20/css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <meta name="description"
+    content="Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design" />
+<meta property="og:description" content="Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design" />
+<link rel="canonical" href="https://lukin.io/blog/optimizing-complex-rails-endpoint-performance" />
+<meta property="og:url" content="https://lukin.io/blog/optimizing-complex-rails-endpoint-performance" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-08-14T12:01:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-08-14T12:01:00+00:00","datePublished":"2025-08-14T12:01:00+00:00","description":"Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design","headline":"Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design","mainEntityOfPage":{"@type":"WebPage","@id":"https://lukin.io/blog/optimizing-complex-rails-endpoint-performance"},"url":"https://lukin.io/blog/optimizing-complex-rails-endpoint-performance"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body class="col-lg-8 mx-auto py-md-2" style="background-color: #e0e1dd;">
+  <header>
+    &nbsp;
+  </header>
+
+  <main>
+    <div class="container">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center m-2">
+      <a href="https://lukin.io">Main</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://lukin.io/blog">Other posts</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>Optimizing Complex Rails Endpoints with Preloading, Includes, and Smart Payload Design</h4>
+      <small class="text-muted">Aug 14, 2025</small>
+      <hr />
+      <div><p>When you have a <strong>Rails endpoint</strong> returning a large object graph — like a <code class="language-plaintext highlighter-rouge">Profile</code> model with many nested relationships — it’s easy to fall into the <strong>N+1 query trap</strong> or generate <em>one giant SQL JOIN</em> that’s slow and hard for the DB to optimize.</p>
+
+<p>This post walks you through a <strong>practical strategy</strong> for optimizing such endpoints, using a real-world <code class="language-plaintext highlighter-rouge">/api/v1/profiles/:id</code> example.</p>
+
+<h2 id="1-dont-load-everything--make-it-opt-in">1. Don’t Load Everything — Make It Opt-In</h2>
+
+<p>We can expose <code class="language-plaintext highlighter-rouge">include=</code> and <code class="language-plaintext highlighter-rouge">fields=</code> parameters (JSON:API-style) so that clients request only the data they need.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">IncludeParams</span>
+  <span class="no">ALLOWED_INCLUDES</span> <span class="o">=</span> <span class="sx">%w[user contact_infos skills work_experiences.work_references]</span><span class="p">.</span><span class="nf">freeze</span>
+
+  <span class="k">def</span> <span class="nf">parsed_includes</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:include</span><span class="p">].</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s1">','</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:strip</span><span class="p">)</span>
+    <span class="n">raw</span> <span class="o">&amp;</span> <span class="no">ALLOWED_INCLUDES</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="2-preload-only-whats-requested">2. Preload Only What’s Requested</h2>
+
+<p>By default, use <strong><code class="language-plaintext highlighter-rouge">preload</code></strong> to avoid giant JOINs. Use <code class="language-plaintext highlighter-rouge">joins</code> only for associations you filter/sort on.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scope</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">parsed_includes</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="3-serializer-views-compact--standard--extended">3. Serializer Views: Compact → Standard → Extended</h2>
+
+<p>Using Blueprinter, define multiple views. Clients choose what detail level they want.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">view</span> <span class="ss">:compact</span> <span class="k">do</span>
+  <span class="n">fields</span> <span class="ss">:username</span><span class="p">,</span> <span class="ss">:role</span>
+<span class="k">end</span>
+
+<span class="n">view</span> <span class="ss">:extended</span> <span class="k">do</span>
+  <span class="n">include_view</span> <span class="ss">:compact</span>
+  <span class="n">association</span> <span class="ss">:work_experiences</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">WorkExperienceBlueprint</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="4-separate-filtering-joins-from-preloads">4. Separate Filtering JOINs from Preloads</h2>
+
+<p>This keeps the query planner happy and avoids over-fetching.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">joins_needed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">joins_needed</span> <span class="o">&lt;&lt;</span> <span class="ss">:user</span> <span class="k">if</span> <span class="n">filter_on_user?</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="o">*</span><span class="n">joins_needed</span><span class="p">).</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">parsed_includes</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="5-http-caching">5. HTTP Caching</h2>
+
+<p>Leverage ETag and Last-Modified headers for unchanged profiles.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fresh_when</span> <span class="ss">etag: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">cache_key_with_version</span><span class="p">,</span> <span class="ss">last_modified: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">updated_at</span>
+</code></pre></div></div>
+
+<h2 id="6-async-preloading-rails-7">6. Async Preloading (Rails 7+)</h2>
+
+<p>Run queries in parallel to shave off latency.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Profile</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span><span class="ss">:skills</span><span class="p">,</span> <span class="ss">:languages</span><span class="p">).</span><span class="nf">load_async</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="7-paginate-heavy-nested-associations">7. Paginate Heavy Nested Associations</h2>
+
+<p>Cap child record counts to avoid huge payloads.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">MAX_CHILDREN</span> <span class="o">=</span> <span class="mi">25</span>
+</code></pre></div></div>
+
+<h2 id="8-sideload-heavy-data">8. Sideload Heavy Data</h2>
+
+<p>Return IDs in the main payload, then let the client fetch details in a separate endpoint.</p>
+
+<hr />
+
+<p><strong>In short:</strong> Make the API payload <em>client-driven</em>, load data selectively, and avoid both N+1 queries and monster JOINs.</p>
+
+<p>Performance gains can be huge, and maintainability improves because you’re explicit about what’s being fetched.</p>
+</div>
+    </div>
+  </div>
+</div>
+
+  </main>
+
+  <footer>
+    <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank">cv</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  </footer>
+</body>
+
+</html>
