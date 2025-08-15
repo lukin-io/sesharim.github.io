@@ -23,3 +23,30 @@
   --space-5: 2rem;
   --space-6: 3rem;
 }
+
+// new
+
+// :root {
+//   /* fallback static values */
+//   --interstitial-bg: #f6f8fa;
+//   /* very light grey/blue */
+//   --interstitial-border: #e5e7eb;
+//   /* gray-200 */
+//   --interstitial-accent: #d1d5db;
+//   /* gray-300 */
+
+//   /* tweak overall spacing/radius if you like */
+//   --interstitial-radius: 10px;
+//   --interstitial-pad-y: 0.875rem;
+//   --interstitial-pad-x: 1rem;
+// }
+
+// /* Prefer adaptive tints if supported */
+// @supports (color: color-mix(in oklab, white, black)) {
+//   :root {
+//     /* keep it LIGHTER than Rails: ~4% black on top of the page bg */
+//     --interstitial-bg: color-mix(in oklab, var(--bg), #000 4%);
+//     --interstitial-border: color-mix(in oklab, var(--interstitial-bg), #000 10%);
+//     --interstitial-accent: color-mix(in oklab, var(--interstitial-bg), #000 18%);
+//   }
+// }

@@ -16,7 +16,7 @@ kramdown:
   # Optional: turn on line numbers for fenced blocks
   syntax_highlighter_opts:
     block:
-      line_numbers: true
+      line_numbers: false
 
 permalink: /blog/:title
 
