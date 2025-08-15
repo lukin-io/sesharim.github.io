@@ -1,28 +1,15 @@
 ---
 layout: default
-permalink: /blog
+<!-- permalink: /blog -->
+title: Blog
 ---
-<div class="container">
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center m-2">
-      <a href="https://lukin.io">Main</a>
+<ul class="post-list">
+  {% for post in site.posts %}
+  <li>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    <div>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time>
     </div>
-  </div>
-
-  <div class="row">
-    {% for post in site.posts %}
-    <div class="col-12">
-
-      <figure>
-        <blockquote class="blockquote">
-          <p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>
-        </blockquote>
-        <figcaption class="blockquote-footer">
-          <cite title="Source Title">{{ post.date | date: "%-d %B %Y" }}</cite>
-        </figcaption>
-      </figure>
-
-    </div>
-    {% endfor %}
-  </div>
-</div>
+  </li>
+  {% endfor %}
+</ul

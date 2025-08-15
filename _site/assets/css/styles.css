@@ -1,13 +1,346 @@
+@charset "UTF-8";
+/* Light, neutral palette — no dark-mode overrides */
+:root {
+  --bg: #cecece;
+  --fg: #0f172a;
+  /* near-black */
+  --muted: #64748b;
+  /* slate-500 */
+  --border: #e5e7eb;
+  /* gray-200 */
+  --link: #0f172a;
+  /* subtle, not blue-heavy */
+  --link-visited: #4c1d95;
+  /* a11y-safe */
+  /* WIDTH: 50% of viewport on large screens, but never too narrow/wide */
+  /* This is the only change you need for “make it wide 50%” */
+  --maxw: clamp(60ch, 50vw, 110ch);
+  --space-1: 0.375rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+}
+
+/* Minimal reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
-  background-color: #e0e1dd;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background-color: #e0e1dd;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  text-rendering: optimizeLegibility;
 }
 
-main {
-  background-color: #e0e1dd;
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+h1 {
+  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 1.6rem + 0.5vw, 2rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p,
+ul,
+ol,
+blockquote {
+  margin: var(--space-3) 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: var(--space-5) 0;
+}
+
+blockquote {
+  border-left: 3px solid var(--border);
+  padding: 0.01px 1rem;
+  /* contain margin collapse */
+  color: var(--muted);
+}
+
+.table {
+  overflow-x: auto;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.wrap {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+}
+
+.page {
+  padding-block: var(--space-6);
+}
+
+.header {
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.footer {
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.nav a {
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+/* “Prose” defaults for readable posts */
+.article {
+  margin: 0 auto;
+}
+
+.article .prose {
+  max-width: var(--maxw);
+  font-size: 1.0625rem;
+}
+
+.article h1 {
+  margin-top: var(--space-3);
+}
+
+.article time {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.article figure {
+  margin: var(--space-4) 0;
+}
+
+.article img {
+  border-radius: 6px;
+}
+
+.article .lead {
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.article .callout {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--space-3);
+  background: color-mix(in lab, var(--bg), var(--border) 10%);
+}
+
+/* Custom Rouge theme — Light only */
+:root {
+  --code-bg: color-mix(in oklab, var(--bg), #000 8%);
+  /* very light slate */
+  --code-fg: #111827;
+  --code-border: color-mix(in oklab, var(--code-bg), #000 12%);
+  --code-radius: 8px;
+  /* token colors (light) */
+  --tok-comment: #6b7280;
+  --tok-keyword: #7c3aed;
+  --tok-operator: #374151;
+  --tok-string: #065f46;
+  --tok-number: #1d4ed8;
+  --tok-attr: #b45309;
+  --tok-symbol: #0d9488;
+}
+
+/* (Delete the entire @media (prefers-color-scheme: dark) block if you still have it) */
+/* Block code */
+.highlighter-rouge,
+.highlight {
+  position: relative;
+  margin: 1.25rem 0;
+}
+
+.highlight > pre,
+.highlighter-rouge pre {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--code-radius);
+  padding: 1rem 1.25rem;
+  overflow: auto;
+  line-height: 1.55;
+  font-size: 0.935rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.highlight pre code,
+.highlighter-rouge pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Inline code */
+p code,
+li code,
+dd code {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  padding: 0.15em 0.35em;
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+
+/* Tokens */
+.highlight .c {
+  color: var(--tok-comment);
+  font-style: italic;
+}
+
+.highlight .k {
+  color: var(--tok-keyword);
+}
+
+.highlight .o {
+  color: var(--tok-operator);
+}
+
+.highlight .s {
+  color: var(--tok-string);
+}
+
+.highlight .na {
+  color: var(--tok-attr);
+}
+
+.highlight .nb {
+  color: var(--tok-symbol);
+}
+
+.highlight .nc {
+  color: var(--tok-attr);
+  font-weight: 600;
+}
+
+.highlight .nf {
+  color: var(--tok-symbol);
+}
+
+.highlight .nt {
+  color: var(--tok-keyword);
+}
+
+.highlight .mi,
+.highlight .m {
+  color: var(--tok-number);
+}
+
+.highlight table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.highlight td.gutter {
+  user-select: none;
+  opacity: 0.6;
+  padding-right: 0.75rem;
+  border-right: 1px solid var(--code-border);
+}
+
+.highlight td.code {
+  padding-left: 0.75rem;
+}
+
+/* from Phase 1 */
+/* Post list (blog index) */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-5) 0;
+}
+
+.post-list li {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-list a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.post-list time {
+  color: var(--muted);
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+/* Top “eyebrow” nav, minimalist like sales.co */
+.brand {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.header .nav {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.header .nav a {
+  color: var(--fg);
+  opacity: 0.9;
+}
+
+.header .nav a:hover {
+  opacity: 1;
 }
 
 /*# sourceMappingURL=styles.css.map */

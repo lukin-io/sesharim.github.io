@@ -1,0 +1,118 @@
+/* Custom Rouge theme — Light only */
+:root {
+  --code-bg: color-mix(in oklab, var(--bg), #000 8%);
+  /* very light slate */
+  --code-fg: #111827;
+  --code-border: color-mix(in oklab, var(--code-bg), #000 12%);
+  --code-radius: 8px;
+
+  /* token colors (light) */
+  --tok-comment: #6b7280;
+  --tok-keyword: #7c3aed;
+  --tok-operator: #374151;
+  --tok-string: #065f46;
+  --tok-number: #1d4ed8;
+  --tok-attr: #b45309;
+  --tok-symbol: #0d9488;
+}
+
+/* (Delete the entire @media (prefers-color-scheme: dark) block if you still have it) */
+
+/* Block code */
+.highlighter-rouge,
+.highlight {
+  position: relative;
+  margin: 1.25rem 0;
+}
+
+.highlight>pre,
+.highlighter-rouge pre {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--code-radius);
+  padding: 1rem 1.25rem;
+  overflow: auto;
+  line-height: 1.55;
+  font-size: 0.935rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.highlight pre code,
+.highlighter-rouge pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Inline code */
+p code,
+li code,
+dd code {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  padding: .15em .35em;
+  font-size: .92em;
+  white-space: nowrap;
+}
+
+/* Tokens */
+.highlight .c {
+  color: var(--tok-comment);
+  font-style: italic;
+}
+
+.highlight .k {
+  color: var(--tok-keyword);
+}
+
+.highlight .o {
+  color: var(--tok-operator);
+}
+
+.highlight .s {
+  color: var(--tok-string);
+}
+
+.highlight .na {
+  color: var(--tok-attr);
+}
+
+.highlight .nb {
+  color: var(--tok-symbol);
+}
+
+.highlight .nc {
+  color: var(--tok-attr);
+  font-weight: 600;
+}
+
+.highlight .nf {
+  color: var(--tok-symbol);
+}
+
+.highlight .nt {
+  color: var(--tok-keyword);
+}
+
+.highlight .mi,
+.highlight .m {
+  color: var(--tok-number);
+}
+
+.highlight table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.highlight td.gutter {
+  user-select: none;
+  opacity: .6;
+  padding-right: .75rem;
+  border-right: 1px solid var(--code-border);
+}
+
+.highlight td.code {
+  padding-left: .75rem;
+}

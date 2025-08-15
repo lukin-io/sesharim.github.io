@@ -10,6 +10,14 @@ future: true
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  # Optional: turn on line numbers for fenced blocks
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
 permalink: /blog/:title
 
 # Plugins

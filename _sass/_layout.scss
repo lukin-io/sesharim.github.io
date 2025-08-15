@@ -1,0 +1,26 @@
+.wrap {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+}
+
+.page {
+  padding-block: var(--space-6);
+}
+
+.header {
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.footer {
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .9375rem;
+}
+
+.nav a {
+  margin-right: 1rem;
+  text-decoration: none;
+}

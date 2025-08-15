@@ -1,0 +1,38 @@
+/* “Prose” defaults for readable posts */
+.article {
+  margin: 0 auto;
+}
+
+.article .prose {
+  max-width: var(--maxw);
+  font-size: 1.0625rem;
+}
+
+.article h1 {
+  margin-top: var(--space-3);
+}
+
+.article time {
+  color: var(--muted);
+  font-size: .9375rem;
+}
+
+.article figure {
+  margin: var(--space-4) 0;
+}
+
+.article img {
+  border-radius: 6px;
+}
+
+.article .lead {
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.article .callout {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: var(--space-3);
+  background: color-mix(in lab, var(--bg), var(--border) 10%);
+}
