@@ -1,0 +1,91 @@
+/* Minimal reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: .08em;
+  text-underline-offset: .2em;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+h1 {
+  font-size: clamp(2rem, 2.2rem + 1vw, 3rem);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 1.6rem + .5vw, 2rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p,
+ul,
+ol,
+blockquote {
+  margin: var(--space-3) 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: var(--space-5) 0;
+}
+
+blockquote {
+  border-left: 3px solid var(--border);
+  padding: .01px 1rem;
+  /* contain margin collapse */
+  color: var(--muted);
+}
+
+.table {
+  overflow-x: auto;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

@@ -1,3 +1,10 @@
 ---
 ---
-@use "main";
+
+@use "variables";
+@use "base";
+@use "layout";
+@use "article";
+@use "syntax";
+@use "components";
+@use "home";
