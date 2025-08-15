@@ -1,0 +1,635 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="https://lukin.io/blog/rails-profile-endpoint-optimization-first-person">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="https://lukin.io/%20/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="https://lukin.io/%20/favicon.png">
+
+  <link rel="stylesheet" href="/%20/css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <meta name="description"
+    content="Optimizing a Complex Rails Profile Endpoint">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Optimizing a Complex Rails Profile Endpoint" />
+<meta property="og:description" content="Optimizing a Complex Rails Profile Endpoint" />
+<link rel="canonical" href="https://lukin.io/blog/rails-profile-endpoint-optimization-first-person" />
+<meta property="og:url" content="https://lukin.io/blog/rails-profile-endpoint-optimization-first-person" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-08-15T09:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-08-15T09:00:00+00:00","datePublished":"2025-08-15T09:00:00+00:00","description":"Optimizing a Complex Rails Profile Endpoint","headline":"Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes","mainEntityOfPage":{"@type":"WebPage","@id":"https://lukin.io/blog/rails-profile-endpoint-optimization-first-person"},"url":"https://lukin.io/blog/rails-profile-endpoint-optimization-first-person"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body class="col-lg-8 mx-auto py-md-2" style="background-color: #e0e1dd;">
+  <header>
+    &nbsp;
+  </header>
+
+  <main>
+    <div class="container">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center m-2">
+      <a href="https://lukin.io">Main</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://lukin.io/blog">Other posts</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes</h4>
+      <small class="text-muted">Aug 15, 2025</small>
+      <hr />
+      <div><p>I had an API endpoint that returned a <strong>Profile</strong> and a lot of nested associations. It worked, but the shape of the data made it easy to trigger N+1s or force a single <strong>monster JOIN</strong> that Postgres struggled to optimize.</p>
+
+<p>This write‑up is my engineering log: what I started with, why it was slow, and the exact changes I shipped. It includes <strong>every example from the session</strong>, starting at <strong>1)</strong>, along with the full SQL log and the original preload code. All snippets are explicitly file‑scoped so they’re copy‑pasteable into a Rails 7/8 codebase.</p>
+
+<hr />
+
+<h2 id="1-baseline--symptoms">1) Baseline &amp; symptoms</h2>
+
+<p><strong>Endpoint:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/profiles/:id</code> (show)</li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/profiles</code> (index with Ransack filters + pagination)</li>
+</ul>
+
+<p><strong>Real SQL log I started from (show):</strong></p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Started GET "/api/v1/profiles/1" for ::1 at 2025-08-11 14:59:59 +0000
+Processing by Api::V1::ProfilesController#show as */*
+  Parameters: {"id" =&gt; "1"}
+  User Load (15.4ms)  SELECT `users`.* FROM `users` WHERE `users`.`id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  Profile Load (0.2ms)  SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:143:in 'Api::V1::ProfilesController#set_profile'
+  AwardItem Load (0.3ms)  SELECT `award_items`.* FROM `award_items` WHERE `award_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  CertificationItem Load (0.3ms)  SELECT `certification_items`.* FROM `certification_items` WHERE `certification_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  ContactInfo Load (0.2ms)  SELECT `contact_infos`.* FROM `contact_infos` WHERE `contact_infos`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  ContentBlock Load (0.2ms)  SELECT `content_blocks`.* FROM `content_blocks` WHERE `content_blocks`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  EducationItem Load (0.2ms)  SELECT `education_items`.* FROM `education_items` WHERE `education_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  FileDocument Load (0.8ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'FileDocument' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'Profile' /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  HighlightLink Load (0.3ms)  SELECT `highlight_links`.* FROM `highlight_links` WHERE `highlight_links`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  GalleryImage Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'GalleryImage' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'Profile' /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  Language Load (0.2ms)  SELECT `languages`.* FROM `languages` WHERE `languages`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  LicenseItem Load (0.2ms)  SELECT `license_items`.* FROM `license_items` WHERE `license_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  LocationSetting Load (0.2ms)  SELECT `location_settings`.* FROM `location_settings` WHERE `location_settings`.`profile_id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  PortfolioLink Load (0.3ms)  SELECT `portfolio_links`.* FROM `portfolio_links` WHERE `portfolio_links`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  ProjectItem Load (0.2ms)  SELECT `project_items`.* FROM `project_items` WHERE `project_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  FileDocument Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'FileDocument' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'ProjectItem' /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  GalleryImage Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'GalleryImage' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'ProjectItem' /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  Resume Load (0.2ms)  SELECT `resumes`.* FROM `resumes` WHERE `resumes`.`profile_id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  FileDocument Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'FileDocument' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'Resume' /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  SalaryExpectation Load (0.3ms)  SELECT `salary_expectations`.* FROM `salary_expectations` WHERE `salary_expectations`.`profile_id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  SecurityClearanceItem Load (0.2ms)  SELECT `security_clearance_items`.* FROM `security_clearance_items` WHERE `security_clearance_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  SkillReview Load (0.2ms)  SELECT `skill_reviews`.* FROM `skill_reviews` WHERE `skill_reviews`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  Skill Load (0.2ms)  SELECT `skills`.* FROM `skills` WHERE `skills`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  VolunteerWorkItem Load (0.2ms)  SELECT `volunteer_work_items`.* FROM `volunteer_work_items` WHERE `volunteer_work_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  WorkExperience Load (0.2ms)  SELECT `work_experiences`.* FROM `work_experiences` WHERE `work_experiences`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  WorkReference Load (0.2ms)  SELECT `work_references`.* FROM `work_references` WHERE `work_references`.`work_experience_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  WorkingKnowledgeItem Load (0.2ms)  SELECT `working_knowledge_items`.* FROM `working_knowledge_items` WHERE `working_knowledge_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
+  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+Completed 200 OK in 46ms (Views: 0.3ms | ActiveRecord: 22.0ms (27 queries, 0 cached) | GC: 1.4ms)
+</code></pre></div></div>
+
+<p><strong>Original preload block (index) I wanted to replace:</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb (index; BEFORE)</span>
+<span class="vi">@profiles</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span>
+  <span class="ss">:user</span><span class="p">,</span>
+  <span class="ss">:contact_infos</span><span class="p">,</span>
+  <span class="ss">:skills</span><span class="p">,</span>
+  <span class="ss">:work_experiences</span><span class="p">,</span>
+  <span class="ss">:portfolio_links</span><span class="p">,</span>
+  <span class="ss">:languages</span><span class="p">,</span>
+  <span class="ss">:content_blocks</span><span class="p">,</span>
+  <span class="ss">:skill_reviews</span><span class="p">,</span>
+  <span class="ss">:education_items</span><span class="p">,</span>
+  <span class="ss">:working_knowledge_items</span><span class="p">,</span>
+  <span class="ss">:certification_items</span><span class="p">,</span>
+  <span class="ss">:award_items</span><span class="p">,</span>
+  <span class="ss">:project_items</span><span class="p">,</span>
+  <span class="ss">:highlight_links</span><span class="p">,</span>
+  <span class="ss">:security_clearance_items</span><span class="p">,</span>
+  <span class="ss">:license_items</span><span class="p">,</span>
+  <span class="ss">:images</span><span class="p">,</span>
+  <span class="ss">:files</span><span class="p">,</span>
+  <span class="ss">:location_setting</span><span class="p">,</span>
+  <span class="ss">:salary_expectation</span><span class="p">,</span>
+  <span class="c1"># Nested associations for models that have their own associations</span>
+  <span class="p">{</span> <span class="ss">certification_items: </span><span class="p">[</span><span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">resume: </span><span class="p">[</span><span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">work_experiences: :work_references</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">education_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">license_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">,</span> <span class="ss">:license_links</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">project_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">volunteer_work_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">award_items: </span><span class="p">[</span><span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="c1"># { security_clearance_items: [:images, :files] },</span>
+  <span class="c1"># { certification_items: [:images, :files] },</span>
+  <span class="c1"># { working_knowledge_items: [:images, :files] }</span>
+<span class="p">)</span>
+<span class="p">.</span><span class="nf">ransack</span><span class="p">(</span><span class="n">ransack_params</span><span class="p">)</span>
+<span class="p">.</span><span class="nf">result</span><span class="p">(</span><span class="ss">distinct: </span><span class="kp">true</span><span class="p">)</span>
+<span class="p">.</span><span class="nf">page</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:page</span><span class="p">])</span>
+<span class="p">.</span><span class="nf">per</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:limit</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>This fetches <strong>everything</strong> by default. Even when the UI only needed a subset, the DB and the JSON renderer were doing unnecessary work.</p>
+
+<hr />
+
+<h2 id="2-i-made-the-payload-optin-via-include-and-fields">2) I made the payload <strong>opt‑in</strong> via <code class="language-plaintext highlighter-rouge">include=</code> and <code class="language-plaintext highlighter-rouge">fields=</code></h2>
+
+<p>I added a small concern to parse and <strong>whitelist</strong> expansions and sparse fieldsets.</p>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">app/controllers/concerns/include_params.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">IncludeParams</span>
+  <span class="c1"># Whitelist to avoid arbitrary preload trees</span>
+  <span class="no">ALLOWED_INCLUDES</span> <span class="o">=</span> <span class="sx">%w[
+    user contact_infos skills work_experiences.work_references portfolio_links
+    languages content_blocks skill_reviews education_items.images education_items.files
+    working_knowledge_items certification_items.files award_items.files
+    project_items.images project_items.files highlight_links security_clearance_items
+    license_items.images license_items.files license_items.license_links
+    images files resume.files location_setting salary_expectation volunteer_work_items.images
+    volunteer_work_items.files
+  ]</span><span class="p">.</span><span class="nf">freeze</span>
+
+  <span class="k">def</span> <span class="nf">parsed_includes</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:include</span><span class="p">].</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s1">','</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:strip</span><span class="p">)</span>
+    <span class="n">raw</span> <span class="o">&amp;</span> <span class="no">ALLOWED_INCLUDES</span>
+  <span class="k">end</span>
+
+  <span class="c1"># JSON:API-style sparse fieldsets, e.g. fields[profiles]=id,username,role</span>
+  <span class="k">def</span> <span class="nf">parsed_fields</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:fields</span><span class="p">,</span> <span class="p">{}).</span><span class="nf">to_h</span><span class="p">.</span><span class="nf">transform_values</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s1">','</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:strip</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">fields</span><span class="p">.</span><span class="nf">transform_keys!</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_s</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>How I call it:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/profiles/1</code> → <strong>compact</strong> default payload.</li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/profiles/1?include=project_items.images,education_items.files</code> → only those heavy bits are expanded.</li>
+</ul>
+
+<hr />
+
+<h2 id="3-controller-changes-preload-for-rendering-join-for-filters">3) Controller changes: <strong>preload for rendering, JOIN for filters</strong></h2>
+
+<p>I mapped <code class="language-plaintext highlighter-rouge">include</code> tokens to a preload tree, and I only <code class="language-plaintext highlighter-rouge">JOIN</code> on associations that Ransack actually filters or sorts on.</p>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">app/controllers/api/v1/profiles_controller.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Api::V1::ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="kp">include</span> <span class="no">IncludeParams</span>
+
+  <span class="c1"># Map requested include tokens to a preload tree</span>
+  <span class="no">PRELOAD_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'user'</span> <span class="o">=&gt;</span> <span class="ss">:user</span><span class="p">,</span>
+    <span class="s1">'contact_infos'</span> <span class="o">=&gt;</span> <span class="ss">:contact_infos</span><span class="p">,</span>
+    <span class="s1">'skills'</span> <span class="o">=&gt;</span> <span class="ss">:skills</span><span class="p">,</span>
+    <span class="s1">'work_experiences'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">work_experiences: :work_references</span> <span class="p">},</span>
+    <span class="s1">'portfolio_links'</span> <span class="o">=&gt;</span> <span class="ss">:portfolio_links</span><span class="p">,</span>
+    <span class="s1">'languages'</span> <span class="o">=&gt;</span> <span class="ss">:languages</span><span class="p">,</span>
+    <span class="s1">'content_blocks'</span> <span class="o">=&gt;</span> <span class="ss">:content_blocks</span><span class="p">,</span>
+    <span class="s1">'skill_reviews'</span> <span class="o">=&gt;</span> <span class="ss">:skill_reviews</span><span class="p">,</span>
+    <span class="s1">'education_items.images'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">education_items: :images</span> <span class="p">},</span>
+    <span class="s1">'education_items.files'</span>  <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">education_items: :files</span> <span class="p">},</span>
+    <span class="s1">'working_knowledge_items'</span> <span class="o">=&gt;</span> <span class="ss">:working_knowledge_items</span><span class="p">,</span>
+    <span class="s1">'certification_items.files'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">certification_items: :files</span> <span class="p">},</span>
+    <span class="s1">'award_items.files'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">award_items: :files</span> <span class="p">},</span>
+    <span class="s1">'project_items.images'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">project_items: :images</span> <span class="p">},</span>
+    <span class="s1">'project_items.files'</span>  <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">project_items: :files</span> <span class="p">},</span>
+    <span class="s1">'highlight_links'</span> <span class="o">=&gt;</span> <span class="ss">:highlight_links</span><span class="p">,</span>
+    <span class="s1">'security_clearance_items'</span> <span class="o">=&gt;</span> <span class="ss">:security_clearance_items</span><span class="p">,</span>
+    <span class="s1">'license_items.images'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">license_items: :images</span> <span class="p">},</span>
+    <span class="s1">'license_items.files'</span>  <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">license_items: :files</span> <span class="p">},</span>
+    <span class="s1">'license_items.license_links'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">license_items: :license_links</span> <span class="p">},</span>
+    <span class="s1">'images'</span> <span class="o">=&gt;</span> <span class="ss">:images</span><span class="p">,</span>
+    <span class="s1">'files'</span>  <span class="o">=&gt;</span> <span class="ss">:files</span><span class="p">,</span>
+    <span class="s1">'resume.files'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">resume: :files</span> <span class="p">},</span>
+    <span class="s1">'location_setting'</span> <span class="o">=&gt;</span> <span class="ss">:location_setting</span><span class="p">,</span>
+    <span class="s1">'salary_expectation'</span> <span class="o">=&gt;</span> <span class="ss">:salary_expectation</span><span class="p">,</span>
+    <span class="s1">'volunteer_work_items.images'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">volunteer_work_items: :images</span> <span class="p">},</span>
+    <span class="s1">'volunteer_work_items.files'</span>  <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">volunteer_work_items: :files</span> <span class="p">}</span>
+  <span class="p">}.</span><span class="nf">freeze</span>
+
+  <span class="c1"># GET /api/v1/profiles</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">includes</span> <span class="o">=</span> <span class="n">parsed_includes</span>
+    <span class="n">fields</span>   <span class="o">=</span> <span class="n">parsed_fields</span>
+    <span class="n">scope</span>    <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">all</span>
+
+    <span class="c1"># JOINs strictly for Ransack filters/sorts.</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:q</span><span class="p">)</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">keys</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">any?</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">k</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s1">'user_'</span><span class="p">)</span> <span class="p">}</span>
+      <span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:q</span><span class="p">)</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">keys</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">any?</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">k</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s1">'location_setting_'</span><span class="p">)</span> <span class="p">}</span>
+      <span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:location_setting</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">includes</span><span class="p">))</span> <span class="k">if</span> <span class="n">includes</span><span class="p">.</span><span class="nf">any?</span>
+
+    <span class="n">records</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">ransack</span><span class="p">(</span><span class="n">ransack_params</span><span class="p">).</span><span class="nf">result</span><span class="p">(</span><span class="ss">distinct: </span><span class="kp">true</span><span class="p">)</span>
+                   <span class="p">.</span><span class="nf">page</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:page</span><span class="p">]).</span><span class="nf">per</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:limit</span><span class="p">])</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="n">records</span><span class="p">,</span>
+      <span class="ss">view: </span><span class="n">view_for</span><span class="p">(</span><span class="n">includes</span><span class="p">),</span>
+      <span class="ss">fields: </span><span class="n">fields</span><span class="p">[</span><span class="s1">'profiles'</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="c1"># GET /api/v1/profiles/:id</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">includes</span> <span class="o">=</span> <span class="n">parsed_includes</span>
+    <span class="n">fields</span>   <span class="o">=</span> <span class="n">parsed_fields</span>
+
+    <span class="n">scope</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">includes</span><span class="p">))</span>
+    <span class="vi">@profile</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="c1"># Strong HTTP caching: ETag + Last-Modified across key associations</span>
+    <span class="n">last_mod</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="vi">@profile</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">,</span>
+      <span class="vi">@profile</span><span class="p">.</span><span class="nf">skills</span><span class="p">.</span><span class="nf">maximum</span><span class="p">(</span><span class="ss">:updated_at</span><span class="p">),</span>
+      <span class="vi">@profile</span><span class="p">.</span><span class="nf">work_experiences</span><span class="p">.</span><span class="nf">maximum</span><span class="p">(</span><span class="ss">:updated_at</span><span class="p">)</span>
+    <span class="p">].</span><span class="nf">compact</span><span class="p">.</span><span class="nf">max</span>
+
+    <span class="n">fresh_when</span> <span class="ss">etag: </span><span class="p">[</span><span class="vi">@profile</span><span class="p">.</span><span class="nf">cache_key_with_version</span><span class="p">,</span> <span class="n">includes</span><span class="p">.</span><span class="nf">sort</span><span class="p">],</span>
+               <span class="ss">last_modified: </span><span class="n">last_mod</span><span class="p">,</span>
+               <span class="ss">public: </span><span class="kp">true</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span>
+      <span class="ss">view: </span><span class="n">view_for</span><span class="p">(</span><span class="n">includes</span><span class="p">),</span>
+      <span class="ss">fields: </span><span class="n">fields</span><span class="p">[</span><span class="s1">'profiles'</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">preload_tree</span><span class="p">(</span><span class="n">includes</span><span class="p">)</span>
+    <span class="n">includes</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span> <span class="no">PRELOAD_MAP</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">view_for</span><span class="p">(</span><span class="n">includes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">includes</span><span class="p">.</span><span class="nf">any?</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s1">'project_items'</span><span class="p">)</span> <span class="o">||</span> <span class="n">i</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s1">'education_items'</span><span class="p">)</span> <span class="p">}</span>
+      <span class="ss">:extended</span>
+    <span class="k">elsif</span> <span class="n">includes</span><span class="p">.</span><span class="nf">any?</span>
+      <span class="ss">:standard</span>
+    <span class="k">else</span>
+      <span class="ss">:compact</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">ransack_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:q</span><span class="p">,</span> <span class="p">{})</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-serializer-views--perrecord-caches-blueprinter">4) Serializer views + per‑record caches (Blueprinter)</h2>
+
+<p>The default is <strong>compact</strong>; heavier trees are behind <code class="language-plaintext highlighter-rouge">:standard</code> and <code class="language-plaintext highlighter-rouge">:extended</code>. Heavy leaf nodes cache by <code class="language-plaintext highlighter-rouge">cache_key_with_version</code>.</p>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">app/blueprints/profile_blueprint.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProfileBlueprint</span> <span class="o">&lt;</span> <span class="no">Blueprinter</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">identifier</span> <span class="ss">:id</span>
+
+  <span class="n">view</span> <span class="ss">:compact</span> <span class="k">do</span>
+    <span class="n">fields</span> <span class="ss">:username</span><span class="p">,</span> <span class="ss">:role</span><span class="p">,</span> <span class="ss">:location</span><span class="p">,</span> <span class="ss">:experience_years</span>
+    <span class="n">association</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">UserBlueprint</span><span class="p">,</span> <span class="ss">view: :tiny</span>
+  <span class="k">end</span>
+
+  <span class="n">view</span> <span class="ss">:standard</span> <span class="k">do</span>
+    <span class="n">include_view</span> <span class="ss">:compact</span>
+    <span class="n">association</span> <span class="ss">:skills</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">SkillBlueprint</span>
+    <span class="n">association</span> <span class="ss">:languages</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">LanguageBlueprint</span>
+  <span class="k">end</span>
+
+  <span class="n">view</span> <span class="ss">:extended</span> <span class="k">do</span>
+    <span class="n">include_view</span> <span class="ss">:standard</span>
+    <span class="n">association</span> <span class="ss">:work_experiences</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">WorkExperienceBlueprint</span><span class="p">,</span> <span class="ss">view: :with_refs</span>
+    <span class="n">association</span> <span class="ss">:education_items</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">EducationItemBlueprint</span><span class="p">,</span> <span class="ss">view: :with_assets</span>
+    <span class="n">association</span> <span class="ss">:project_items</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">ProjectItemBlueprint</span><span class="p">,</span> <span class="ss">view: :with_assets</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
+      <span class="n">max</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="ss">:locals</span><span class="p">]</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:max_children</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+      <span class="n">profile</span><span class="p">.</span><span class="nf">project_items</span><span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="n">max</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">association</span> <span class="ss">:license_items</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">LicenseItemBlueprint</span><span class="p">,</span> <span class="ss">view: :with_assets</span>
+    <span class="n">association</span> <span class="ss">:resume</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">ResumeBlueprint</span><span class="p">,</span> <span class="ss">view: :with_files</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">app/blueprints/project_item_blueprint.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProjectItemBlueprint</span> <span class="o">&lt;</span> <span class="no">Blueprinter</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">identifier</span> <span class="ss">:id</span>
+  <span class="n">fields</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">:summary</span><span class="p">,</span> <span class="ss">:started_on</span><span class="p">,</span> <span class="ss">:finished_on</span>
+
+  <span class="n">association</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">blueprint: </span><span class="no">AttachmentBlueprint</span>
+  <span class="n">association</span> <span class="ss">:files</span><span class="p">,</span>  <span class="ss">blueprint: </span><span class="no">AttachmentBlueprint</span>
+
+  <span class="c1"># Per-record cache</span>
+  <span class="n">cache</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_opts</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"bp:project_item:</span><span class="si">#{</span><span class="n">obj</span><span class="p">.</span><span class="nf">cache_key_with_version</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-avoid-monster-sql-split-joins-for-filters-from-preloads-for-rendering">5) Avoid “monster SQL”: split JOINs for filters from PRELOADs for rendering</h2>
+
+<p>This is the pattern I keep handy when the index endpoint starts accreting conditions:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scope</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">all</span>
+
+<span class="n">joins_needed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">joins_needed</span> <span class="o">&lt;&lt;</span> <span class="ss">:user</span> <span class="k">if</span> <span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:q</span><span class="p">)</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">keys</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">any?</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">k</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s1">'user_'</span><span class="p">)</span> <span class="p">}</span>
+<span class="n">joins_needed</span> <span class="o">&lt;&lt;</span> <span class="ss">:location_setting</span> <span class="k">if</span> <span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:q</span><span class="p">)</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">keys</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">any?</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">k</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s1">'location_setting_'</span><span class="p">)</span> <span class="p">}</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="o">*</span><span class="n">joins_needed</span><span class="p">)</span> <span class="k">if</span> <span class="n">joins_needed</span><span class="p">.</span><span class="nf">any?</span>
+
+<span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">parsed_includes</span><span class="p">))</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">scope</span><span class="p">.</span><span class="nf">ransack</span><span class="p">(</span><span class="n">ransack_params</span><span class="p">).</span><span class="nf">result</span><span class="p">(</span><span class="ss">distinct: </span><span class="kp">true</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-async-preloading-optional">6) Async preloading (optional)</h2>
+
+<p>Rails 7/8 lets me parallelize independent SELECTs:</p>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">config/application.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">async_query_executor</span> <span class="o">=</span> <span class="ss">:global_thread_pool</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">global_executor_concurrency</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># tune per env</span>
+</code></pre></div></div>
+
+<p><strong>Usage (example):</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">parsed_includes</span><span class="p">)).</span><span class="nf">load_async</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="7-cap--paginate-heavy-nested-collections">7) Cap / paginate heavy nested collections</h2>
+
+<p>I pass a <code class="language-plaintext highlighter-rouge">locals</code> cap to Blueprinter and enforce it in the association (see <code class="language-plaintext highlighter-rouge">ProfileBlueprint</code> above).</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb (show)</span>
+<span class="n">render</span> <span class="ss">json: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">view: :extended</span><span class="p">,</span> <span class="ss">locals: </span><span class="p">{</span> <span class="ss">max_children: </span><span class="mi">25</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="8-sideloading-for-fastest-ttfb">8) Side‑loading for fastest TTFB</h2>
+
+<p>Sometimes I just want IDs first, details later.</p>
+
+<p><strong>Main payload sideload IDs:</strong></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"project_item_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">13</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>Then fetch details in bulk:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/project_items?ids=3,5,8,13
+</code></pre></div></div>
+
+<p><strong>Or expose a focused associations endpoint:</strong></p>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">app/controllers/api/v1/profile_associations_controller.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Api::V1::ProfileAssociationsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="kp">include</span> <span class="no">IncludeParams</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">includes</span> <span class="o">=</span> <span class="n">parsed_includes</span>
+    <span class="k">raise</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">BadRequest</span><span class="p">,</span> <span class="s2">"include= required"</span> <span class="k">if</span> <span class="n">includes</span><span class="p">.</span><span class="nf">blank?</span>
+
+    <span class="c1"># Preload requested bits only</span>
+    <span class="no">Profile</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">).</span><span class="nf">preload</span><span class="p">(</span><span class="n">preload_tree</span><span class="p">(</span><span class="n">includes</span><span class="p">)).</span><span class="nf">load</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span>
+      <span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">include: </span><span class="n">includes</span><span class="p">,</span>
+      <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="ss">view: :extended</span><span class="p">,</span> <span class="ss">fields: </span><span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:fields</span><span class="p">,</span> <span class="s1">'profiles'</span><span class="p">))</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">preload_tree</span><span class="p">(</span><span class="n">includes</span><span class="p">)</span>
+    <span class="n">includes</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span> <span class="no">Api</span><span class="o">::</span><span class="no">V1</span><span class="o">::</span><span class="no">ProfilesController</span><span class="o">::</span><span class="no">PRELOAD_MAP</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Usage:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/profiles/1/associations?include=project_items,education_items
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="9-modellevel-tweaks-that-prevent-surprise-queries">9) Model‑level tweaks that prevent surprise queries</h2>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">app/models/profile.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Profile</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:skills</span><span class="p">,</span> <span class="ss">inverse_of: :profile</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+  <span class="n">has_many</span> <span class="ss">:project_items</span><span class="p">,</span> <span class="ss">inverse_of: :profile</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+  <span class="c1"># If you use counters a lot:</span>
+  <span class="c1"># has_many :work_experiences, inverse_of: :profile, dependent: :destroy, counter_cache: true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>I also use <code class="language-plaintext highlighter-rouge">touch: false</code> on high‑churn relations so I don’t constantly invalidate parent caches.</p>
+
+<p>To keep Ransack from auto‑joining unexpected stuff, I whitelist:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/profile.rb</span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">ransackable_associations</span><span class="p">(</span><span class="n">_</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+  <span class="sx">%w[user location_setting]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">ransackable_attributes</span><span class="p">(</span><span class="n">_</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+  <span class="sx">%w[username role location experience_years]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="10-guardrails-i-enforce-a-query-budget-in-tests">10) Guardrails: I enforce a “query budget” in tests</h2>
+
+<p><strong>File:</strong> <code class="language-plaintext highlighter-rouge">spec/requests/api/v1/profiles_spec.rb</code></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">it</span> <span class="s1">'stays under 12 queries for compact show'</span> <span class="k">do</span>
+  <span class="n">expect</span> <span class="p">{</span>
+    <span class="n">get</span> <span class="s2">"/api/v1/profiles/</span><span class="si">#{</span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">"</span>
+  <span class="p">}.</span><span class="nf">to</span> <span class="n">make_database_queries</span><span class="p">(</span><span class="ss">count: </span><span class="o">&lt;=</span> <span class="mi">12</span><span class="p">)</span> <span class="c1"># adapt matcher/threshold</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>I also log <code class="language-plaintext highlighter-rouge">payload_size</code> (bytes) and render time so regressions show up in metrics, not in user reports.</p>
+
+<hr />
+
+<h2 id="11-requests-i-actually-run-during-development">11) Requests I actually run during development</h2>
+
+<p><strong>Index (lean default):</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/profiles?page=1&amp;limit=20
+</code></pre></div></div>
+
+<p><strong>Index + filter on user + expand a bit:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/profiles?include=skills,languages&amp;q[user_email_cont]=max@
+</code></pre></div></div>
+
+<p><strong>Show minimal (fastest):</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/profiles/1
+</code></pre></div></div>
+
+<p><strong>Show with heavy expansions:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/profiles/1?include=project_items.images,education_items.files,license_items.files
+</code></pre></div></div>
+
+<p><strong>Fetch only associations later:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/profiles/1/associations?include=project_items,education_items
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="12-appendix--the-full-before-preload-list-for-posterity">12) Appendix — the full “before” preload list (for posterity)</h2>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Profile</span><span class="p">.</span><span class="nf">preload</span><span class="p">(</span>
+  <span class="ss">:user</span><span class="p">,</span>
+  <span class="ss">:contact_infos</span><span class="p">,</span>
+  <span class="ss">:skills</span><span class="p">,</span>
+  <span class="ss">:work_experiences</span><span class="p">,</span>
+  <span class="ss">:portfolio_links</span><span class="p">,</span>
+  <span class="ss">:languages</span><span class="p">,</span>
+  <span class="ss">:content_blocks</span><span class="p">,</span>
+  <span class="ss">:skill_reviews</span><span class="p">,</span>
+  <span class="ss">:education_items</span><span class="p">,</span>
+  <span class="ss">:working_knowledge_items</span><span class="p">,</span>
+  <span class="ss">:certification_items</span><span class="p">,</span>
+  <span class="ss">:award_items</span><span class="p">,</span>
+  <span class="ss">:project_items</span><span class="p">,</span>
+  <span class="ss">:highlight_links</span><span class="p">,</span>
+  <span class="ss">:security_clearance_items</span><span class="p">,</span>
+  <span class="ss">:license_items</span><span class="p">,</span>
+  <span class="ss">:images</span><span class="p">,</span>
+  <span class="ss">:files</span><span class="p">,</span>
+  <span class="ss">:location_setting</span><span class="p">,</span>
+  <span class="ss">:salary_expectation</span><span class="p">,</span>
+  <span class="p">{</span> <span class="ss">certification_items: </span><span class="p">[</span><span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">resume: </span><span class="p">[</span><span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">work_experiences: :work_references</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">education_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">license_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">,</span> <span class="ss">:license_links</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">project_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">volunteer_work_items: </span><span class="p">[</span><span class="ss">:images</span><span class="p">,</span> <span class="ss">:files</span><span class="p">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">award_items: </span><span class="p">[</span><span class="ss">:files</span><span class="p">]</span> <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="what-changed-in-one-screen">What changed (in one screen)</h3>
+
+<ul>
+  <li>Default response is <strong>compact</strong>; clients expand with <code class="language-plaintext highlighter-rouge">include=</code>/<code class="language-plaintext highlighter-rouge">fields=</code>.</li>
+  <li>I <strong>JOIN</strong> only for filters/sorts; I <strong>preload</strong> what I render.</li>
+  <li>Heavier serializer views are cached per record.</li>
+  <li>Strong <strong>ETag/Last‑Modified</strong> avoids re‑rendering unchanged resources.</li>
+  <li>Optional <strong>async preloading</strong> helps when many independent associations exist.</li>
+  <li>I cap/paginate heavy children or fetch them via dedicated endpoints.</li>
+  <li>Guardrails (query budget, Ransack whitelists, payload logging) keep it fast.</li>
+</ul>
+
+<p>If you drop this post into a Jekyll site, name it <code class="language-plaintext highlighter-rouge">_posts/2025-08-15-rails-profile-endpoint-optimization.md</code>.</p>
+</div>
+    </div>
+  </div>
+</div>
+
+  </main>
+
+  <footer>
+    <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank">cv</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  </footer>
+</body>
+
+</html>
