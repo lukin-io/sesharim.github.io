@@ -4,7 +4,7 @@ title: "A tiny Rails console banner: show app stats every time you run `rails c`
 date: 2025-08-25 00:01:01
 tags: [rails-8, rack, healthcheck, devops, reliability]
 categories: rails performance api optimization blueprinter ransack caching
-excerpt: A tiny Rails console banner: show app stats every time you run rails c
+# excerpt: A tiny Rails console banner: show app stats every time you run rails c
 author: Max Lukin
 ---
 
