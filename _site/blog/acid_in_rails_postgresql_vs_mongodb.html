@@ -1,0 +1,240 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <meta name="description"
+    content="ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns" />
+<meta property="og:description" content="ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns" />
+<link rel="canonical" href="http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb" />
+<meta property="og:url" content="http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-09-01T09:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-09-01T09:00:00+00:00","datePublished":"2025-09-01T09:00:00+00:00","description":"ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns","headline":"ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb"},"url":"http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body class="col-lg-8 mx-auto py-md-2" style="background-color: #e0e1dd;">
+  <header>
+    &nbsp;
+  </header>
+
+  <main>
+    <div class="container">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center m-2">
+      <a href="https://lukin.io">Main</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://lukin.io/blog">Other posts</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns</h4>
+      <small class="text-muted">Sep 1, 2025</small>
+      <hr />
+      <div><h1 id="acid-in-rails-postgresql-vs-mongodb-with-atomic-patterns">ACID in Rails: PostgreSQL vs MongoDB (with Atomic Patterns)</h1>
+
+<p>As a Rails engineer, you often hear about <strong>ACID</strong> compliance in
+databases. But how does it actually apply when building endpoints with
+<strong>PostgreSQL</strong> (the Rails default) versus <strong>MongoDB</strong>? Let’s break it
+down with clear examples.</p>
+
+<hr />
+
+<h2 id="1-what-is-acid">1. What is ACID?</h2>
+
+<p><strong>ACID</strong> stands for:</p>
+
+<ol>
+  <li><strong>Atomicity</strong> – all-or-nothing transactions.</li>
+  <li><strong>Consistency</strong> – data moves only between valid states.</li>
+  <li><strong>Isolation</strong> – transactions behave as if running alone.</li>
+  <li><strong>Durability</strong> – committed data survives crashes.</li>
+</ol>
+
+<hr />
+
+<h2 id="2-postgresql-in-rails-activerecord">2. PostgreSQL in Rails (ActiveRecord)</h2>
+
+<p>PostgreSQL is <strong>fully ACID-compliant</strong>.</p>
+
+<h3 id="-atomic-user--profile-creation">✅ Atomic User + Profile Creation</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
+  <span class="n">user</span>    <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="s2">"a@b.com"</span><span class="p">)</span>
+  <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="-atomic-money-transfer-with-locks">✅ Atomic Money Transfer with Locks</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Payments::TransferFunds</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">from_id</span><span class="p">:,</span> <span class="n">to_id</span><span class="p">:,</span> <span class="n">amount_cents</span><span class="p">:)</span>
+    <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
+      <span class="n">from</span> <span class="o">=</span> <span class="no">Account</span><span class="p">.</span><span class="nf">lock</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">from_id</span><span class="p">)</span>
+      <span class="n">to</span>   <span class="o">=</span> <span class="no">Account</span><span class="p">.</span><span class="nf">lock</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">to_id</span><span class="p">)</span>
+
+      <span class="k">raise</span> <span class="s2">"Insufficient funds"</span> <span class="k">if</span> <span class="n">from</span><span class="p">.</span><span class="nf">balance_cents</span> <span class="o">&lt;</span> <span class="n">amount_cents</span>
+
+      <span class="n">from</span><span class="p">.</span><span class="nf">balance_cents</span> <span class="o">-=</span> <span class="n">amount_cents</span>
+      <span class="n">to</span><span class="p">.</span><span class="nf">balance_cents</span>   <span class="o">+=</span> <span class="n">amount_cents</span>
+
+      <span class="n">from</span><span class="p">.</span><span class="nf">save!</span>
+      <span class="n">to</span><span class="p">.</span><span class="nf">save!</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="-side-effects-after-commit">✅ Side Effects After Commit</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_commit</span> <span class="ss">:enqueue_welcome_email</span><span class="p">,</span> <span class="ss">on: :create</span>
+
+  <span class="k">def</span> <span class="nf">enqueue_welcome_email</span>
+    <span class="no">SendWelcomeEmailJob</span><span class="p">.</span><span class="nf">perform_later</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-mongodb-in-rails-mongoid">3. MongoDB in Rails (Mongoid)</h2>
+
+<p>MongoDB is <strong>not fully ACID</strong>. By default:</p>
+
+<ul>
+  <li>Atomicity is guaranteed <strong>per document</strong>.</li>
+  <li>Multi-document transactions exist (since v4.0) but add overhead.</li>
+</ul>
+
+<h3 id="-multi-document-transaction-user--profile">✅ Multi-Document Transaction (User + Profile)</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Mongoid</span><span class="o">::</span><span class="no">Clients</span><span class="p">.</span><span class="nf">default</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">write: </span><span class="p">{</span> <span class="ss">w: :majority</span> <span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="o">|</span>
+  <span class="n">session</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">start_session</span>
+  <span class="n">session</span><span class="p">.</span><span class="nf">with_transaction</span> <span class="k">do</span>
+    <span class="n">user</span>    <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="s2">"a@b.com"</span><span class="p">)</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">create!</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="-atomic-inventory-decrement-inc">✅ Atomic Inventory Decrement (<code class="language-plaintext highlighter-rouge">$inc</code>)</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">product_id</span><span class="p">,</span> <span class="ss">:stock</span><span class="p">.</span><span class="nf">gte</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">)</span>
+       <span class="p">.</span><span class="nf">find_one_and_update</span><span class="p">(</span>
+         <span class="p">{</span> <span class="s1">'$inc'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">stock: </span><span class="o">-</span><span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+         <span class="ss">return_document: :after</span>
+       <span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="-multi-document-money-transfer">✅ Multi-Document Money Transfer</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">session</span><span class="p">.</span><span class="nf">with_transaction</span> <span class="k">do</span>
+  <span class="n">from</span> <span class="o">=</span> <span class="no">Account</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">find</span><span class="p">(</span><span class="n">from_id</span><span class="p">)</span>
+  <span class="n">to</span>   <span class="o">=</span> <span class="no">Account</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">find</span><span class="p">(</span><span class="n">to_id</span><span class="p">)</span>
+
+  <span class="k">raise</span> <span class="s2">"Insufficient funds"</span> <span class="k">if</span> <span class="n">from</span><span class="p">.</span><span class="nf">balance_cents</span> <span class="o">&lt;</span> <span class="n">amount_cents</span>
+
+  <span class="n">from</span><span class="p">.</span><span class="nf">inc</span><span class="p">(</span><span class="ss">balance_cents: </span><span class="o">-</span><span class="n">amount_cents</span><span class="p">)</span>
+  <span class="n">to</span><span class="p">.</span><span class="nf">inc</span><span class="p">(</span><span class="ss">balance_cents: </span><span class="n">amount_cents</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-what-must-be-atomic">4. What Must Be Atomic?</h2>
+
+<p><strong>Should be atomic:</strong> - Creating related records (User + Profile) -
+Money transfers - Inventory decrements - State transitions with
+invariants</p>
+
+<p><strong>Doesn’t need atomicity:</strong> - Logging/analytics - Emails/notifications -
+Background jobs - Cache writes</p>
+
+<hr />
+
+<h2 id="5-quick-checklist">5. Quick Checklist</h2>
+
+<ul>
+  <li>✅ Wrap multi-record writes in <code class="language-plaintext highlighter-rouge">transaction</code> (Postgres).</li>
+  <li>✅ Use row locks for contested records (balances, seats).</li>
+  <li>✅ Enforce consistency with DB constraints + Rails validations.</li>
+  <li>✅ In MongoDB, prefer single-document atomic ops (<code class="language-plaintext highlighter-rouge">$inc</code>).</li>
+  <li>✅ For multi-doc writes in MongoDB, use transactions
+(<code class="language-plaintext highlighter-rouge">w: :majority</code>).</li>
+  <li>✅ Push side-effects (<code class="language-plaintext highlighter-rouge">emails</code>, <code class="language-plaintext highlighter-rouge">logs</code>) to <code class="language-plaintext highlighter-rouge">after_commit</code> or jobs.</li>
+  <li>✅ Keep transactions short; lock rows in consistent order.</li>
+</ul>
+
+<hr />
+
+<h2 id="6-final-thoughts">6. Final Thoughts</h2>
+
+<ul>
+  <li><strong>PostgreSQL</strong> is ACID by design — perfect for transactional
+business logic.</li>
+  <li><strong>MongoDB</strong> is atomic per document; use transactions only where
+needed.</li>
+  <li>In Rails, <strong>make critical paths atomic, and decouple side-effects</strong>.</li>
+</ul>
+
+<p>With these patterns, you’ll avoid data corruption and keep your Rails
+apps both reliable and scalable.</p>
+</div>
+    </div>
+  </div>
+</div>
+
+  </main>
+
+  <footer>
+    <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank">cv</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  </footer>
+</body>
+
+</html>

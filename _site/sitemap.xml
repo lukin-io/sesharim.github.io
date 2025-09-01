@@ -42,7 +42,11 @@
 </url>
 <url>
 <loc>http://localhost:4000/blog/rails-console-startup-banner</loc>
-<lastmod>2025-08-25T00:01:01+00:00</lastmod>
+<lastmod>2025-08-25T09:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb</loc>
+<lastmod>2025-09-01T09:00:00+00:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/blog</loc>
