@@ -9,66 +9,173 @@ categories: rails patterns acis
 excerpt: ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns
 ---
 
-# ACID in Rails: PostgreSQL vs MongoDB (with Atomic Patterns)
+# ACID, Atomicity, and Rails Patterns: PostgreSQL vs MongoDB
 
-As a Rails engineer, you often hear about **ACID** compliance in
-databases. But how does it actually apply when building endpoints with
-**PostgreSQL** (the Rails default) versus **MongoDB**? Let's break it
-down with clear examples.
+This post consolidates our full discussion about **ACID** properties,
+what's atomic and what isn't, and how this applies to **Ruby on Rails**
+with **PostgreSQL** and **MongoDB**. It includes explanations, Rails
+best practices, anti-patterns, and corrected implementations.
 
 ------------------------------------------------------------------------
 
 ## 1. What is ACID?
 
-**ACID** stands for:
+**ACID** is a set of four properties that guarantee database
+reliability:
 
-1.  **Atomicity** -- all-or-nothing transactions.
-2.  **Consistency** -- data moves only between valid states.
-3.  **Isolation** -- transactions behave as if running alone.
-4.  **Durability** -- committed data survives crashes.
+1.  **Atomicity** -- A transaction is "all or nothing". Either every
+    operation succeeds, or none are applied.
+2.  **Consistency** -- Data must always move from one valid state to
+    another. Constraints, validations, and referential integrity must
+    hold true.
+3.  **Isolation** -- Concurrent transactions should not interfere with
+    each other. Each transaction should behave as if it's running alone.
+4.  **Durability** -- Once a transaction is committed, it survives
+    crashes, restarts, and power loss.
 
 ------------------------------------------------------------------------
 
-## 2. PostgreSQL in Rails (ActiveRecord)
+## 2. ACID in PostgreSQL (Rails default relational DB)
 
-PostgreSQL is **fully ACID-compliant**.
+PostgreSQL is **fully ACID-compliant**:
 
-### ✅ Atomic User + Profile Creation
+-   ✅ **Atomicity**: `ActiveRecord::Base.transaction` ensures rollback
+    if any statement fails.\
+-   ✅ **Consistency**: Enforced with primary keys, foreign keys, NOT
+    NULL, CHECK, Rails validations, etc.\
+-   ✅ **Isolation**: PostgreSQL supports multiple isolation levels
+    (`READ COMMITTED`, `REPEATABLE READ`, `SERIALIZABLE`). Rails
+    defaults to `READ COMMITTED`.\
+-   ✅ **Durability**: Uses write-ahead logging (WAL). Once committed,
+    data is safe.
+
+Example in Rails:
 
 ``` ruby
 ActiveRecord::Base.transaction do
-  user    = User.create!(email: "a@b.com")
-  profile = Profile.create!(user: user, name: "Max")
+  user.save!
+  profile.save!
 end
 ```
 
-### ✅ Atomic Money Transfer with Locks
+If `profile.save!` fails, `user.save!` rolls back automatically.
+
+------------------------------------------------------------------------
+
+## 3. ACID in MongoDB (NoSQL)
+
+MongoDB is **not fully ACID** in the same sense as PostgreSQL:
+
+-   ✅ **Atomicity**: Guaranteed **per single document**.\
+    ❌ Multi-document atomicity is only possible with multi-document
+    transactions (added in MongoDB 4.0, but with overhead).\
+-   ⚠️ **Consistency**: Schema-less by default. Rails (via `mongoid`)
+    must enforce validations at app level.\
+-   ⚠️ **Isolation**: Document-level isolation only. If two transactions
+    modify separate fields of the same document concurrently, one may
+    overwrite the other without detecting conflict.\
+-   ⚠️ **Durability**: Configurable via **write concerns** (`w:1`,
+    `w:majority`). If not set properly, writes can be acknowledged
+    before being persisted.
+
+Rails (with Mongoid) example:
 
 ``` ruby
-class Payments::TransferFunds
-  def self.call(from_id:, to_id:, amount_cents:)
-    ActiveRecord::Base.transaction do
-      from = Account.lock.find(from_id)
-      to   = Account.lock.find(to_id)
-
-      raise "Insufficient funds" if from.balance_cents < amount_cents
-
-      from.balance_cents -= amount_cents
-      to.balance_cents   += amount_cents
-
-      from.save!
-      to.save!
-    end
-  end
+User.with_session do |session|
+  session.start_transaction
+  user.update!(name: "Max")
+  profile.update!(bio: "Hello") # multi-doc transaction
+  session.commit_transaction
 end
 ```
 
-### ✅ Side Effects After Commit
+Without a transaction, only `user.update!` might persist, breaking
+atomicity.
+
+------------------------------------------------------------------------
+
+## 4. What Should Be **Atomic** in Rails?
+
+Atomicity should be applied to operations where **partial success would
+corrupt data integrity**:
+
+-   ✅ **Creating related records** (e.g., `User` + `Profile`).\
+-   ✅ **Money transfers / payments** (must debit & credit atomically).\
+-   ✅ **Bulk inserts / updates** where all must succeed together.\
+-   ✅ **Inventory changes** (e.g., decrementing stock and creating an
+    order).
+
+What doesn't need to be atomic:
+
+-   ❌ **Read-only queries** (no state change).\
+-   ❌ **Logging / analytics writes** (failure doesn't break core
+    business).\
+-   ❌ **Background jobs** (can retry independently).\
+-   ❌ **Non-critical side effects** (sending emails, audit trails ---
+    wrap in `after_commit` hooks instead).
+
+------------------------------------------------------------------------
+
+## 5. Rails Anti-Patterns vs Fixed Atomic Patterns
+
+### PostgreSQL Examples
+
+#### ❌ Bad: User + Profile creation (partial writes possible)
+
+``` ruby
+def create
+  user = User.create!(email: params[:email])
+  profile = Profile.create!(user: user, name: params[:name]) # may fail later
+end
+```
+
+#### ✅ Fixed: Use transaction
+
+``` ruby
+ActiveRecord::Base.transaction do
+  user    = User.create!(email: params[:email])
+  profile = Profile.create!(user: user, name: params[:name])
+end
+```
+
+------------------------------------------------------------------------
+
+#### ❌ Bad: Money transfer without transaction
+
+``` ruby
+from.balance_cents -= amount
+from.save!
+
+to.balance_cents += amount
+to.save!
+```
+
+#### ✅ Fixed: Use transaction + locks
+
+``` ruby
+ActiveRecord::Base.transaction do
+  from = Account.lock.find(from_id)
+  to   = Account.lock.find(to_id)
+
+  raise "Insufficient funds" if from.balance_cents < amount
+
+  from.balance_cents -= amount
+  to.balance_cents   += amount
+
+  from.save!
+  to.save!
+end
+```
+
+------------------------------------------------------------------------
+
+#### ✅ Best practice: Emails/logging with `after_commit`
 
 ``` ruby
 class User < ApplicationRecord
   after_commit :enqueue_welcome_email, on: :create
 
+  private
   def enqueue_welcome_email
     SendWelcomeEmailJob.perform_later(id)
   end
@@ -77,26 +184,38 @@ end
 
 ------------------------------------------------------------------------
 
-## 3. MongoDB in Rails (Mongoid)
+### MongoDB Examples
 
-MongoDB is **not fully ACID**. By default:
+#### ❌ Bad: Multi-document creation without transaction
 
--   Atomicity is guaranteed **per document**.
--   Multi-document transactions exist (since v4.0) but add overhead.
+``` ruby
+user    = User.create!(email: email)
+profile = Profile.create!(user_id: user.id, name: name)
+```
 
-### ✅ Multi-Document Transaction (User + Profile)
+#### ✅ Fixed: Wrap in transaction
 
 ``` ruby
 Mongoid::Clients.default.with(write: { w: :majority }) do |client|
   session = client.start_session
   session.with_transaction do
-    user    = User.with(session: session).create!(email: "a@b.com")
-    profile = Profile.with(session: session).create!(user_id: user.id, name: "Max")
+    user    = User.with(session: session).create!(email: email)
+    profile = Profile.with(session: session).create!(user_id: user.id, name: name)
   end
 end
 ```
 
-### ✅ Atomic Inventory Decrement (`$inc`)
+------------------------------------------------------------------------
+
+#### ❌ Bad: Inventory decrement (non-atomic)
+
+``` ruby
+product = Product.find(product_id)
+product.stock -= 1
+product.save!
+```
+
+#### ✅ Fixed: Use `$inc` (atomic operator)
 
 ``` ruby
 Product.where(id: product_id, :stock.gte => 1)
@@ -106,7 +225,9 @@ Product.where(id: product_id, :stock.gte => 1)
        )
 ```
 
-### ✅ Multi-Document Money Transfer
+------------------------------------------------------------------------
+
+#### ✅ Money transfer with Mongoid transaction
 
 ``` ruby
 session.with_transaction do
@@ -122,37 +243,48 @@ end
 
 ------------------------------------------------------------------------
 
-## 4. What Must Be Atomic?
+## 6. How to Call These Patterns
 
-**Should be atomic:** - Creating related records (User + Profile) -
-Money transfers - Inventory decrements - State transitions with
-invariants
+``` ruby
+# PostgreSQL
+Payments::TransferFunds.call(from_id: 1, to_id: 2, amount_cents: 500)
 
-**Doesn't need atomicity:** - Logging/analytics - Emails/notifications -
-Background jobs - Cache writes
-
-------------------------------------------------------------------------
-
-## 5. Quick Checklist
-
--   ✅ Wrap multi-record writes in `transaction` (Postgres).
--   ✅ Use row locks for contested records (balances, seats).
--   ✅ Enforce consistency with DB constraints + Rails validations.
--   ✅ In MongoDB, prefer single-document atomic ops (`$inc`).
--   ✅ For multi-doc writes in MongoDB, use transactions
-    (`w: :majority`).
--   ✅ Push side-effects (`emails`, `logs`) to `after_commit` or jobs.
--   ✅ Keep transactions short; lock rows in consistent order.
+# MongoDB
+Users::CreateWithProfileMongo.call(email: "a@b.com", name: "Max")
+Inventory::ReserveItemMongo.call(product_id: BSON::ObjectId("..."))
+```
 
 ------------------------------------------------------------------------
 
-## 6. Final Thoughts
+## 7. What Must Be Atomic vs. Not
 
--   **PostgreSQL** is ACID by design --- perfect for transactional
-    business logic.
--   **MongoDB** is atomic per document; use transactions only where
-    needed.
--   In Rails, **make critical paths atomic, and decouple side-effects**.
+**Atomic:** - User + Profile creation - Money transfers -
+Inventory/quotas - State transitions
 
-With these patterns, you'll avoid data corruption and keep your Rails
-apps both reliable and scalable.
+**Not atomic:** - Emails - Logging - Background jobs - Cache
+
+------------------------------------------------------------------------
+
+## 8. Quick Checklist
+
+-   [ ] Use `ActiveRecord::Base.transaction` in Postgres.\
+-   [ ] Use row locks (`lock`, `with_lock`) where needed.\
+-   [ ] Enforce invariants with DB constraints + app validations.\
+-   [ ] Use `$inc` for atomic updates in MongoDB.\
+-   [ ] Use MongoDB transactions for cross-doc operations.\
+-   [ ] Use `after_commit` for side-effects.\
+-   [ ] Keep transactions short.\
+-   [ ] Consider idempotency keys for payments.
+
+------------------------------------------------------------------------
+
+## 9. Final Thoughts
+
+-   **PostgreSQL** = full ACID, perfect for transactional systems.\
+-   **MongoDB** = atomic per document, transactions available but
+    heavier.\
+-   **Rails best practice** = make critical paths atomic, decouple side
+    effects.
+
+By following these patterns, your Rails apps will remain consistent,
+reliable, and scalable.
