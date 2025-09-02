@@ -27,7 +27,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> -->
   <meta name="description"
-    content="Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important bes...">
+    content="Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on ...">
   <meta name="keywords"
     content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
   <meta name="author" content="Max Lukin">
@@ -37,8 +37,8 @@
 <meta property="og:title" content="Principles for Writing Maintainable Code" />
 <meta name="author" content="Max Lukin" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important best practices with Ruby on Rails, examples and definations in one place." />
-<meta property="og:description" content="Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important best practices with Ruby on Rails, examples and definations in one place." />
+<meta name="description" content="Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows." />
+<meta property="og:description" content="Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows." />
 <link rel="canonical" href="http://localhost:4000/blog/principles-for-writing-maintainable-code" />
 <meta property="og:url" content="http://localhost:4000/blog/principles-for-writing-maintainable-code" />
 <meta property="og:site_name" content="Software Engineering consultant" />
@@ -47,7 +47,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Principles for Writing Maintainable Code" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2020-09-12T12:00:00+00:00","datePublished":"2020-09-12T12:00:00+00:00","description":"Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important best practices with Ruby on Rails, examples and definations in one place.","headline":"Principles for Writing Maintainable Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/principles-for-writing-maintainable-code"},"url":"http://localhost:4000/blog/principles-for-writing-maintainable-code"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2020-09-12T12:00:00+00:00","datePublished":"2020-09-12T12:00:00+00:00","description":"Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows.","headline":"Principles for Writing Maintainable Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/principles-for-writing-maintainable-code"},"url":"http://localhost:4000/blog/principles-for-writing-maintainable-code"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -71,39 +71,350 @@
       <h4>Principles for Writing Maintainable Code</h4>
       <small class="text-muted">Sep 12, 2020</small>
       <hr />
-      <div><p>Applications always change, and writing maintainable code is very important in software engineering. Here in Lukin.io we decided to gather most important best practices with Ruby on Rails, examples and definations in one place.</p>
+      <div><p>Applications always change. This post collects <strong>practical principles and Rails‑friendly patterns</strong> I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows.</p>
 
-<p>In my work i’m using principles like: <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself" target="_blank">DRY (Don’t repeat youself)</a>, <a href="https://en.wikipedia.org/wiki/KISS_principle" target="_blank">KISS (Keep it simple, stupid)</a>, <a href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it" target="_blank">YAGNI (You aren’t gonna need it)</a> and <a href="https://en.wikipedia.org/wiki/Eating_your_own_dog_food" target="_blank">Eating your own dog food</a>, but in this post i’ll highlight most important ones.</p>
+<blockquote>
+  <p><strong>What’s new in this revision?</strong>
+It expands the original article with concrete Rails examples, explains how to apply the ideas in production code, and adds a checklist you can drop into your workflow <em>today</em>. It also aligns examples with a modern Rails monolith (Hotwire/Turbo, API responses via Blueprinter, presenters, and snake_case JSON keys).</p>
+</blockquote>
 
-<p>First one is <strong>SOLID</strong>. Those principles of OOP consist of:</p>
+<hr />
+
+<h2 id="at-a-glance-the-roadmap">At a glance: the roadmap</h2>
+
+<ol>
+  <li><strong>Foundations</strong> — KISS, DRY, YAGNI, SOLID, Law of Demeter, TRUE, Rails Way, PORO.</li>
+  <li><strong>Rails‑friendly “seams”</strong> — Query Objects (CQS), Service Objects (idempotent + transactional), Domain Events, Ports &amp; Adapters.</li>
+  <li><strong>Presentation boundaries</strong> — Blueprinter &amp; Presenters for clean JSON/UI separation.</li>
+  <li><strong>Safety &amp; speed</strong> — Transactions, invariants, observability, performance, security.</li>
+  <li><strong>Tests &amp; docs</strong> — BDD/TDD, contract tests, ADRs.</li>
+  <li><strong>How to use these in your app</strong> — short, copy‑paste examples.</li>
+  <li><strong>Checklist</strong> — adopt in small steps.</li>
+</ol>
+
+<hr />
+
+<h1 id="1-foundations">1) Foundations</h1>
+
+<p>Below, each principle is shown as <strong>Action → Rule → Example → Explanation</strong>.</p>
+
+<h3 id="11-kiss-keep-it-simple-stupid-rails-way-of-saying-convention-over-configuration">1.1 KISS (Keep it simple, stupid) [Rail’s way of saying “convention over configuration”]</h3>
+<p><strong>Action →</strong> Prefer the obvious Rails convention before inventing a custom abstraction.
+<strong>Rule →</strong> Reach for generators, models, concerns, presenters before custom frameworks.
+<strong>Example →</strong> Don’t build a custom background job runner when Active Job + Sidekiq works.
+<strong>Explanation →</strong> Simplicity reduces maintenance and makes it easy for teammates to help.</p>
+
+<h3 id="12-dry-dont-repeat-yourself-dry">1.2 DRY (Don’t Repeat Yourself) <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">dry</a></h3>
+<p><strong>Action →</strong> Extract <em>stable</em> duplication—the stuff that’s obviously the same.
+<strong>Rule →</strong> Duplicate twice, abstract on the third (see AHA/Rule‑of‑Three below).
+<strong>Example →</strong> Extract shared JSON serialization into a Blueprint (see §3).
+<strong>Explanation →</strong> DRY keeps behavior consistent and reduces bug surface area.</p>
+
+<h3 id="13-yagni-you-arent-gonna-need-it-yagni--aha-avoid-hasty-abstractions">1.3 YAGNI (You Aren’t Gonna Need It) <a href="https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it">yagni</a> + AHA (Avoid Hasty Abstractions)</h3>
+<p><strong>Action →</strong> Ship the simplest thing that works for the next milestone.
+<strong>Rule →</strong> Prefer a small, local duplication over a premature base class.
+<strong>Example →</strong> Keep <code class="language-plaintext highlighter-rouge">MeleeDamageCalculator</code> and <code class="language-plaintext highlighter-rouge">MagicDamageCalculator</code> separate until a third type appears.
+<strong>Explanation →</strong> You can always generalize later—after you see the real pattern.</p>
+
+<h3 id="14-solid-oo-design-guardrails">1.4 SOLID (OO design guardrails)</h3>
+<p><strong>Action →</strong> Design objects with one job, and depend on interfaces, not implementations.
+<strong>Rule →</strong> SRP, OCP, LSP, ISP, DIP guide refactors and extensions.
+<strong>Example →</strong> A <code class="language-plaintext highlighter-rouge">GrantGold</code> service updates balances; it <em>publishes</em> an event instead of directly sending notifications (DIP).
+<strong>Explanation →</strong> SOLID keeps modules extensible without ripple effects.</p>
+
+<h3 id="15-law-of-demeter-lod">1.5 Law of Demeter (LoD)</h3>
+<p><strong>Action →</strong> Ask objects to <em>do things</em>; avoid “train‑wreck” calls (<code class="language-plaintext highlighter-rouge">a.b.c.d</code>).
+<strong>Rule →</strong> Talk to friends, not strangers; hide internal structure.
+<strong>Example →</strong> Provide <code class="language-plaintext highlighter-rouge">character.inventory.overweight?</code> instead of summing item weights externally.
+<strong>Explanation →</strong> Reduces coupling and eases refactors.</p>
+
+<h3 id="16-true-code-transparent-reasonable-usable-exemplary">1.6 TRUE Code (Transparent, Reasonable, Usable, Exemplary)</h3>
+<p><strong>Action →</strong> Make the consequences of change obvious and local.
+<strong>Rule →</strong> Favor small, well‑named methods and data structures.
+<strong>Example →</strong> A Query Object that says what it returns in its name and docstring.
+<strong>Explanation →</strong> TRUE code supports today’s features and tomorrow’s changes.</p>
+
+<h3 id="17-rails-way--poro">1.7 Rails Way + PORO</h3>
+<p><strong>Action →</strong> Start with Rails primitives; move domain logic to POROs as it grows.
+<strong>Rule →</strong> Keep controllers thin, models focused, services/presenters clear.
+<strong>Example →</strong> Business rules in <code class="language-plaintext highlighter-rouge">app/services/…</code> and <code class="language-plaintext highlighter-rouge">app/queries/…</code>, rendering in Blueprints/Presenters.
+<strong>Explanation →</strong> Balances Rails productivity with separation of concerns.</p>
+
+<hr />
+
+<h1 id="2-railsfriendly-seams">2) Rails‑friendly “seams”</h1>
+
+<h2 id="21-query-objects-cqs-separate-reads-from-writes">2.1 Query Objects (CQS: separate reads from writes)</h2>
+<p><strong>Action →</strong> Put non‑trivial reads in PORO query objects; commands mutate, queries don’t.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/queries/top_guilds_by_power_query.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Example usage:</span>
+<span class="c1">#   TopGuildsByPowerQuery.call(limit: 10)</span>
+<span class="c1"># Returns:</span>
+<span class="c1">#   ActiveRecord::Relation&lt;Guild&gt; ordered by total_power desc, limited.</span>
+<span class="k">class</span> <span class="nc">TopGuildsByPowerQuery</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">limit</span><span class="p">:)</span>
+    <span class="no">Guild</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="s1">'guilds.*, SUM(players.power) AS total_power'</span><span class="p">)</span>
+         <span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:players</span><span class="p">)</span>
+         <span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="s1">'guilds.id'</span><span class="p">)</span>
+         <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s1">'total_power DESC'</span><span class="p">)</span>
+         <span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="22-service-objects-idempotent-transactional">2.2 Service Objects (idempotent, transactional)</h2>
+<p><strong>Action →</strong> Wrap side‑effects in a single transaction; make them safe to retry.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/models/idempotency_key.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">IdempotencyKey</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:key</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span>
+<span class="k">end</span>
+<span class="c1"># Migration: add_index :idempotency_keys, :key, unique: true</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/services/economy/grant_gold.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Economy</span>
+  <span class="k">class</span> <span class="nc">GrantGold</span>
+    <span class="c1"># Example usage:</span>
+    <span class="c1">#   Economy::GrantGold.call(</span>
+    <span class="c1">#     player_id: 42,</span>
+    <span class="c1">#     amount: 100,</span>
+    <span class="c1">#     key: "grant_gold:quest:123:player:42"</span>
+    <span class="c1">#   )</span>
+    <span class="c1"># Returns:</span>
+    <span class="c1">#   Player (updated) if applied; Player (unchanged) if idempotency key was already used.</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">player_id</span><span class="p">:,</span> <span class="n">amount</span><span class="p">:,</span> <span class="n">key</span><span class="p">:)</span>
+      <span class="n">new</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">key</span><span class="p">).</span><span class="nf">call</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+      <span class="vi">@player_id</span><span class="p">,</span> <span class="vi">@amount</span><span class="p">,</span> <span class="vi">@key</span> <span class="o">=</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">key</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">call</span>
+      <span class="no">ApplicationRecord</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
+        <span class="no">IdempotencyKey</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">key: </span><span class="vi">@key</span><span class="p">)</span> <span class="c1"># raises if reused</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">lock</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="vi">@player_id</span><span class="p">)</span>
+        <span class="n">player</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">current_gold: </span><span class="n">player</span><span class="p">.</span><span class="nf">current_gold</span> <span class="o">+</span> <span class="vi">@amount</span><span class="p">)</span>
+        <span class="no">DomainEvents</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s1">'economy.gold_granted'</span><span class="p">,</span>
+                             <span class="ss">player_id: </span><span class="n">player</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+                             <span class="ss">amount: </span><span class="vi">@amount</span><span class="p">,</span>
+                             <span class="ss">key: </span><span class="vi">@key</span><span class="p">)</span>
+        <span class="n">player</span>
+      <span class="k">end</span>
+    <span class="k">rescue</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotUnique</span>
+      <span class="no">Player</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="vi">@player_id</span><span class="p">)</span> <span class="c1"># no‑op: already granted</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="23-domain-events-decouple-via-publishsubscribe">2.3 Domain Events (decouple via publish/subscribe)</h2>
+<p><strong>Action →</strong> Publish high‑level events; let subscribers react independently.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/lib/domain_events.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">DomainEvents</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">publish</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">payload</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="p">.</span><span class="nf">instrument</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
+      <span class="n">event</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="o">::</span><span class="no">Event</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="n">block</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/subscribers/analytics/economy_subscriber.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Analytics</span>
+  <span class="k">class</span> <span class="nc">EconomySubscriber</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">boot!</span>
+      <span class="no">DomainEvents</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s1">'economy.gold_granted'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">payload</span><span class="o">|</span>
+        <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="ss">event: </span><span class="s1">'gold_granted'</span><span class="p">,</span>
+                          <span class="ss">player_id: </span><span class="n">payload</span><span class="p">[</span><span class="ss">:player_id</span><span class="p">],</span>
+                          <span class="ss">amount: </span><span class="n">payload</span><span class="p">[</span><span class="ss">:amount</span><span class="p">])</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">config/initializers/subscribers.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Analytics</span><span class="o">::</span><span class="no">EconomySubscriber</span><span class="p">.</span><span class="nf">boot!</span>
+</code></pre></div></div>
+
+<h2 id="24-ports--adapters-hexagonallite">2.4 Ports &amp; Adapters (hexagonal‑lite)</h2>
+<p><strong>Action →</strong> Depend on interfaces; swap adapters at the edges.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/interfaces/notifiers/global_notifier.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Notifiers</span>
+  <span class="k">class</span> <span class="nc">GlobalNotifier</span>
+    <span class="c1"># Example usage:</span>
+    <span class="c1">#   Notifiers::ActionCableNotifier.new.broadcast("Server restart in 5 minutes")</span>
+    <span class="c1"># Returns:</span>
+    <span class="c1">#   void</span>
+    <span class="k">def</span> <span class="nf">broadcast</span><span class="p">(</span><span class="n">_message</span><span class="p">)</span> <span class="o">=</span> <span class="k">raise</span> <span class="no">NotImplementedError</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/adapters/notifiers/action_cable_notifier.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Notifiers</span>
+  <span class="k">class</span> <span class="nc">ActionCableNotifier</span> <span class="o">&lt;</span> <span class="no">GlobalNotifier</span>
+    <span class="k">def</span> <span class="nf">broadcast</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+      <span class="no">ActionCable</span><span class="p">.</span><span class="nf">server</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span><span class="s1">'global'</span><span class="p">,</span> <span class="n">message</span><span class="p">:)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="3-presentation-boundaries-jsonui">3) Presentation boundaries (JSON/UI)</h1>
+
+<p><strong>Goal:</strong> Keep API/UI code out of domain logic; keep JSON keys <strong>snake_case</strong> to match DB fields.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">app/blueprints/player_blueprint.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">PlayerBlueprint</span> <span class="o">&lt;</span> <span class="no">Blueprinter</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">identifier</span> <span class="ss">:id</span>
+
+  <span class="n">field</span> <span class="ss">:name</span> <span class="k">do</span> <span class="o">|</span><span class="n">player</span><span class="o">|</span>
+    <span class="n">player</span><span class="p">.</span><span class="nf">name</span>
+  <span class="k">end</span>
+
+  <span class="n">field</span> <span class="ss">:current_gold</span> <span class="k">do</span> <span class="o">|</span><span class="n">player</span><span class="o">|</span>
+    <span class="n">player</span><span class="p">.</span><span class="nf">current_gold</span>
+  <span class="k">end</span>
+
+  <span class="n">field</span> <span class="ss">:level</span> <span class="k">do</span> <span class="o">|</span><span class="n">player</span><span class="o">|</span>
+    <span class="n">player</span><span class="p">.</span><span class="nf">level</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Presenter example (namespaced path):</strong>
+<strong><code class="language-plaintext highlighter-rouge">app/presenters/avatars/predefined_avatar.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Avatars</span>
+  <span class="k">class</span> <span class="nc">PredefinedAvatar</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+      <span class="vi">@code</span> <span class="o">=</span> <span class="n">code</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">url</span>
+      <span class="s2">"/images/avatars/</span><span class="si">#{</span><span class="vi">@code</span><span class="si">}</span><span class="s2">.png"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="4-safety-speed--operability">4) Safety, speed &amp; operability</h1>
+
+<h2 id="41-transactions-concurrency--invariants">4.1 Transactions, concurrency &amp; invariants</h2>
 <ul>
-  <li><strong>S</strong>: Single Responsibility Principle - a class or method should serve a single purpose.</li>
-  <li><strong>O</strong>: Open/closed Principle - classes or methods should be open for extension, but closed for modification</li>
-  <li><strong>L</strong>: Liskov substitution principle - replacing any instances of a parent class with an instance of one of its children without creating any unexpected or incorrect behaviors.</li>
-  <li><strong>I</strong>: Interface Segregation Principle - any client specific classes are better than one general purpose class. Less relevant in dynamic languages.</li>
-  <li><strong>D</strong>: Dependency Inversion Principle - High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend upon details. Details should depend upon abstractions.</li>
+  <li>Wrap multi‑row updates in a transaction.</li>
+  <li>Lock rows you read‑modify‑write (e.g., <code class="language-plaintext highlighter-rouge">Player.lock.find</code>).</li>
+  <li>Keep invariant checks close to the data (model validations + DB constraints).</li>
 </ul>
 
-<p>Second one is <strong>LoD</strong>, or <strong>The Law of Demeter</strong>:</p>
+<h2 id="42-observability">4.2 Observability</h2>
 <ul>
-  <li>The Law of Demeter, or Principle of Least Knowledge is a well-known software design principle for reducing coupling between collaborating objects.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">config.log_tags = [:request_id]</code> in <code class="language-plaintext highlighter-rouge">config/environments/production.rb</code>.</li>
+  <li>Prefer structured logs: <code class="language-plaintext highlighter-rouge">Rails.logger.info(event: 'battle_started', player_ids: [p1.id, p2.id])</code>.</li>
+  <li>Publish domain events for key actions (see §2.3).</li>
 </ul>
 
-<p>The code you write should have the following qualities.</p>
+<h2 id="43-performance-guardrails">4.3 Performance guardrails</h2>
 <ul>
-  <li><strong>T</strong>ransparent The consequences of change should be obvious in the code that is changing and in distant code that relies upon it;</li>
-  <li><strong>R</strong>easonable The cost of any change should be proportional to the benefits the change achieves;</li>
-  <li><strong>U</strong>sable Existing code should be usable in new and unexpected contexts;</li>
-  <li><strong>E</strong>xemplary The code itself should encourage those who change it to perpetuate these qualities;</li>
+  <li>Paginate by default; beware N+1 (use <code class="language-plaintext highlighter-rouge">includes</code>).</li>
+  <li>Cache read‑heavy endpoints; memoize inside request scope.</li>
+  <li>Budget queries per request; measure with logs.</li>
 </ul>
 
-<p>Code that is Transparent, Reasonable, Usable, and Exemplary (<strong>TRUE</strong>) not only meets today’s needs but can also be changed to meet the needs of the future. The first step in creating code that is TRUE is to ensure that each class has a single, well-defined responsibility.</p>
-
-<p>And the most important part is testing:</p>
+<h2 id="44-security-defaults">4.4 Security defaults</h2>
 <ul>
-  <li><strong>BDD</strong> - Behavior-driven development is a software development practice of working in a short feedback loop, where we consistently apply test-driven development to every new feature we are exploring and working on.</li>
-  <li><strong>TDD</strong> - Test-driven development is a programming technique that requires you to write test.</li>
+  <li>Validate/whitelist params; <strong>never</strong> map camelCase to snake_case in controllers—use native <code class="language-plaintext highlighter-rouge">snake_case</code> everywhere.</li>
+  <li>Least‑privilege roles; rate‑limit sensitive endpoints.</li>
 </ul>
+
+<hr />
+
+<h1 id="5-tests--documentation">5) Tests &amp; documentation</h1>
+
+<h2 id="51-bddtdd-short-feedback-loops">5.1 BDD/TDD (short feedback loops)</h2>
+<ul>
+  <li>Drive services/queries with fast unit tests.</li>
+  <li>Add a few request/system tests for the happy path.</li>
+  <li>Use contract tests around external ports (adapters).</li>
+</ul>
+
+<h2 id="52-documentationascode">5.2 Documentation‑as‑code</h2>
+<ul>
+  <li>Keep lightweight ADRs in <code class="language-plaintext highlighter-rouge">doc/adr/</code> to record decisions.</li>
+  <li>Add README.md per top‑level folder explaining responsibilities.</li>
+</ul>
+
+<hr />
+
+<h1 id="6-how-youll-call-this-from-your-app">6) How you’ll call this from your app</h1>
+
+<p><strong>Grant gold from a controller</strong>
+<strong><code class="language-plaintext highlighter-rouge">app/controllers/economy/gold_grants_controller.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Economy</span>
+  <span class="k">class</span> <span class="nc">GoldGrantsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="k">def</span> <span class="nf">create</span>
+      <span class="n">player</span> <span class="o">=</span> <span class="no">Economy</span><span class="o">::</span><span class="no">GrantGold</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span>
+        <span class="ss">player_id: </span><span class="n">params</span><span class="p">[</span><span class="ss">:player_id</span><span class="p">],</span>
+        <span class="ss">amount: </span><span class="n">params</span><span class="p">[</span><span class="ss">:amount</span><span class="p">].</span><span class="nf">to_i</span><span class="p">,</span>
+        <span class="ss">key: </span><span class="s2">"quest:</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:quest_id</span><span class="p">]</span><span class="si">}</span><span class="s2">:grant_gold:player:</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:player_id</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+      <span class="p">)</span>
+
+      <span class="n">render</span> <span class="ss">json: </span><span class="no">PlayerBlueprint</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="n">player</span><span class="p">)</span> <span class="c1"># snake_case keys</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Use a query object in a controller</strong>
+<strong><code class="language-plaintext highlighter-rouge">app/controllers/guilds_controller.rb</code></strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">GuildsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">limit</span>   <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:limit</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nf">to_i</span>
+    <span class="vi">@guilds</span> <span class="o">=</span> <span class="no">TopGuildsByPowerQuery</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">limit: </span><span class="n">limit</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Notify via a port (adapter injected where needed)</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">notifier</span> <span class="o">=</span> <span class="no">Notifiers</span><span class="o">::</span><span class="no">ActionCableNotifier</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">notifier</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span><span class="s2">"Double XP weekend starts now!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="7-adoption-checklist">7) Adoption checklist</h1>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Create <code class="language-plaintext highlighter-rouge">app/services/</code>, <code class="language-plaintext highlighter-rouge">app/queries/</code>, <code class="language-plaintext highlighter-rouge">app/interfaces/</code>, <code class="language-plaintext highlighter-rouge">app/adapters/</code>, <code class="language-plaintext highlighter-rouge">app/subscribers/</code>, <code class="language-plaintext highlighter-rouge">app/blueprints/</code>, <code class="language-plaintext highlighter-rouge">app/presenters/</code>.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add <code class="language-plaintext highlighter-rouge">IdempotencyKey</code> + unique index on <code class="language-plaintext highlighter-rouge">key</code>.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Convert one heavy controller scope into a <strong>Query Object</strong>.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Wrap one risky write in a <strong>Service</strong> with transaction + row lock.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Publish one Domain Event</strong> and log a subscriber reaction.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Introduce one <strong>Port</strong> (notifier) and one <strong>Adapter</strong> (ActionCable).</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Move one JSON response to <strong>Blueprinter</strong> (multi‑line fields).</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Turn on structured logging with <code class="language-plaintext highlighter-rouge">request_id</code>.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Delete obsolete files after refactors (keep PRs small and reversible).</li>
+</ul>
+
+<hr />
+
+<p><em>Eating your own dog food</em> matters too—use your own API/UI flows end‑to‑end to feel the rough edges daily. <a href="https://en.wikipedia.org/wiki/Eating_your_own_dog_food">eyodf</a></p>
+
+<hr />
 
 </div>
     </div>
