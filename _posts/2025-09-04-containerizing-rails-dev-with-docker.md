@@ -95,7 +95,7 @@ services:
       APP_VERSION: devcontainer
       RAILS_LOG_TO_STDOUT: "1"
     ports:
-      - "${{RAILS_PORT:-3000}}:3000"
+      - "${RAILS_PORT:-3000}:3000"
     depends_on:
       mysql:
         condition: service_healthy
@@ -213,7 +213,7 @@ docker compose -f docker-compose.dev.yml logs -f app
 ## Lessons learned (from real debugging)
 
 - **Empty port envs → “invalid proto”**
-  Always default your port mappings, e.g. `"${{RAILS_PORT:-3000}}:3000"`.
+  Always default your port mappings, e.g. `"${RAILS_PORT:-3000}:3000"`.
 
 - **Environment syntax**
   In YAML map style use `KEY: value` (not `KEY=value`). This avoided errors like `could not find expected ':'`.
@@ -239,7 +239,7 @@ docker compose -f docker-compose.dev.yml logs -f app
 ## Troubleshooting cookbook
 
 **“invalid proto:” in compose**
-→ A port mapping used an empty env var. Add defaults: `- "${{RAILS_PORT:-3000}}:3000"`.
+→ A port mapping used an empty env var. Add defaults: `- "${RAILS_PORT:-3000}:3000"`.
 
 **`cannot load such file -- debug/prelude`**
 → Dev gems weren’t installed. Don’t set `bundle config set without 'development test'` for dev images.

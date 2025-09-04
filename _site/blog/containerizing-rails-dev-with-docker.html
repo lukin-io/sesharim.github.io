@@ -60,10 +60,20 @@
 
     <main>
       <div class="container">
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center m-2">
-      <a href="https://lukin.io">Main</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://lukin.io/blog">Other posts</a>
-    </div>
+
+  <div class="text-center my-3 d-flex justify-content-center gap-4">
+    <!-- Home button -->
+    <a href="/" class="text-decoration-none" style="color: #0d6efd;" title="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd" />
+        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none" />
+      </svg>
+    </a>
+
+    <!-- Other posts / Blog list button -->
+    <a href="/blog" class="text-decoration-none px-3 py-2 rounded-pill fw-semibold" style="background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;" title="All Blog Posts">
+      Other posts
+    </a>
   </div>
 
   <div class="row">
@@ -194,7 +204,7 @@ Your production Dockerfile often excludes <code class="language-plaintext highli
       <span class="na">APP_VERSION</span><span class="pi">:</span> <span class="s">devcontainer</span>
       <span class="na">RAILS_LOG_TO_STDOUT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
     <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">$:3000"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">${RAILS_PORT:-3000}:3000"</span>
     <span class="na">depends_on</span><span class="pi">:</span>
       <span class="na">mysql</span><span class="pi">:</span>
         <span class="na">condition</span><span class="pi">:</span> <span class="s">service_healthy</span>
@@ -316,7 +326,7 @@ docker compose <span class="nt">-f</span> docker-compose.dev.yml logs <span clas
 <ul>
   <li>
     <p><strong>Empty port envs → “invalid proto”</strong>
-Always default your port mappings, e.g. <code class="language-plaintext highlighter-rouge">"$:3000"</code>.</p>
+Always default your port mappings, e.g. <code class="language-plaintext highlighter-rouge">"${RAILS_PORT:-3000}:3000"</code>.</p>
   </li>
   <li>
     <p><strong>Environment syntax</strong>
@@ -349,7 +359,7 @@ Use healthchecks plus a small wait loop before starting Rails.</li>
 <h2 id="troubleshooting-cookbook">Troubleshooting cookbook</h2>
 
 <p><strong>“invalid proto:” in compose</strong>
-→ A port mapping used an empty env var. Add defaults: <code class="language-plaintext highlighter-rouge">- "$:3000"</code>.</p>
+→ A port mapping used an empty env var. Add defaults: <code class="language-plaintext highlighter-rouge">- "${RAILS_PORT:-3000}:3000"</code>.</p>
 
 <p><strong><code class="language-plaintext highlighter-rouge">cannot load such file -- debug/prelude</code></strong>
 → Dev gems weren’t installed. Don’t set <code class="language-plaintext highlighter-rouge">bundle config set without 'development test'</code> for dev images.</p>

@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 Sep 2025 09:56:02 +0000</pubDate>
-    <lastBuildDate>Thu, 04 Sep 2025 09:56:02 +0000</lastBuildDate>
+    <pubDate>Thu, 04 Sep 2025 10:36:47 +0000</pubDate>
+    <lastBuildDate>Thu, 04 Sep 2025 10:36:47 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -134,7 +134,7 @@ Your production Dockerfile often excludes &lt;code class=&quot;language-plaintex
       &lt;span class=&quot;na&quot;&gt;APP_VERSION&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;devcontainer&lt;/span&gt;
       &lt;span class=&quot;na&quot;&gt;RAILS_LOG_TO_STDOUT&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;$:3000&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;${RAILS_PORT:-3000}:3000&quot;&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
       &lt;span class=&quot;na&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;na&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;service_healthy&lt;/span&gt;
@@ -256,7 +256,7 @@ docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.d
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Empty port envs → “invalid proto”&lt;/strong&gt;
-Always default your port mappings, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;$:3000&quot;&lt;/code&gt;.&lt;/p&gt;
+Always default your port mappings, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;${RAILS_PORT:-3000}:3000&quot;&lt;/code&gt;.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Environment syntax&lt;/strong&gt;
@@ -289,7 +289,7 @@ Use healthchecks plus a small wait loop before starting Rails.&lt;/li&gt;
 &lt;h2 id=&quot;troubleshooting-cookbook&quot;&gt;Troubleshooting cookbook&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;“invalid proto:” in compose&lt;/strong&gt;
-→ A port mapping used an empty env var. Add defaults: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;- &quot;$:3000&quot;&lt;/code&gt;.&lt;/p&gt;
+→ A port mapping used an empty env var. Add defaults: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;- &quot;${RAILS_PORT:-3000}:3000&quot;&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cannot load such file -- debug/prelude&lt;/code&gt;&lt;/strong&gt;
 → Dev gems weren’t installed. Don’t set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle config set without &apos;development test&apos;&lt;/code&gt; for dev images.&lt;/p&gt;
