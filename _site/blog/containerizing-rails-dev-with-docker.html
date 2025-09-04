@@ -1,0 +1,430 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Containerizing Your Rails Development with Docker + Dev Containers | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/containerizing-rails-dev-with-docker">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> -->
+  <meta name="description"
+    content="Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Containerizing Your Rails Development with Docker + Dev Containers | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Containerizing Your Rails Development with Docker + Dev Containers" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Zero-setup onboarding, reproducible environments, and fewer ‘works on my machine’ moments." />
+<meta property="og:description" content="Zero-setup onboarding, reproducible environments, and fewer ‘works on my machine’ moments." />
+<link rel="canonical" href="http://localhost:4000/blog/containerizing-rails-dev-with-docker" />
+<meta property="og:url" content="http://localhost:4000/blog/containerizing-rails-dev-with-docker" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-09-04T09:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Containerizing Your Rails Development with Docker + Dev Containers" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-09-04T09:00:00+00:00","datePublished":"2025-09-04T09:00:00+00:00","description":"Zero-setup onboarding, reproducible environments, and fewer ‘works on my machine’ moments.","headline":"Containerizing Your Rails Development with Docker + Dev Containers","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/containerizing-rails-dev-with-docker"},"url":"http://localhost:4000/blog/containerizing-rails-dev-with-docker"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="col-lg-8 mx-auto py-md-2 body">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <div class="container">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center m-2">
+      <a href="https://lukin.io">Main</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://lukin.io/blog">Other posts</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>Containerizing Your Rails Development with Docker + Dev Containers</h4>
+      <small class="text-muted">Sep 4, 2025</small>
+      <hr />
+      <div><blockquote>
+  <p><strong>TL;DR</strong>
+Containerizing your Rails dev environment with Docker (and VS Code Dev Containers) gives every engineer a fast, identical setup: <strong>Ruby + Bundler + MySQL + Redis</strong> with one click. No more per‑machine MySQL installs, version drift, or “it works on my laptop.”</p>
+</blockquote>
+
+<ul>
+  <li><strong>Repo paths used below</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">/.devcontainer/Dockerfile</code> – dev-only image</li>
+      <li><code class="language-plaintext highlighter-rouge">/docker-compose.dev.yml</code> – dev stack (app, MySQL, Redis)</li>
+      <li><code class="language-plaintext highlighter-rouge">/config/database.yml</code> – uses env vars (host, port, creds)</li>
+      <li><code class="language-plaintext highlighter-rouge">/.env.example</code> → copied to <code class="language-plaintext highlighter-rouge">.env</code> on first boot</li>
+      <li><code class="language-plaintext highlighter-rouge">/bin/setup</code> – idempotent bootstrap (optional but recommended)</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="why-containerize-local-development">Why containerize local development?</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benefit</th>
+      <th>Why it matters</th>
+      <th>Trade‑off</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Instant onboarding</strong></td>
+      <td>New devs open the repo and everything “just runs.”</td>
+      <td>Slightly larger first build; Docker Desktop required.</td>
+    </tr>
+    <tr>
+      <td><strong>Reproducible environments</strong></td>
+      <td>Everyone shares the same Ruby, MySQL, Redis, OS libs.</td>
+      <td>You maintain Dockerfiles/Compose.</td>
+    </tr>
+    <tr>
+      <td><strong>Isolation</strong></td>
+      <td>No conflicts with system MySQL/Redis or multiple projects.</td>
+      <td>File I/O can be slower than native (especially on macOS).</td>
+    </tr>
+    <tr>
+      <td><strong>Parity with CI/Prod</strong></td>
+      <td>Same images/services you ship are used in dev.</td>
+      <td>Can tempt you to over‑optimize images early.</td>
+    </tr>
+    <tr>
+      <td><strong>Easy cleanup</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">docker compose down -v</code> wipes everything clean.</td>
+      <td>You must understand volumes vs. containers.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="the-dev-stack">The dev stack</h2>
+
+<h3 id="1-dev-only-dockerfile--devcontainerdockerfile">1) Dev-only Dockerfile — <code class="language-plaintext highlighter-rouge">/.devcontainer/Dockerfile</code></h3>
+
+<p>This keeps dev gems, installs to <code class="language-plaintext highlighter-rouge">/usr/local/bundle</code>, and doesn’t assume production secrets.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># .devcontainer/Dockerfile</span>
+<span class="k">FROM</span><span class="s"> ruby:3.4.4-slim</span>
+
+<span class="k">ENV</span><span class="s"> LANG=C.UTF-8 LC_ALL=C.UTF-8     BUNDLE_PATH=/usr/local/bundle BUNDLE_JOBS=4 BUNDLE_RETRY=3</span>
+
+<span class="k">RUN </span>apt-get update <span class="nt">-qq</span> <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">--no-install-recommends</span> <span class="nt">-y</span>       ca-certificates curl bash tzdata libjemalloc2 libvips       default-mysql-client libmariadb3 build-essential git libpq-dev       libyaml-dev pkg-config default-libmysqlclient-dev     <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span> /var/cache/apt/archives
+
+<span class="c"># Optional jemalloc preload</span>
+<span class="k">RUN </span><span class="nb">echo</span> <span class="s2">"/usr/lib/</span><span class="si">$(</span><span class="nb">uname</span> <span class="nt">-m</span><span class="si">)</span><span class="s2">-linux-gnu/libjemalloc.so.2"</span> <span class="o">&gt;</span> /etc/ld.so.preload <span class="o">||</span> <span class="nb">true</span>
+
+<span class="k">WORKDIR</span><span class="s"> /workspaces/app</span>
+
+<span class="c"># Install Bundler matching Gemfile.lock if present</span>
+<span class="k">COPY</span><span class="s"> Gemfile Gemfile.lock ./</span>
+<span class="k">RUN </span><span class="nb">set</span> <span class="nt">-eux</span><span class="p">;</span>   <span class="k">if </span><span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"BUNDLED WITH"</span> Gemfile.lock<span class="p">;</span> <span class="k">then     </span><span class="nv">v</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span><span class="nb">awk</span> <span class="s1">'/BUNDLED WITH/{getline; gsub(/^ +/,""); print}'</span> Gemfile.lock<span class="si">)</span><span class="s2">"</span><span class="p">;</span>     gem <span class="nb">install </span>bundler <span class="nt">-v</span> <span class="s2">"</span><span class="nv">$v</span><span class="s2">"</span> <span class="nt">--no-document</span><span class="p">;</span>   <span class="k">else     </span>gem <span class="nb">install </span>bundler <span class="nt">--no-document</span><span class="p">;</span>   <span class="k">fi</span><span class="p">;</span>   bundle config <span class="nb">unset </span>without <span class="o">||</span> <span class="nb">true</span><span class="p">;</span>   bundle config <span class="nb">set </span>path <span class="s2">"</span><span class="nv">$BUNDLE_PATH</span><span class="s2">"</span><span class="p">;</span>   bundle <span class="nb">install</span> <span class="nt">--jobs</span> <span class="k">${</span><span class="nv">BUNDLE_JOBS</span><span class="k">}</span> <span class="nt">--retry</span> <span class="k">${</span><span class="nv">BUNDLE_RETRY</span><span class="k">}</span> <span class="o">||</span> <span class="nb">true</span>
+
+<span class="c"># App code</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># Helpful default command for dev containers</span>
+<span class="k">CMD</span><span class="s"> bash -lc 'bundle exec rails db:prepare &amp;&amp; bundle exec rails s -b 0.0.0.0 -p 3000'</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Why a dev‑only Dockerfile?</strong>
+Your production Dockerfile often excludes <code class="language-plaintext highlighter-rouge">development/test</code> gems, precompiles assets, and assumes secrets. The dev image should keep <strong>dev gems</strong> (e.g., <code class="language-plaintext highlighter-rouge">debug</code>) and run comfortably without prod secrets.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="2-docker-compose-for-dev--docker-composedevyml">2) Docker Compose for dev — <code class="language-plaintext highlighter-rouge">/docker-compose.dev.yml</code></h3>
+
+<p>It wires up the Rails app, MySQL 8, and Redis 7. It also waits for MySQL to be healthy before starting Rails.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.dev.yml</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">app</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">.devcontainer/Dockerfile</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.:/workspaces/app:cached</span>
+      <span class="pi">-</span> <span class="s">bundle_cache:/usr/local/bundle</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">RAILS_ENV</span><span class="pi">:</span> <span class="s">development</span>
+
+      <span class="c1"># Match config/database.yml expectations</span>
+      <span class="na">MYSQL_DB_HOST</span><span class="pi">:</span> <span class="s">mysql</span>
+      <span class="na">MYSQL_DB_PORT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3306"</span>
+      <span class="na">MYSQL_DB_USER</span><span class="pi">:</span> <span class="s">root</span>
+      <span class="na">MYSQL_DB_PASS</span><span class="pi">:</span> <span class="s">password</span>
+      <span class="na">MYSQL_NAME</span><span class="pi">:</span> <span class="s">wigiwork_development</span>
+
+      <span class="na">REDIS_URL</span><span class="pi">:</span> <span class="s">redis://redis:6379/0</span>
+      <span class="na">APP_VERSION</span><span class="pi">:</span> <span class="s">devcontainer</span>
+      <span class="na">RAILS_LOG_TO_STDOUT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">$:3000"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="na">mysql</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_healthy</span>
+      <span class="na">redis</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_started</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">&gt;</span>
+      <span class="s">bash -lc "</span>
+        <span class="s">until mysqladmin ping -hmysql -P3306 -uroot -ppassword &gt;/dev/null 2&gt;&amp;1; do</span>
+          <span class="s">echo 'Waiting for MySQL...'; sleep 1;</span>
+        <span class="s">done;</span>
+        <span class="s">bundle exec rails db:prepare &amp;&amp;</span>
+        <span class="s">bundle exec rails s -b 0.0.0.0 -p 3000</span>
+      <span class="s">"</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.env</span>
+
+  <span class="na">mysql</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:8.4</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
+      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">wigiwork_development</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3307:3306"</span> <span class="c1"># host:container for host access</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">mysqladmin"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">ping"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-h"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">127.0.0.1"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-uroot"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-ppassword"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">5s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">5s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">20</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">mysql_data:/var/lib/mysql</span>
+
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:7</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">6380:6379"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis_data:/data</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">bundle_cache</span><span class="pi">:</span>
+  <span class="na">mysql_data</span><span class="pi">:</span>
+  <span class="na">redis_data</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>Note on volumes:</strong> the named volume <code class="language-plaintext highlighter-rouge">bundle_cache</code> persists Bundler gems across rebuilds. If the Gemfile changes groups (e.g., dev/test) or the cache gets stale, remove it:
+<code class="language-plaintext highlighter-rouge">docker volume rm $(docker volume ls -q | grep bundle)</code> and rebuild.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="3-rails-db-config--configdatabaseyml">3) Rails DB config — <code class="language-plaintext highlighter-rouge">/config/database.yml</code></h3>
+
+<p>Use env vars and default the <strong>host to <code class="language-plaintext highlighter-rouge">mysql</code></strong> (the Compose service name).</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/database.yml</span>
+<span class="na">default</span><span class="pi">:</span> <span class="nl">&amp;default</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">utf8mb4</span>
+  <span class="na">collation</span><span class="pi">:</span> <span class="s">utf8mb4_0900_ai_ci</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("RAILS_MAX_THREADS", 5) %&gt;</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("MYSQL_DB_USER", "root") %&gt;</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("MYSQL_DB_PASS", "password") %&gt;</span>
+  <span class="na">host</span><span class="pi">:</span>     <span class="s">&lt;%= ENV.fetch("MYSQL_DB_HOST", "mysql") %&gt;</span>
+  <span class="na">port</span><span class="pi">:</span>     <span class="s">&lt;%= ENV.fetch("MYSQL_DB_PORT", "3306") %&gt;</span>
+  <span class="na">variables</span><span class="pi">:</span>
+    <span class="na">sql_mode</span><span class="pi">:</span> <span class="s">STRICT_ALL_TABLES</span>
+  <span class="na">time_precision</span><span class="pi">:</span> <span class="m">6</span>
+
+<span class="na">development</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("MYSQL_NAME", "wigiwork_development") %&gt;</span>
+
+<span class="na">test</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("DB_DATABASE", "wigiwork_test") %&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>If you run Rails <strong>from the host</strong> against the containerized DB, use <code class="language-plaintext highlighter-rouge">127.0.0.1:3307</code> (not <code class="language-plaintext highlighter-rouge">mysql:3306</code>).
+Example: <code class="language-plaintext highlighter-rouge">DATABASE_URL=mysql2://root:password@127.0.0.1:3307/wigiwork_development</code></p>
+</blockquote>
+
+<hr />
+
+<h2 id="commands-youll-actually-use">Commands you’ll actually use</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate compose (what Dev Containers runs under the hood)</span>
+docker compose <span class="nt">-f</span> docker-compose.dev.yml config
+
+<span class="c"># Build &amp; start everything in detached mode</span>
+docker compose <span class="nt">-f</span> docker-compose.dev.yml up <span class="nt">-d</span> <span class="nt">--build</span>
+
+<span class="c"># Exec into the app container</span>
+docker compose <span class="nt">-f</span> docker-compose.dev.yml <span class="nb">exec </span>app bash
+
+<span class="c"># Inside the container</span>
+bundle <span class="nb">exec </span>rails db:prepare
+rails s <span class="nt">-b</span> 0.0.0.0 <span class="nt">-p</span> 3000
+
+<span class="c"># Start only MySQL (handy for host Rails or GUI tools)</span>
+docker compose <span class="nt">-f</span> docker-compose.dev.yml up <span class="nt">-d</span> mysql
+
+<span class="c"># Stop/start only the app</span>
+docker compose <span class="nt">-f</span> docker-compose.dev.yml stop app
+docker compose <span class="nt">-f</span> docker-compose.dev.yml start app
+
+<span class="c"># View status and logs</span>
+docker compose <span class="nt">-f</span> docker-compose.dev.yml ps
+docker compose <span class="nt">-f</span> docker-compose.dev.yml logs <span class="nt">-f</span> app
+</code></pre></div></div>
+
+<p><strong>Detached mode?</strong> <code class="language-plaintext highlighter-rouge">-d</code> means containers run in the <strong>background</strong>; your terminal is free and logs aren’t attached. Use <code class="language-plaintext highlighter-rouge">logs -f</code> to tail when you need.</p>
+
+<hr />
+
+<h2 id="lessons-learned-from-real-debugging">Lessons learned (from real debugging)</h2>
+
+<ul>
+  <li>
+    <p><strong>Empty port envs → “invalid proto”</strong>
+Always default your port mappings, e.g. <code class="language-plaintext highlighter-rouge">"$:3000"</code>.</p>
+  </li>
+  <li>
+    <p><strong>Environment syntax</strong>
+In YAML map style use <code class="language-plaintext highlighter-rouge">KEY: value</code> (not <code class="language-plaintext highlighter-rouge">KEY=value</code>). This avoided errors like <code class="language-plaintext highlighter-rouge">could not find expected ':'</code>.</p>
+  </li>
+  <li>
+    <p><strong>Dev gems must be installed</strong>
+Excluding <code class="language-plaintext highlighter-rouge">development/test</code> caused <code class="language-plaintext highlighter-rouge">cannot load such file -- debug/prelude</code>. Keep dev gems in your <strong>dev image</strong>.</p>
+  </li>
+  <li>
+    <p><strong>Dotenv 2.x vs 3.x API</strong>
+<code class="language-plaintext highlighter-rouge">Dotenv.instrumenter=</code> was removed in 3.x. Either pin <code class="language-plaintext highlighter-rouge">dotenv-rails</code> to <code class="language-plaintext highlighter-rouge">~&gt; 2.8</code> or remove the old API usage.</p>
+  </li>
+  <li>
+    <p><strong>Bundle cache volume can shadow image gems</strong>
+If gems seem “missing” after a rebuild, delete the bundle volume and rebuild with <code class="language-plaintext highlighter-rouge">--no-cache</code>.</p>
+  </li>
+  <li><strong>Service discovery</strong>
+    <ul>
+      <li><strong>Inside containers</strong>: DB host is <code class="language-plaintext highlighter-rouge">mysql:3306</code>.</li>
+      <li><strong>From host</strong>: DB is <code class="language-plaintext highlighter-rouge">127.0.0.1:3307</code> (published port).</li>
+    </ul>
+  </li>
+  <li><strong>MySQL readiness</strong>
+Use healthchecks plus a small wait loop before starting Rails.</li>
+</ul>
+
+<hr />
+
+<h2 id="troubleshooting-cookbook">Troubleshooting cookbook</h2>
+
+<p><strong>“invalid proto:” in compose</strong>
+→ A port mapping used an empty env var. Add defaults: <code class="language-plaintext highlighter-rouge">- "$:3000"</code>.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">cannot load such file -- debug/prelude</code></strong>
+→ Dev gems weren’t installed. Don’t set <code class="language-plaintext highlighter-rouge">bundle config set without 'development test'</code> for dev images.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Dotenv NoMethodError: instrumenter=</code></strong>
+→ You’re on dotenv 3.x but using a 2.x method. Pin to <code class="language-plaintext highlighter-rouge">dotenv-rails ~&gt; 2.8</code> or remove that call.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Could not find … in locally installed gems</code> after rebuild</strong>
+→ Your bundle cache volume is stale. Remove it and rebuild:
+<code class="language-plaintext highlighter-rouge">docker volume rm &lt;bundle_volume&gt;; docker compose build --no-cache app</code>.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Unknown MySQL server host 'mysql'</code> when running Rails on host</strong>
+→ From the host, use <code class="language-plaintext highlighter-rouge">127.0.0.1:3307</code>, not <code class="language-plaintext highlighter-rouge">mysql</code>.</p>
+
+<hr />
+
+<h2 id="pros--cons-recap">Pros &amp; cons recap</h2>
+
+<p><strong>Pros</strong></p>
+<ul>
+  <li>✅ Zero‑setup onboarding; consistent environments</li>
+  <li>✅ Isolation from host toolchains</li>
+  <li>✅ CI/prod parity; easier “it fails only in prod” bugs</li>
+  <li>✅ Fast resets (containers/volumes are disposable)</li>
+</ul>
+
+<p><strong>Cons</strong></p>
+<ul>
+  <li>❌ Slight perf overhead vs native (I/O heavy workloads)</li>
+  <li>❌ Extra YAML/Dockerfiles to maintain</li>
+  <li>❌ Requires Docker Desktop &amp; familiarity with containers</li>
+</ul>
+
+<hr />
+
+<h2 id="final-checklist">Final checklist</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add <code class="language-plaintext highlighter-rouge">/.devcontainer/Dockerfile</code> and <code class="language-plaintext highlighter-rouge">/docker-compose.dev.yml</code>.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">config/database.yml</code> defaults to <code class="language-plaintext highlighter-rouge">host: mysql</code>, reads envs.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">.env.example</code> exists; copied to <code class="language-plaintext highlighter-rouge">.env</code> on first boot (or via <code class="language-plaintext highlighter-rouge">bin/setup</code>).</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><code class="language-plaintext highlighter-rouge">depends_on: condition: service_healthy</code> for MySQL + wait loop.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use <code class="language-plaintext highlighter-rouge">bundle exec</code> for Rails commands.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Optional named volume for gems; remove it if cache causes issues.</li>
+</ul>
+
+<p>Happy shipping — and goodbye to “works on my machine.” 🚀</p>
+</div>
+    </div>
+  </div>
+</div>
+
+    </main>
+
+    <footer>
+      <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="text-decoration: none; display: flex; align-items: center; gap: 0.5em;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span style="font-weight: 500; font-size: 1.05em; color: currentColor; letter-spacing: 0.03em;">Download CV</span>
+  </a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    </footer>
+  </body>
+
+</html>
