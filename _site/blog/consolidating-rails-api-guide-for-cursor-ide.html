@@ -1,0 +1,346 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> -->
+  <meta name="description"
+    content="  We turned scattered conventions into a single PROJECT_CONTRIBUTION_GUIDE_v3.md that your editor and AI assistant can follow. This post explains the structu...">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results." />
+<meta property="og:description" content="How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results." />
+<link rel="canonical" href="http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide" />
+<meta property="og:url" content="http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-09-09T09:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-09-09T09:00:00+00:00","datePublished":"2025-09-09T09:00:00+00:00","description":"How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.","headline":"One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide"},"url":"http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="col-lg-8 mx-auto py-md-2 body">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <div class="container">
+
+  <div class="text-center my-3 d-flex justify-content-center gap-4">
+    <!-- Home button -->
+    <a href="/" class="text-decoration-none" style="color: #0d6efd;" title="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd" />
+        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none" />
+      </svg>
+    </a>
+
+    <!-- Other posts / Blog list button -->
+    <a href="/blog" class="text-decoration-none px-3 py-2 rounded-pill fw-semibold" style="background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;" title="All Blog Posts">
+      Other posts
+    </a>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</h4>
+      <small class="text-muted">Sep 9, 2025</small>
+      <hr />
+      <div><blockquote>
+  <p>We turned scattered conventions into a single <strong>PROJECT_CONTRIBUTION_GUIDE_v3.md</strong> that your editor <em>and</em> AI assistant can follow. This post explains the structure, the reasoning, and how to use it with Cursor to get consistent, high‑quality code on the first try.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="why-consolidateand-why-target-cursor">Why consolidate—and why target Cursor?</h2>
+
+<p>Keeping rules in several files (<code class="language-plaintext highlighter-rouge">rails.mdc</code>, <code class="language-plaintext highlighter-rouge">rspec.mdc</code>, <code class="language-plaintext highlighter-rouge">ruby.mdc</code>, and a contribution guide) makes context brittle: people and AIs miss details, apply conflicting standards, or burn time reconciling guidance. By merging into a <strong>single, sectioned</strong> guide, we make expectations <strong>discoverable, enforceable, and prompt‑friendly</strong>.</p>
+
+<ul>
+  <li><strong>LLM‑ready structure.</strong> The guide uses clear categories and subcategories; Cursor can “see” and apply them reliably.</li>
+  <li><strong>Less back‑and‑forth.</strong> Coders and AI helpers won’t guess response formats or pagination rules.</li>
+  <li><strong>First‑class Rails defaults.</strong> We start with Rails‑way + KISS, then add just enough structure for teams and CI.</li>
+</ul>
+
+<hr />
+
+<h2 id="the-canonical-categories-and-what-they-contain">The Canonical Categories (and what they contain)</h2>
+
+<p>Below are the categories and representative points you’ll find in the consolidated guide. Each category is designed to be skim‑able for humans and parsable for AI assistants.</p>
+
+<h3 id="1-philosophy--principles">1) Philosophy &amp; Principles</h3>
+<ul>
+  <li><strong>Rails‑way &amp; KISS first.</strong> Prefer conventions and built‑ins; avoid layers until complexity demands them.</li>
+  <li><strong>Blueprinter is the single JSON source.</strong> Controllers never hand‑craft JSON.</li>
+  <li><strong>DRY, selectively SOLID.</strong> Extract when duplication harms clarity; avoid over‑engineering.</li>
+</ul>
+
+<h3 id="2-code-style-ruby">2) Code Style (Ruby)</h3>
+<ul>
+  <li>Every file starts with:
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># frozen_string_literal: true</span>
+
+</code></pre></div>    </div>
+  </li>
+  <li>Naming: <code class="language-plaintext highlighter-rouge">snake_case</code> for methods/variables/files, <code class="language-plaintext highlighter-rouge">CamelCase</code> for classes/modules.</li>
+  <li>Prefer early returns and small, intention‑revealing methods.</li>
+  <li>Use UTC internally; serialize timestamps as ISO8601 strings.</li>
+</ul>
+
+<h3 id="3-routing">3) Routing</h3>
+<ul>
+  <li>All endpoints are versioned: <code class="language-plaintext highlighter-rouge">/api/v1/</code> (keeps room for future breaking changes).</li>
+</ul>
+
+<h3 id="4-controllers">4) Controllers</h3>
+<p><strong>Responses</strong></p>
+<ul>
+  <li><strong>Lists:</strong> <code class="language-plaintext highlighter-rouge">{ data: [...], meta: { /* pagination &amp; other meta */ } }</code></li>
+  <li><strong>Single item:</strong> <code class="language-plaintext highlighter-rouge">{ data: { ... } }</code></li>
+</ul>
+
+<p><strong>Parameters &amp; Authorization</strong></p>
+<ul>
+  <li>Strong parameters everywhere.</li>
+  <li><strong>Pundit</strong> for authorization (deny by default).</li>
+</ul>
+
+<p><strong>Search &amp; Pagination</strong></p>
+<ul>
+  <li><strong>Kaminari</strong> for pagination, always include <code class="language-plaintext highlighter-rouge">meta</code>.</li>
+  <li><strong>Ransack</strong> for search/filters (whitelist searchable attributes).</li>
+</ul>
+
+<p><strong>Attachments in <em>one</em> request</strong></p>
+<ul>
+  <li>If an endpoint requires attachments, the model declares associations and accepts nested attributes; the API accepts multipart form data in one round trip.
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># frozen_string_literal: true</span>
+
+<span class="k">class</span> <span class="nc">EducationItem</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">class_name: </span><span class="s2">"GalleryImage"</span><span class="p">,</span> <span class="ss">as: :attachable</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+  <span class="n">has_many</span> <span class="ss">:files</span><span class="p">,</span>  <span class="ss">class_name: </span><span class="s2">"FileDocument"</span><span class="p">,</span> <span class="ss">as: :attachable</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+
+  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:file</span><span class="p">,</span> <span class="ss">allow_destroy: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div>    </div>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> POST <span class="s2">"http://localhost:3000/api/v1/profiles/49/educations"</span>     <span class="nt">-H</span> <span class="s2">"Authorization: Bearer </span><span class="nv">$TOKEN</span><span class="s2">"</span>     <span class="nt">-H</span> <span class="s2">"Content-Type: multipart/form-data"</span>     <span class="nt">-F</span> <span class="s2">"education_item[item_type]=degree"</span>     <span class="nt">-F</span> <span class="s2">"education_item[title]=Bachelor of Science"</span>     <span class="nt">-F</span> <span class="s2">"education_item[degree]=BSc"</span>     <span class="nt">-F</span> <span class="s1">'education_item[field_of_study]=Computer Science'</span>     <span class="nt">-F</span> <span class="s2">"education_item[currently_enrolled]=false"</span>     <span class="nt">-F</span> <span class="s2">"education_item[start_date]=2018-09-01"</span>     <span class="nt">-F</span> <span class="s2">"education_item[end_date]=2022-06-30"</span>     <span class="nt">-F</span> <span class="s2">"education_item[file_attributes][doc_type]=pdf"</span>     <span class="nt">-F</span> <span class="s2">"education_item[file_attributes][file]=@spec/fixtures/files/test.pdf;type=application/pdf"</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><strong>Global exception handling</strong></p>
+<ul>
+  <li>Centralize error handling in <code class="language-plaintext highlighter-rouge">ApplicationController</code> to return predictable JSON:
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">error: </span><span class="n">e</span><span class="p">.</span><span class="nf">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span><span class="p">.</span><span class="nf">to_sentence</span> <span class="p">},</span> <span class="ss">status: :unprocessable_content</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="5-models">5) Models</h3>
+<p><strong>Validations &amp; Enums</strong></p>
+<ul>
+  <li>Keep validations close to data.</li>
+  <li><strong>Enums</strong> are defined once (DRY) and surfaced verbatim in serializers/tests.</li>
+</ul>
+
+<p><strong>Associations &amp; Attachments</strong></p>
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">has_many :images</code> / <code class="language-plaintext highlighter-rouge">has_many :files</code> as shown above when the endpoint needs attachments.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">accepts_nested_attributes_for</code> to enable single‑request creates/updates.</li>
+</ul>
+
+<p><strong>Constraints</strong></p>
+<ul>
+  <li><strong>Database constraints first:</strong> NOT NULL, FKs, and unique indexes in migrations—don’t rely solely on model validations.</li>
+</ul>
+
+<h3 id="6-serialization">6) Serialization</h3>
+<ul>
+  <li><strong>Blueprinter</strong> owns the shape of <code class="language-plaintext highlighter-rouge">data</code> (and error payloads, if you standardize them). Controllers just compose the envelope.</li>
+  <li>Provide <code class="language-plaintext highlighter-rouge">ApplicationBlueprint</code> with a small <code class="language-plaintext highlighter-rouge">timestamps</code> helper to emit ISO8601 <code class="language-plaintext highlighter-rouge">created_at/updated_at</code>.</li>
+</ul>
+
+<h3 id="7-search--pagination--sorting">7) Search / Pagination / Sorting</h3>
+<ul>
+  <li><strong>Kaminari</strong> for limits &amp; pages; add caps and include <code class="language-plaintext highlighter-rouge">meta</code> in every list response.</li>
+  <li><strong>Ransack</strong> for filters; expose only allow‑listed fields.</li>
+  <li><strong>Sorting</strong>: allow‑list the columns/direction to prevent injection or invalid columns.</li>
+</ul>
+
+<h3 id="8-security">8) Security</h3>
+<ul>
+  <li>Devise (JWT) for API authentication.</li>
+  <li>Pundit for authorization; default deny.</li>
+  <li>Strong parameters throughout; no unpermitted mass‑assignment.</li>
+  <li>Keep secrets in Rails Credentials; never commit them.</li>
+</ul>
+
+<h3 id="9-performance--data">9) Performance &amp; Data</h3>
+<ul>
+  <li><strong>Avoid N+1</strong> using <code class="language-plaintext highlighter-rouge">includes</code>/<code class="language-plaintext highlighter-rouge">preload</code> when rendering associated data.</li>
+  <li>Add indexes for foreign keys and high‑cardinality lookups.</li>
+  <li>Consider simple caching (ETag/Last‑Modified) and minimal payloads.</li>
+  <li>Light instrumentation via <code class="language-plaintext highlighter-rouge">request_id</code> tags and <code class="language-plaintext highlighter-rouge">ActiveSupport::Notifications</code>.</li>
+</ul>
+
+<h3 id="10-testing-rspec">10) Testing (RSpec)</h3>
+<ul>
+  <li><strong>Request specs</strong>, <strong>model specs</strong>, <strong>policy specs</strong>, and <strong>serializer</strong> (Blueprinter) snapshots.</li>
+  <li><strong>FactoryBot + Faker</strong> for data.</li>
+  <li>Determinism: <code class="language-plaintext highlighter-rouge">freeze_time</code> / <code class="language-plaintext highlighter-rouge">travel_to</code> for ISO8601 assertions; stub external calls (WebMock/VCR).</li>
+  <li>Force English locale in tests by default for predictable assertions; add targeted locale tests when needed.</li>
+</ul>
+
+<h3 id="11-definition-of-done-dod">11) Definition of Done (DoD)</h3>
+<ul>
+  <li>Rails‑way + KISS adhered to.</li>
+  <li>Blueprinter for all JSON.</li>
+  <li><code class="language-plaintext highlighter-rouge">{ data, meta }</code> for lists; <code class="language-plaintext highlighter-rouge">{ data }</code> for single item.</li>
+  <li>Pundit + Kaminari + Ransack in place as applicable.</li>
+  <li>DB constraints, enums, no N+1.</li>
+  <li>Tests for controllers (requests), models, policies, and serialization.</li>
+</ul>
+
+<hr />
+
+<h2 id="how-to-attach-the-guide-to-your-cursor-prompt-exact-steps">How to attach the Guide to your Cursor prompt (exact steps)</h2>
+
+<p><strong>Option A — Replace scattered rules with one file</strong></p>
+<ol>
+  <li>Add the consolidated <code class="language-plaintext highlighter-rouge">PROJECT_CONTRIBUTION_GUIDE_v3.md</code> to your repo.</li>
+  <li>In Cursor, open your workspace settings and <strong>pin</strong> this file (or paste it into your global “Rules” file).</li>
+  <li>In Chat, reference it explicitly: “Follow the rules in PROJECT_CONTRIBUTION_GUIDE_v3.md. Respect Blueprinter envelopes and the ‘attachments in one request’ policy.”</li>
+</ol>
+
+<p><strong>Option B — Keep rules separate but link to one source</strong></p>
+<ol>
+  <li>Keep <code class="language-plaintext highlighter-rouge">rails.mdc</code>, <code class="language-plaintext highlighter-rouge">rspec.mdc</code>, <code class="language-plaintext highlighter-rouge">ruby.mdc</code>, but add at the top of each: “This file defers to PROJECT_CONTRIBUTION_GUIDE_v3.md; if conflicts arise, the Guide wins.”</li>
+  <li>Pin all files in Cursor; the Guide becomes the conflict resolver.</li>
+</ol>
+
+<p><strong>Prompt snippet to paste in Cursor (pin this):</strong></p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You are assisting on a Rails API project. Follow PROJECT_CONTRIBUTION_GUIDE_v3.md strictly:
+- Rails-way + KISS; Blueprinter is the single JSON source.
+- List endpoints return { data, meta }; single returns { data }.
+- Use Pundit for authz, Kaminari for pagination (with meta), Ransack for filters.
+- For endpoints with attachments, one request with nested attributes is mandatory.
+- Add `# frozen_string_literal: true` at the top of every Ruby file.
+- Use UTC + ISO8601 timestamps.
+Return only the requested code + file paths; do not invent fields outside the schema.
+</code></pre></div></div>
+<p>This pinned prompt reduces retries and keeps generated code aligned with our conventions.</p>
+
+<hr />
+
+<h2 id="why-this-improves-efficiency">Why this improves efficiency</h2>
+
+<ul>
+  <li><strong>Fewer review cycles.</strong> Response envelopes, pagination, and authz are consistent from the start.</li>
+  <li><strong>Predictable AI output.</strong> Cursor synthesizes code that already matches our structure (controllers, models, serializers).</li>
+  <li><strong>Lower context cost.</strong> One authoritative file means fewer tokens and less ambiguity.</li>
+  <li><strong>Safer by default.</strong> DB constraints + allow‑listed search/sorting reduce production risks.</li>
+  <li><strong>Testable from day 1.</strong> RSpec guidance ensures deterministic, CI‑friendly suites.</li>
+</ul>
+
+<hr />
+
+<h2 id="quick-reference-copypaste">Quick Reference (copy/paste)</h2>
+
+<p><strong>List response pattern</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># frozen_string_literal: true</span>
+
+<span class="k">def</span> <span class="nf">index</span>
+  <span class="n">resources</span> <span class="o">=</span> <span class="n">paginate</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span> <span class="c1"># Kaminari</span>
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">Blueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">resources</span><span class="p">),</span> <span class="ss">meta: </span><span class="n">pagination_meta</span><span class="p">(</span><span class="n">resources</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Single response pattern</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># frozen_string_literal: true</span>
+
+<span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">Blueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="p">},</span> <span class="ss">status: :created</span>
+</code></pre></div></div>
+
+<p><strong>Global exception example</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># frozen_string_literal: true</span>
+
+<span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">error: </span><span class="n">e</span><span class="p">.</span><span class="nf">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span><span class="p">.</span><span class="nf">to_sentence</span> <span class="p">},</span> <span class="ss">status: :unprocessable_content</span>
+</code></pre></div></div>
+
+<p><strong>Attachments in one request (model)</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># frozen_string_literal: true</span>
+
+<span class="n">has_many</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">class_name: </span><span class="s2">"GalleryImage"</span><span class="p">,</span> <span class="ss">as: :attachable</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+<span class="n">has_many</span> <span class="ss">:files</span><span class="p">,</span>  <span class="ss">class_name: </span><span class="s2">"FileDocument"</span><span class="p">,</span> <span class="ss">as: :attachable</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+<span class="n">accepts_nested_attributes_for</span> <span class="ss">:file</span><span class="p">,</span> <span class="ss">allow_destroy: </span><span class="kp">true</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>By unifying our standards and making them prompt‑aware, we get the best of both worlds: <strong>Rails defaults</strong> that keep us fast, and <strong>clear rules</strong> that keep humans and AI aligned. The result is higher‑quality code with far less friction.</p>
+</div>
+    </div>
+  </div>
+</div>
+
+    </main>
+
+    <footer>
+      <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="text-decoration: none; display: flex; align-items: center; gap: 0.5em;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span style="font-weight: 500; font-size: 1.05em; color: currentColor; letter-spacing: 0.03em;">Download CV</span>
+  </a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    </footer>
+  </body>
+
+</html>

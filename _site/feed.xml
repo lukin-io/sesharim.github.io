@@ -5,9 +5,277 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 Sep 2025 10:36:47 +0000</pubDate>
-    <lastBuildDate>Thu, 04 Sep 2025 10:36:47 +0000</lastBuildDate>
+    <pubDate>Tue, 09 Sep 2025 15:37:20 +0000</pubDate>
+    <lastBuildDate>Tue, 09 Sep 2025 15:37:20 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;We turned scattered conventions into a single &lt;strong&gt;PROJECT_CONTRIBUTION_GUIDE_v3.md&lt;/strong&gt; that your editor &lt;em&gt;and&lt;/em&gt; AI assistant can follow. This post explains the structure, the reasoning, and how to use it with Cursor to get consistent, high‑quality code on the first try.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-consolidateand-why-target-cursor&quot;&gt;Why consolidate—and why target Cursor?&lt;/h2&gt;
+
+&lt;p&gt;Keeping rules in several files (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rspec.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ruby.mdc&lt;/code&gt;, and a contribution guide) makes context brittle: people and AIs miss details, apply conflicting standards, or burn time reconciling guidance. By merging into a &lt;strong&gt;single, sectioned&lt;/strong&gt; guide, we make expectations &lt;strong&gt;discoverable, enforceable, and prompt‑friendly&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;LLM‑ready structure.&lt;/strong&gt; The guide uses clear categories and subcategories; Cursor can “see” and apply them reliably.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Less back‑and‑forth.&lt;/strong&gt; Coders and AI helpers won’t guess response formats or pagination rules.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;First‑class Rails defaults.&lt;/strong&gt; We start with Rails‑way + KISS, then add just enough structure for teams and CI.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-canonical-categories-and-what-they-contain&quot;&gt;The Canonical Categories (and what they contain)&lt;/h2&gt;
+
+&lt;p&gt;Below are the categories and representative points you’ll find in the consolidated guide. Each category is designed to be skim‑able for humans and parsable for AI assistants.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-philosophy--principles&quot;&gt;1) Philosophy &amp;amp; Principles&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Rails‑way &amp;amp; KISS first.&lt;/strong&gt; Prefer conventions and built‑ins; avoid layers until complexity demands them.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Blueprinter is the single JSON source.&lt;/strong&gt; Controllers never hand‑craft JSON.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;DRY, selectively SOLID.&lt;/strong&gt; Extract when duplication harms clarity; avoid over‑engineering.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-code-style-ruby&quot;&gt;2) Code Style (Ruby)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Every file starts with:
+    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Naming: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;snake_case&lt;/code&gt; for methods/variables/files, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CamelCase&lt;/code&gt; for classes/modules.&lt;/li&gt;
+  &lt;li&gt;Prefer early returns and small, intention‑revealing methods.&lt;/li&gt;
+  &lt;li&gt;Use UTC internally; serialize timestamps as ISO8601 strings.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-routing&quot;&gt;3) Routing&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;All endpoints are versioned: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/api/v1/&lt;/code&gt; (keeps room for future breaking changes).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-controllers&quot;&gt;4) Controllers&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Responses&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Lists:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data: [...], meta: { /* pagination &amp;amp; other meta */ } }&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Single item:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data: { ... } }&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Parameters &amp;amp; Authorization&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Strong parameters everywhere.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Pundit&lt;/strong&gt; for authorization (deny by default).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Search &amp;amp; Pagination&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Kaminari&lt;/strong&gt; for pagination, always include &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;meta&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ransack&lt;/strong&gt; for search/filters (whitelist searchable attributes).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Attachments in &lt;em&gt;one&lt;/em&gt; request&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;If an endpoint requires attachments, the model declares associations and accepts nested attributes; the API accepts multipart form data in one round trip.
+    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EducationItem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:images&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GalleryImage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FileDocument&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;accepts_nested_attributes_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;allow_destroy: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:3000/api/v1/profiles/49/educations&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Authorization: Bearer &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TOKEN&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Content-Type: multipart/form-data&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[item_type]=degree&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[title]=Bachelor of Science&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[degree]=BSc&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;education_item[field_of_study]=Computer Science&apos;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[currently_enrolled]=false&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[start_date]=2018-09-01&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[end_date]=2022-06-30&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[file_attributes][doc_type]=pdf&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[file_attributes][file]=@spec/fixtures/files/test.pdf;type=application/pdf&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Global exception handling&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Centralize error handling in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationController&lt;/code&gt; to return predictable JSON:
+    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;error: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;full_messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_sentence&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;status: :unprocessable_content&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;5-models&quot;&gt;5) Models&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Validations &amp;amp; Enums&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keep validations close to data.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Enums&lt;/strong&gt; are defined once (DRY) and surfaced verbatim in serializers/tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Associations &amp;amp; Attachments&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;has_many :images&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;has_many :files&lt;/code&gt; as shown above when the endpoint needs attachments.&lt;/li&gt;
+  &lt;li&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;accepts_nested_attributes_for&lt;/code&gt; to enable single‑request creates/updates.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Constraints&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Database constraints first:&lt;/strong&gt; NOT NULL, FKs, and unique indexes in migrations—don’t rely solely on model validations.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;6-serialization&quot;&gt;6) Serialization&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Blueprinter&lt;/strong&gt; owns the shape of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; (and error payloads, if you standardize them). Controllers just compose the envelope.&lt;/li&gt;
+  &lt;li&gt;Provide &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationBlueprint&lt;/code&gt; with a small &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timestamps&lt;/code&gt; helper to emit ISO8601 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;created_at/updated_at&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;7-search--pagination--sorting&quot;&gt;7) Search / Pagination / Sorting&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Kaminari&lt;/strong&gt; for limits &amp;amp; pages; add caps and include &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;meta&lt;/code&gt; in every list response.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ransack&lt;/strong&gt; for filters; expose only allow‑listed fields.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Sorting&lt;/strong&gt;: allow‑list the columns/direction to prevent injection or invalid columns.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;8-security&quot;&gt;8) Security&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Devise (JWT) for API authentication.&lt;/li&gt;
+  &lt;li&gt;Pundit for authorization; default deny.&lt;/li&gt;
+  &lt;li&gt;Strong parameters throughout; no unpermitted mass‑assignment.&lt;/li&gt;
+  &lt;li&gt;Keep secrets in Rails Credentials; never commit them.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;9-performance--data&quot;&gt;9) Performance &amp;amp; Data&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Avoid N+1&lt;/strong&gt; using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;includes&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;preload&lt;/code&gt; when rendering associated data.&lt;/li&gt;
+  &lt;li&gt;Add indexes for foreign keys and high‑cardinality lookups.&lt;/li&gt;
+  &lt;li&gt;Consider simple caching (ETag/Last‑Modified) and minimal payloads.&lt;/li&gt;
+  &lt;li&gt;Light instrumentation via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request_id&lt;/code&gt; tags and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActiveSupport::Notifications&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;10-testing-rspec&quot;&gt;10) Testing (RSpec)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Request specs&lt;/strong&gt;, &lt;strong&gt;model specs&lt;/strong&gt;, &lt;strong&gt;policy specs&lt;/strong&gt;, and &lt;strong&gt;serializer&lt;/strong&gt; (Blueprinter) snapshots.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;FactoryBot + Faker&lt;/strong&gt; for data.&lt;/li&gt;
+  &lt;li&gt;Determinism: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;freeze_time&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;travel_to&lt;/code&gt; for ISO8601 assertions; stub external calls (WebMock/VCR).&lt;/li&gt;
+  &lt;li&gt;Force English locale in tests by default for predictable assertions; add targeted locale tests when needed.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;11-definition-of-done-dod&quot;&gt;11) Definition of Done (DoD)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Rails‑way + KISS adhered to.&lt;/li&gt;
+  &lt;li&gt;Blueprinter for all JSON.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data, meta }&lt;/code&gt; for lists; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data }&lt;/code&gt; for single item.&lt;/li&gt;
+  &lt;li&gt;Pundit + Kaminari + Ransack in place as applicable.&lt;/li&gt;
+  &lt;li&gt;DB constraints, enums, no N+1.&lt;/li&gt;
+  &lt;li&gt;Tests for controllers (requests), models, policies, and serialization.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;how-to-attach-the-guide-to-your-cursor-prompt-exact-steps&quot;&gt;How to attach the Guide to your Cursor prompt (exact steps)&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Option A — Replace scattered rules with one file&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add the consolidated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PROJECT_CONTRIBUTION_GUIDE_v3.md&lt;/code&gt; to your repo.&lt;/li&gt;
+  &lt;li&gt;In Cursor, open your workspace settings and &lt;strong&gt;pin&lt;/strong&gt; this file (or paste it into your global “Rules” file).&lt;/li&gt;
+  &lt;li&gt;In Chat, reference it explicitly: “Follow the rules in PROJECT_CONTRIBUTION_GUIDE_v3.md. Respect Blueprinter envelopes and the ‘attachments in one request’ policy.”&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Option B — Keep rules separate but link to one source&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Keep &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rspec.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ruby.mdc&lt;/code&gt;, but add at the top of each: “This file defers to PROJECT_CONTRIBUTION_GUIDE_v3.md; if conflicts arise, the Guide wins.”&lt;/li&gt;
+  &lt;li&gt;Pin all files in Cursor; the Guide becomes the conflict resolver.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Prompt snippet to paste in Cursor (pin this):&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;You are assisting on a Rails API project. Follow PROJECT_CONTRIBUTION_GUIDE_v3.md strictly:
+- Rails-way + KISS; Blueprinter is the single JSON source.
+- List endpoints return { data, meta }; single returns { data }.
+- Use Pundit for authz, Kaminari for pagination (with meta), Ransack for filters.
+- For endpoints with attachments, one request with nested attributes is mandatory.
+- Add `# frozen_string_literal: true` at the top of every Ruby file.
+- Use UTC + ISO8601 timestamps.
+Return only the requested code + file paths; do not invent fields outside the schema.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This pinned prompt reduces retries and keeps generated code aligned with our conventions.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-this-improves-efficiency&quot;&gt;Why this improves efficiency&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Fewer review cycles.&lt;/strong&gt; Response envelopes, pagination, and authz are consistent from the start.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Predictable AI output.&lt;/strong&gt; Cursor synthesizes code that already matches our structure (controllers, models, serializers).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Lower context cost.&lt;/strong&gt; One authoritative file means fewer tokens and less ambiguity.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Safer by default.&lt;/strong&gt; DB constraints + allow‑listed search/sorting reduce production risks.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Testable from day 1.&lt;/strong&gt; RSpec guidance ensures deterministic, CI‑friendly suites.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;quick-reference-copypaste&quot;&gt;Quick Reference (copy/paste)&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;List response pattern&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;paginate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Kaminari&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;data: &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Blueprint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;render_as_hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;meta: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pagination_meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Single response pattern&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;data: &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Blueprint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;render_as_hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;status: :created&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Global exception example&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;error: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;full_messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_sentence&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;status: :unprocessable_content&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Attachments in one request (model)&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:images&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GalleryImage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FileDocument&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;accepts_nested_attributes_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;allow_destroy: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;By unifying our standards and making them prompt‑aware, we get the best of both worlds: &lt;strong&gt;Rails defaults&lt;/strong&gt; that keep us fast, and &lt;strong&gt;clear rules&lt;/strong&gt; that keep humans and AI aligned. The result is higher‑quality code with far less friction.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 09 Sep 2025 09:00:00 +0000</pubDate>
+        <link>http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</guid>
+        
+        <category>Ruby on Rails</category>
+        
+        <category>API</category>
+        
+        <category>Blueprinter</category>
+        
+        <category>Pundit</category>
+        
+        <category>Kaminari</category>
+        
+        <category>Ransack</category>
+        
+        <category>Cursor</category>
+        
+        <category>RSpec</category>
+        
+        <category>Jekyll</category>
+        
+        
+        <category>engineering</category>
+        
+        <category>rails</category>
+        
+        <category>api</category>
+        
+        <category>cursor</category>
+        
+      </item>
     
       <item>
         <title>Containerizing Your Rails Development with Docker + Dev Containers</title>
@@ -3096,148 +3364,6 @@ description: “A practical, production-grade guide to ActiveSupport::LogSubscri
         <pubDate>Mon, 11 Aug 2025 00:00:00 +0000</pubDate>
         <link>http://localhost:4000/blog/mastering-activesupport-logsubscriber-rails8</link>
         <guid isPermaLink="true">http://localhost:4000/blog/mastering-activesupport-logsubscriber-rails8</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</title>
-        <description>&lt;p&gt;Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.&lt;/p&gt;
-
-&lt;p&gt;In Rails API authentication, using JWT tokens with Devise and Devise-JWT provides simplicity and efficiency. But when security requirements become stricter, shared secrets (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HS256&lt;/code&gt;) may not suffice. Instead, RSA asymmetric keys (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RS256&lt;/code&gt;) provide stronger cryptographic protection by separating the token issuer (private key holder) from the verifier (public key holder).&lt;/p&gt;
-
-&lt;h2 id=&quot;why-rsa-keys-instead-of-hs256&quot;&gt;Why RSA Keys instead of HS256?&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Asymmetric cryptography&lt;/strong&gt;: Private keys sign tokens; public keys verify tokens.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Improved security&lt;/strong&gt;: Private keys remain confidential, minimizing exposure risk.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Scalable and maintainable&lt;/strong&gt;: Easily rotate keys without downtime or disruptions.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;step-by-step-implementation&quot;&gt;Step-by-step implementation&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-generate-rsa-key-pair&quot;&gt;1. Generate RSA key pair&lt;/h3&gt;
-
-&lt;p&gt;First, generate an RSA key pair:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;rsa_private&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenSSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2048&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;jwt_rsa_private.pem&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rsa_private&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_pem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;jwt_rsa_public.pem&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rsa_private&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;public_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_pem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Securely store these keys in Rails encrypted credentials (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails credentials:edit&lt;/code&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;jwt_private_key&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;-----BEGIN RSA PRIVATE KEY-----&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;your_private_key_here&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;-----END RSA PRIVATE KEY-----&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;jwt_public_key&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;-----BEGIN PUBLIC KEY-----&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;your_public_key_here&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;-----END PUBLIC KEY-----&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;2-configure-devise-jwt-for-rs256&quot;&gt;2. Configure Devise-JWT for RS256&lt;/h3&gt;
-
-&lt;p&gt;Update your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/initializers/devise.rb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Devise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;jwt&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;algorithm&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;RS256&apos;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;secret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenSSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-      &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;jwt_private_key&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;public_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenSSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-      &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;jwt_public_key&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dispatch_requests&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;POST&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;%r{^/api/v1/sessions/sign_in$}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;POST&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;%r{^/api/v1/users$}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;revocation_requests&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;DELETE&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;%r{^/api/v1/sessions/sign_out$}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;expiration_time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_i&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;3-configure-doorkeeper-jwt-optional-if-using-oauth2&quot;&gt;3. Configure Doorkeeper-JWT (Optional, if using OAuth2)&lt;/h3&gt;
-
-&lt;p&gt;Ensure Doorkeeper-JWT issues tokens using the same RSA key:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/initializers/doorkeeper_jwt.rb&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Doorkeeper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;JWT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;token_payload&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:resource_owner_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;ss&quot;&gt;iss: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;my-rails-api&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;ss&quot;&gt;sub: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;ss&quot;&gt;email: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;ss&quot;&gt;scope: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:scopes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;secret_key&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenSSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;jwt_private_key&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;encryption_method&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:rs256&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;4-verify-rsa-based-jwt&quot;&gt;4. Verify RSA-based JWT&lt;/h3&gt;
-
-&lt;p&gt;Your application now automatically issues and verifies JWT tokens using RSA keys. Token verification uses only the public key, keeping your private key secret and secure.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;key-rotation&quot;&gt;Key Rotation&lt;/h2&gt;
-
-&lt;p&gt;To rotate keys without downtime:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Generate a new RSA key pair.&lt;/li&gt;
-  &lt;li&gt;Temporarily add the new public key to your application’s configuration alongside the old one.&lt;/li&gt;
-  &lt;li&gt;Issue tokens with the new private key; verify tokens with both old and new public keys.&lt;/li&gt;
-  &lt;li&gt;After all older tokens expire, remove the old keys.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Example:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;jwt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;public_key_set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;OpenSSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_public_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;OpenSSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;RSA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old_public_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;test-via-curl&quot;&gt;Test via cURL&lt;/h2&gt;
-
-&lt;p&gt;Sign-in example:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST http://localhost:3000/api/v1/sessions/sign_in &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Content-Type: application/json&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;{&quot;user&quot;:{&quot;email&quot;:&quot;alice@example.com&quot;,&quot;password&quot;:&quot;password123&quot;}}&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The response includes an RSA-signed JWT:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Authorization: Bearer eyJhbGciOiJSUzI1NiJ9...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Switching to RSA keys (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RS256&lt;/code&gt;) strengthens JWT token security in your Rails API, clearly separating token generation and verification responsibilities and simplifying key management at scale.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 30 Jul 2025 00:01:01 +0000</pubDate>
-        <link>http://localhost:4000/blog/securing-jwt-with-rsa-keys</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/securing-jwt-with-rsa-keys</guid>
         
         
       </item>
