@@ -22,12 +22,10 @@ However, I was a big fan of the movie *Up in the Air* with George Clooney, espec
 My “backpack” was set on fire at 4:30 in the early morning of February 24, 2022, in Kyiv, Ukraine.
 The war had begun.
 
-<div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/bags.jpeg" alt="Bags before evacuation" class="img-thumbnail">
-  </div>
+<div class="not-prose my-10">
+  <img src="{{ site.baseurl }}/minimalist/bags.jpeg" alt="Bags before evacuation"
+    class="mx-auto w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)]">
 </div>
-<br />
 
 I woke up to the sound of explosions and rockets (the entire sky was crisscrossed with rockets and Russian jets). Immediately, my wife and I began preparing our bags, gathering clothes, documents, passports, and some cash in one place.
 
@@ -38,16 +36,12 @@ With multiple bags, our 10-month-old son, a cat, and a baby stroller, we tried t
 
 We realized we were stuck.
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/train_evac.jpeg" alt="Train evac 1" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/train_evac_2.jpeg" alt="Train evac 2" class="img-thumbnail">
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2">
+  <img src="{{ site.baseurl }}/minimalist/train_evac.jpeg" alt="Train evac 1"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/train_evac_2.jpeg" alt="Train evac 2"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
 </div>
-<br />
 
 With our baby in a hip carrier, two laptops, two suitcases, and a backpack, my wife carried our cat and another backpack. The air raid sirens blared non-stop, and explosions continued somewhere in the city. We had to return home; boarding the train was impossible.
 
@@ -57,12 +51,10 @@ I realized one thing: food was running out, including baby food. Enemy tanks and
 
 I knew we had to try again. Thankfully, we got lucky and managed to board a train. I had never seen so many people in one place. The train was so crowded that it moved at 20 km/h instead of the usual 80+ km/h, and the trip took 20-25 hours instead of 10h. My big toe lost sensation because of the cold—I stood for the entire trip without sleep, food, or water.
 
-<div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/bridge.jpeg" alt="Bridge" class="img-thumbnail">
-  </div>
+<div class="not-prose my-10">
+  <img src="{{ site.baseurl }}/minimalist/bridge.jpeg" alt="Bridge"
+    class="mx-auto w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)]">
 </div>
-<br />
 
 My wife stayed in the warmer middle part of the train with our baby, while I stayed on the stairs with our luggage, laptops, and backpacks. An elderly woman warned me, “Oh my… so many bags—you’re in trouble. People at the next stops will try to throw your bags (and you) off the train to get in”
 
@@ -71,12 +63,10 @@ I immediately started planning which bags bag I could sacrifice first. The baby 
 At each stop, I fought to keep my small space on the train with my family.
 After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though we didn’t know that rockets would hit Lviv the next morning).
 
-<div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/lviv_fire.jpeg" alt="Lviv fire" class="img-thumbnail">
-  </div>
+<div class="not-prose my-10">
+  <img src="{{ site.baseurl }}/minimalist/lviv_fire.jpeg" alt="Lviv fire"
+    class="mx-auto w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)]">
 </div>
-<br />
 
 We decided to go to Poland (I still think the Polish people are true heroes). We rented a hotel (which was nearly impossible to get because all hotels were full of refugees) and eventually flew back to Central Asia.
 
@@ -105,19 +95,14 @@ P.S:
 Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also find minutes to enjoy life. <br />
 Minimalism lets you enjoy hobbies, sports, and a streamlined lifestyle with just what fits in your luggage. <br />
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/workspace.jpeg" alt="Workspace" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bags_now.jpeg" alt="Bags" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/coffee.jpeg" alt="Coffee" class="img-thumbnail">
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <img src="{{ site.baseurl }}/minimalist/workspace.jpeg" alt="Workspace"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/bags_now.jpeg" alt="Bags"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/coffee.jpeg" alt="Coffee"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
 </div>
-
-<br />
 "Tomorrow" might not come, so enjoy today—but always have a plan for the future. Don’t invest your life in things.
 Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters. <br />
 Stoics encourage us to actively cultivate gratitude for that which we already have.
@@ -127,30 +112,24 @@ They recommend making a concerted effort to imagine what it would be like if som
 <hr />
 *Some "memories":*
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/woman_with_rifle.jpeg" alt="Woman" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpeg" alt="Out of city" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/plane_wing.jpeg" alt="Plane wing" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/kyiv.jpeg" alt="Kyiv" class="img-thumbnail">
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+  <img src="{{ site.baseurl }}/minimalist/woman_with_rifle.jpeg" alt="Woman"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/way_out_of_city.jpeg" alt="Out of city"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/plane_wing.jpeg" alt="Plane wing"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/kyiv.jpeg" alt="Kyiv"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
 </div>
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="{{ site.baseurl }}/minimalist/building.jpeg" alt="Plane wing" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/kyiv_2.jpeg" alt="Plane wing" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Odessa" class="img-thumbnail">
-    &nbsp;
-    <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Bucha" class="img-thumbnail">
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+  <img src="{{ site.baseurl }}/minimalist/building.jpeg" alt="Building"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/kyiv_2.jpeg" alt="Kyiv"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/odessa.jpeg" alt="Odessa"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
+  <img src="{{ site.baseurl }}/minimalist/bucha.jpeg" alt="Bucha"
+    class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover">
 </div>

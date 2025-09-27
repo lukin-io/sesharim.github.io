@@ -1,18 +1,22 @@
 <html lang="en">
 {% include head.html %}
 
-  <body class="col-lg-8 mx-auto py-md-2 body">
-    <header>
-      &nbsp;
-    </header>
+  <body class="bg-slate-100 text-slate-900 font-sans antialiased">
+    <div class="min-h-screen flex flex-col">
+      <main class="flex-1">
+        <div class="max-w-4xl mx-auto px-6 py-12 sm:py-16">
+          <div class="rounded-[2.5rem] border border-white/60 bg-white/90 p-10 shadow-[0_30px_60px_-45px_rgba(15,23,42,0.45)] backdrop-blur">
+            {{ content }}
+          </div>
+        </div>
+      </main>
 
-    <main>
-      {{ content }}
-    </main>
-
-    <footer>
-      {% include footer.html %}
-    </footer>
+      <footer class="bg-slate-100">
+        <div class="max-w-4xl mx-auto px-6 py-8">
+          {% include footer.html %}
+        </div>
+      </footer>
+    </div>
   </body>
 
 </html>

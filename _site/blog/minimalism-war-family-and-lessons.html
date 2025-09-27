@@ -16,16 +16,28 @@
   
   <title>Minimalism, Family, war and lessons | Software Engineering consultant</title>
   
-  <meta name="theme-color">
+  <meta name="theme-color" content="#020617">
 
   <link rel="canonical" href="http://localhost:4000/blog/minimalism-war-family-and-lessons">
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
   <link rel="stylesheet" href="/assets/css/styles.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#38bdf8',
+              foreground: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <meta name="description"
     content="In 2014, I decided to move to Kyiv, Ukraine.I had a great opportunity to work on an interesting project that integrated with the UK police force to help figh...">
   <meta name="keywords"
@@ -43,45 +55,49 @@
 <meta property="og:url" content="http://localhost:4000/blog/minimalism-war-family-and-lessons" />
 <meta property="og:site_name" content="Software Engineering consultant" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-02-09T00:01:01+00:00" />
+<meta property="article:published_time" content="2024-02-09T02:01:01+02:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Minimalism, Family, war and lessons" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2024-02-09T00:01:01+00:00","datePublished":"2024-02-09T00:01:01+00:00","description":"In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At that time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.","headline":"Minimalism, Family, war and lessons","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/minimalism-war-family-and-lessons"},"url":"http://localhost:4000/blog/minimalism-war-family-and-lessons"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2024-02-09T02:01:01+02:00","datePublished":"2024-02-09T02:01:01+02:00","description":"In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At that time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.","headline":"Minimalism, Family, war and lessons","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/minimalism-war-family-and-lessons"},"url":"http://localhost:4000/blog/minimalism-war-family-and-lessons"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
 
 
-  <body class="col-lg-8 mx-auto py-md-2 body">
-    <header>
-      &nbsp;
-    </header>
+  <body class="bg-slate-100 text-slate-900 font-sans antialiased">
+    <div class="min-h-screen flex flex-col">
+      <main class="flex-1">
+        <div class="max-w-4xl mx-auto px-6 py-12 sm:py-16">
+          <div class="rounded-[2.5rem] border border-white/60 bg-white/90 p-10 shadow-[0_30px_60px_-45px_rgba(15,23,42,0.45)] backdrop-blur">
+            <div class="space-y-10">
 
-    <main>
-      <div class="container">
-
-  <div class="text-center my-3 d-flex justify-content-center gap-4">
-    <!-- Home button -->
-    <a href="/" class="text-decoration-none" style="color: #0d6efd;" title="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
-        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd" />
-        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none" />
+  <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-500">
+    <a href="/" class="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 font-medium uppercase tracking-[0.3em] text-slate-600 transition hover:border-brand hover:text-brand"
+      title="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16"
+        class="transition group-hover:-translate-y-px group-hover:text-brand">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor" />
+        <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none" />
       </svg>
+      Home
     </a>
 
-    <!-- Other posts / Blog list button -->
-    <a href="/blog" class="text-decoration-none px-3 py-2 rounded-pill fw-semibold" style="background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;" title="All Blog Posts">
+    <a href="/blog" class="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-brand transition hover:border-brand hover:bg-brand/20"
+      title="All Blog Posts">
       Other posts
     </a>
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <h4>Minimalism, Family, war and lessons</h4>
-      <small class="text-muted">Feb 9, 2024</small>
-      <hr />
-      <div><p>In 2014, I decided to move to Kyiv, Ukraine.
+  <article class="space-y-6">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Minimalism, Family, war and lessons</h1>
+      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Feb 9, 2024</p>
+      <div class="h-px w-20 bg-gradient-to-r from-brand via-brand/40 to-transparent"></div>
+    </header>
+
+    <div class="prose prose-slate max-w-none prose-a:text-brand hover:prose-a:text-slate-900">
+      <p>In 2014, I decided to move to Kyiv, Ukraine.
 I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one medium-sized suitcase and a small laptop. At that time, I didn’t realize how valuable and manageable that amount of stuff could be. Back then, I hadn’t even heard of minimalism.</p>
 
 <p>However, I was a big fan of the movie <em>Up in the Air</em> with George Clooney, especially a couple of quotes like this one:</p>
@@ -95,12 +111,9 @@ I had a great opportunity to work on an interesting project that integrated with
 <p>My “backpack” was set on fire at 4:30 in the early morning of February 24, 2022, in Kyiv, Ukraine.
 The war had begun.</p>
 
-<div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/bags.jpeg" alt="Bags before evacuation" class="img-thumbnail" />
-  </div>
+<div class="not-prose my-10">
+  <img src="/minimalist/bags.jpeg" alt="Bags before evacuation" class="mx-auto w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)]" />
 </div>
-<p><br /></p>
 
 <p>I woke up to the sound of explosions and rockets (the entire sky was crisscrossed with rockets and Russian jets). Immediately, my wife and I began preparing our bags, gathering clothes, documents, passports, and some cash in one place.</p>
 
@@ -111,16 +124,10 @@ I realized some good practices, patterns, and habits that could be useful in eve
 
 <p>We realized we were stuck.</p>
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/train_evac.jpeg" alt="Train evac 1" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/train_evac_2.jpeg" alt="Train evac 2" class="img-thumbnail" />
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2">
+  <img src="/minimalist/train_evac.jpeg" alt="Train evac 1" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/train_evac_2.jpeg" alt="Train evac 2" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
 </div>
-<p><br /></p>
 
 <p>With our baby in a hip carrier, two laptops, two suitcases, and a backpack, my wife carried our cat and another backpack. The air raid sirens blared non-stop, and explosions continued somewhere in the city. We had to return home; boarding the train was impossible.</p>
 
@@ -130,12 +137,9 @@ I realized some good practices, patterns, and habits that could be useful in eve
 
 <p>I knew we had to try again. Thankfully, we got lucky and managed to board a train. I had never seen so many people in one place. The train was so crowded that it moved at 20 km/h instead of the usual 80+ km/h, and the trip took 20-25 hours instead of 10h. My big toe lost sensation because of the cold—I stood for the entire trip without sleep, food, or water.</p>
 
-<div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/bridge.jpeg" alt="Bridge" class="img-thumbnail" />
-  </div>
+<div class="not-prose my-10">
+  <img src="/minimalist/bridge.jpeg" alt="Bridge" class="mx-auto w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)]" />
 </div>
-<p><br /></p>
 
 <p>My wife stayed in the warmer middle part of the train with our baby, while I stayed on the stairs with our luggage, laptops, and backpacks. An elderly woman warned me, “Oh my… so many bags—you’re in trouble. People at the next stops will try to throw your bags (and you) off the train to get in”</p>
 
@@ -144,12 +148,9 @@ I realized some good practices, patterns, and habits that could be useful in eve
 <p>At each stop, I fought to keep my small space on the train with my family.
 After 20-25 hours, we finally arrived in Lviv, far from encircled Kyiv (though we didn’t know that rockets would hit Lviv the next morning).</p>
 
-<div class="row">
-  <div class="col-12 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/lviv_fire.jpeg" alt="Lviv fire" class="img-thumbnail" />
-  </div>
+<div class="not-prose my-10">
+  <img src="/minimalist/lviv_fire.jpeg" alt="Lviv fire" class="mx-auto w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)]" />
 </div>
-<p><br /></p>
 
 <p>We decided to go to Poland (I still think the Polish people are true heroes). We rented a hotel (which was nearly impossible to get because all hotels were full of refugees) and eventually flew back to Central Asia.</p>
 
@@ -182,20 +183,12 @@ Prepare it in calm times so you don’t forget anything under stress.</li>
 <p>Now, I can move anywhere within 30 minutes. I’ve learned new skills, enjoy my Nintendo, rehabilitated a tendon injury with resistance bands, and play LEGO with my son. The war hasn’t gone away—I’ve just adapted. I analyze the situation daily to decide whether it’s time to “run” or stay, but also find minutes to enjoy life. <br />
 Minimalism lets you enjoy hobbies, sports, and a streamlined lifestyle with just what fits in your luggage. <br /></p>
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/workspace.jpeg" alt="Workspace" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/bags_now.jpeg" alt="Bags" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/coffee.jpeg" alt="Coffee" class="img-thumbnail" />
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <img src="/minimalist/workspace.jpeg" alt="Workspace" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/bags_now.jpeg" alt="Bags" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/coffee.jpeg" alt="Coffee" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
 </div>
-
-<p><br />
-“Tomorrow” might not come, so enjoy today—but always have a plan for the future. Don’t invest your life in things.
+<p>“Tomorrow” might not come, so enjoy today—but always have a plan for the future. Don’t invest your life in things.
 Being a minimalist also helps you stay calm, reducing distractions and allowing you to focus on what truly matters. <br />
 Stoics encourage us to actively cultivate gratitude for that which we already have.
 They recommend making a concerted effort to imagine what it would be like if something you currently have was no longer there. <br />
@@ -205,61 +198,49 @@ They recommend making a concerted effort to imagine what it would be like if som
 
 <p><em>Some “memories”:</em></p>
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/woman_with_rifle.jpeg" alt="Woman" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/way_out_of_city.jpeg" alt="Out of city" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/plane_wing.jpeg" alt="Plane wing" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/kyiv.jpeg" alt="Kyiv" class="img-thumbnail" />
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+  <img src="/minimalist/woman_with_rifle.jpeg" alt="Woman" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/way_out_of_city.jpeg" alt="Out of city" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/plane_wing.jpeg" alt="Plane wing" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/kyiv.jpeg" alt="Kyiv" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
 </div>
 
-<div class="row">
-  <div class="col-4">&nbsp;</div>
-  <div class="col-4 d-flex flex-row justify-content-center align-items-center">
-    <img src="/minimalist/building.jpeg" alt="Plane wing" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/kyiv_2.jpeg" alt="Plane wing" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/odessa.jpeg" alt="Odessa" class="img-thumbnail" />
-    &nbsp;
-    <img src="/minimalist/bucha.jpeg" alt="Bucha" class="img-thumbnail" />
-  </div>
-  <div class="col-4">&nbsp;</div>
+<div class="not-prose my-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+  <img src="/minimalist/building.jpeg" alt="Building" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/kyiv_2.jpeg" alt="Kyiv" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/odessa.jpeg" alt="Odessa" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
+  <img src="/minimalist/bucha.jpeg" alt="Bucha" class="w-full rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.35)] object-cover" />
 </div>
-</div>
+
     </div>
-  </div>
+  </article>
 </div>
 
-    </main>
+          </div>
+        </div>
+      </main>
 
-    <footer>
-      <div class="d-flex justify-content-center p-2 m-2">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="text-decoration: none; display: flex; align-items: center; gap: 0.5em;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <footer class="bg-slate-100">
+        <div class="max-w-4xl mx-auto px-6 py-8">
+          <div class="flex justify-center">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV"
+    class="group inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-600 transition hover:border-brand hover:text-brand">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20"
+      class="transition group-hover:translate-y-0.5 group-hover:text-brand">
       <g>
-        <!-- File outline -->
-        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Down arrow for download -->
-        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- Download bar -->
-        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" fill="none" />
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor" />
       </g>
     </svg>
-    <span style="font-weight: 500; font-size: 1.05em; color: currentColor; letter-spacing: 0.03em;">Download CV</span>
+    <span class="transition group-hover:text-brand">Download CV</span>
   </a>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    </footer>
+        </div>
+      </footer>
+    </div>
   </body>
 
 </html>

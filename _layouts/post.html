@@ -1,29 +1,34 @@
 ---
 layout: default
 ---
-<div class="container">
+<div class="space-y-10">
 
-  <div class="text-center my-3 d-flex justify-content-center gap-4">
-    <!-- Home button -->
-    <a href="/" class="text-decoration-none" style="color: #0d6efd;" title="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
-        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd" />
-        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none" />
+  <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-500">
+    <a href="/" class="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 font-medium uppercase tracking-[0.3em] text-slate-600 transition hover:border-brand hover:text-brand"
+      title="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16"
+        class="transition group-hover:-translate-y-px group-hover:text-brand">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor" />
+        <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none" />
       </svg>
+      Home
     </a>
 
-    <!-- Other posts / Blog list button -->
-    <a href="/blog" class="text-decoration-none px-3 py-2 rounded-pill fw-semibold" style="background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;" title="All Blog Posts">
+    <a href="/blog" class="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-brand transition hover:border-brand hover:bg-brand/20"
+      title="All Blog Posts">
       Other posts
     </a>
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <h4>{{ page.title }}</h4>
-      <small class="text-muted">{{ page.date | date: "%b %-d, %Y" }}</small>
-      <hr />
-      <div>{{ content }}</div>
+  <article class="space-y-6">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold tracking-tight text-slate-900">{{ page.title }}</h1>
+      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">{{ page.date | date: "%b %-d, %Y" }}</p>
+      <div class="h-px w-20 bg-gradient-to-r from-brand via-brand/40 to-transparent"></div>
+    </header>
+
+    <div class="prose prose-slate max-w-none prose-a:text-brand hover:prose-a:text-slate-900">
+      {{ content }}
     </div>
-  </div>
+  </article>
 </div>
