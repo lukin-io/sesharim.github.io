@@ -1,87 +1,34 @@
 ---
 layout: default
 ---
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-        style="background-image: url('unsplash-photo-1.jpg');">
-        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-          <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-          <ul class="d-flex list-unstyled mt-auto">
-            <li class="me-auto">
-              <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
-                class="rounded-circle border border-white">
-            </li>
-            <li class="d-flex align-items-center me-3">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#geo-fill"></use>
-              </svg>
-              <small>Earth</small>
-            </li>
-            <li class="d-flex align-items-center">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#calendar3"></use>
-              </svg>
-              <small>3d</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+<div class="space-y-12">
+  <header class="space-y-3">
+    <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Selected work</h1>
+    <p class="max-w-3xl text-base leading-relaxed text-slate-500">Highlights from engagements where strategy, execution,
+      and iteration shaped the outcome.</p>
+  </header>
 
-    <div class="col">
-      <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-        style="background-image: url('unsplash-photo-2.jpg');">
-        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-          <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Much longer title that wraps to multiple lines</h3>
-          <ul class="d-flex list-unstyled mt-auto">
-            <li class="me-auto">
-              <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
-                class="rounded-circle border border-white">
-            </li>
-            <li class="d-flex align-items-center me-3">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#geo-fill"></use>
-              </svg>
-              <small>Pakistan</small>
-            </li>
-            <li class="d-flex align-items-center">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#calendar3"></use>
-              </svg>
-              <small>4d</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+  <div class="grid gap-6 md:grid-cols-2">
+    <article class="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.4)]">
+      <span class="w-fit rounded-full border border-brand/40 bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand">Healthcare</span>
+      <h2 class="text-2xl font-semibold text-slate-900">Clinical data platform</h2>
+      <p class="text-base leading-7 text-slate-600">Architected a secure, HIPAA-compliant platform that unified patient
+        insights for a global medical leader, improving decision-making for clinicians and analysts.</p>
+    </article>
 
-    <div class="col">
-      <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-        style="background-image: url('unsplash-photo-3.jpg');">
-        <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-          <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Another longer title belongs here</h3>
-          <ul class="d-flex list-unstyled mt-auto">
-            <li class="me-auto">
-              <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32"
-                class="rounded-circle border border-white">
-            </li>
-            <li class="d-flex align-items-center me-3">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#geo-fill"></use>
-              </svg>
-              <small>California</small>
-            </li>
-            <li class="d-flex align-items-center">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#calendar3"></use>
-              </svg>
-              <small>5d</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <article class="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.4)]">
+      <span class="w-fit rounded-full border border-brand/40 bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand">Public
+        Safety</span>
+      <h2 class="text-2xl font-semibold text-slate-900">Facial recognition research</h2>
+      <p class="text-base leading-7 text-slate-600">Partnered with the UK Metropolitan Police to explore responsible use of
+        AI, optimizing accuracy and setting guardrails for real-world deployment.</p>
+    </article>
+
+    <article class="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.4)] md:col-span-2">
+      <span class="w-fit rounded-full border border-brand/40 bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand">SaaS</span>
+      <h2 class="text-2xl font-semibold text-slate-900">AI-powered product delivery</h2>
+      <p class="text-base leading-7 text-slate-600">Led design and development of AI-driven SaaS and agent tooling, shipping
+        production features with Next.js, React, and Rails while enabling continuous delivery pipelines.</p>
+    </article>
   </div>
 </div>

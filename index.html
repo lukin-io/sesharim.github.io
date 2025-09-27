@@ -1,104 +1,78 @@
 ---
 layout: default
 ---
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-        <span class="p-3 bg-body-secondary rounded-circle d-flex align-items-center justify-content-center text-primary"
-          style="width:5rem;height:5rem;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"
-            aria-labelledby="brain-cog-title">
-            <title id="brain-cog-title">Brain and cog icon</title>
-            <path d="m10.852 14.772-.383.923" />
-            <path d="m10.852 9.228-.383-.923" />
-            <path d="m13.148 14.772.382.924" />
-            <path d="m13.531 8.305-.383.923" />
-            <path d="m14.772 10.852.923-.383" />
-            <path d="m14.772 13.148.923.383" />
-            <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 0 0-5.63-1.446 3 3 0 0 0-.368 1.571 4 4 0 0 0-2.525 5.771" />
-            <path d="M17.998 5.125a4 4 0 0 1 2.525 5.771" />
-            <path d="M19.505 10.294a4 4 0 0 1-1.5 7.706" />
-            <path d="M4.032 17.483A4 4 0 0 0 11.464 20c.18-.311.892-.311 1.072 0a4 4 0 0 0 7.432-2.516" />
-            <path d="M4.5 10.291A4 4 0 0 0 6 18" />
-            <path d="M6.002 5.125a3 3 0 0 0 .4 1.375" />
-            <path d="m9.228 10.852-.923-.383" />
-            <path d="m9.228 13.148-.923.383" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </span>
-        <div>
-          <h2 class="text-body-emphasis mb-1">
-            Hello, i'm Max Lukin
-          </h2>
-          <p class="text-secondary mb-0">ex-Apple, Staff Software Engineer, consultant, and AI enthusiast.</p>
-        </div>
+<div class="space-y-12">
+  <section class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-6">
+      {% include logo.html %}
+      <div class="space-y-1">
+        <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Hello, i'm Max Lukin</h1>
+        <p class="text-base text-slate-500">ex-Apple, Staff Software Engineer, consultant, and AI enthusiast.</p>
       </div>
-
-      <div class="clearfix">&nbsp;</div>
-
-      <p class="fs-5">
-        I help businesses and companies grow by providing consulting, development, and support through effective
-        software
-        engineering practices. <br />
-        I oversee the planning, execution, and delivery of software projects, ensuring they align
-        with
-        business goals and timelines while offering cost-effective solutions <span class="fw-semibold">remotely</span>.
-      </p>
-
-      <p class="fs-5">
-        I specialize in transforming ideas into reality, from <a
-          href="https://en.wikipedia.org/wiki/Minimum_viable_product" target="_blank" class="fw-semibold">MVP</a> and <a
-          href="https://en.wikipedia.org/wiki/Proof_of_concept" target="_blank" class="fw-semibold">proof-of-concept</a>
-        projects to fully functional <a href="https://en.wikipedia.org/wiki/Software_as_a_service" target="_blank"
-          class="fw-semibold">SaaS</a>
-        products. <br />
-        My interests include large-scale web services, operational practices
-        like
-        on-call and monitoring, developer tools, and engineering leadership.
-      </p>
-
-      <p class="fs-5">
-        I have been focused on <span class="fw-semibold">AI</span> since its early stages and have gained valuable
-        experience building SaaS/Agents applications powered
-        by <span class="fw-semibold">AI</span> using <a href="https://nextjs.org" target="_blank"
-          class="fw-semibold">Next.js</a> and <a href="https://react.dev" target="_blank"
-          class="fw-semibold">React.js</a>. <br />
-        I also enjoy working on projects involving <a href="https://react.dev" target="_blank"
-          class="fw-semibold">JavaScript/TypeScript</a> <a href="https://rubyonrails.org" target="_blank"
-          class="fw-semibold">Ruby on
-          Rails</a>, and
-        <a href="https://go.dev" target="_blank" class="fw-semibold">Golang</a>.
-      </p>
-
-      <p class="fs-5">
-        With over <span class="fw-semibold">14 years</span> of experience as a software engineer, I’ve contributed to
-        high-impact projects across major sectors,
-        including developing solutions for leading medical corporations and working on a facial recognition project with
-        the UK Metropolitan Police Force for crime detection and prevention.
-        <!-- With over <span class="fw-semibold">10 years</span> of experience as a software engineer, I’ve had the privilege
-        of working on large-scale,
-        high-impact
-        projects in diverse sectors. <br />
-        I’ve contributed to innovative solutions within one of the world’s leading medical
-        corporations and played a key role in a project supporting the UK Metropolitan Police Force in the fight against
-        crime. <br />
-        My expertise spans across system design, software development, and collaboration with multidisciplinary teams to
-        deliver
-        critical solutions. -->
-      </p>
-
-      <p class="fs-5">
-        Sometimes <a href="/blog" class="fw-semibold">writing</a> about technologies I work with.
-      </p>
-
-      <p class="fs-5">
-        You can also find me on <a href="https://linkedin.com/in/lukin-io" target="_blank"
-          class="fw-semibold">Linkedin</a> (experience/recommendations) or <a href="https://github.com/lukin-io"
-          target="_blank" class="fw-semibold">github</a>, or send me message <a
-          href="mailto:max@lukin.io&body=Consultation?" class="fw-semibold">max@lukin.io</a>
     </div>
-  </div>
+    <div class="hidden h-14 w-px rounded-full bg-gradient-to-b from-brand/80 via-brand/20 to-transparent sm:block"></div>
+  </section>
 
+  <div class="space-y-8 text-lg leading-8 text-slate-600">
+    <p>
+      I help businesses and companies grow by providing consulting, development, and support through effective
+      software engineering practices. <br />
+      I oversee the planning, execution, and delivery of software projects, ensuring they align with business goals and
+      timelines while offering cost-effective solutions <span class="font-semibold text-slate-900">remotely</span>.
+    </p>
+
+    <p>
+      I specialize in transforming ideas into reality, from <a href="https://en.wikipedia.org/wiki/Minimum_viable_product"
+        target="_blank" class="font-semibold text-brand hover:text-slate-900 transition">MVP</a> and <a
+        href="https://en.wikipedia.org/wiki/Proof_of_concept" target="_blank"
+        class="font-semibold text-brand hover:text-slate-900 transition">proof-of-concept</a> projects to fully functional <a
+        href="https://en.wikipedia.org/wiki/Software_as_a_service" target="_blank"
+        class="font-semibold text-brand hover:text-slate-900 transition">SaaS</a> products. <br />
+      My interests include large-scale web services, operational practices like on-call and monitoring, developer tools,
+      and engineering leadership.
+    </p>
+
+    <p>
+      I have been focused on <span class="font-semibold text-slate-900">AI</span> since its early stages and have gained
+      valuable experience building SaaS/Agents applications powered by <span class="font-semibold text-slate-900">AI</span>
+      using <a href="https://nextjs.org" target="_blank" class="font-semibold text-brand hover:text-slate-900 transition">Next.js</a>
+      and <a href="https://react.dev" target="_blank" class="font-semibold text-brand hover:text-slate-900 transition">React.js</a>.
+      <br />
+      I also enjoy working on projects involving <a href="https://react.dev" target="_blank"
+        class="font-semibold text-brand hover:text-slate-900 transition">JavaScript/TypeScript</a> <a
+        href="https://rubyonrails.org" target="_blank"
+        class="font-semibold text-brand hover:text-slate-900 transition">Ruby on Rails</a>, and <a href="https://go.dev"
+        target="_blank" class="font-semibold text-brand hover:text-slate-900 transition">Golang</a>.
+    </p>
+
+    <p>
+      With over <span class="font-semibold text-slate-900">14 years</span> of experience as a software engineer, I’ve
+      contributed to high-impact projects across major sectors, including developing solutions for leading medical
+      corporations and working on a facial recognition project with the UK Metropolitan Police Force for crime detection
+      and prevention.
+      <!-- With over <span class="fw-semibold">10 years</span> of experience as a software engineer, I’ve had the privilege
+      of working on large-scale,
+      high-impact
+      projects in diverse sectors. <br />
+      I’ve contributed to innovative solutions within one of the world’s leading medical
+      corporations and played a key role in a project supporting the UK Metropolitan Police Force in the fight against
+      crime. <br />
+      My expertise spans across system design, software development, and collaboration with multidisciplinary teams to
+      deliver
+      critical solutions. -->
+    </p>
+
+    <p>
+      Sometimes <a href="/blog" class="font-semibold text-brand hover:text-slate-900 transition">writing</a> about
+      technologies I work with.
+    </p>
+
+    <p>
+      You can also find me on <a href="https://linkedin.com/in/lukin-io" target="_blank"
+        class="font-semibold text-brand hover:text-slate-900 transition">Linkedin</a> (experience/recommendations) or <a
+        href="https://github.com/lukin-io" target="_blank" class="font-semibold text-brand hover:text-slate-900 transition">github</a>,
+      or send me message <a href="mailto:max@lukin.io&body=Consultation?"
+        class="font-semibold text-brand hover:text-slate-900 transition">max@lukin.io</a>
+    </p>
+  </div>
 </div>
