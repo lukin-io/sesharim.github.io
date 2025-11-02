@@ -26,6 +26,18 @@ jobs:
           ruby-version: '3.4.4'
           bundler-cache: true
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build CSS
+        run: npm run build:css
+
       - name: Build site
         run: |
           bundle config set path 'vendor/bundle'

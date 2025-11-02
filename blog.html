@@ -2,60 +2,55 @@
 layout: default
 permalink: /blog
 ---
-<div class="container">
-  <!-- Minimalistic, fresh logo header using Bootstrap -->
-
-  <div class="text-center my-3">
-    <a href="/" class="text-decoration-none" style="color: #0d6efd;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
-        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd"/>
-        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none"/>
+<div class="w-full">
+  <!-- Navigation header -->
+  <div class="flex items-center justify-between mb-8">
+    <a href="/" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16" class="group-hover:-translate-x-1 transition-transform">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+        <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
       </svg>
+      <span class="font-medium">Back to Home</span>
     </a>
   </div>
 
-  <div class="row">
+  <!-- Page title -->
+  <div class="mb-10">
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-3">Blog</h1>
+    <p class="text-gray-600 text-lg">Writing about technologies I work with</p>
+  </div>
+
+  <!-- Blog posts list -->
+  <div class="space-y-4">
     {% for post in site.posts %}
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="{{ post.url | relative_url }}" class="text-decoration-none text-dark fw-bold">
-                  {{ post.title }}
-                </a>
-              </h4>
+      <article class="group">
+        <a href="{{ post.url | relative_url }}" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                {{ post.title }}
+              </h2>
+              {% if post.description %}
+                <p class="text-gray-600 leading-relaxed mb-4">{{ post.description }}</p>
+              {% endif %}
+              {% if post.excerpt %}
+                <p class="text-gray-600 leading-relaxed mb-4">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+              {% endif %}
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 {{ post.date | date: "%b %d, %Y" }}
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="{{ post.url | relative_url }}" class="text-decoration-none text-primary">
-                  {{ post.title }}
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                {{ post.date | date: "%b %d, %Y" }}
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     {% endfor %}
   </div>
 </div>

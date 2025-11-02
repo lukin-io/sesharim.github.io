@@ -22,10 +22,10 @@
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/styles.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> -->
   <meta name="description"
     content="Experienced Ruby on Rails and Go developer specializing in scalable web applications">
   <meta name="keywords"
@@ -51,640 +51,450 @@
 </head>
 
 
-  <body class="col-lg-8 mx-auto py-md-2 body">
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8">
     <header>
       &nbsp;
     </header>
 
     <main>
-      <div class="container">
-  <!-- Minimalistic, fresh logo header using Bootstrap -->
-
-  <div class="text-center my-3">
-    <a href="/" class="text-decoration-none" style="color: #0d6efd;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
-        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd"/>
-        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none"/>
+      <div class="w-full">
+  <!-- Navigation header -->
+  <div class="flex items-center justify-between mb-8">
+    <a href="/" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16" class="group-hover:-translate-x-1 transition-transform">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+        <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
       </svg>
+      <span class="font-medium">Back to Home</span>
     </a>
   </div>
 
-  <div class="row">
-    
-      <div class="col-12">
+  <!-- Page title -->
+  <div class="mb-10">
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-3">Blog</h1>
+    <p class="text-gray-600 text-lg">Writing about technologies I work with</p>
+  </div>
 
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/ai-senior-vs-junior" class="text-decoration-none text-dark fw-bold">
-                  AI Will Make Your Team Slower—Unless a Senior Engineer Drives It
-                </a>
-              </h4>
+  <!-- Blog posts list -->
+  <div class="space-y-4">
+    
+      <article class="group">
+        <a href="/blog/ai-senior-vs-junior" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                AI Will Make Your Team Slower—Unless a Senior Engineer Drives It
+              </h2>
+              
+                <p class="text-gray-600 leading-relaxed mb-4">A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.</p>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">TL;DR AI without strong engineering judgment amplifies bad practices, bloats scope, and quietly ships risk; the result is worse code, slower delivery, more spend. AI paired with an experienced engineer—with...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Oct 29, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/ai-senior-vs-junior" class="text-decoration-none text-primary">
-                  AI Will Make Your Team Slower—Unless a Senior Engineer Drives It
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Oct 29, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="text-decoration-none text-dark fw-bold">
-                  One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE
+              </h2>
+              
+                <p class="text-gray-600 leading-relaxed mb-4">How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.</p>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">We turned scattered conventions into a single PROJECT_CONTRIBUTION_GUIDE_v3.md that your editor and AI assistant can follow. This post explains the structure, the reasoning, and how to use it with Cursor...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Sep 09, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="text-decoration-none text-primary">
-                  One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Sep 09, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/containerizing-rails-dev-with-docker" class="text-decoration-none text-dark fw-bold">
-                  Containerizing Your Rails Development with Docker + Dev Containers
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/containerizing-rails-dev-with-docker" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Containerizing Your Rails Development with Docker + Dev Containers
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Sep 04, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/containerizing-rails-dev-with-docker" class="text-decoration-none text-primary">
-                  Containerizing Your Rails Development with Docker + Dev Containers
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Sep 04, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/acid_in_rails_postgresql_vs_mongodb" class="text-decoration-none text-dark fw-bold">
-                  ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/acid_in_rails_postgresql_vs_mongodb" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Sep 01, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/acid_in_rails_postgresql_vs_mongodb" class="text-decoration-none text-primary">
-                  ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Sep 01, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/rails-console-startup-banner" class="text-decoration-none text-dark fw-bold">
-                  A tiny Rails console banner that show app stats every time you run rails c
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/rails-console-startup-banner" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                A tiny Rails console banner that show app stats every time you run rails c
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">A tiny Rails console banner that show app stats every time you run rails c</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 25, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/rails-console-startup-banner" class="text-decoration-none text-primary">
-                  A tiny Rails console banner that show app stats every time you run rails c
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 25, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/rails-profile-endpoint-optimization-first-person" class="text-decoration-none text-dark fw-bold">
-                  Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/rails-profile-endpoint-optimization-first-person" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">Optimizing a Complex Rails Profile Endpoint</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 15, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/rails-profile-endpoint-optimization-first-person" class="text-decoration-none text-primary">
-                  Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 15, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/rails-8-stable-up-health-endpoint-env-driven" class="text-decoration-none text-dark fw-bold">
-                  Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/rails-8-stable-up-health-endpoint-env-driven" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">A battle-tested, copy‑paste `/up` endpoint for Rails API apps—no autoloading traps, no brittle config. One initializer, ENV‑driven settings, optional DB/Redis checks, clear status semantics, and end‑to‑end tests.</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 14, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/rails-8-stable-up-health-endpoint-env-driven" class="text-decoration-none text-primary">
-                  Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 14, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/mastering-freeze_time-in-rails-tests" class="text-decoration-none text-dark fw-bold">
-                  Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/mastering-freeze_time-in-rails-tests" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">If your test suite ever fails “only sometimes,” there’s a good chance time is involved. Rails ships with the excellent ActiveSupport::Testing::TimeHelpers, giving you tools like freeze_time, travel_to, and travel to...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 12, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/mastering-freeze_time-in-rails-tests" class="text-decoration-none text-primary">
-                  Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 12, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/rails-under-the-hood" class="text-decoration-none text-dark fw-bold">
-                  Under-the-Hood Mechanisms of Ruby on Rails You Should Know
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/rails-under-the-hood" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Under-the-Hood Mechanisms of Ruby on Rails You Should Know
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">If you’re comfortable writing Rails apps but want to really understand what’s going on under the hood—and use that knowledge to make better technical decisions—this is your map.
+</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 11, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/rails-under-the-hood" class="text-decoration-none text-primary">
-                  Under-the-Hood Mechanisms of Ruby on Rails You Should Know
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 11, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/rails-instrumentation-notifications-logsubscriber" class="text-decoration-none text-dark fw-bold">
-                  Rails Instrumentation Notifications Logsubscriber
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/rails-instrumentation-notifications-logsubscriber" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Rails Instrumentation Notifications Logsubscriber
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">layout: post title: “Deep Rails Instrumentation: ActiveSupport::Notifications &amp; LogSubscriber (Rails 8+)” date: 2025-08-11 tags: [ruby-on-rails, rails-8, instrumentation, performance, logging] description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifications and ActiveSupport::LogSubscriber in Rails 8+.”...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 11, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/rails-instrumentation-notifications-logsubscriber" class="text-decoration-none text-primary">
-                  Rails Instrumentation Notifications Logsubscriber
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 11, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/mastering-activesupport-logsubscriber-rails8" class="text-decoration-none text-dark fw-bold">
-                  Mastering Activesupport Logsubscriber Rails8
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/mastering-activesupport-logsubscriber-rails8" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Mastering Activesupport Logsubscriber Rails8
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">layout: post title: “Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns” date: 2025-08-11 tags: [ruby-on-rails, rails-8, logging, logsubscriber, observability, json-logs] description: “A practical, production-grade guide to ActiveSupport::LogSubscriber...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Aug 11, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/mastering-activesupport-logsubscriber-rails8" class="text-decoration-none text-primary">
-                  Mastering Activesupport Logsubscriber Rails8
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Aug 11, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/securing-jwt-with-rsa-keys" class="text-decoration-none text-dark fw-bold">
-                  Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/securing-jwt-with-rsa-keys" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
+</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Jul 30, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/securing-jwt-with-rsa-keys" class="text-decoration-none text-primary">
-                  Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Jul 30, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
+      <article class="group">
+        <a href="/blog/debugging-devise-jwt" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App
+              </h2>
+              
+                <p class="text-gray-600 leading-relaxed mb-4">A step‑by‑step log of the dead‑ends and the final, tidy setup— complete with code snippets, failure‑app JSON errors, and cURL recipes.
+</p>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">
+  “Postman logs me in, cURL gives ‘You need to sign in’, and somehow
+I can hit endpoints with no token at all—what on earth is going on?”
 
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/debugging-devise-jwt" class="text-decoration-none text-dark fw-bold">
-                  From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App
-                </a>
-              </h4>
+</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Jul 24, 2025
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/debugging-devise-jwt" class="text-decoration-none text-primary">
-                  From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Jul 24, 2025
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/minimalism-war-family-and-lessons" class="text-decoration-none text-dark fw-bold">
-                  Minimalism, Family, war and lessons
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/minimalism-war-family-and-lessons" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Minimalism, Family, war and lessons
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Feb 09, 2024
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/minimalism-war-family-and-lessons" class="text-decoration-none text-primary">
-                  Minimalism, Family, war and lessons
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Feb 09, 2024
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
-      <div class="col-12">
-
-        <!-- Style 1: Minimalist with border-left accent -->
-        <!-- <div class="card mb-3 border-0 shadow-sm" style="border-left: 4px solid #0d6efd;">
-          <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3">
-            <div>
-              <h4 class="card-title mb-0">
-                <a href="/blog/principles-for-writing-maintainable-code" class="text-decoration-none text-dark fw-bold">
-                  Principles for Writing Maintainable Code
-                </a>
-              </h4>
+      <article class="group">
+        <a href="/blog/principles-for-writing-maintainable-code" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div class="flex-1">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Principles for Writing Maintainable Code
+              </h2>
+              
+              
+                <p class="text-gray-600 leading-relaxed mb-4">Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple...</p>
+              
             </div>
-            <div class="text-md-end ms-md-3 mt-2 mt-md-0">
-              <span class="text-muted small fst-italic">
+            <div class="flex-shrink-0">
+              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 Sep 12, 2020
-              </span>
+              </time>
             </div>
           </div>
-        </div> -->
-
-        <!-- Style 2: Soft background, pill date badge -->
-        <div class="card mb-3 border-0" style="background: #f8f9fa;">
-          <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3">
-            <div>
-              <h5 class="card-title mb-0 fw-semibold">
-                <a href="/blog/principles-for-writing-maintainable-code" class="text-decoration-none text-primary">
-                  Principles for Writing Maintainable Code
-                </a>
-              </h5>
-            </div>
-            <div class="text-end text-md-center ms-md-3 mt-2 mt-md-0">
-              <span class="badge rounded-pill bg-secondary px-3 py-2 fs-6">
-                Sep 12, 2020
-              </span>
-            </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
-        </div>
-
-
-      </div>
+        </a>
+      </article>
     
   </div>
 </div>
@@ -692,8 +502,8 @@
     </main>
 
     <footer>
-      <div class="d-flex justify-content-center p-2 m-2">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="text-decoration: none; display: flex; align-items: center; gap: 0.5em;">
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
       <g>
         <!-- File outline -->
@@ -704,12 +514,9 @@
         <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
       </g>
     </svg>
-    <span style="font-weight: 500; font-size: 1.05em; color: currentColor; letter-spacing: 0.03em;">Download CV</span>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
   </a>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     </footer>
   </body>

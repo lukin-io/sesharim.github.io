@@ -1,29 +1,51 @@
 ---
 layout: default
 ---
-<div class="container">
-
-  <div class="text-center my-3 d-flex justify-content-center gap-4">
-    <!-- Home button -->
-    <a href="/" class="text-decoration-none" style="color: #0d6efd;" title="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
-        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd" />
-        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none" />
-      </svg>
-    </a>
-
-    <!-- Other posts / Blog list button -->
-    <a href="/blog" class="text-decoration-none px-3 py-2 rounded-pill fw-semibold" style="background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;" title="All Blog Posts">
-      Other posts
-    </a>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <h4>{{ page.title }}</h4>
-      <small class="text-muted">{{ page.date | date: "%b %-d, %Y" }}</small>
-      <hr />
-      <div>{{ content }}</div>
+<article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
     </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-gray-200">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+      {{ page.title }}
+    </h1>
+    <div class="flex items-center gap-4 text-gray-600">
+      <time class="text-sm font-medium">{{ page.date | date: "%B %-d, %Y" }}</time>
+      {% if page.author %}
+        <span class="text-sm">by {{ page.author }}</span>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    {{ content }}
   </div>
-</div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-gray-200">
+    <a href="/blog" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>

@@ -12,6 +12,15 @@ future: true
 markdown: kramdown
 permalink: /blog/:title
 
+# Exclude files from Jekyll processing
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json
+  - tailwind.config.js
+  - postcss.config.js
+  - assets/css/tailwind.scss
+
 # Plugins
 plugins:
   - jekyll-seo-tag
