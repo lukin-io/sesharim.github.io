@@ -1,0 +1,308 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/ai-senior-vs-junior">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> -->
+  <meta name="description"
+    content="  TL;DR      AI without strong engineering judgment amplifies bad practices, bloats scope, and quietly ships risk; the result is worse code, slower delivery,...">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="AI Will Make Your Team Slower—Unless a Senior Engineer Drives It" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable." />
+<meta property="og:description" content="A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable." />
+<link rel="canonical" href="http://localhost:4000/blog/ai-senior-vs-junior" />
+<meta property="og:url" content="http://localhost:4000/blog/ai-senior-vs-junior" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-10-29T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="AI Will Make Your Team Slower—Unless a Senior Engineer Drives It" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-10-29T00:00:00+02:00","datePublished":"2025-10-29T00:00:00+02:00","description":"A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.","headline":"AI Will Make Your Team Slower—Unless a Senior Engineer Drives It","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/ai-senior-vs-junior"},"url":"http://localhost:4000/blog/ai-senior-vs-junior"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="col-lg-8 mx-auto py-md-2 body">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <div class="container">
+
+  <div class="text-center my-3 d-flex justify-content-center gap-4">
+    <!-- Home button -->
+    <a href="/" class="text-decoration-none" style="color: #0d6efd;" title="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 16 16">
+        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="#0d6efd" />
+        <path d="M2 8l6-5 6 5" stroke="#0d6efd" stroke-width="1.2" fill="none" />
+      </svg>
+    </a>
+
+    <!-- Other posts / Blog list button -->
+    <a href="/blog" class="text-decoration-none px-3 py-2 rounded-pill fw-semibold" style="background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;" title="All Blog Posts">
+      Other posts
+    </a>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h4>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It</h4>
+      <small class="text-muted">Oct 29, 2025</small>
+      <hr />
+      <div><blockquote>
+  <p><strong>TL;DR</strong></p>
+
+  <ul>
+    <li><strong>AI without strong engineering judgment</strong> amplifies bad practices, bloats scope, and quietly ships risk; the result is <strong>worse code, slower delivery, more spend</strong>.</li>
+    <li><strong>AI paired with an experienced engineer</strong>—with explicit guardrails, contracts, and verification gates—becomes an <strong>execution accelerator</strong> that still preserves maintainability and safety.</li>
+  </ul>
+</blockquote>
+
+<p>I’ve spent ~15 years building software at scale—<strong>Staff Software Engineer at Apple</strong>, <strong>Senior Software Engineer</strong> in the world’s largest medical corporation, and <strong>Tech Lead</strong> delivering high-end solutions for the <strong>Metropolitan Police (UK)</strong>. That background is why AI (e.g., Codex-style assistants) is a net positive in my hands and a net negative in many others. The difference isn’t the model—it’s <strong>process control</strong>.</p>
+
+<p>Below is the practical operating model I use to make AI extremely efficient, with concrete Rails examples and checklists you can paste into your own repo.</p>
+
+<hr />
+
+<h2 id="the-paradox-ai-helps-the-best-and-hurts-the-rest">The paradox: AI helps the best and hurts the rest</h2>
+
+<p>AI accelerates whatever process it is given. If the process is ad-hoc, pattern-happy, and test-light, AI will generate more of that—faster. If the process is <strong>Rails-way + KISS, contracts-first, test-gated, and security-checked</strong>, AI becomes a force multiplier.</p>
+
+<p>My teams encode these guardrails in two living documents:</p>
+
+<ul>
+  <li>A <strong>Pragmatic Engineering Guide</strong>: Rails-way first; <strong>Blueprinter as single JSON source</strong>; predictable envelopes/status codes; DRY only when duplication hurts; <strong>DB constraints first</strong>; Pundit/Kaminari/Ransack; N+1 prevention; deterministic tests; and a tight “Definition of Done.”</li>
+  <li>An <strong>Agent Checklist</strong> for contributors (human or AI): <strong>verification gates</strong> must pass (<code class="language-plaintext highlighter-rouge">rubocop</code>, <code class="language-plaintext highlighter-rouge">rspec</code>, <code class="language-plaintext highlighter-rouge">brakeman</code>, <code class="language-plaintext highlighter-rouge">bundle audit</code>, <code class="language-plaintext highlighter-rouge">rswag</code>), constrained edit scope, JSON envelope rules, deny-by-default authorization, minimal diffs, and a required <strong>CHECKS</strong> section in the result.</li>
+</ul>
+
+<p>These two artifacts are how I “steer the model.”</p>
+
+<hr />
+
+<h2 id="the-control-loop-that-turns-ai-into-a-multiplier">The control loop that turns AI into a multiplier</h2>
+
+<p>Think of this as <strong>how an experienced engineer drives</strong>.</p>
+
+<ol>
+  <li>
+    <p><strong>State intent, not tasks</strong>
+Describe the behavior, constraints, and acceptance criteria. Example: “Build <code class="language-plaintext highlighter-rouge">/api/v1/items</code> list &amp; create with Blueprinter, Pundit, Kaminari; return <code class="language-plaintext highlighter-rouge">{ data, meta }</code> on index, and envelope on create; ISO8601 timestamps; preload to avoid N+1.”</p>
+  </li>
+  <li><strong>Pin contracts up front</strong>
+    <ul>
+      <li><strong>Envelope</strong>: <code class="language-plaintext highlighter-rouge">{ data: [...], meta: { page, per_page, total_pages, total_count } }</code> for lists; success envelopes for mutations; <code class="language-plaintext highlighter-rouge">422 :unprocessable_content</code> for validation errors via centralized renderer.</li>
+      <li><strong>JSON source</strong>: Blueprinter only (controllers never hand-craft response hashes).</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Set repo rules as the model’s “laws”</strong>
+Re-surface KISS, Rails-way, predictable status codes, Pundit deny-by-default, Ransack for search, Kaminari for pagination, <strong>UTC internally / ISO8601 in JSON</strong>, and “no new runtime deps without justification.”</p>
+  </li>
+  <li>
+    <p><strong>Ask AI for the minimal diff consistent with the contract</strong>
+Small, scoped changes reduce blast radius and review time.</p>
+  </li>
+  <li>
+    <p><strong>Gate with verification</strong> (non-negotiable)
+Run—and expect AI to fix until green:
+<code class="language-plaintext highlighter-rouge">bundle exec rubocop</code> • <code class="language-plaintext highlighter-rouge">bundle exec rspec</code> • <code class="language-plaintext highlighter-rouge">bundle exec brakeman -q -w2</code> • <code class="language-plaintext highlighter-rouge">bundle exec bundle audit check --update</code> • <code class="language-plaintext highlighter-rouge">bundle exec rails rswag:specs:swaggerize</code>.</p>
+  </li>
+  <li>
+    <p><strong>Require tests that assert contracts</strong>
+Deterministic request specs validating envelope shape, error shape, and status codes; serializers and policy specs; freeze time; stub external IO.</p>
+  </li>
+  <li>
+    <p><strong>Enforce data integrity at the DB</strong>
+Not-nulls, unique indexes, FKs; seed representative data with new schema so environments stay usable.</p>
+  </li>
+  <li><strong>Document the change</strong>
+Update <code class="language-plaintext highlighter-rouge">CHANGELOG.md</code> and, for flows/PRDs, follow the repo’s exact templates <strong>after</strong> verification passes.</li>
+</ol>
+
+<p>This loop—intent → contracts → minimal diff → verification—keeps AI on the rails (pun intended).</p>
+
+<hr />
+
+<h2 id="a-concrete-example-rails-bad-ai-vs-senior-driven-ai">A concrete example (Rails): “bad AI” vs “senior-driven AI”</h2>
+
+<p><strong>The task</strong>: Ship <code class="language-plaintext highlighter-rouge">index</code> and <code class="language-plaintext highlighter-rouge">create</code> for <code class="language-plaintext highlighter-rouge">Item</code>.</p>
+
+<h3 id="what-the-inexperiencedai-path-often-produces-anti-pattern">What the <em>inexperienced+AI</em> path often produces (anti-pattern)</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/items_controller.rb (problematic)</span>
+<span class="k">def</span> <span class="nf">index</span>
+  <span class="n">items</span> <span class="o">=</span> <span class="no">Item</span><span class="p">.</span><span class="nf">all</span>
+  <span class="n">render</span> <span class="ss">json: </span><span class="n">items</span> <span class="c1"># ❌ raw AR to JSON, no envelope, N+1 risk</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">create</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="no">Item</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="n">item_params</span><span class="p">)</span>
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">item: </span><span class="n">item</span> <span class="p">},</span> <span class="ss">status: </span><span class="mi">200</span> <span class="c1"># ❌ wrong envelope, wrong status, handcrafted JSON</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Typical issues:</p>
+<ul>
+  <li>No pagination or preload (N+1)</li>
+  <li>Wrong status codes</li>
+  <li>Inconsistent JSON shapes</li>
+  <li>No Pundit</li>
+  <li>No tests or contracts</li>
+</ul>
+
+<p>This is how AI <strong>makes work worse</strong>—it’s fast, but it’s <strong>fast wrong</strong>.</p>
+
+<h3 id="what-the-senior-drivenai-path-looks-like">What the <em>senior-driven+AI</em> path looks like</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/items_controller.rb</span>
+<span class="k">class</span> <span class="nc">Api::V1::ItemsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">before_action</span> <span class="ss">:authenticate_user!</span>
+  <span class="n">after_action</span> <span class="ss">:verify_authorized</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">policy_scope</span><span class="p">(</span><span class="no">Item</span><span class="p">)</span>
+              <span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:owner</span><span class="p">)</span>
+              <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">created_at: :desc</span><span class="p">)</span>
+              <span class="p">.</span><span class="nf">page</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:page</span><span class="p">]).</span><span class="nf">per</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:per_page</span><span class="p">]</span> <span class="o">||</span> <span class="mi">20</span><span class="p">)</span>
+
+    <span class="n">authorize</span> <span class="no">Item</span>
+
+    <span class="n">render_collection_envelope</span><span class="p">(</span>
+      <span class="ss">collection: </span><span class="n">items</span><span class="p">,</span>
+      <span class="ss">blueprint: </span><span class="no">ItemBlueprint</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">items</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">item_params</span><span class="p">)</span>
+    <span class="n">authorize</span> <span class="n">item</span>
+
+    <span class="k">if</span> <span class="n">item</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">render_success_envelope</span><span class="p">(</span>
+        <span class="ss">message: </span><span class="s2">"Item created successfully"</span><span class="p">,</span>
+        <span class="ss">resource: </span><span class="n">item</span><span class="p">,</span>
+        <span class="ss">blueprint: </span><span class="no">ItemBlueprint</span><span class="p">,</span>
+        <span class="ss">status: :created</span>
+      <span class="p">)</span>
+    <span class="k">else</span>
+      <span class="n">render_validation_errors</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">item_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:item</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span>
+      <span class="ss">:title</span><span class="p">,</span> <span class="ss">:description</span><span class="p">,</span> <span class="ss">:price_cents</span><span class="p">,</span> <span class="ss">:status</span><span class="p">,</span>
+      <span class="ss">files_attributes:  </span><span class="p">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:doc_type</span><span class="p">,</span> <span class="ss">:file</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="p">],</span>
+      <span class="ss">images_attributes: </span><span class="p">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:alt</span><span class="p">,</span> <span class="ss">:file</span><span class="p">,</span> <span class="ss">:position</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="p">]</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Key differences:</strong></p>
+<ul>
+  <li>Uses <strong>Blueprinter</strong> for consistent JSON.</li>
+  <li>Proper <strong>status codes</strong> and envelopes.</li>
+  <li><strong>Pundit</strong>, <strong>Kaminari</strong>, and <strong>includes</strong> for clean, performant code.</li>
+  <li>Predictable, contract-driven results.</li>
+</ul>
+
+<hr />
+
+<h2 id="verification-gates">Verification gates</h2>
+
+<p>Before merging, all must pass:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rubocop
+bundle exec rspec
+bundle exec brakeman -q -w2
+bundle exec bundle audit check --update
+bundle exec rails rswag:specs:swaggerize
+</code></pre></div></div>
+
+<p>Any failure means the patch is rejected. This keeps AI output safe and consistent.</p>
+
+<hr />
+
+<h2 id="why-experience-is-everything">Why experience is everything</h2>
+
+<ul>
+  <li><strong>Context compression</strong>: Seniors encode the domain into contracts, not code.</li>
+  <li><strong>Risk management</strong>: Experience means setting the right guardrails.</li>
+  <li><strong>Trade-offs</strong>: Knowing when not to abstract.</li>
+  <li><strong>Feedback loops</strong>: Seniors run and fix verification gates—juniors skip them.</li>
+</ul>
+
+<hr />
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>AI isn’t a senior engineer. <strong>You are.</strong>
+With explicit contracts, repo-level laws, and non-negotiable verification, tools like Codex become the best pair you’ve ever had. Without that control, they quietly degrade your codebase.</p>
+
+<p><strong>Choose the driver.</strong></p>
+</div>
+    </div>
+  </div>
+</div>
+
+    </main>
+
+    <footer>
+      <div class="d-flex justify-content-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="text-decoration: none; display: flex; align-items: center; gap: 0.5em;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span style="font-weight: 500; font-size: 1.05em; color: currentColor; letter-spacing: 0.03em;">Download CV</span>
+  </a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    </footer>
+  </body>
+
+</html>

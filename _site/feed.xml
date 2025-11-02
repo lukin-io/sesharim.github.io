@@ -3,10 +3,10 @@
   <channel>
     <title>Software Engineering consultant</title>
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
-    <link>https://lukin.io/</link>
-    <atom:link href="https://lukin.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 29 Oct 2025 12:28:01 +0000</pubDate>
-    <lastBuildDate>Wed, 29 Oct 2025 12:28:01 +0000</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 02 Nov 2025 22:52:29 +0200</pubDate>
+    <lastBuildDate>Sun, 02 Nov 2025 22:52:29 +0200</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -206,9 +206,9 @@ With explicit contracts, repo-level laws, and non-negotiable verification, tools
 
 &lt;p&gt;&lt;strong&gt;Choose the driver.&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 29 Oct 2025 00:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/ai-senior-vs-junior</link>
-        <guid isPermaLink="true">https://lukin.io/blog/ai-senior-vs-junior</guid>
+        <pubDate>Wed, 29 Oct 2025 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/blog/ai-senior-vs-junior</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/ai-senior-vs-junior</guid>
         
         <category>ai</category>
         
@@ -468,9 +468,9 @@ Return only the requested code + file paths; do not invent fields outside the sc
 
 &lt;p&gt;By unifying our standards and making them prompt‑aware, we get the best of both worlds: &lt;strong&gt;Rails defaults&lt;/strong&gt; that keep us fast, and &lt;strong&gt;clear rules&lt;/strong&gt; that keep humans and AI aligned. The result is higher‑quality code with far less friction.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 09 Sep 2025 09:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/consolidating-rails-api-guide-for-cursor-ide</link>
-        <guid isPermaLink="true">https://lukin.io/blog/consolidating-rails-api-guide-for-cursor-ide</guid>
+        <pubDate>Tue, 09 Sep 2025 12:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</guid>
         
         <category>Ruby on Rails</category>
         
@@ -830,9 +830,9 @@ Use healthchecks plus a small wait loop before starting Rails.&lt;/li&gt;
 
 &lt;p&gt;Happy shipping — and goodbye to “works on my machine.” 🚀&lt;/p&gt;
 </description>
-        <pubDate>Thu, 04 Sep 2025 09:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/containerizing-rails-dev-with-docker</link>
-        <guid isPermaLink="true">https://lukin.io/blog/containerizing-rails-dev-with-docker</guid>
+        <pubDate>Thu, 04 Sep 2025 12:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/containerizing-rails-dev-with-docker</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/containerizing-rails-dev-with-docker</guid>
         
         <category>docker</category>
         
@@ -1140,9 +1140,9 @@ effects.&lt;/li&gt;
 &lt;p&gt;By following these patterns, your Rails apps will remain consistent,
 reliable, and scalable.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 01 Sep 2025 09:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/acid_in_rails_postgresql_vs_mongodb</link>
-        <guid isPermaLink="true">https://lukin.io/blog/acid_in_rails_postgresql_vs_mongodb</guid>
+        <pubDate>Mon, 01 Sep 2025 12:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb</guid>
         
         <category>rails-8</category>
         
@@ -1362,9 +1362,9 @@ rails c
   &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Extend with timers / health checks as needed.&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Mon, 25 Aug 2025 09:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/rails-console-startup-banner</link>
-        <guid isPermaLink="true">https://lukin.io/blog/rails-console-startup-banner</guid>
+        <pubDate>Mon, 25 Aug 2025 12:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/rails-console-startup-banner</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/rails-console-startup-banner</guid>
         
         <category>rails-8</category>
         
@@ -1934,9 +1934,9 @@ Completed 200 OK in 46ms (Views: 0.3ms | ActiveRecord: 22.0ms (27 queries, 0 cac
 
 &lt;p&gt;If you drop this post into a Jekyll site, name it &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts/2025-08-15-rails-profile-endpoint-optimization.md&lt;/code&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 15 Aug 2025 09:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/rails-profile-endpoint-optimization-first-person</link>
-        <guid isPermaLink="true">https://lukin.io/blog/rails-profile-endpoint-optimization-first-person</guid>
+        <pubDate>Fri, 15 Aug 2025 12:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/rails-profile-endpoint-optimization-first-person</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/rails-profile-endpoint-optimization-first-person</guid>
         
         <category>rails-8</category>
         
@@ -2429,9 +2429,9 @@ bin/rails db:prepare                              &lt;span class=&quot;c&quot;&g
 &lt;h3 id=&quot;final-note&quot;&gt;Final note&lt;/h3&gt;
 &lt;p&gt;This “one‑initializer, ENV‑driven” &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/up&lt;/code&gt; endpoint has been reliable in practice and easy to reason about. Start minimal, enable checks as you harden the service, and mark only truly critical dependencies as &lt;strong&gt;required&lt;/strong&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 14 Aug 2025 12:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/rails-8-stable-up-health-endpoint-env-driven</link>
-        <guid isPermaLink="true">https://lukin.io/blog/rails-8-stable-up-health-endpoint-env-driven</guid>
+        <pubDate>Thu, 14 Aug 2025 15:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/rails-8-stable-up-health-endpoint-env-driven</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/rails-8-stable-up-health-endpoint-env-driven</guid>
         
         <category>rails-8</category>
         
@@ -2693,9 +2693,9 @@ bin/rails db:prepare                              &lt;span class=&quot;c&quot;&g
 
 &lt;p&gt;Happy testing!&lt;/p&gt;
 </description>
-        <pubDate>Tue, 12 Aug 2025 00:01:01 +0000</pubDate>
-        <link>https://lukin.io/blog/mastering-freeze_time-in-rails-tests</link>
-        <guid isPermaLink="true">https://lukin.io/blog/mastering-freeze_time-in-rails-tests</guid>
+        <pubDate>Tue, 12 Aug 2025 03:01:01 +0300</pubDate>
+        <link>http://localhost:4000/blog/mastering-freeze_time-in-rails-tests</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/mastering-freeze_time-in-rails-tests</guid>
         
         
         <category>rails</category>
@@ -2880,9 +2880,9 @@ bin/rails db:prepare                              &lt;span class=&quot;c&quot;&g
 
 &lt;p&gt;&lt;em&gt;Mastering these internals means fewer surprises, faster debugging, and Rails that scales with you.&lt;/em&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 11 Aug 2025 00:01:01 +0000</pubDate>
-        <link>https://lukin.io/blog/rails-under-the-hood</link>
-        <guid isPermaLink="true">https://lukin.io/blog/rails-under-the-hood</guid>
+        <pubDate>Mon, 11 Aug 2025 03:01:01 +0300</pubDate>
+        <link>http://localhost:4000/blog/rails-under-the-hood</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/rails-under-the-hood</guid>
         
         
       </item>
@@ -3219,9 +3219,9 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
 
 &lt;p&gt;Happy instrumenting! ✨&lt;/p&gt;
 </description>
-        <pubDate>Mon, 11 Aug 2025 00:00:00 +0000</pubDate>
-        <link>https://lukin.io/blog/rails-instrumentation-notifications-logsubscriber</link>
-        <guid isPermaLink="true">https://lukin.io/blog/rails-instrumentation-notifications-logsubscriber</guid>
+        <pubDate>Mon, 11 Aug 2025 00:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/rails-instrumentation-notifications-logsubscriber</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/rails-instrumentation-notifications-logsubscriber</guid>
         
         
       </item>
