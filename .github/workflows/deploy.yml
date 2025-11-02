@@ -37,6 +37,16 @@ jobs:
 
       - name: Build CSS
         run: npm run build:css
+        env:
+          NODE_ENV: production
+
+      - name: Verify CSS was generated
+        run: |
+          if [ ! -f "assets/css/styles.css" ]; then
+            echo "Error: CSS file was not generated!"
+            exit 1
+          fi
+          echo "CSS file size: $(ls -lh assets/css/styles.css | awk '{print $5}')"
 
       - name: Build site
         run: |

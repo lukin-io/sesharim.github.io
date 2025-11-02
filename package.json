@@ -1,13 +1,15 @@
 {
   "scripts": {
-    "build:css": "tailwindcss -i ./assets/css/tailwind.scss -o ./assets/css/styles.css --minify",
-    "watch:css": "tailwindcss -i ./assets/css/tailwind.scss -o ./assets/css/styles.css --watch",
+    "build:css": "NODE_ENV=production postcss ./assets/css/tailwind.css -o ./assets/css/styles.css",
+    "watch:css": "postcss ./assets/css/tailwind.css -o ./assets/css/styles.css --watch",
     "jekyll:build": "npm run build:css && bundle exec jekyll build",
     "jekyll:serve": "npm run build:css && bundle exec jekyll serve"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.14",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.47"
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "cssnano": "^7.0.6"
   }
 }

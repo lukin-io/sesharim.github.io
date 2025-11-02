@@ -19,7 +19,7 @@ exclude:
   - package-lock.json
   - tailwind.config.js
   - postcss.config.js
-  - assets/css/tailwind.scss
+  - assets/css/tailwind.css
 
 # Plugins
 plugins:
