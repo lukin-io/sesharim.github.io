@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build:css": "NODE_ENV=production postcss ./assets/css/tailwind.css -o ./assets/css/styles.css",
-    "watch:css": "postcss ./assets/css/tailwind.css -o ./assets/css/styles.css --watch",
+    "build:css": "cross-env NODE_ENV=production npx postcss ./assets/css/tailwind.css -o ./assets/css/styles.css",
+    "watch:css": "npx postcss ./assets/css/tailwind.css -o ./assets/css/styles.css --watch",
     "jekyll:build": "npm run build:css && bundle exec jekyll build",
     "jekyll:serve": "npm run build:css && bundle exec jekyll serve"
   },
@@ -10,6 +10,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
-    "cssnano": "^7.0.6"
+    "cssnano": "^7.0.6",
+    "cross-env": "^7.0.3"
   }
 }
