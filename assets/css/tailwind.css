@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-[#e0e1dd] text-gray-900;
+    @apply bg-[#c2c5aa] text-[#333d29];
     font-family: 'Inter', sans-serif;
   }
 
@@ -19,7 +19,7 @@
 
 @layer components {
   .highlight pre {
-    @apply bg-[#f5f5f7] border-2 border-dashed border-gray-300 rounded-lg p-5 text-lg mb-6 text-gray-800 transition-shadow duration-200;
+    @apply bg-[#b6ad90] border-2 border-dashed border-[#a4ac86] rounded-lg p-5 text-lg mb-6 text-[#333d29] transition-shadow duration-200;
   }
 
   .highlight pre:hover {
@@ -28,23 +28,23 @@
 
   /* Prose styling for blog posts */
   .prose {
-    @apply text-gray-900 leading-relaxed;
+    @apply text-[#333d29] leading-relaxed;
   }
 
   .prose h1 {
-    @apply font-display text-4xl font-bold mt-8 mb-4 text-gray-900;
+    @apply font-display text-4xl font-bold mt-8 mb-4 text-[#333d29];
   }
 
   .prose h2 {
-    @apply font-display text-3xl font-semibold mt-8 mb-4 text-gray-900;
+    @apply font-display text-3xl font-semibold mt-8 mb-4 text-[#333d29];
   }
 
   .prose h3 {
-    @apply font-display text-2xl font-semibold mt-6 mb-3 text-gray-900;
+    @apply font-display text-2xl font-semibold mt-6 mb-3 text-[#333d29];
   }
 
   .prose h4 {
-    @apply font-display text-xl font-semibold mt-4 mb-2 text-gray-900;
+    @apply font-display text-xl font-semibold mt-4 mb-2 text-[#333d29];
   }
 
   .prose p {
@@ -52,11 +52,11 @@
   }
 
   .prose a {
-    @apply text-blue-600 hover:text-blue-700 underline font-medium transition-colors;
+    @apply text-[#656d4a] hover:text-[#333d29] underline font-medium transition-colors;
   }
 
   .prose strong {
-    @apply font-semibold text-gray-900;
+    @apply font-semibold text-[#333d29];
   }
 
   .prose ul, .prose ol {
@@ -76,15 +76,15 @@
   }
 
   .prose blockquote {
-    @apply border-l-4 border-blue-500 pl-4 py-2 my-6 italic text-gray-700 bg-blue-50 rounded-r;
+    @apply border-l-4 border-[#a4ac86] pl-4 py-2 my-6 italic text-[#333d29] bg-[#b6ad90] rounded-r;
   }
 
   .prose code {
-    @apply bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono;
+    @apply bg-[#b6ad90] text-[#333d29] px-1.5 py-0.5 rounded text-sm font-mono;
   }
 
   .prose pre {
-    @apply bg-[#f5f5f7] border-2 border-dashed border-gray-300 rounded-lg p-5 mb-6 text-gray-800 overflow-x-auto;
+    @apply bg-[#b6ad90] border-2 border-dashed border-[#a4ac86] rounded-lg p-5 mb-6 text-[#333d29] overflow-x-auto;
   }
 
   .prose pre code {
@@ -92,7 +92,7 @@
   }
 
   .prose hr {
-    @apply border-gray-300 my-8;
+    @apply border-[#b6ad90] my-8;
   }
 
   .prose img {
@@ -104,10 +104,10 @@
   }
 
   .prose th {
-    @apply border border-gray-300 bg-gray-100 px-4 py-2 text-left font-semibold;
+    @apply border border-[#b6ad90] bg-[#b6ad90] px-4 py-2 text-left font-semibold;
   }
 
   .prose td {
-    @apply border border-gray-300 px-4 py-2;
+    @apply border border-[#b6ad90] px-4 py-2;
   }
 }

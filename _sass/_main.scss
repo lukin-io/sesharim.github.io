@@ -1,19 +1,19 @@
 .body {
-  background-color: #e0e1dd;
+  background-color: #c2c5aa;
 }
 
 .highlight pre {
-  background-color: #f5f5f7;
-  border: 2px dashed #b0b0b0;
+  background-color: #b6ad90;
+  border: 2px dashed #a4ac86;
   border-radius: 8px;
   padding: 1.25em 1.5em;
   font-size: 1.05em;
   box-shadow: 0 0 0 rgba(0,0,0,0.0);
-  color: #222;
+  color: #333d29;
   margin-bottom: 1.5em;
   transition: box-shadow 0.2s;
 }
 
 .highlight pre:hover {
-  box-shadow: 0 0 16px 4px rgba(0,0,0,0.10);
+  box-shadow: 0 0 16px 4px rgba(51, 61, 41, 0.15);
 }

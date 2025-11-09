@@ -5,7 +5,7 @@ permalink: /blog
 <div class="w-full">
   <!-- Navigation header -->
   <div class="flex items-center justify-between mb-8">
-    <a href="/" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group">
+    <a href="/" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16" class="group-hover:-translate-x-1 transition-transform">
         <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
         <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
@@ -16,34 +16,34 @@ permalink: /blog
 
   <!-- Page title -->
   <div class="mb-10">
-    <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-3">Blog</h1>
-    <p class="text-gray-600 text-lg">Writing about technologies I work with</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-[#333d29] mb-3">Blog</h1>
+    <p class="text-[#333d29] text-lg opacity-80">Writing about technologies I work with</p>
   </div>
 
   <!-- Blog posts list -->
   <div class="space-y-4">
     {% for post in site.posts %}
       <article class="group">
-        <a href="{{ post.url | relative_url }}" class="block bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 p-6 md:p-8">
+        <a href="{{ post.url | relative_url }}" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
           <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
                 {{ post.title }}
               </h2>
               {% if post.description %}
-                <p class="text-gray-600 leading-relaxed mb-4">{{ post.description }}</p>
+                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">{{ post.description }}</p>
               {% endif %}
               {% if post.excerpt %}
-                <p class="text-gray-600 leading-relaxed mb-4">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
               {% endif %}
             </div>
             <div class="flex-shrink-0">
-              <time class="inline-block bg-gray-100 text-gray-700 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
+              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
                 {{ post.date | date: "%b %d, %Y" }}
               </time>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
             <span>Read more</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

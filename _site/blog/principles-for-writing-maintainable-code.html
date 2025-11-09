@@ -18,9 +18,9 @@
   
   <meta name="theme-color">
 
-  <link rel="canonical" href="http://localhost:4000/blog/principles-for-writing-maintainable-code">
-  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
-  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+  <link rel="canonical" href="https://lukin.io/blog/principles-for-writing-maintainable-code">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="https://lukin.io/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="https://lukin.io/favicon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,21 +39,21 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows." />
 <meta property="og:description" content="Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows." />
-<link rel="canonical" href="http://localhost:4000/blog/principles-for-writing-maintainable-code" />
-<meta property="og:url" content="http://localhost:4000/blog/principles-for-writing-maintainable-code" />
+<link rel="canonical" href="https://lukin.io/blog/principles-for-writing-maintainable-code" />
+<meta property="og:url" content="https://lukin.io/blog/principles-for-writing-maintainable-code" />
 <meta property="og:site_name" content="Software Engineering consultant" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-09-12T15:00:00+03:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Principles for Writing Maintainable Code" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2020-09-12T15:00:00+03:00","datePublished":"2020-09-12T15:00:00+03:00","description":"Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows.","headline":"Principles for Writing Maintainable Code","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/principles-for-writing-maintainable-code"},"url":"http://localhost:4000/blog/principles-for-writing-maintainable-code"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2020-09-12T15:00:00+03:00","datePublished":"2020-09-12T15:00:00+03:00","description":"Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows.","headline":"Principles for Writing Maintainable Code","mainEntityOfPage":{"@type":"WebPage","@id":"https://lukin.io/blog/principles-for-writing-maintainable-code"},"url":"https://lukin.io/blog/principles-for-writing-maintainable-code"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
 
 
-  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8">
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
     <header>
       &nbsp;
     </header>
@@ -63,13 +63,13 @@
   <!-- Navigation -->
   <nav class="mb-8">
     <div class="flex items-center justify-between">
-      <a href="/blog" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
         <span class="font-medium">All Posts</span>
       </a>
-      <a href="/" class="no-underline text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
           <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
           <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
@@ -80,11 +80,11 @@
   </nav>
 
   <!-- Post header -->
-  <header class="mb-8 pb-8 border-b border-gray-200">
-    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
       Principles for Writing Maintainable Code
     </h1>
-    <div class="flex items-center gap-4 text-gray-600">
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
       <time class="text-sm font-medium">September 12, 2020</time>
       
         <span class="text-sm">by Max Lukin</span>
@@ -443,8 +443,8 @@ It expands the original article with concrete Rails examples, explains how to ap
   </div>
 
   <!-- Post footer -->
-  <footer class="mt-12 pt-8 border-t border-gray-200">
-    <a href="/blog" class="no-underline text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-2 group inline-flex">
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
       </svg>

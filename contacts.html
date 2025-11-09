@@ -6,38 +6,38 @@ layout: default
 <div class="w-full max-w-2xl mx-auto">
   <!-- Page Header -->
   <header class="mb-10 text-center">
-    <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Contact</h1>
-    <p class="text-gray-600 text-lg">Send a message, project idea, or just say hello!</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-[#333d29] mb-4">Contact</h1>
+    <p class="text-[#333d29] text-lg opacity-80">Send a message, project idea, or just say hello!</p>
   </header>
 
   <!-- Contact Form Card -->
-  <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 md:p-8">
+  <div class="bg-white rounded-lg border border-[#b6ad90] shadow-sm p-6 md:p-8">
     <div id="my-form-status" class="mb-6 p-4 rounded-lg hidden" role="alert"></div>
 
     <form action="https://formspree.io/f/xoqkdzvl" method="POST" id="contact-form" class="space-y-6">
       <div>
-        <label for="email" class="block mb-2 font-semibold text-gray-900">Your email</label>
+        <label for="email" class="block mb-2 font-semibold text-[#333d29]">Your email</label>
         <input
           type="email"
           id="email"
           name="_replyto"
           required
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          class="w-full px-4 py-3 border border-[#b6ad90] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a4ac86] focus:border-transparent transition-colors"
           placeholder="your.email@example.com"
         >
-        <small id="emailHelp" class="block mt-2 text-sm text-gray-600">
+        <small id="emailHelp" class="block mt-2 text-sm text-[#333d29] opacity-80">
           Your email will never be shared with anyone else.
         </small>
       </div>
 
       <div>
-        <label for="message" class="block mb-2 font-semibold text-gray-900">Your message</label>
+        <label for="message" class="block mb-2 font-semibold text-[#333d29]">Your message</label>
         <textarea
           id="message"
           name="message"
           required
           rows="6"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
+          class="w-full px-4 py-3 border border-[#b6ad90] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a4ac86] focus:border-transparent transition-colors resize-none"
           placeholder="Tell me about your project or just say hi..."
         ></textarea>
       </div>
@@ -49,7 +49,7 @@ layout: default
       <div class="pt-2">
         <button
           type="submit"
-          class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-sm hover:shadow-md"
+          class="w-full md:w-auto bg-[#656d4a] hover:bg-[#333d29] text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-sm hover:shadow-md"
         >
           Send Message
         </button>
@@ -66,7 +66,7 @@ layout: default
           event.preventDefault();
 
           // Reset status with loading state
-          status.className = "mb-6 p-4 rounded-lg bg-blue-50 text-blue-800 border border-blue-200";
+          status.className = "mb-6 p-4 rounded-lg bg-[#b6ad90] text-[#333d29] border border-[#a4ac86]";
           status.innerHTML = "<div class='flex items-center gap-2'><svg class='animate-spin h-5 w-5' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'><circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle><path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path></svg><span>Sending...</span></div>";
           status.classList.remove("hidden");
 
