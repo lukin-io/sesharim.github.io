@@ -1,0 +1,1069 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/websockets-rails-actioncable">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  “WebSockets are easy… until you have to make them reliable and scalable.”">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT &amp; ActionCable | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT &amp; ActionCable" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns." />
+<meta property="og:description" content="Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns." />
+<link rel="canonical" href="http://localhost:4000/blog/websockets-rails-actioncable" />
+<meta property="og:url" content="http://localhost:4000/blog/websockets-rails-actioncable" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-11-19T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT &amp; ActionCable" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-11-19T00:00:00+00:00","datePublished":"2025-11-19T00:00:00+00:00","description":"Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns.","headline":"From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT &amp; ActionCable","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/websockets-rails-actioncable"},"url":"http://localhost:4000/blog/websockets-rails-actioncable"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">November 19, 2025</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><em>“WebSockets are easy… until you have to make them reliable and scalable.”</em></p>
+</blockquote>
+
+<p>Most WebSocket tutorials stop at building a simple chat demo. But real systems need <strong>authentication</strong>, <strong>reliability</strong>, <strong>scalability</strong>, and <strong>good architecture</strong>.</p>
+
+<p>In this post we’ll connect:</p>
+
+<ul>
+  <li>The <strong>WebSocket fundamentals &amp; best practices</strong> from three in-depth articles fileciteturn0file0turn0file1turn0file2</li>
+  <li>A <strong>real-world Rails API backend</strong> using <strong>Devise + JWT</strong></li>
+  <li><strong>ActionCable</strong> as the WebSocket layer</li>
+  <li>Concrete <strong>code examples</strong></li>
+  <li>Extra <strong>use cases</strong>, <strong>WebSocket vs pub/sub comparisons</strong>, and <strong>sharding/scaling patterns</strong></li>
+</ul>
+
+<hr />
+
+<h2 id="1-websockets-in-a-nutshell-for-rails-developers">1. WebSockets in a Nutshell (For Rails Developers)</h2>
+
+<h3 id="11-what-is-a-websocket">1.1 What is a WebSocket?</h3>
+
+<p>A WebSocket is a <strong>full-duplex, persistent TCP connection</strong> between client and server. After a one-time HTTP handshake (using <code class="language-plaintext highlighter-rouge">Upgrade: websocket</code>), both sides can send messages <strong>at any time</strong>, without repeated HTTP requests. fileciteturn0file0</p>
+
+<p>Compared to classic HTTP:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>HTTP</th>
+      <th>WebSocket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Connection</td>
+      <td>Short-lived per request</td>
+      <td>Long-lived, persistent</td>
+    </tr>
+    <tr>
+      <td>Direction</td>
+      <td>Client → Server (request)</td>
+      <td>Bidirectional</td>
+    </tr>
+    <tr>
+      <td>Latency</td>
+      <td>Higher (headers + handshakes)</td>
+      <td>Lower after initial upgrade</td>
+    </tr>
+    <tr>
+      <td>Model</td>
+      <td>Request/response</td>
+      <td>Event/message-based</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>WebSockets shine in <strong>realtime use cases</strong> such as chat, multiplayer games, collaborative editing, IoT telemetry, live dashboards, and more. fileciteturn0file0</p>
+
+<hr />
+
+<h3 id="12-the-less-glamorous-bits-reliability--scaling">1.2 The Less Glamorous Bits: Reliability &amp; Scaling</h3>
+
+<p>Out of the box, <strong>WebSockets don’t give you</strong>: fileciteturn0file1turn0file2</p>
+
+<ul>
+  <li>Delivery guarantees (messages may be lost on disconnect)</li>
+  <li>Message ordering guarantees</li>
+  <li>Automatic reconnection</li>
+  <li>Backpressure / rate limiting</li>
+  <li>Fault tolerance across multiple servers</li>
+</ul>
+
+<p>At scale, you also run into: fileciteturn0file2</p>
+
+<ul>
+  <li><strong>Stateful connections</strong> (harder load balancing than stateless HTTP)</li>
+  <li><strong>N² message explosion</strong> (many clients talking to many clients)</li>
+  <li><strong>Backpressure</strong> (slow consumers, fast producers)</li>
+  <li><strong>Global distribution &amp; redundancy</strong> requirements</li>
+</ul>
+
+<p>The WebSocket articles break these down into <strong>architectural</strong> and <strong>operational</strong> best practices: sharding, sticky sessions, pub/sub, backpressure, monitoring, and fault tolerance. fileciteturn0file2</p>
+
+<p>The good news: <strong>Rails + ActionCable + Redis</strong> give us a solid foundation. We just need to wire things correctly and add a few patterns.</p>
+
+<hr />
+
+<h2 id="2-websockets-vs-pubsub-and-http-who-does-what">2. WebSockets vs Pub/Sub (and HTTP): Who Does What?</h2>
+
+<p>It’s easy to confuse <strong>WebSockets</strong> and <strong>pub/sub</strong> as alternatives. In reality they solve <strong>different layers</strong> of the problem.</p>
+
+<ul>
+  <li><strong>HTTP</strong> – Request/response, great for CRUD APIs, not great for realtime.</li>
+  <li><strong>WebSocket</strong> – A <strong>transport</strong> for bidirectional, low-latency communication. fileciteturn0file0</li>
+  <li><strong>Pub/Sub</strong> – A <strong>messaging pattern</strong> (and often a dedicated system) for fanning messages out to many consumers. fileciteturn0file2</li>
+</ul>
+
+<p>Think of it like this:</p>
+
+<ul>
+  <li>WebSocket: <em>“How do I keep the pipe open between browser and backend?”</em></li>
+  <li>Pub/Sub: <em>“How do I deliver the right messages to the right set of subscribers?”</em></li>
+</ul>
+
+<p>A typical production system uses <strong>both</strong>:</p>
+
+<ol>
+  <li>Browsers connect to your backend over WebSockets.</li>
+  <li>Each backend node connects to a <strong>pub/sub layer</strong> (Redis, Kafka, Ably, etc.). fileciteturn0file2</li>
+  <li>When any node publishes an event to a topic, the pub/sub layer delivers it to all interested nodes, which then forward it to their connected WebSocket clients.</li>
+</ol>
+
+<h3 id="21-comparison-table">2.1 Comparison Table</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>WebSocket</th>
+      <th>Pub/Sub</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Scope</td>
+      <td>Transport between <strong>one client &amp; one server</strong></td>
+      <td>Logical messaging between many producers/consumers</td>
+    </tr>
+    <tr>
+      <td>Direction</td>
+      <td>Bidirectional</td>
+      <td>Usually one-way per message (publish → subscribe)</td>
+    </tr>
+    <tr>
+      <td>Responsibility</td>
+      <td>Keep connection open &amp; deliver raw frames</td>
+      <td>Route messages to interested subscribers</td>
+    </tr>
+    <tr>
+      <td>Scaling focus</td>
+      <td>Concurrent connections, keep-alives</td>
+      <td>Fan-out, throughput, durability, ordering</td>
+    </tr>
+    <tr>
+      <td>In Rails</td>
+      <td>ActionCable connections &amp; channels</td>
+      <td>Redis ActionCable adapter, message buses</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In Rails, <strong>ActionCable + Redis</strong> is basically <strong>WebSocket + pub/sub</strong> out of the box. ActionCable uses Redis to broadcast between server processes, following the pub/sub architecture pattern recommended in the best-practices article. fileciteturn0file2</p>
+
+<hr />
+
+<h2 id="3-rails-stack-overview">3. Rails Stack Overview</h2>
+
+<p>We’ll assume a stack like this:</p>
+
+<ul>
+  <li><strong>Rails API-only app</strong></li>
+  <li><strong>Devise + devise-jwt</strong> for authentication</li>
+  <li><strong>ActionCable</strong> for WebSockets</li>
+  <li><strong>Redis</strong> as ActionCable’s pub/sub backend</li>
+  <li>A frontend (Rails, React, Vue, etc.) that:
+    <ul>
+      <li>Uses <strong>JWT</strong> for HTTP API auth</li>
+      <li>Uses the <strong>same JWT</strong> to authenticate WebSocket connections</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Let’s wire this up step-by-step.</p>
+
+<hr />
+
+<h2 id="4-authenticating-websockets-with-devise--jwt">4. Authenticating WebSockets with Devise + JWT</h2>
+
+<p>The articles highlight that WebSocket itself doesn’t define an auth mechanism — it’s up to you to layer one on top (cookies, JWT, etc.). fileciteturn0file0</p>
+
+<p>In a Rails API-only app, JWT is a natural choice.</p>
+
+<h3 id="41-pass-jwt-to-actioncable">4.1 Pass JWT to ActionCable</h3>
+
+<p>Frontend connects like this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Example with ActionCable JS (Rails 7+)</span>
+<span class="k">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">ActionCable</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@rails/actioncable</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">jwt</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">"</span><span class="s2">jwt</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// issued by Devise + devise-jwt</span>
+
+<span class="kd">const</span> <span class="nx">cable</span> <span class="o">=</span> <span class="nx">ActionCable</span><span class="p">.</span><span class="nf">createConsumer</span><span class="p">(</span>
+  <span class="s2">`wss://api.example.com/cable?token=</span><span class="p">${</span><span class="nf">encodeURIComponent</span><span class="p">(</span><span class="nx">jwt</span><span class="p">)}</span><span class="s2">`</span>
+<span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">cable</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+  <span class="p">{</span> <span class="na">channel</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ChatChannel</span><span class="dl">"</span><span class="p">,</span> <span class="na">room_id</span><span class="p">:</span> <span class="mi">42</span> <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="na">received</span><span class="p">:</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">New message:</span><span class="dl">"</span><span class="p">,</span> <span class="nx">data</span><span class="p">),</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>We attach the JWT as a <strong>query parameter</strong> (<code class="language-plaintext highlighter-rouge">token=</code>) so it’s accessible during the WebSocket handshake.</p>
+
+<hr />
+
+<h3 id="42-decode-jwt-in-applicationcableconnection">4.2 Decode JWT in <code class="language-plaintext highlighter-rouge">ApplicationCable::Connection</code></h3>
+
+<p><code class="language-plaintext highlighter-rouge">ApplicationCable::Connection</code> is the entry point for all WebSocket connections. This is where we validate the JWT and reject unauthorized users.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/application_cable/connection.rb</span>
+<span class="k">module</span> <span class="nn">ApplicationCable</span>
+  <span class="k">class</span> <span class="nc">Connection</span> <span class="o">&lt;</span> <span class="no">ActionCable</span><span class="o">::</span><span class="no">Connection</span><span class="o">::</span><span class="no">Base</span>
+    <span class="n">identified_by</span> <span class="ss">:current_user</span>
+
+    <span class="k">def</span> <span class="nf">connect</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">current_user</span> <span class="o">=</span> <span class="n">find_verified_user</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">find_verified_user</span>
+      <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">params</span><span class="p">[</span><span class="ss">:token</span><span class="p">]</span>
+
+      <span class="k">raise</span> <span class="s2">"Missing token"</span> <span class="k">if</span> <span class="n">token</span><span class="p">.</span><span class="nf">blank?</span>
+
+      <span class="c1"># Using devise-jwt under the hood</span>
+      <span class="n">payload</span> <span class="o">=</span> <span class="no">Warden</span><span class="o">::</span><span class="no">JWTAuth</span><span class="o">::</span><span class="no">TokenDecoder</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">id: </span><span class="n">payload</span><span class="p">[</span><span class="s2">"sub"</span><span class="p">])</span>
+
+      <span class="n">user</span> <span class="o">||</span> <span class="n">reject_unauthorized_connection</span>
+    <span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">e</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">"[ActionCable] Unauthorized connection: </span><span class="si">#{</span><span class="n">e</span><span class="p">.</span><span class="nf">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+      <span class="n">reject_unauthorized_connection</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This gives us:</p>
+
+<ul>
+  <li>A <strong>per-connection <code class="language-plaintext highlighter-rouge">current_user</code></strong></li>
+  <li>The same identity model as our HTTP API</li>
+</ul>
+
+<p>It follows the article’s recommendation to handle authentication at the handshake and/or application levels. fileciteturn0file0</p>
+
+<hr />
+
+<h2 id="5-actioncable-channels-from-chat-to-general-realtime">5. ActionCable Channels: From Chat to General Realtime</h2>
+
+<p>Let’s start with the “classic” chat example, then generalize.</p>
+
+<h3 id="51-basic-chat-channel">5.1 Basic Chat Channel</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/chat_channel.rb</span>
+<span class="k">class</span> <span class="nc">ChatChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="vi">@room</span> <span class="o">=</span> <span class="no">Room</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:room_id</span><span class="p">])</span>
+    <span class="c1"># Authorization example</span>
+    <span class="n">reject</span> <span class="k">unless</span> <span class="vi">@room</span><span class="p">.</span><span class="nf">users</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">current_user</span><span class="p">)</span>
+
+    <span class="n">stream_for</span> <span class="vi">@room</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># Simple example: create message &amp; broadcast</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="vi">@room</span><span class="p">.</span><span class="nf">messages</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
+      <span class="ss">user: </span><span class="n">current_user</span><span class="p">,</span>
+      <span class="ss">content: </span><span class="n">data</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="no">ChatChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span>
+      <span class="vi">@room</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="ss">id: </span><span class="n">message</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+        <span class="ss">content: </span><span class="n">message</span><span class="p">.</span><span class="nf">content</span><span class="p">,</span>
+        <span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+        <span class="ss">created_at: </span><span class="n">message</span><span class="p">.</span><span class="nf">created_at</span><span class="p">.</span><span class="nf">iso8601</span>
+      <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Corresponding model:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/message.rb</span>
+<span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:room</span>
+  <span class="n">belongs_to</span> <span class="ss">:user</span>
+
+  <span class="n">validates</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This gives you a basic <strong>authenticated chat</strong> over WebSockets. But to align with the articles’ <strong>reliability</strong> recommendations, we need to go further.</p>
+
+<hr />
+
+<h2 id="6-reliability-patterns-in-rails-from-the-articles">6. Reliability Patterns in Rails (From the Articles)</h2>
+
+<h3 id="61-heartbeats--reconnection">6.1 Heartbeats &amp; Reconnection</h3>
+
+<p>ActionCable already supports <strong>heartbeat pings</strong> and automatic reconnection in the JS client, matching the best practice of keep-alives and reconnection logic. fileciteturn0file2</p>
+
+<p>On the client (simplified):</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ActionCable automatically tries to reconnect on close.</span>
+<span class="c1">// You can add logging:</span>
+<span class="nx">cable</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">monitor</span><span class="p">.</span><span class="nx">reconnectAttempts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">originalDisconnected</span> <span class="o">=</span> <span class="nx">cable</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">disconnected</span><span class="p">;</span>
+
+<span class="nx">cable</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">disconnected</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">cable</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">monitor</span><span class="p">.</span><span class="nx">reconnectAttempts</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="dl">"</span><span class="s2">WebSocket disconnected – attempt</span><span class="dl">"</span><span class="p">,</span>
+               <span class="nx">cable</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">monitor</span><span class="p">.</span><span class="nx">reconnectAttempts</span><span class="p">);</span>
+  <span class="nx">originalDisconnected</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="62-backpressure--rate-limiting">6.2 Backpressure &amp; Rate Limiting</h3>
+
+<p>The articles emphasize <strong>backpressure</strong> and throttling “greedy clients”. fileciteturn0file2</p>
+
+<p>Rails doesn’t do this automatically; you can add simple rate limiting per connection.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/application_cable/channel.rb</span>
+<span class="k">module</span> <span class="nn">ApplicationCable</span>
+  <span class="k">class</span> <span class="nc">Channel</span> <span class="o">&lt;</span> <span class="no">ActionCable</span><span class="o">::</span><span class="no">Channel</span><span class="o">::</span><span class="no">Base</span>
+    <span class="no">RATE_LIMIT_WINDOW</span> <span class="o">=</span> <span class="mi">5</span><span class="p">.</span><span class="nf">seconds</span>
+    <span class="no">RATE_LIMIT_MAX</span>    <span class="o">=</span> <span class="mi">20</span> <span class="c1"># messages per window</span>
+
+    <span class="k">def</span> <span class="nf">rate_limited?</span>
+      <span class="n">key</span>   <span class="o">=</span> <span class="s2">"ws:rate_limit:</span><span class="si">#{</span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">"</span>
+      <span class="n">data</span>  <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">||</span> <span class="p">{</span> <span class="ss">count: </span><span class="mi">0</span><span class="p">,</span> <span class="ss">started_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="p">}</span>
+
+      <span class="k">if</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="ss">:started_at</span><span class="p">]</span> <span class="o">&gt;</span> <span class="no">RATE_LIMIT_WINDOW</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">count: </span><span class="mi">0</span><span class="p">,</span> <span class="ss">started_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="p">}</span>
+      <span class="k">end</span>
+
+      <span class="n">data</span><span class="p">[</span><span class="ss">:count</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="ss">expires_in: </span><span class="no">RATE_LIMIT_WINDOW</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+      <span class="n">data</span><span class="p">[</span><span class="ss">:count</span><span class="p">]</span> <span class="o">&gt;</span> <span class="no">RATE_LIMIT_MAX</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Use inside a channel:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ChatChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rate_limited?</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">"Rate limit exceeded by user </span><span class="si">#{</span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+      <span class="k">return</span>
+    <span class="k">end</span>
+
+    <span class="c1"># ...create message and broadcast</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="63-message-ordering--deduplication">6.3 Message Ordering &amp; Deduplication</h3>
+
+<p>One article stresses that WebSockets don’t guarantee message ordering or delivery. fileciteturn0file1turn0file2</p>
+
+<p>A simple pattern:</p>
+
+<ol>
+  <li>Add a <strong>monotonic sequence</strong> per room or stream.</li>
+  <li>Include <code class="language-plaintext highlighter-rouge">sequence</code> in the payload.</li>
+  <li>Clients discard old or duplicate sequence numbers.</li>
+</ol>
+
+<p>Migration:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddSequenceToMessages</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">7.1</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:messages</span><span class="p">,</span> <span class="ss">:sequence</span><span class="p">,</span> <span class="ss">:bigint</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">0</span>
+    <span class="n">add_index</span> <span class="ss">:messages</span><span class="p">,</span> <span class="p">[</span><span class="ss">:room_id</span><span class="p">,</span> <span class="ss">:sequence</span><span class="p">],</span> <span class="ss">unique: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Assign sequence:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/message.rb</span>
+<span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:room</span>
+  <span class="n">belongs_to</span> <span class="ss">:user</span>
+
+  <span class="n">before_create</span> <span class="ss">:assign_sequence</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">assign_sequence</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">sequence</span> <span class="o">=</span> <span class="p">(</span><span class="n">room</span><span class="p">.</span><span class="nf">messages</span><span class="p">.</span><span class="nf">maximum</span><span class="p">(</span><span class="ss">:sequence</span><span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Broadcast:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ChatChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span>
+  <span class="vi">@room</span><span class="p">,</span>
+  <span class="p">{</span>
+    <span class="ss">id: </span><span class="n">message</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+    <span class="ss">sequence: </span><span class="n">message</span><span class="p">.</span><span class="nf">sequence</span><span class="p">,</span>
+    <span class="ss">content: </span><span class="n">message</span><span class="p">.</span><span class="nf">content</span><span class="p">,</span>
+    <span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Client side, you can store <code class="language-plaintext highlighter-rouge">lastSequence</code> per room and ignore messages with <code class="language-plaintext highlighter-rouge">sequence &lt;= lastSequence</code>.</p>
+
+<hr />
+
+<h3 id="64-horizontal-scaling-with-redis--sticky-sessions">6.4 Horizontal Scaling with Redis &amp; Sticky Sessions</h3>
+
+<p>The articles talk about scaling using <strong>pub/sub</strong>, <strong>sticky sessions</strong>, and <strong>load balancing</strong>. fileciteturn0file2</p>
+
+<h4 id="configcableyml"><code class="language-plaintext highlighter-rouge">config/cable.yml</code></h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">production</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">redis</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("REDIS_URL") %&gt;</span>
+  <span class="na">channel_prefix</span><span class="pi">:</span> <span class="s">myapp_production</span>
+</code></pre></div></div>
+
+<p>This uses Redis to propagate messages across all Rails instances, matching the pub/sub architectural pattern recommended in the best-practices article. fileciteturn0file2</p>
+
+<p>At the load balancer:</p>
+
+<ul>
+  <li>Make sure <strong>WebSocket upgrade</strong> is supported.</li>
+  <li>Enable <strong>stickiness</strong> so a given client reconnects to the same instance (or at least for the duration of a session), following the sticky-session pattern described in the article. fileciteturn0file2</li>
+</ul>
+
+<p>Example snippet for Nginx (simplified):</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">location</span> <span class="n">/cable</span> <span class="p">{</span>
+  <span class="kn">proxy_http_version</span> <span class="mf">1.1</span><span class="p">;</span>
+  <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+  <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">"Upgrade"</span><span class="p">;</span>
+  <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+
+  <span class="kn">proxy_pass</span> <span class="s">http://rails_upstream</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Stickiness is usually configured at the <strong>reverse proxy / load balancer</strong> level (NGINX upstream hash, AWS ALB target group stickiness, etc.).</p>
+
+<hr />
+
+<h3 id="65-monitoring--metrics">6.5 Monitoring &amp; Metrics</h3>
+
+<p>Operational best practices in the articles include <strong>monitoring, autoscaling, and alerts</strong>. fileciteturn0file2</p>
+
+<p>In Rails you can log:</p>
+
+<ul>
+  <li>Connected users</li>
+  <li>Active subscriptions</li>
+  <li>Broadcast frequency</li>
+  <li>Error rates / disconnect reasons</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/application_cable/connection.rb</span>
+<span class="k">def</span> <span class="nf">connect</span>
+  <span class="k">super</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"[ActionCable] Connect user=</span><span class="si">#{</span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"[ActionCable] Disconnect user=</span><span class="si">#{</span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2"> reason=</span><span class="si">#{</span><span class="n">reason</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Hook these logs into something like Loki, Datadog, New Relic, etc., and build dashboards like <strong>“active connections”</strong>, <strong>“messages per second”</strong>, etc., as suggested by the reliability article. fileciteturn0file1turn0file2</p>
+
+<hr />
+
+<h2 id="7-sharding--scalability-patterns-with-rails-examples">7. Sharding &amp; Scalability Patterns (with Rails Examples)</h2>
+
+<p>The best-practices article goes deep into <strong>sharding</strong>, <strong>sticky sessions</strong>, and <strong>pub/sub</strong> as ways to scale. fileciteturn0file2  Here are some concrete patterns for Rails.</p>
+
+<h3 id="71-simple-horizontal-scaling-single-region">7.1 Simple Horizontal Scaling (Single Region)</h3>
+
+<p>For many apps you can start with:</p>
+
+<ul>
+  <li>Multiple Rails web instances (Puma/Unicorn)</li>
+  <li>Shared Redis for ActionCable</li>
+  <li>One regional load balancer with stickiness</li>
+</ul>
+
+<p>Diagram in words:</p>
+
+<blockquote>
+  <p>Browser → Load Balancer → [Rails + ActionCable + Redis]</p>
+</blockquote>
+
+<p>All channels are available from all instances because they share Redis.</p>
+
+<p>This can take you surprisingly far before you need more exotic sharding.</p>
+
+<hr />
+
+<h3 id="72-tenant--region-sharding">7.2 Tenant / Region Sharding</h3>
+
+<p>Once you serve users in multiple regions (e.g. EU + US), latency becomes a concern. The article describes this kind of challenge as WebSocket connections are stateful and global distribution is hard. fileciteturn0file2</p>
+
+<p>You can shard by <strong>region or tenant</strong>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">wss://eu.example.com/cable</code> → EU cluster (Rails + Redis in EU)</li>
+  <li><code class="language-plaintext highlighter-rouge">wss://us.example.com/cable</code> → US cluster (Rails + Redis in US)</li>
+</ul>
+
+<p>Routing strategy (very simplified JS):</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">websocketHostForUser</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">region</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">eu</span><span class="dl">"</span><span class="p">)</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">wss://eu.example.com/cable</span><span class="dl">"</span><span class="p">;</span>
+  <span class="k">return</span> <span class="dl">"</span><span class="s2">wss://us.example.com/cable</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Each cluster only holds WebSockets for its tenants. Cross-region communication can then happen via:</p>
+
+<ul>
+  <li>Async jobs / message bus</li>
+  <li>Periodic synchronization of data</li>
+</ul>
+
+<p>This matches the <strong>“shard by namespace”</strong> idea in the article: each shard owns part of the client namespace. fileciteturn0file2</p>
+
+<hr />
+
+<h3 id="73-channel--topic-sharding">7.3 Channel / Topic Sharding</h3>
+
+<p>Another approach is to shard by <strong>channel/topic type</strong>.</p>
+
+<p>Example:</p>
+
+<ul>
+  <li>Cluster A: all <strong>chat</strong> channels</li>
+  <li>Cluster B: all <strong>analytics/metrics</strong> channels</li>
+  <li>Cluster C: all <strong>IoT/device</strong> channels</li>
+</ul>
+
+<p>Routing example (pseudocode):</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">cableUrlForChannel</span><span class="p">(</span><span class="nx">channelName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">channelName</span><span class="p">.</span><span class="nf">endsWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">ChatChannel</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="dl">"</span><span class="s2">wss://chat.example.com/cable</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if </span><span class="p">(</span><span class="nx">channelName</span><span class="p">.</span><span class="nf">endsWith</span><span class="p">(</span><span class="dl">"</span><span class="s2">MetricsChannel</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="dl">"</span><span class="s2">wss://metrics.example.com/cable</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="dl">"</span><span class="s2">wss://realtime.example.com/cable</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This reduces the <strong>N² problem</strong> for some workloads because each cluster sees a smaller subset of traffic.</p>
+
+<hr />
+
+<h3 id="74-n-problem-in-plain-numbers">7.4 N² Problem in Plain Numbers</h3>
+
+<p>From the article: as client count grows, potential interactions grow roughly with <strong>N²</strong>. fileciteturn0file2</p>
+
+<ul>
+  <li>100 users in a room → up to ~10,000 directed message paths</li>
+  <li>1,000 users → up to 1,000,000 paths</li>
+</ul>
+
+<p>If every message potentially fans out to many clients, traffic explodes.</p>
+
+<p>Mitigation techniques:</p>
+
+<ul>
+  <li><strong>Aggregation</strong>: instead of sending 1000 individual “👍” reactions, send one <code class="language-plaintext highlighter-rouge">{ emoji: "👍", count: 1000 }</code>. fileciteturn0file2</li>
+  <li><strong>Batching</strong>: send updates in periodic batches (every 100 ms) instead of instantly one-by-one.</li>
+  <li><strong>Scoped rooms</strong>: split giant rooms into smaller subrooms (e.g., per topic, per segment).</li>
+</ul>
+
+<p>Rails implementation example for <strong>batched updates</strong> (pseudo):</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/metrics_buffer.rb</span>
+<span class="k">class</span> <span class="nc">MetricsBuffer</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">buffer</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+    <span class="n">redis</span><span class="p">.</span><span class="nf">lpush</span><span class="p">(</span><span class="s2">"metrics_buffer"</span><span class="p">,</span> <span class="n">metric</span><span class="p">.</span><span class="nf">to_json</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">flush!</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="nf">lrange</span><span class="p">(</span><span class="s2">"metrics_buffer"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">redis</span><span class="p">.</span><span class="nf">del</span><span class="p">(</span><span class="s2">"metrics_buffer"</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">j</span><span class="o">|</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="no">ActionCable</span><span class="p">.</span><span class="nf">server</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span><span class="s2">"admin_metrics"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">type: </span><span class="s2">"batch"</span><span class="p">,</span> <span class="ss">data: </span><span class="n">data</span> <span class="p">})</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">redis</span>
+    <span class="vi">@redis</span> <span class="o">||=</span> <span class="no">Redis</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">url: </span><span class="no">ENV</span><span class="p">[</span><span class="s2">"REDIS_URL"</span><span class="p">])</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Run <code class="language-plaintext highlighter-rouge">MetricsBuffer.flush!</code> every 200ms in a background process or job.</p>
+
+<hr />
+
+<h2 id="8-beyond-chat-websocket-use-cases-in-rails">8. Beyond Chat: WebSocket Use Cases in Rails</h2>
+
+<p>The first article lists typical WebSocket use cases, many of which are <strong>perfect fits for Rails</strong>. fileciteturn0file0  Let’s expand the list with practical examples.</p>
+
+<h3 id="81-realtime-notifications">8.1 Realtime Notifications</h3>
+
+<p>Channel:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/notifications_channel.rb</span>
+<span class="k">class</span> <span class="nc">NotificationsChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="n">stream_for</span> <span class="n">current_user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Broadcast from anywhere:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">NotificationsChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span>
+  <span class="n">user</span><span class="p">,</span>
+  <span class="p">{</span> <span class="ss">type: </span><span class="s2">"notification"</span><span class="p">,</span> <span class="ss">text: </span><span class="s2">"Your report is ready."</span> <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Use this for:</p>
+
+<ul>
+  <li>In-app alerts</li>
+  <li>“Toast” messages</li>
+  <li>System announcements</li>
+</ul>
+
+<hr />
+
+<h3 id="82-realtime-dashboards-admin--ops">8.2 Realtime Dashboards (Admin / Ops)</h3>
+
+<p>Channel:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/admin_metrics_channel.rb</span>
+<span class="k">class</span> <span class="nc">AdminMetricsChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="n">reject_unauthorized</span> <span class="k">unless</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">admin?</span>
+    <span class="n">stream_from</span> <span class="s2">"admin_metrics"</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">reject_unauthorized</span>
+    <span class="n">reject</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Periodic job:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/jobs/broadcast_metrics_job.rb</span>
+<span class="k">class</span> <span class="nc">BroadcastMetricsJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:default</span>
+
+  <span class="k">def</span> <span class="nf">perform</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="ss">users_online: </span><span class="no">User</span><span class="p">.</span><span class="nf">online</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+      <span class="ss">jobs_pending: </span><span class="no">JobQueue</span><span class="p">.</span><span class="nf">pending</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+      <span class="c1"># ...</span>
+    <span class="p">}</span>
+
+    <span class="no">ActionCable</span><span class="p">.</span><span class="nf">server</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span><span class="s2">"admin_metrics"</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Schedule every N seconds with Sidekiq/GoodJob/solid queue.</p>
+
+<hr />
+
+<h3 id="83-collaborative-editing--presence">8.3 Collaborative Editing / Presence</h3>
+
+<p>Channel:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/channels/document_channel.rb</span>
+<span class="k">class</span> <span class="nc">DocumentChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="vi">@document</span> <span class="o">=</span> <span class="no">Document</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">stream_for</span> <span class="vi">@document</span>
+
+    <span class="c1"># Presence event (join)</span>
+    <span class="no">DocumentChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="vi">@document</span><span class="p">,</span>
+      <span class="p">{</span> <span class="ss">type: </span><span class="s2">"presence"</span><span class="p">,</span> <span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">event: </span><span class="s2">"joined"</span> <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">case</span> <span class="n">data</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
+    <span class="k">when</span> <span class="s2">"cursor"</span>
+      <span class="no">DocumentChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="vi">@document</span><span class="p">,</span>
+        <span class="p">{</span>
+          <span class="ss">type: </span><span class="s2">"cursor"</span><span class="p">,</span>
+          <span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+          <span class="ss">position: </span><span class="n">data</span><span class="p">[</span><span class="s2">"position"</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="k">when</span> <span class="s2">"patch"</span>
+      <span class="c1"># Apply patch, persist, broadcast diff, etc.</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">unsubscribed</span>
+    <span class="no">DocumentChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="vi">@document</span><span class="p">,</span>
+      <span class="p">{</span> <span class="ss">type: </span><span class="s2">"presence"</span><span class="p">,</span> <span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">event: </span><span class="s2">"left"</span> <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Clients can show:</p>
+
+<ul>
+  <li>Who’s editing</li>
+  <li>Cursor positions</li>
+  <li>Live edits</li>
+</ul>
+
+<hr />
+
+<h3 id="84-iot--device-streaming">8.4 IoT / Device Streaming</h3>
+
+<p>Rails can be the backend that:</p>
+
+<ul>
+  <li>Accepts device data via HTTP or MQTT → writes to Redis/Postgres</li>
+  <li>Streams the latest values to dashboards via WebSockets</li>
+</ul>
+
+<p>Channel:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DeviceChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="vi">@device</span> <span class="o">=</span> <span class="no">Device</span><span class="p">.</span><span class="nf">find_by!</span><span class="p">(</span><span class="ss">public_id: </span><span class="n">params</span><span class="p">[</span><span class="ss">:device_id</span><span class="p">])</span>
+    <span class="n">authorize!</span> <span class="ss">:read</span><span class="p">,</span> <span class="vi">@device</span>
+
+    <span class="n">stream_for</span> <span class="vi">@device</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>When device data comes in:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">DeviceChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span>
+  <span class="n">device</span><span class="p">,</span>
+  <span class="p">{</span> <span class="ss">type: </span><span class="s2">"reading"</span><span class="p">,</span> <span class="ss">temperature: </span><span class="mf">21.5</span><span class="p">,</span> <span class="ss">humidity: </span><span class="mf">0.6</span> <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Matches the IoT / telemetry use case mentioned in the article. fileciteturn0file0</p>
+
+<hr />
+
+<h3 id="85-long-running-jobs--progress-bars">8.5 Long-running Jobs / Progress Bars</h3>
+
+<p>Instead of polling an endpoint every 2 seconds:</p>
+
+<ol>
+  <li>Client submits job via HTTP → gets <code class="language-plaintext highlighter-rouge">job_id</code></li>
+  <li>Subscribes to <code class="language-plaintext highlighter-rouge">JobChannel</code> with that ID</li>
+  <li>Job broadcasts progress updates</li>
+</ol>
+
+<p>Channel:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">JobChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="vi">@job_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:job_id</span><span class="p">]</span>
+    <span class="n">stream_from</span> <span class="s2">"job_</span><span class="si">#{</span><span class="vi">@job_id</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Job:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ExportReportJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">job_id</span><span class="p">)</span>
+    <span class="mi">10</span><span class="p">.</span><span class="nf">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+      <span class="c1"># Some work...</span>
+      <span class="no">ActionCable</span><span class="p">.</span><span class="nf">server</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span>
+        <span class="s2">"job_</span><span class="si">#{</span><span class="n">job_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="p">{</span> <span class="ss">status: </span><span class="s2">"progress"</span><span class="p">,</span> <span class="ss">step: </span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">total: </span><span class="mi">10</span> <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="no">ActionCable</span><span class="p">.</span><span class="nf">server</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span>
+      <span class="s2">"job_</span><span class="si">#{</span><span class="n">job_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+      <span class="p">{</span> <span class="ss">status: </span><span class="s2">"done"</span><span class="p">,</span> <span class="ss">download_url: </span><span class="s2">"/reports/</span><span class="si">#{</span><span class="n">job_id</span><span class="si">}</span><span class="s2">.csv"</span> <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="86-live-sports--market-feeds">8.6 Live Sports &amp; Market Feeds</h3>
+
+<ul>
+  <li>Live match scores, game clock, and commentary</li>
+  <li>Betting odds updates</li>
+  <li>Stock price and order book updates</li>
+</ul>
+
+<p>Rails can ingest upstream feeds (Kafka, external APIs) and push to clients via ActionCable channels, applying the reliability patterns above to prevent overload. fileciteturn0file0turn0file1</p>
+
+<hr />
+
+<h3 id="87-live-auctions--bidding">8.7 Live Auctions &amp; Bidding</h3>
+
+<ul>
+  <li>Users see bids appear in realtime.</li>
+  <li>Auction countdown timers synchronize across all clients.</li>
+  <li>Anti-sniping strategies can be applied server-side and updates pushed instantly.</li>
+</ul>
+
+<p>Channel example:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AuctionChannel</span> <span class="o">&lt;</span> <span class="no">ApplicationCable</span><span class="o">::</span><span class="no">Channel</span>
+  <span class="k">def</span> <span class="nf">subscribed</span>
+    <span class="vi">@auction</span> <span class="o">=</span> <span class="no">Auction</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">stream_for</span> <span class="vi">@auction</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">place_bid</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">amount</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"amount"</span><span class="p">].</span><span class="nf">to_d</span>
+    <span class="vi">@auction</span><span class="p">.</span><span class="nf">place_bid!</span><span class="p">(</span><span class="n">current_user</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+    <span class="no">AuctionChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="vi">@auction</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">type: </span><span class="s2">"bid_placed"</span><span class="p">,</span>
+      <span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">amount: </span><span class="n">amount</span><span class="p">.</span><span class="nf">to_s</span>
+    <span class="p">})</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="88-realtime-education--collaboration">8.8 Realtime Education &amp; Collaboration</h3>
+
+<ul>
+  <li>Live quizzes (questions &amp; answers in realtime)</li>
+  <li>Shared whiteboards (drawing events over WebSockets)</li>
+  <li>Pair programming or coding interviews</li>
+</ul>
+
+<p>You can model each classroom/session as a channel where:</p>
+
+<ul>
+  <li>Teacher broadcasts questions, slides, or code snippets.</li>
+  <li>Students send answers or reactions.</li>
+  <li>“Raise hand” events show up for the instructor instantly.</li>
+</ul>
+
+<hr />
+
+<h2 id="9-when-to-build-vs-when-to-use-a-managed-websocket-service">9. When to Build vs When to Use a Managed WebSocket Service</h2>
+
+<p>The articles make a good point: <strong>running your own WebSocket infra at scale is expensive and complex</strong> (time, cost, global distribution, reliability). fileciteturn0file1turn0file2</p>
+
+<p>Rails + ActionCable is great when:</p>
+
+<ul>
+  <li>You control your user count / traffic</li>
+  <li>You’re okay operating your own Redis + WebSocket infra</li>
+  <li>Most traffic is within a few regions</li>
+</ul>
+
+<p>If you need:</p>
+
+<ul>
+  <li>Millions of concurrent connections</li>
+  <li>Global edge presence</li>
+  <li>Stronger delivery guarantees (exactly-once, ordering, persistence)</li>
+  <li>Built-in fallbacks across protocols</li>
+</ul>
+
+<p>…then a <strong>managed realtime platform</strong> (like Ably, Pusher, etc.) sitting beside your Rails API becomes attractive, as the articles argue. fileciteturn0file1turn0file2</p>
+
+<hr />
+
+<h2 id="10-conclusion">10. Conclusion</h2>
+
+<p>Bringing it all together:</p>
+
+<ol>
+  <li><strong>WebSockets</strong> give us low-latency, bidirectional realtime communication — perfect for far more than just chat. fileciteturn0file0</li>
+  <li><strong>The articles</strong> remind us that reliability, message guarantees, and scaling are <em>not</em> solved by the protocol alone. fileciteturn0file1turn0file2</li>
+  <li><strong>Rails + ActionCable + Redis + Devise + JWT</strong> provide a strong foundation:
+    <ul>
+      <li>JWT auth at the WebSocket handshake</li>
+      <li>Redis-based pub/sub for horizontal scaling</li>
+      <li>Channels for modeling realtime domains (chat, notifications, dashboards, IoT, collaboration, auctions, education, and more)</li>
+    </ul>
+  </li>
+  <li>By layering:
+    <ul>
+      <li>Rate limiting / backpressure</li>
+      <li>Sequence numbers and dedup</li>
+      <li>Monitoring and metrics</li>
+      <li>Sticky sessions or sharding strategies in the load balancer</li>
+    </ul>
+  </li>
+</ol>
+
+<p>…you can build <strong>production-grade realtime APIs</strong> in Rails that align with the WebSocket best practices described in the articles.</p>
+
+<p>Drop this file into your Jekyll blog’s <code class="language-plaintext highlighter-rouge">_posts</code> (renaming it with the proper date + slug), tweak the title/metadata, and you’ve got a comprehensive, code-heavy guide to WebSockets with Rails ready to publish.</p>
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
