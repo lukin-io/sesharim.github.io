@@ -1,0 +1,966 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  “The hardest part of building a game isn’t the code—it’s keeping 50+ interconnected systems coherent while shipping features fast.”">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and “inspired-by” patterns enable rapid development of complex game systems." />
+<meta property="og:description" content="A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and “inspired-by” patterns enable rapid development of complex game systems." />
+<link rel="canonical" href="http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai" />
+<meta property="og:url" content="http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-11-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-11-27T00:00:00+00:00","datePublished":"2025-11-27T00:00:00+00:00","description":"A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and “inspired-by” patterns enable rapid development of complex game systems.","headline":"Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai"},"url":"http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">November 27, 2025</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><em>“The hardest part of building a game isn’t the code—it’s keeping 50+ interconnected systems coherent while shipping features fast.”</em></p>
+</blockquote>
+
+<p>Most game development tutorials show you how to build a simple demo. Real games need <strong>authentication</strong>, <strong>real-time combat</strong>, <strong>economies</strong>, <strong>social systems</strong>, <strong>moderation</strong>, and dozens of other features that must work together seamlessly.</p>
+
+<p>In this post, I’ll share our experience building <strong>Elselands</strong>—a browser-based, turn-based MMORPG inspired by classic games like Neverlands.ru. We’ll cover:</p>
+
+<ul>
+  <li><strong>Documentation-driven development</strong> that scales with complexity</li>
+  <li><strong>Feature decomposition</strong> from Game Design Document to implementation</li>
+  <li><strong>Flow documentation</strong> as the source of truth for implementation</li>
+  <li><strong>“Inspired-by” patterns</strong> for borrowing proven mechanics</li>
+  <li><strong>Testing strategies</strong> for game systems</li>
+  <li><strong>AI-assisted development</strong> that actually works for senior engineers</li>
+  <li><strong>Practical lessons</strong> from building 100+ interconnected systems</li>
+</ul>
+
+<hr />
+
+<h2 id="1-the-challenge-building-an-mmorpg-as-a-rails-monolith">1. The Challenge: Building an MMORPG as a Rails Monolith</h2>
+
+<h3 id="11-why-rails-for-a-game">1.1 Why Rails for a Game?</h3>
+
+<p>Browser-based MMORPGs have unique requirements:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Requirement</th>
+      <th>Why Rails Works</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Server-authoritative logic</td>
+      <td>All game state lives in PostgreSQL, no client-side cheating</td>
+    </tr>
+    <tr>
+      <td>Real-time updates</td>
+      <td>ActionCable + Redis pub/sub handles chat, combat, presence</td>
+    </tr>
+    <tr>
+      <td>Rapid iteration</td>
+      <td>Convention over configuration means less boilerplate</td>
+    </tr>
+    <tr>
+      <td>Rich UI without SPA complexity</td>
+      <td>Hotwire (Turbo + Stimulus) delivers reactive UIs server-side</td>
+    </tr>
+    <tr>
+      <td>Moderation &amp; admin tools</td>
+      <td>ActiveAdmin, Flipper, audit logging come free</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Our stack:</p>
+
+<ul>
+  <li><strong>Ruby 3.4.4 + Rails 8.1.1</strong> (full-stack Hotwire monolith)</li>
+  <li><strong>PostgreSQL 18</strong> (primary datastore)</li>
+  <li><strong>Redis</strong> (cache, Action Cable, Sidekiq)</li>
+  <li><strong>Hotwire</strong> (Turbo Frames, Turbo Streams, Stimulus)</li>
+  <li><strong>Sidekiq 8</strong> (background jobs for combat/chat/events)</li>
+</ul>
+
+<h3 id="12-the-complexity-problem">1.2 The Complexity Problem</h3>
+
+<p>A typical MMORPG has:</p>
+
+<ul>
+  <li>10+ major systems (auth, combat, economy, crafting, quests, etc.)</li>
+  <li>50+ models with complex relationships</li>
+  <li>Hundreds of services, jobs, and controllers</li>
+  <li>Real-time features requiring WebSockets</li>
+  <li>Moderation, analytics, and admin tooling</li>
+</ul>
+
+<p>Without a structured approach, this becomes unmaintainable. We solved it with <strong>documentation-driven development</strong>.</p>
+
+<hr />
+
+<h2 id="2-documentation-driven-development-from-gdd-to-implementation">2. Documentation-Driven Development: From GDD to Implementation</h2>
+
+<h3 id="21-the-documentation-hierarchy">2.1 The Documentation Hierarchy</h3>
+
+<p>We structured our documentation in three layers:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>doc/
+├── design/
+│   └── gdd.md              # Game Design Document (WHAT we're building)
+├── features/
+│   ├── 0_technical.md      # Infrastructure &amp; architecture
+│   ├── 1_auth.md           # Authentication &amp; accounts
+│   ├── 3_player.md         # Character systems
+│   ├── 8_gameplay_mechanics.md
+│   └── ...                 # One file per major system
+└── flow/
+    ├── 0_technical.md      # HOW each feature is implemented
+    ├── 1_auth_presence.md
+    ├── 8_gameplay_mechanics.md
+    └── ...                 # Implementation details with file references
+</code></pre></div></div>
+
+<p><strong>Key insight:</strong> The GDD tells you <em>what</em> to build. Feature docs break it into <em>systems</em>. Flow docs tell you <em>exactly how</em> it’s implemented.</p>
+
+<h3 id="22-the-game-design-document-gdd">2.2 The Game Design Document (GDD)</h3>
+
+<p>Our GDD is intentionally high-level:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gu">## Gameplay Mechanics</span>
+<span class="p">-</span> <span class="gs">**Player Movement**</span>
+<span class="p">  -</span> Tile-based grid movement
+<span class="p">  -</span> Turn-based actions per player input
+<span class="p">
+-</span> <span class="gs">**Combat System**</span>
+<span class="p">  -</span> PvE: Encounters against monsters and NPCs
+<span class="p">  -</span> PvP: Player duels, group battles, arena tournaments
+<span class="p">
+-</span> <span class="gs">**Character Progression**</span>
+<span class="p">  -</span> Experience points and leveling
+<span class="p">  -</span> Stat points allocation per level
+<span class="p">  -</span> Reputation and faction alignment
+</code></pre></div></div>
+
+<p>This is the <strong>north star</strong>—it never mentions implementation details like controllers or database schemas. It’s what you show stakeholders and use for high-level planning.</p>
+
+<h3 id="23-feature-documentation-breaking-down-the-gdd">2.3 Feature Documentation: Breaking Down the GDD</h3>
+
+<p>Each major system gets its own feature doc (<code class="language-plaintext highlighter-rouge">doc/features/*.md</code>):</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># 8_gameplay_mechanics.md</span>
+
+<span class="gu">## Player Movement</span>
+<span class="p">-</span> Grid-based tile system with terrain modifiers
+<span class="p">-</span> Turn-per-action enforcement (server-side)
+<span class="p">-</span> Cooldown multipliers for different terrain types
+<span class="p">-</span> Spawn points and respawn timers
+
+<span class="gu">## Combat System</span>
+<span class="p">-</span> Turn-based initiative order
+<span class="p">-</span> Body-part targeting (head, torso, stomach, legs)
+<span class="p">-</span> Action points and mana management
+<span class="p">-</span> Status effects and buff/debuff system
+</code></pre></div></div>
+
+<p>Feature docs are <strong>implementation-ready specifications</strong>—detailed enough that an engineer knows what to build, but not yet tied to specific files.</p>
+
+<h3 id="24-flow-documentation-the-implementation-source-of-truth">2.4 Flow Documentation: The Implementation Source of Truth</h3>
+
+<p><strong>This is where the magic happens.</strong> Flow docs (<code class="language-plaintext highlighter-rouge">doc/flow/*.md</code>) describe <em>exactly</em> how each feature is implemented:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># 8_gameplay_mechanics.md — Flow Documentation</span>
+
+<span class="gu">## Combat Skill System</span>
+
+<span class="gu">### Use Case: Player uses a skill during combat</span>
+<span class="p">1.</span> Player clicks skill icon → <span class="sb">`turn_combat_controller.js#useSkill()`</span>
+<span class="p">2.</span> Stimulus sends action to <span class="sb">`CombatController#action`</span>
+<span class="p">3.</span> <span class="sb">`TurnBasedCombatService`</span> validates action points and mana
+<span class="p">4.</span> <span class="sb">`Game::Combat::SkillExecutor`</span> applies skill effects
+<span class="p">5.</span> <span class="sb">`CombatLogEntry`</span> records the action
+<span class="p">6.</span> Turbo Stream broadcasts update to all participants
+
+<span class="gu">### Key Behaviors</span>
+<span class="p">-</span> Skills consume both action points AND mana slots
+<span class="p">-</span> Body-part targeting affects damage multipliers
+<span class="p">-</span> Critical hits based on agility vs target defense
+
+<span class="gu">### Responsible for Implementation Files</span>
+| Purpose | File |
+|---------|------|
+| Combat service | <span class="sb">`app/services/game/combat/turn_based_combat_service.rb`</span> |
+| Skill executor | <span class="sb">`app/services/game/combat/skill_executor.rb`</span> |
+| Stimulus controller | <span class="sb">`app/javascript/controllers/turn_combat_controller.js`</span> |
+| Combat view | <span class="sb">`app/views/combat/_battle.html.erb`</span> |
+| Action config | <span class="sb">`config/gameplay/combat_actions.yml`</span> |
+</code></pre></div></div>
+
+<p><strong>Why flow docs matter:</strong></p>
+
+<ol>
+  <li><strong>Context preservation</strong> — When returning to a feature after weeks, you know exactly where everything is</li>
+  <li><strong>AI assistance</strong> — Feed the flow doc to your AI assistant, and it understands the entire system</li>
+  <li><strong>Onboarding</strong> — New engineers can trace any feature from UI to database</li>
+  <li><strong>Code review</strong> — Reviewers can verify changes match the documented architecture</li>
+</ol>
+
+<hr />
+
+<h2 id="3-the-inspired-by-pattern-borrowing-proven-mechanics">3. The “Inspired-By” Pattern: Borrowing Proven Mechanics</h2>
+
+<h3 id="31-why-reinvent-the-wheel">3.1 Why Reinvent the Wheel?</h3>
+
+<p>Classic games like Neverlands.ru have battle-tested UI/UX patterns. Instead of designing from scratch, we:</p>
+
+<ol>
+  <li><strong>Analyze</strong> the original implementation (JavaScript, CSS, HTML)</li>
+  <li><strong>Document</strong> the original patterns in <code class="language-plaintext highlighter-rouge">doc/features/neverlands_inspired.md</code></li>
+  <li><strong>Adapt</strong> to modern Rails/Hotwire patterns</li>
+  <li><strong>Track</strong> implementation status</li>
+</ol>
+
+<h3 id="32-example-turn-based-combat-system">3.2 Example: Turn-Based Combat System</h3>
+
+<p>We received this Neverlands JavaScript:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Original Neverlands combat logic</span>
+<span class="kd">function</span> <span class="nf">CountOD</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">totalOD</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for </span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">pos_atk</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">totalOD</span> <span class="o">+=</span> <span class="nx">pos_ochd</span><span class="p">[</span><span class="nx">pos_atk</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">pos_blk</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">totalOD</span> <span class="o">+=</span> <span class="nx">pos_ochd</span><span class="p">[</span><span class="nx">pos_blk</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+  <span class="p">}</span>
+  <span class="c1">// pos_ochd contains action point costs per body part</span>
+  <span class="k">return</span> <span class="nx">totalOD</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Body part configuration</span>
+<span class="kd">var</span> <span class="nx">pos_vars</span> <span class="o">=</span> <span class="p">[</span><span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Head</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Torso</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Stomach</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Groin</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Left Leg</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Right Leg</span><span class="dl">'</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">pos_ochd</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">];</span> <span class="c1">// Action point costs</span>
+</code></pre></div></div>
+
+<h3 id="33-our-adaptation">3.3 Our Adaptation</h3>
+
+<p>We translated this to a Rails service with YAML configuration:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/gameplay/combat_actions.yml</span>
+<span class="na">body_parts</span><span class="pi">:</span>
+  <span class="na">head</span><span class="pi">:</span>
+    <span class="na">action_cost</span><span class="pi">:</span> <span class="m">3</span>
+    <span class="na">damage_multiplier</span><span class="pi">:</span> <span class="m">1.5</span>
+    <span class="na">block_bonus</span><span class="pi">:</span> <span class="m">0.8</span>
+  <span class="na">torso</span><span class="pi">:</span>
+    <span class="na">action_cost</span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">damage_multiplier</span><span class="pi">:</span> <span class="m">1.0</span>
+    <span class="na">block_bonus</span><span class="pi">:</span> <span class="m">1.0</span>
+  <span class="na">stomach</span><span class="pi">:</span>
+    <span class="na">action_cost</span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">damage_multiplier</span><span class="pi">:</span> <span class="m">1.1</span>
+    <span class="na">block_bonus</span><span class="pi">:</span> <span class="m">0.9</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/game/combat/turn_based_combat_service.rb</span>
+<span class="k">class</span> <span class="nc">Game::Combat::TurnBasedCombatService</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">battle</span><span class="p">)</span>
+    <span class="vi">@battle</span> <span class="o">=</span> <span class="n">battle</span>
+    <span class="vi">@config</span> <span class="o">=</span> <span class="no">YAML</span><span class="p">.</span><span class="nf">load_file</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"config/gameplay/combat_actions.yml"</span><span class="p">))</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">calculate_action_points_used</span><span class="p">(</span><span class="n">attacks</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">attacks</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">part</span><span class="o">|</span> <span class="n">total</span> <span class="o">+=</span> <span class="vi">@config</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="s2">"body_parts"</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="s2">"action_cost"</span><span class="p">)</span> <span class="o">||</span> <span class="mi">2</span> <span class="p">}</span>
+    <span class="n">blocks</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">part</span><span class="o">|</span> <span class="n">total</span> <span class="o">+=</span> <span class="vi">@config</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="s2">"body_parts"</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="s2">"action_cost"</span><span class="p">)</span> <span class="o">||</span> <span class="mi">2</span> <span class="p">}</span>
+    <span class="n">total</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And a Stimulus controller replacing the inline JavaScript:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app/javascript/controllers/turn_combat_controller.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Controller</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@hotwired/stimulus</span><span class="dl">"</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">class</span> <span class="nc">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+  <span class="kd">static</span> <span class="nx">targets</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">attackSelect</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">blockSelect</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">actionPoints</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">submitButton</span><span class="dl">"</span><span class="p">]</span>
+  <span class="kd">static</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">{</span> <span class="na">maxActions</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span> <span class="na">config</span><span class="p">:</span> <span class="nb">Object</span> <span class="p">}</span>
+
+  <span class="nf">connect</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nf">updateActionPoints</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="nf">updateActionPoints</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">used</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">calculateUsedPoints</span><span class="p">()</span>
+    <span class="kd">const</span> <span class="nx">remaining</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">maxActionsValue</span> <span class="o">-</span> <span class="nx">used</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">actionPointsTarget</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">remaining</span><span class="p">}</span><span class="s2">/</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">maxActionsValue</span><span class="p">}</span><span class="s2">`</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">submitButtonTarget</span><span class="p">.</span><span class="nx">disabled</span> <span class="o">=</span> <span class="nx">remaining</span> <span class="o">&lt;</span> <span class="mi">0</span>
+  <span class="p">}</span>
+
+  <span class="nf">calculateUsedPoints</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">attackSelectTargets</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">select</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if </span><span class="p">(</span><span class="nx">select</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="nx">total</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">configValue</span><span class="p">.</span><span class="nx">body_parts</span><span class="p">[</span><span class="nx">select</span><span class="p">.</span><span class="nx">value</span><span class="p">]?.</span><span class="nx">action_cost</span> <span class="o">||</span> <span class="mi">2</span>
+    <span class="p">})</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">blockSelectTargets</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">select</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if </span><span class="p">(</span><span class="nx">select</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="nx">total</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">configValue</span><span class="p">.</span><span class="nx">body_parts</span><span class="p">[</span><span class="nx">select</span><span class="p">.</span><span class="nx">value</span><span class="p">]?.</span><span class="nx">action_cost</span> <span class="o">||</span> <span class="mi">2</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="nx">total</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="34-documentation-structure-for-inspired-features">3.4 Documentation Structure for Inspired Features</h3>
+
+<p>We maintain a dedicated file tracking all borrowed patterns:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># doc/features/neverlands_inspired.md</span>
+
+<span class="gu">## Implementation Status Summary</span>
+
+| # | Feature | Status | Key Files |
+|---|---------|--------|-----------|
+| 1 | Chat System | ✅ Implemented | <span class="sb">`chat_controller.js`</span>, <span class="sb">`moderation_service.rb`</span> |
+| 2 | Arena/PvP | ✅ Implemented | <span class="sb">`arena_controller.rb`</span>, <span class="sb">`matchmaker.rb`</span> |
+| 3 | Turn-Based Combat | ✅ Implemented | <span class="sb">`turn_based_combat_service.rb`</span> |
+| 4 | Combat Log | ✅ Implemented | <span class="sb">`log_builder.rb`</span>, <span class="sb">`statistics_calculator.rb`</span> |
+
+<span class="gu">## Chat System</span>
+
+<span class="gu">### Original Neverlands Examples</span>
+[Original JavaScript code here]
+
+<span class="gu">### Elselands Implementation</span>
+<span class="p">-</span> <span class="gs">**Files:**</span> <span class="sb">`chat_controller.js`</span>, <span class="sb">`realtime_chat_channel.rb`</span>
+<span class="p">-</span> <span class="gs">**Key Adaptations:**</span>
+<span class="p">  -</span> Replaced <span class="sb">`onclick`</span> with Stimulus <span class="sb">`data-action`</span>
+<span class="p">  -</span> WebSocket via ActionCable instead of polling
+<span class="p">  -</span> Server-side moderation before broadcast
+</code></pre></div></div>
+
+<p><strong>Benefits:</strong></p>
+
+<ol>
+  <li><strong>Reference material</strong> — Original examples are preserved for future iterations</li>
+  <li><strong>Implementation tracking</strong> — Clear status of what’s done vs. planned</li>
+  <li><strong>Knowledge transfer</strong> — Anyone can understand why we made certain choices</li>
+</ol>
+
+<hr />
+
+<h2 id="4-testing-strategies-for-game-systems">4. Testing Strategies for Game Systems</h2>
+
+<h3 id="41-test-categories">4.1 Test Categories</h3>
+
+<p>Game systems require different testing strategies than typical CRUD apps:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Purpose</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Unit Tests</strong></td>
+      <td>Individual service logic</td>
+      <td><code class="language-plaintext highlighter-rouge">TurnBasedCombatService</code> action point calculation</td>
+    </tr>
+    <tr>
+      <td><strong>Request Tests</strong></td>
+      <td>API endpoints</td>
+      <td><code class="language-plaintext highlighter-rouge">POST /combat/action</code> with attack data</td>
+    </tr>
+    <tr>
+      <td><strong>Channel Tests</strong></td>
+      <td>WebSocket functionality</td>
+      <td><code class="language-plaintext highlighter-rouge">BattleChannel</code> broadcasts updates</td>
+    </tr>
+    <tr>
+      <td><strong>Helper Tests</strong></td>
+      <td>View helpers</td>
+      <td><code class="language-plaintext highlighter-rouge">format_combat_log_message</code> output</td>
+    </tr>
+    <tr>
+      <td><strong>System Tests</strong></td>
+      <td>End-to-end flows</td>
+      <td>Full combat from start to victory</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42-testing-real-time-features">4.2 Testing Real-Time Features</h3>
+
+<p>ActionCable channels need special setup:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/channels/battle_channel_spec.rb</span>
+<span class="nb">require</span> <span class="s2">"rails_helper"</span>
+
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">BattleChannel</span><span class="p">,</span> <span class="ss">type: :channel</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:battle</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:battle</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">before</span> <span class="k">do</span>
+    <span class="n">stub_connection</span> <span class="ss">current_user: </span><span class="n">user</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s2">"subscribes to battle stream"</span> <span class="k">do</span>
+    <span class="n">subscribe</span><span class="p">(</span><span class="ss">battle_id: </span><span class="n">battle</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="p">).</span><span class="nf">to</span> <span class="n">be_confirmed</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">subscription</span><span class="p">).</span><span class="nf">to</span> <span class="n">have_stream_for</span><span class="p">(</span><span class="n">battle</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s2">"receives combat updates"</span> <span class="k">do</span>
+    <span class="n">subscribe</span><span class="p">(</span><span class="ss">battle_id: </span><span class="n">battle</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+
+    <span class="n">expect</span> <span class="p">{</span>
+      <span class="no">BattleChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="n">battle</span><span class="p">,</span> <span class="p">{</span> <span class="ss">type: </span><span class="s2">"turn_update"</span><span class="p">,</span> <span class="ss">round: </span><span class="mi">1</span> <span class="p">})</span>
+    <span class="p">}.</span><span class="nf">to</span> <span class="n">have_broadcasted_to</span><span class="p">(</span><span class="n">battle</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="43-testing-deterministic-combat">4.3 Testing Deterministic Combat</h3>
+
+<p>Combat must be reproducible for debugging and replays:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/services/game/combat/turn_based_combat_service_spec.rb</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Game</span><span class="o">::</span><span class="no">Combat</span><span class="o">::</span><span class="no">TurnBasedCombatService</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:battle</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:battle</span><span class="p">,</span> <span class="ss">:with_participants</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:service</span><span class="p">)</span> <span class="p">{</span> <span class="n">described_class</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">battle</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">describe</span> <span class="s2">"#submit_turn"</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">"consumes action points correctly"</span> <span class="k">do</span>
+      <span class="n">attacks</span> <span class="o">=</span> <span class="p">[{</span> <span class="ss">body_part: </span><span class="s2">"head"</span> <span class="p">},</span> <span class="p">{</span> <span class="ss">body_part: </span><span class="s2">"torso"</span> <span class="p">}]</span>
+      <span class="n">blocks</span> <span class="o">=</span> <span class="p">[{</span> <span class="ss">body_part: </span><span class="s2">"stomach"</span> <span class="p">}]</span>
+
+      <span class="c1"># Head (3) + Torso (2) + Stomach (2) = 7 action points</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">service</span><span class="p">.</span><span class="nf">calculate_action_points_used</span><span class="p">(</span><span class="n">attacks</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">context</span> <span class="s2">"with seeded RNG for reproducibility"</span> <span class="k">do</span>
+      <span class="n">it</span> <span class="s2">"produces consistent damage rolls"</span> <span class="k">do</span>
+        <span class="no">Game</span><span class="o">::</span><span class="no">Utils</span><span class="o">::</span><span class="no">Rng</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+
+        <span class="n">result1</span> <span class="o">=</span> <span class="n">service</span><span class="p">.</span><span class="nf">resolve_attack</span><span class="p">(</span><span class="n">attacker</span><span class="p">,</span> <span class="n">defender</span><span class="p">,</span> <span class="s2">"head"</span><span class="p">)</span>
+        <span class="no">Game</span><span class="o">::</span><span class="no">Utils</span><span class="o">::</span><span class="no">Rng</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+        <span class="n">result2</span> <span class="o">=</span> <span class="n">service</span><span class="p">.</span><span class="nf">resolve_attack</span><span class="p">(</span><span class="n">attacker</span><span class="p">,</span> <span class="n">defender</span><span class="p">,</span> <span class="s2">"head"</span><span class="p">)</span>
+
+        <span class="n">expect</span><span class="p">(</span><span class="n">result1</span><span class="p">[</span><span class="ss">:damage</span><span class="p">]).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="n">result2</span><span class="p">[</span><span class="ss">:damage</span><span class="p">])</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="44-coverage-goals">4.4 Coverage Goals</h3>
+
+<p>We maintain explicit coverage targets:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Target</th>
+      <th>Rationale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Models</td>
+      <td>90%</td>
+      <td>Core game logic lives here</td>
+    </tr>
+    <tr>
+      <td>Services</td>
+      <td>95%</td>
+      <td>Business logic must be bulletproof</td>
+    </tr>
+    <tr>
+      <td>Controllers</td>
+      <td>85%</td>
+      <td>Request/response handling</td>
+    </tr>
+    <tr>
+      <td>Channels</td>
+      <td>80%</td>
+      <td>Real-time features are critical</td>
+    </tr>
+    <tr>
+      <td>Helpers</td>
+      <td>90%</td>
+      <td>UI consistency</td>
+    </tr>
+    <tr>
+      <td>Views</td>
+      <td>60%</td>
+      <td>Basic rendering verification</td>
+    </tr>
+    <tr>
+      <td>System</td>
+      <td>40%</td>
+      <td>Key user flows</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="5-ai-assisted-development-making-it-work-for-senior-engineers">5. AI-Assisted Development: Making It Work for Senior Engineers</h2>
+
+<h3 id="51-the-problem-with-generic-ai-assistance">5.1 The Problem with Generic AI Assistance</h3>
+
+<p>Most AI coding assistants fail on complex projects because they lack:</p>
+
+<ul>
+  <li><strong>Project context</strong> — They don’t know your architecture</li>
+  <li><strong>Convention awareness</strong> — They generate code that doesn’t match your style</li>
+  <li><strong>Domain knowledge</strong> — They don’t understand game mechanics</li>
+</ul>
+
+<h3 id="52-our-solution-structured-prompting-with-documentation">5.2 Our Solution: Structured Prompting with Documentation</h3>
+
+<p>We created a documentation hierarchy that the AI can reference:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># README.md (excerpt)</span>
+
+<span class="gu">## 📄 Documentation Map</span>
+
+| File | When to Reference / Purpose |
+|------|----------------------------|
+| <span class="gs">**AGENT.md**</span> | Always loaded, highest authority |
+| <span class="gs">**GUIDE.md**</span> | Rails standards or general best practices |
+| <span class="gs">**MMO_ADDITIONAL_GUIDE.md**</span> | Gameplay/MMORPG domain-specific conventions |
+| <span class="gs">**doc/gdd.md**</span> | Game design vision, classes, mechanics |
+| <span class="ge">**</span>doc/features/<span class="ge">*.md*</span><span class="err">*</span> | Per-system breakdown (technical specs) |
+| <span class="ge">**</span>doc/flow/<span class="ge">*.md*</span><span class="err">*</span> | Implementation details with file references |
+</code></pre></div></div>
+
+<h3 id="53-effective-prompting-patterns">5.3 Effective Prompting Patterns</h3>
+
+<p><strong>Pattern 1: Feature Implementation</strong></p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I want to start implementing the Player feature from <span class="sb">`doc/features/3_player.md`</span>.
+
+Please follow:
+<span class="p">-</span> <span class="sb">`AGENT.md`</span> (always)
+<span class="p">-</span> <span class="sb">`GUIDE.md`</span> for general Rails patterns
+<span class="p">-</span> <span class="sb">`MMO_ADDITIONAL_GUIDE.md`</span> for gameplay logic architecture
+<span class="p">-</span> Use <span class="sb">`MMO_ENGINE_SKELETON.md`</span> for engine placement
+
+<span class="gs">**Task:**</span>
+<span class="p">1.</span> Read <span class="sb">`doc/features/3_player.md`</span>
+<span class="p">2.</span> Identify required models, services, and UI components
+<span class="p">3.</span> Provide a detailed plan (files + responsibilities)
+<span class="p">4.</span> Wait for my confirmation before writing any code
+</code></pre></div></div>
+
+<p><strong>Pattern 2: Inspired-By Implementation</strong></p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Here's the Neverlands JavaScript for their arena system:
+[paste code]
+
+Please:
+<span class="p">1.</span> Analyze the original implementation
+<span class="p">2.</span> Document it in <span class="sb">`doc/features/neverlands_inspired.md`</span>
+<span class="p">3.</span> Propose a Rails/Hotwire adaptation using our patterns
+<span class="p">4.</span> Update flow docs with implementation details
+</code></pre></div></div>
+
+<p><strong>Pattern 3: Bug Fix with Context</strong></p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I'm seeing this error in the arena system:
+[paste error]
+
+Context:
+<span class="p">-</span> Check <span class="sb">`doc/flow/11_arena_pvp.md`</span> for the arena architecture
+<span class="p">-</span> The ArenaMatch model uses an enum that might conflict
+
+Find the root cause and propose a fix that matches our conventions.
+</code></pre></div></div>
+
+<h3 id="54-why-this-works-for-senior-engineers">5.4 Why This Works for Senior Engineers</h3>
+
+<ol>
+  <li><strong>You drive the architecture</strong> — AI implements your decisions, doesn’t make them</li>
+  <li><strong>Documentation is the contract</strong> — Changes must match documented patterns</li>
+  <li><strong>Context is preserved</strong> — Flow docs keep AI informed across sessions</li>
+  <li><strong>Code review is efficient</strong> — You verify against documented expectations</li>
+</ol>
+
+<h3 id="55-prompts-that-accelerate-development">5.5 Prompts That Accelerate Development</h3>
+
+<p><strong>For rapid prototyping:</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Using AGENT.md rules, implement the next step from doc/features/3_player.md.
+Use GUIDE.md for Rails logic, and MMO_ADDITIONAL_GUIDE.md for gameplay structure.
+Touch only the necessary files.
+</code></pre></div></div>
+
+<p><strong>For code quality:</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>After implementation, run:
+<span class="p">1.</span> <span class="sb">`bundle exec rspec`</span> for tests
+<span class="p">2.</span> <span class="sb">`bundle exec standardrb`</span> for linting
+<span class="p">3.</span> <span class="sb">`bundle exec brakeman`</span> for security
+
+Fix any issues before considering this complete.
+</code></pre></div></div>
+
+<p><strong>For documentation updates:</strong></p>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Update the corresponding flow doc (<span class="sb">`doc/flow/X.md`</span>) with:
+<span class="p">-</span> Use cases covered
+<span class="p">-</span> Key behaviors implemented
+<span class="p">-</span> Responsible files table
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-practical-lessons-from-100-systems">6. Practical Lessons from 100+ Systems</h2>
+
+<h3 id="61-what-worked">6.1 What Worked</h3>
+
+<p><strong>1. Flow docs as the source of truth</strong></p>
+
+<p>Every PR must update the relevant flow doc. This creates a living architecture document that’s always accurate.</p>
+
+<p><strong>2. “Responsible Files” tables in flow docs</strong></p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gu">### Responsible for Implementation Files</span>
+| Purpose | File |
+|---------|------|
+| Combat service | <span class="sb">`app/services/game/combat/turn_based_combat_service.rb`</span> |
+| Controller | <span class="sb">`app/controllers/combat_controller.rb`</span> |
+| Stimulus | <span class="sb">`app/javascript/controllers/turn_combat_controller.js`</span> |
+</code></pre></div></div>
+
+<p>This makes it trivial to find code when debugging or extending features.</p>
+
+<p><strong>3. YAML configuration for game data</strong></p>
+
+<p>Instead of hardcoding values, we use <code class="language-plaintext highlighter-rouge">config/gameplay/*.yml</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">combat_actions.yml</code> — Body parts, action costs, multipliers</li>
+  <li><code class="language-plaintext highlighter-rouge">terrain_modifiers.yml</code> — Movement cooldowns by terrain</li>
+  <li><code class="language-plaintext highlighter-rouge">biomes.yml</code> — Encounter tables by region</li>
+</ul>
+
+<p>Changes don’t require code deployments, and game designers can read/modify the configs.</p>
+
+<p><strong>4. Turbo Streams for real-time without complexity</strong></p>
+
+<p>Instead of building a custom WebSocket protocol:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Broadcasting combat updates</span>
+<span class="no">Turbo</span><span class="o">::</span><span class="no">StreamsChannel</span><span class="p">.</span><span class="nf">broadcast_update_to</span><span class="p">(</span>
+  <span class="vi">@battle</span><span class="p">,</span>
+  <span class="ss">target: </span><span class="s2">"combat-log"</span><span class="p">,</span>
+  <span class="ss">partial: </span><span class="s2">"combat_logs/entry"</span><span class="p">,</span>
+  <span class="ss">locals: </span><span class="p">{</span> <span class="ss">entry: </span><span class="n">log_entry</span> <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>The frontend gets updates automatically without custom JavaScript.</p>
+
+<h3 id="62-what-wed-do-differently">6.2 What We’d Do Differently</h3>
+
+<p><strong>1. Start with comprehensive factories earlier</strong></p>
+
+<p>We had to backfill factories for models like <code class="language-plaintext highlighter-rouge">NpcTemplate</code>, <code class="language-plaintext highlighter-rouge">WebhookEndpoint</code>, etc. Building factories alongside models saves debugging time.</p>
+
+<p><strong>2. Enum naming requires foresight</strong></p>
+
+<p>ActiveRecord reserves certain method names (<code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">order</code>, etc.). We had to rename <code class="language-plaintext highlighter-rouge">fight_type: :group</code> to <code class="language-plaintext highlighter-rouge">fight_type: :team_battle</code> to avoid conflicts.</p>
+
+<p><strong>3. Migration idempotency from day one</strong></p>
+
+<p>Adding <code class="language-plaintext highlighter-rouge">if column_exists?</code> checks to migrations would have prevented issues when re-running migrations:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">change</span>
+  <span class="k">unless</span> <span class="n">column_exists?</span><span class="p">(</span><span class="ss">:battles</span><span class="p">,</span> <span class="ss">:share_token</span><span class="p">)</span>
+    <span class="n">add_column</span> <span class="ss">:battles</span><span class="p">,</span> <span class="ss">:share_token</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="63-performance-considerations">6.3 Performance Considerations</h3>
+
+<p><strong>Real-time features need Redis pub/sub:</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/cable.yml</span>
+<span class="na">production</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">redis</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("REDIS_CABLE_URL") %&gt;</span>
+  <span class="na">channel_prefix</span><span class="pi">:</span> <span class="s">elselands_production</span>
+</code></pre></div></div>
+
+<p><strong>Separate Redis instances for different concerns:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Purpose</th>
+      <th>Environment Variable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rails cache</td>
+      <td><code class="language-plaintext highlighter-rouge">REDIS_CACHE_URL</code></td>
+    </tr>
+    <tr>
+      <td>Sidekiq queues</td>
+      <td><code class="language-plaintext highlighter-rouge">REDIS_SIDEKIQ_URL</code></td>
+    </tr>
+    <tr>
+      <td>Action Cable</td>
+      <td><code class="language-plaintext highlighter-rouge">REDIS_CABLE_URL</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This prevents a Sidekiq backup from affecting real-time chat.</p>
+
+<hr />
+
+<h2 id="7-the-complete-development-workflow">7. The Complete Development Workflow</h2>
+
+<h3 id="71-adding-a-new-feature">7.1 Adding a New Feature</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. GDD → Does this feature align with the game vision?
+       ↓
+2. Feature Doc → Create doc/features/X.md with:
+   - System requirements
+   - User-facing functionality
+   - Integration points
+       ↓
+3. Flow Doc → Create doc/flow/X.md with:
+   - Use cases (step-by-step flows)
+   - Key behaviors
+   - "Responsible Files" table (initially planned)
+       ↓
+4. Implementation → Using AI + documentation:
+   - Generate models/migrations
+   - Create services with tests
+   - Build controllers and views
+   - Add Stimulus controllers for interactivity
+       ↓
+5. Testing → Run full test suite:
+   - bundle exec rspec
+   - bundle exec standardrb
+   - bundle exec brakeman
+       ↓
+6. Documentation Update → Update flow doc with:
+   - Actual file paths
+   - Implementation notes
+   - Any deviations from plan
+</code></pre></div></div>
+
+<h3 id="72-debugging-with-documentation">7.2 Debugging with Documentation</h3>
+
+<p>When something breaks:</p>
+
+<ol>
+  <li><strong>Find the flow doc</strong> for that feature</li>
+  <li><strong>Trace the use case</strong> — Which step is failing?</li>
+  <li><strong>Check the “Responsible Files”</strong> — Go directly to the right code</li>
+  <li><strong>Verify against “Key Behaviors”</strong> — Is the code doing what it should?</li>
+</ol>
+
+<h3 id="73-onboarding-new-engineers">7.3 Onboarding New Engineers</h3>
+
+<ol>
+  <li>Read <code class="language-plaintext highlighter-rouge">README.md</code> for project overview</li>
+  <li>Read <code class="language-plaintext highlighter-rouge">AGENT.md</code> and <code class="language-plaintext highlighter-rouge">GUIDE.md</code> for conventions</li>
+  <li>Pick a feature, read its flow doc</li>
+  <li>Trace from UI to database using “Responsible Files”</li>
+  <li>Make a small change, run tests, verify</li>
+</ol>
+
+<hr />
+
+<h2 id="8-conclusion-documentation-as-a-force-multiplier">8. Conclusion: Documentation as a Force Multiplier</h2>
+
+<p>Building a complex game is hard. Building it fast and maintaining quality is harder. Our documentation-driven approach made it possible:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Challenge</th>
+      <th>Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Keeping 100+ systems coherent</td>
+      <td>Feature docs define boundaries</td>
+    </tr>
+    <tr>
+      <td>Finding code in a large codebase</td>
+      <td>Flow docs with “Responsible Files”</td>
+    </tr>
+    <tr>
+      <td>Preserving context across sessions</td>
+      <td>Flow docs are always up-to-date</td>
+    </tr>
+    <tr>
+      <td>Effective AI assistance</td>
+      <td>Structured prompts with documentation</td>
+    </tr>
+    <tr>
+      <td>Onboarding new engineers</td>
+      <td>Self-documenting architecture</td>
+    </tr>
+    <tr>
+      <td>Borrowing proven patterns</td>
+      <td>“Inspired-by” documentation</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The upfront investment in documentation pays dividends throughout the project. Every hour spent documenting saves five hours of confusion later.</p>
+
+<h3 id="key-takeaways">Key Takeaways</h3>
+
+<ol>
+  <li><strong>GDD → Features → Flows</strong> creates a traceable path from vision to implementation</li>
+  <li><strong>Flow docs with “Responsible Files”</strong> make code discoverable</li>
+  <li><strong>“Inspired-by” patterns</strong> let you borrow proven mechanics responsibly</li>
+  <li><strong>AI works best with structured context</strong> — feed it your documentation</li>
+  <li><strong>Tests are non-negotiable</strong> for game systems with complex interactions</li>
+  <li><strong>YAML configuration</strong> separates game data from code logic</li>
+</ol>
+
+<p>Whether you’re building an MMORPG, a complex SaaS, or any large Rails application, these patterns will help you ship faster while maintaining quality.</p>
+
+<hr />
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><strong>Rails 8.1 + Hotwire</strong>: <a href="https://hotwired.dev">hotwired.dev</a></li>
+  <li><strong>ActionCable Guide</strong>: <a href="https://guides.rubyonrails.org/action_cable_overview.html">guides.rubyonrails.org/action_cable_overview.html</a></li>
+  <li><strong>Stimulus Handbook</strong>: <a href="https://stimulus.hotwired.dev/handbook">stimulus.hotwired.dev/handbook</a></li>
+  <li><strong>Flipper Feature Flags</strong>: <a href="https://github.com/flippercloud/flipper">github.com/flippercloud/flipper</a></li>
+</ul>
+
+<hr />
+
+<p><em>This post was written while building Elselands—a browser-based MMORPG recreating the classic Neverlands.ru experience with modern Rails tooling. The documentation-driven approach described here enabled rapid development of 9 major Neverlands-inspired systems, 100+ models, and comprehensive test coverage in a fraction of the time traditional development would require.</em></p>
+
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
