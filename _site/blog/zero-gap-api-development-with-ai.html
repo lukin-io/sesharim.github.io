@@ -1,0 +1,699 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/zero-gap-api-development-with-ai">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  TL;DR      Contract-first development with TypeScript interfaces as the single source of truth eliminates ambiguity and prevents frontend/backend drift.   ...">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation." />
+<meta property="og:description" content="A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation." />
+<link rel="canonical" href="http://localhost:4000/blog/zero-gap-api-development-with-ai" />
+<meta property="og:url" content="http://localhost:4000/blog/zero-gap-api-development-with-ai" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-12-02T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-12-02T00:00:00+00:00","datePublished":"2025-12-02T00:00:00+00:00","description":"A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation.","headline":"Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/zero-gap-api-development-with-ai"},"url":"http://localhost:4000/blog/zero-gap-api-development-with-ai"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">December 2, 2025</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><strong>TL;DR</strong></p>
+
+  <ul>
+    <li><strong>Contract-first development</strong> with TypeScript interfaces as the single source of truth eliminates ambiguity and prevents frontend/backend drift.</li>
+    <li><strong>Systematic verification gates</strong> catch implementation gaps before they ship—not after.</li>
+    <li><strong>Discrepancy classification</strong> (<code class="language-plaintext highlighter-rouge">[IMPL]</code> vs <code class="language-plaintext highlighter-rouge">[DOC]</code>) ensures you fix what’s broken and flag what’s misaligned.</li>
+    <li><strong>Mandatory dual documentation</strong> (Flow + PRD) creates institutional memory that survives team changes.</li>
+  </ul>
+</blockquote>
+
+<p>This post is the evolution of our previous guides on <a href="/2025-09-09-consolidating-rails-api-guide-for-cursor-ide">consolidating Rails contribution standards</a> and <a href="/2025-10-29-ai-senior-vs-junior">senior-driven AI development</a>. After shipping dozens of endpoints with zero regressions, we’ve refined the process into a complete framework.</p>
+
+<hr />
+
+<h2 id="the-problem-death-by-a-thousand-gaps">The Problem: Death by a Thousand Gaps</h2>
+
+<p>Every API project eventually faces the same failure modes:</p>
+
+<ol>
+  <li><strong>Contract drift</strong>: Backend returns <code class="language-plaintext highlighter-rouge">userId</code>, frontend expects <code class="language-plaintext highlighter-rouge">user_id</code></li>
+  <li><strong>Silent regressions</strong>: v1.1 breaks v1.0 behaviors nobody tested</li>
+  <li><strong>Incomplete implementations</strong>: 8 of 10 required fields shipped, 2 “forgot”</li>
+  <li><strong>Documentation rot</strong>: Flow docs describe behavior from 3 sprints ago</li>
+  <li><strong>AI amplification</strong>: LLMs generate plausible-looking code that fails edge cases</li>
+</ol>
+
+<p>The root cause isn’t carelessness—it’s <strong>missing systematic verification</strong>. Humans (and AIs) make errors. Systems catch them.</p>
+
+<hr />
+
+<h2 id="the-solution-three-layer-architecture">The Solution: Three-Layer Architecture</h2>
+
+<p>Our framework operates on three layers, each with a specific purpose:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────────────────────────────────────────────┐
+│  Layer 1: REQUIREMENT_DOC (doc/requirements/**)         │
+│  - TypeScript interfaces = canonical truth              │
+│  - Read-only, never modified by implementers            │
+│  - Versioned (v1.0, v1.1, v1.2...)                     │
+└─────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────┐
+│  Layer 2: Implementation (app/**, spec/**)              │
+│  - Must satisfy ALL versions cumulatively               │
+│  - Blueprinter for JSON, Pundit for auth                │
+│  - Contract Compliance Verification before merge        │
+└─────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────┐
+│  Layer 3: Documentation (doc/flow/**, doc/prd/**)       │
+│  - Generated AFTER verification passes                  │
+│  - Reflects actual implementation, not intent           │
+│  - Version history preserved, never overwritten         │
+└─────────────────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="layer-1-contract-first-development">Layer 1: Contract-First Development</h2>
+
+<p>The REQUIREMENT_DOC is the <strong>single source of truth</strong>. It contains TypeScript interfaces that define the exact response shape:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// doc/requirements/PROFILE_CARD.md</span>
+<span class="kr">interface</span> <span class="nx">ProfileCard</span> <span class="p">{</span>
+  <span class="nl">id</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>                    <span class="c1">// required</span>
+  <span class="nl">username</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>              <span class="c1">// required</span>
+  <span class="nl">avatar_url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>     <span class="c1">// optional</span>
+  <span class="nl">skills</span><span class="p">:</span> <span class="nx">Skill</span><span class="p">[];</span>               <span class="c1">// required, min 0 items</span>
+  <span class="nl">availability</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">status</span><span class="p">:</span> <span class="dl">'</span><span class="s1">now</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">two_weeks</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">offer</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">na</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nl">updated_at</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>          <span class="c1">// ISO8601</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>The rules are simple:</strong></p>
+
+<ol>
+  <li>Every field in the interface <strong>must</strong> exist in your Blueprint</li>
+  <li>Required fields <strong>never</strong> return <code class="language-plaintext highlighter-rouge">null</code>—use safe defaults</li>
+  <li>No extra fields beyond what’s documented</li>
+  <li>Version changes are <strong>cumulative</strong> unless explicitly marked as breaking</li>
+</ol>
+
+<h3 id="safe-defaults-strategy">Safe Defaults Strategy</h3>
+
+<p>When database data is sparse, required fields still must satisfy the contract:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/blueprints/profile_card_blueprint.rb</span>
+<span class="k">class</span> <span class="nc">ProfileCardBlueprint</span> <span class="o">&lt;</span> <span class="no">Blueprinter</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">identifier</span> <span class="ss">:id</span>
+
+  <span class="n">field</span> <span class="ss">:username</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="o">|</span>
+    <span class="n">profile</span><span class="p">.</span><span class="nf">username</span><span class="p">.</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">""</span>  <span class="c1"># String → empty string</span>
+  <span class="k">end</span>
+
+  <span class="n">field</span> <span class="ss">:skills</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="o">|</span>
+    <span class="n">profile</span><span class="p">.</span><span class="nf">skills</span><span class="p">.</span><span class="nf">presence</span> <span class="o">||</span> <span class="p">[]</span>    <span class="c1"># Array → empty array</span>
+  <span class="k">end</span>
+
+  <span class="n">field</span> <span class="ss">:availability</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="o">|</span>
+    <span class="p">{</span>
+      <span class="ss">status: </span><span class="n">profile</span><span class="p">.</span><span class="nf">availability_status</span> <span class="o">||</span> <span class="s2">"na"</span><span class="p">,</span>  <span class="c1"># Enum → default value</span>
+      <span class="ss">updated_at: </span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="nf">availability_updated_at</span> <span class="o">||</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">).</span><span class="nf">iso8601</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Safe defaults by type:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>String (required)</td>
+      <td><code class="language-plaintext highlighter-rouge">""</code> (empty string)</td>
+    </tr>
+    <tr>
+      <td>Number (required)</td>
+      <td><code class="language-plaintext highlighter-rouge">0</code> or minimum valid value</td>
+    </tr>
+    <tr>
+      <td>Boolean (required)</td>
+      <td><code class="language-plaintext highlighter-rouge">false</code></td>
+    </tr>
+    <tr>
+      <td>Array (required)</td>
+      <td><code class="language-plaintext highlighter-rouge">[]</code> (empty array)</td>
+    </tr>
+    <tr>
+      <td>Object (required)</td>
+      <td>Minimal valid object with nested defaults</td>
+    </tr>
+    <tr>
+      <td>Timestamp</td>
+      <td><code class="language-plaintext highlighter-rouge">Time.current.iso8601</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="layer-2-implementation-with-verification-gates">Layer 2: Implementation with Verification Gates</h2>
+
+<h3 id="the-verification-checklist">The Verification Checklist</h3>
+
+<p>Every implementation must pass these gates <strong>in order</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Code quality</span>
+bundle <span class="nb">exec </span>rubocop
+
+<span class="c"># 2. Test suite (establishes baseline, catches regressions)</span>
+bundle <span class="nb">exec </span>rspec
+
+<span class="c"># 3. Security scan</span>
+bundle <span class="nb">exec </span>brakeman <span class="nt">-q</span> <span class="nt">-w2</span>
+
+<span class="c"># 4. Dependency audit</span>
+bundle <span class="nb">exec </span>bundle audit check <span class="nt">--update</span>
+
+<span class="c"># 5. API documentation generation</span>
+bundle <span class="nb">exec </span>rails rswag:specs:swaggerize
+</code></pre></div></div>
+
+<p><strong>If any gate fails, stop and fix.</strong> Do not proceed to documentation.</p>
+
+<h3 id="contract-compliance-verification-no-gaps">Contract Compliance Verification (NO GAPS)</h3>
+
+<p>After all tests pass, systematically audit against REQUIREMENT_DOC:</p>
+
+<p><strong>1. Endpoints Audit</strong></p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Every path in REQUIREMENT_DOC exists in routes</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />HTTP methods match (GET/POST/PATCH/DELETE)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />URL and query params match documented names</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Auth requirements match (public vs authenticated, role restrictions)</li>
+</ul>
+
+<p><strong>2. Response Shape Audit</strong></p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Every field in TypeScript interface exists in Blueprint</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />No extra fields emitted beyond REQUIREMENT_DOC</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Required fields never return null/nil</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Nested objects match documented structure exactly</li>
+</ul>
+
+<p><strong>3. Validation &amp; Error Audit</strong></p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />All documented validations implemented</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Error responses use correct status codes:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">422</code> → Validation errors (<code class="language-plaintext highlighter-rouge">:unprocessable_content</code>)</li>
+      <li><code class="language-plaintext highlighter-rouge">400</code> → Bad request / malformed params</li>
+      <li><code class="language-plaintext highlighter-rouge">401</code> → Unauthorized (missing/invalid auth)</li>
+      <li><code class="language-plaintext highlighter-rouge">403</code> → Forbidden (authenticated but not permitted)</li>
+      <li><code class="language-plaintext highlighter-rouge">404</code> → Not found</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>4. Version Compliance Audit</strong></p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />v1.0 requirements still satisfied</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />v1.1+ additions implemented correctly</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Breaking changes only where REQUIREMENT_DOC explicitly declares</li>
+</ul>
+
+<h3 id="discrepancy-classification">Discrepancy Classification</h3>
+
+<p>When gaps are found, classify them correctly:</p>
+
+<p><strong>Type A: Implementation Issues</strong> — Your code doesn’t match REQUIREMENT_DOC</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[IMPL] GET /profiles/:id - [EXPECTED: returns avatar_url] vs [ACTUAL: field missing from Blueprint]
+[IMPL] POST /users - [EXPECTED: 422 for invalid email] vs [ACTUAL: returns 400]
+</code></pre></div></div>
+
+<p>→ <strong>Fix ALL before proceeding.</strong> Re-run verification after fixes.</p>
+
+<p><strong>Type B: Requirement Doc Discrepancies</strong> — REQUIREMENT_DOC doesn’t match existing DB/model</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[DOC] visible_within enum - [DOC: 'local'|'state'|'country'] vs [DB: '5'|'10'|'25'|'50' miles]
+[DOC] Availability.status - [DOC: 'available'|'unavailable'] vs [Model: 'now'|'two_weeks'|'offer'|'na']
+</code></pre></div></div>
+
+<p>→ <strong>Do NOT modify <code class="language-plaintext highlighter-rouge">doc/requirements/**</code></strong> (read-only).
+→ Blueprint returns actual DB values (correct behavior).
+→ Flag for product/doc owner to reconcile.</p>
+
+<hr />
+
+<h2 id="layer-3-mandatory-documentation">Layer 3: Mandatory Documentation</h2>
+
+<p><strong>Both Flow docs and PRDs are mandatory for every task.</strong> Generate only <strong>after</strong> verification passes.</p>
+
+<h3 id="flow-doc-template-web-286-structure">Flow Doc Template (WEB-286 structure)</h3>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># TASK_ID — Feature Name</span>
+
+<span class="gu">## Metadata</span>
+<span class="p">-</span> <span class="gs">**Task:**</span> TASK_ID
+<span class="p">-</span> <span class="gs">**Status:**</span> Implemented
+<span class="p">-</span> <span class="gs">**Version:**</span> 1.0
+
+<span class="gu">## Table of Contents</span>
+<span class="p">1.</span> General Description
+<span class="p">2.</span> Validation Use Cases
+<span class="p">3.</span> Pundit Policy
+<span class="p">4.</span> Implementation Notes
+<span class="p">5.</span> Status Codes
+<span class="p">6.</span> Flow
+<span class="p">7.</span> Responsible Files
+
+<span class="gu">## General Description</span>
+[What the feature does, who can access it]
+
+<span class="gu">## Validation Use Cases</span>
+| Field | Rule | Error Code |
+|-------|------|------------|
+| email | required, format | 422 |
+
+<span class="gu">## Pundit Policy</span>
+<span class="p">-</span> <span class="sb">`index?`</span> → authenticated users
+<span class="p">-</span> <span class="sb">`create?`</span> → owner only
+
+<span class="gu">## Status Codes</span>
+| Code | Condition |
+|------|-----------|
+| 200 | Success |
+| 422 | Validation failed |
+| 403 | Not authorized |
+
+<span class="gu">## Responsible Files</span>
+<span class="p">-</span> <span class="sb">`app/controllers/api/v1/items_controller.rb`</span>
+<span class="p">-</span> <span class="sb">`app/blueprints/item_blueprint.rb`</span>
+<span class="p">-</span> <span class="sb">`app/policies/item_policy.rb`</span>
+<span class="p">-</span> <span class="sb">`spec/requests/api/v1/items_spec.rb`</span>
+</code></pre></div></div>
+
+<h3 id="prd-template-web-240-structure">PRD Template (WEB-240 structure)</h3>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># TASK_ID — Feature Name PRD</span>
+
+<span class="gu">## Problem Statement</span>
+[What problem does this solve?]
+
+<span class="gu">## Goals</span>
+<span class="p">-</span> [Goal 1]
+<span class="p">-</span> [Goal 2]
+
+<span class="gu">## Scope</span>
+<span class="gu">### In Scope</span>
+<span class="p">-</span> [Feature A]
+
+<span class="gu">### Out of Scope</span>
+<span class="p">-</span> [Feature B]
+
+<span class="gu">## User Stories</span>
+<span class="p">-</span> As a [role], I want to [action] so that [benefit]
+
+<span class="gu">## Technical Considerations</span>
+<span class="p">-</span> [Database changes]
+<span class="p">-</span> [API contract]
+
+<span class="gu">## Metrics</span>
+<span class="p">-</span> [How will success be measured?]
+
+<span class="gu">## Rollout Plan</span>
+<span class="p">-</span> [Deployment strategy]
+
+<span class="gu">## Dependencies</span>
+<span class="p">-</span> [External services, gems, etc.]
+</code></pre></div></div>
+
+<h3 id="version-history">Version History</h3>
+
+<p>Both docs must maintain explicit version history:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gu">## Version History</span>
+
+<span class="gu">### Version 1.1 (2025-12-02)</span>
+<span class="p">-</span> Added <span class="sb">`avatar_url`</span> field to response
+<span class="p">-</span> Changed <span class="sb">`status`</span> enum values
+
+<span class="gu">### Version 1.0 (2025-11-15)</span>
+<span class="p">-</span> Initial implementation
+</code></pre></div></div>
+
+<p><strong>Never overwrite—always append.</strong></p>
+
+<hr />
+
+<h2 id="the-complete-prompt-template">The Complete Prompt Template</h2>
+
+<p>When using AI assistants, use this universal prompt:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Task: TASK_ID – FEATURE_LABEL (Ruby on Rails API)
+
+Context:
+- Requirements (single source of truth): REQUIREMENT_DOC
+- Flow doc: FLOW_DOC
+- PRD doc: PRD_DOC
+
+Global constraints:
+- Read and follow AGENTS.md and GUIDE.md before changing anything
+- JSON via Blueprinter only; controllers handle envelopes
+- Never bypass serializers, never use camelCase keys
+
+Core contract rules:
+- TypeScript interfaces in REQUIREMENT_DOC are the ONLY truth
+- Required fields never return null (use safe defaults)
+- All versions (v1.0, v1.1, ...) satisfied cumulatively
+
+Implementation:
+- Upgrade existing code to satisfy ALL versions in REQUIREMENT_DOC
+- Do NOT remove behaviors that already match the contract
+- Build JSON via Blueprinter with exact field sets
+
+Verification (all must pass):
+1. bundle exec rubocop
+2. bundle exec rspec
+3. bundle exec brakeman -q -w2
+4. bundle exec bundle audit check --update
+5. bundle exec rails rswag:specs:swaggerize
+
+Contract Compliance (NO GAPS):
+- Audit: endpoints, response shape, validations, versions
+- Classify discrepancies: [IMPL] = fix code, [DOC] = flag for doc owner
+
+Final documentation (AFTER verification):
+- Generate/update FLOW_DOC and PRD_DOC
+- Include version history
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="controller-patterns-that-work">Controller Patterns That Work</h2>
+
+<h3 id="index-with-pagination">Index with Pagination</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span>
+  <span class="n">items</span> <span class="o">=</span> <span class="no">Item</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:owner</span><span class="p">)</span>
+              <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">created_at: :desc</span><span class="p">)</span>
+              <span class="p">.</span><span class="nf">page</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:page</span><span class="p">]).</span><span class="nf">per</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:per_page</span><span class="p">]</span> <span class="o">||</span> <span class="mi">20</span><span class="p">)</span>
+
+  <span class="n">render_collection_envelope</span><span class="p">(</span>
+    <span class="ss">collection: </span><span class="n">items</span><span class="p">,</span>
+    <span class="ss">blueprint: </span><span class="no">ItemBlueprint</span>
+  <span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Response:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"total_pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="create-with-validation">Create with Validation</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">items</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">item_params</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">item</span><span class="p">.</span><span class="nf">save</span>
+    <span class="n">render_success_envelope</span><span class="p">(</span>
+      <span class="ss">message: </span><span class="s2">"Item created successfully"</span><span class="p">,</span>
+      <span class="ss">resource: </span><span class="n">item</span><span class="p">,</span>
+      <span class="ss">blueprint: </span><span class="no">ItemBlueprint</span><span class="p">,</span>
+      <span class="ss">status: :created</span>
+    <span class="p">)</span>
+  <span class="k">else</span>
+    <span class="n">render_validation_errors</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Success (201):</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Item created successfully"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Validation Error (422):</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Title can't be blank and Price must be greater than 0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"can't be blank"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"must be greater than 0"</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<hr />
+
+<h2 id="spec-coverage-requirements">Spec Coverage Requirements</h2>
+
+<p>Every implementation ships with:</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Request spec</strong> for each endpoint (success + ALL documented error cases)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>RSwag integration spec</strong> for Swagger generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Policy spec</strong> for authorization rules</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Model spec</strong> for validations/associations/scopes</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Blueprint spec</strong> when output shape is complex</li>
+</ul>
+
+<h3 id="regression-prevention">Regression Prevention</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before modifying existing code:</span>
+<span class="c1"># 1. Run existing specs → establish baseline (all green)</span>
+<span class="c1"># 2. Make changes</span>
+<span class="c1"># 3. Run specs again → ALL prior specs must still pass</span>
+<span class="c1"># 4. If any fail, treat as regression and fix before proceeding</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="why-this-works">Why This Works</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Without Framework</th>
+      <th>With Framework</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>“It works on my machine”</td>
+      <td>Verification gates catch issues</td>
+    </tr>
+    <tr>
+      <td>Frontend discovers missing fields</td>
+      <td>Contract compliance audit prevents gaps</td>
+    </tr>
+    <tr>
+      <td>v1.1 breaks v1.0</td>
+      <td>Cumulative version compliance</td>
+    </tr>
+    <tr>
+      <td>Docs are always stale</td>
+      <td>Docs generated from actual implementation</td>
+    </tr>
+    <tr>
+      <td>AI generates plausible bugs</td>
+      <td>AI follows explicit contracts</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="the-efficiency-multiplier">The Efficiency Multiplier</h2>
+
+<p>This framework turns AI from a liability into an accelerator:</p>
+
+<ol>
+  <li><strong>Fewer review cycles</strong> — Envelopes, pagination, and auth are consistent from the start</li>
+  <li><strong>Predictable output</strong> — AI synthesizes code that matches contracts</li>
+  <li><strong>Lower context cost</strong> — One authoritative source means less ambiguity</li>
+  <li><strong>Safer by default</strong> — Verification gates catch errors before merge</li>
+  <li><strong>Institutional memory</strong> — Documentation survives team changes</li>
+</ol>
+
+<hr />
+
+<h2 id="quick-reference">Quick Reference</h2>
+
+<p><strong>Response Envelopes:</strong></p>
+<ul>
+  <li>List: <code class="language-plaintext highlighter-rouge">{ data: [...], meta: { page, per_page, total_pages, total_count } }</code></li>
+  <li>Success: <code class="language-plaintext highlighter-rouge">{ success: true, message: "...", data: {...} }</code></li>
+  <li>Error: <code class="language-plaintext highlighter-rouge">{ error: "...", errors: {...} }</code></li>
+</ul>
+
+<p><strong>Status Codes:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">200</code> → OK (read, update, delete)</li>
+  <li><code class="language-plaintext highlighter-rouge">201</code> → Created</li>
+  <li><code class="language-plaintext highlighter-rouge">400</code> → Bad request</li>
+  <li><code class="language-plaintext highlighter-rouge">401</code> → Unauthorized</li>
+  <li><code class="language-plaintext highlighter-rouge">403</code> → Forbidden</li>
+  <li><code class="language-plaintext highlighter-rouge">404</code> → Not found</li>
+  <li><code class="language-plaintext highlighter-rouge">422</code> → Validation failed</li>
+</ul>
+
+<p><strong>Discrepancy Tags:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">[IMPL]</code> → Fix your code</li>
+  <li><code class="language-plaintext highlighter-rouge">[DOC]</code> → Flag for doc owner</li>
+</ul>
+
+<p><strong>Safe Defaults:</strong></p>
+<ul>
+  <li>String → <code class="language-plaintext highlighter-rouge">""</code></li>
+  <li>Number → <code class="language-plaintext highlighter-rouge">0</code></li>
+  <li>Boolean → <code class="language-plaintext highlighter-rouge">false</code></li>
+  <li>Array → <code class="language-plaintext highlighter-rouge">[]</code></li>
+  <li>Timestamp → <code class="language-plaintext highlighter-rouge">Time.current.iso8601</code></li>
+</ul>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Zero-gap development isn’t about perfection—it’s about <strong>systematic verification</strong>. By treating TypeScript interfaces as contracts, running verification gates religiously, and generating documentation from working code, you eliminate entire categories of bugs.</p>
+
+<p>AI amplifies whatever process you give it. Give it contracts, gates, and verification—and it becomes the best pair programmer you’ve ever had.</p>
+
+<p><strong>The framework is the force multiplier. Experience is choosing to use it.</strong></p>
+
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
