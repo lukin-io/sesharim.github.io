@@ -1,0 +1,1315 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/mysql-to-postgresql-migration-guide">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  “The best time to write database-agnostic code is from day one. The second best time is before your migration.”">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL’s advanced features, and multi-schema architecture strategies." />
+<meta property="og:description" content="A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL’s advanced features, and multi-schema architecture strategies." />
+<link rel="canonical" href="http://localhost:4000/blog/mysql-to-postgresql-migration-guide" />
+<meta property="og:url" content="http://localhost:4000/blog/mysql-to-postgresql-migration-guide" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-12-03T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-12-03T00:00:00+00:00","datePublished":"2025-12-03T00:00:00+00:00","description":"A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL’s advanced features, and multi-schema architecture strategies.","headline":"From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/mysql-to-postgresql-migration-guide"},"url":"http://localhost:4000/blog/mysql-to-postgresql-migration-guide"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">December 3, 2025</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><em>“The best time to write database-agnostic code is from day one. The second best time is before your migration.”</em></p>
+</blockquote>
+
+<p>When we started building the Wigiwork API, we chose MySQL for its familiarity and ease of setup. As our requirements grew—AI vector embeddings, geospatial queries, graph routing—we realized PostgreSQL wasn’t just an alternative, it was a necessity.</p>
+
+<p>This post documents our migration journey and shares the patterns that made it nearly painless.</p>
+
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li><a href="#1-why-we-migrated">Why We Migrated</a></li>
+  <li><a href="#2-the-database-agnostic-foundation">The Database-Agnostic Foundation</a></li>
+  <li><a href="#3-the-migration-process">The Migration Process</a></li>
+  <li><a href="#4-postgresql-vs-mysql-a-technical-comparison">PostgreSQL vs MySQL: A Technical Comparison</a></li>
+  <li><a href="#5-advanced-postgresql-features">Advanced PostgreSQL Features</a></li>
+  <li><a href="#6-multi-schema-architecture">Multi-Schema Architecture</a></li>
+  <li><a href="#7-migration-tips-and-lessons-learned">Migration Tips and Lessons Learned</a></li>
+</ol>
+
+<hr />
+
+<h2 id="1-why-we-migrated">1. Why We Migrated</h2>
+
+<h3 id="11-the-growing-feature-requirements">1.1 The Growing Feature Requirements</h3>
+
+<p>Our application started as a straightforward REST API. Over time, we needed:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Requirement</th>
+      <th>MySQL Solution</th>
+      <th>PostgreSQL Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Vector similarity search (AI)</td>
+      <td>External service (Pinecone, Weaviate)</td>
+      <td>Native <code class="language-plaintext highlighter-rouge">pgvector</code> extension</td>
+    </tr>
+    <tr>
+      <td>Geospatial queries</td>
+      <td>Limited spatial functions</td>
+      <td>PostGIS (industry standard)</td>
+    </tr>
+    <tr>
+      <td>Graph routing</td>
+      <td>External graph DB</td>
+      <td>pgRouting extension</td>
+    </tr>
+    <tr>
+      <td>Full-text search</td>
+      <td>Basic FULLTEXT</td>
+      <td>Powerful tsvector/tsquery</td>
+    </tr>
+    <tr>
+      <td>JSON querying</td>
+      <td>JSON functions (limited)</td>
+      <td>JSONB with GIN indexes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>The math was simple:</strong> Three external services vs. one PostgreSQL instance.</p>
+
+<h3 id="12-the-hidden-costs-of-multiple-databases">1.2 The Hidden Costs of Multiple Databases</h3>
+
+<p>Running MySQL + Pinecone + a graph database meant:</p>
+
+<ul>
+  <li><strong>3x infrastructure complexity</strong> — More services to monitor, scale, and pay for</li>
+  <li><strong>Data synchronization overhead</strong> — Keeping vector embeddings in sync with source data</li>
+  <li><strong>Network latency</strong> — Cross-service queries add milliseconds</li>
+  <li><strong>Operational burden</strong> — Different backup strategies, different failure modes</li>
+</ul>
+
+<p>PostgreSQL with extensions gave us <strong>one database to rule them all</strong>.</p>
+
+<h3 id="13-our-starting-point">1.3 Our Starting Point</h3>
+
+<p>Before migration, our codebase analysis revealed:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Count</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MySQL-specific SQL</td>
+      <td>1 function</td>
+      <td>Required fix</td>
+    </tr>
+    <tr>
+      <td>JSON columns</td>
+      <td>45</td>
+      <td>Upgrade to JSONB</td>
+    </tr>
+    <tr>
+      <td>Check constraints</td>
+      <td>11</td>
+      <td>Already compatible</td>
+    </tr>
+    <tr>
+      <td>Raw SQL queries</td>
+      <td>15+</td>
+      <td>Already compatible</td>
+    </tr>
+    <tr>
+      <td>Configuration files</td>
+      <td>4</td>
+      <td>Required update</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>98% of our code was already database-agnostic.</strong> This wasn’t luck—it was intentional architecture.</p>
+
+<hr />
+
+<h2 id="2-the-database-agnostic-foundation">2. The Database-Agnostic Foundation</h2>
+
+<h3 id="21-why-database-agnostic-code-matters">2.1 Why Database-Agnostic Code Matters</h3>
+
+<p>Writing database-agnostic code isn’t about planning to switch databases. It’s about:</p>
+
+<ol>
+  <li><strong>Portability</strong> — Your code works on any database Rails supports</li>
+  <li><strong>Testability</strong> — SQLite in CI, PostgreSQL in production</li>
+  <li><strong>Maintainability</strong> — Standard patterns are easier to understand</li>
+  <li><strong>Future-proofing</strong> — Requirements change; your code adapts</li>
+</ol>
+
+<h3 id="22-the-rules-we-follow">2.2 The Rules We Follow</h3>
+
+<p>Our <code class="language-plaintext highlighter-rouge">AGENTS.md</code> (development guidelines) includes this rule:</p>
+
+<blockquote>
+  <p><strong>Rule #9: Database-agnostic queries.</strong>
+Use Arel and ActiveRecord abstractions instead of raw SQL or database-specific syntax. This ensures portability when migrating databases.</p>
+</blockquote>
+
+<h3 id="23-patterns-that-work-everywhere">2.3 Patterns That Work Everywhere</h3>
+
+<p><strong>✅ Use ActiveRecord Query Interface</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Good: Works on any database</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">status: :active</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"created_at &gt; ?"</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="nf">week</span><span class="p">.</span><span class="nf">ago</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">created_at: :desc</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>✅ Use Arel for Complex Queries</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Good: Database-agnostic date ranges</span>
+<span class="k">class</span> <span class="nc">CreditTransaction</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">scope</span> <span class="ss">:by_requested_dates</span><span class="p">,</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ranges</span> <span class="o">=</span> <span class="no">Array</span><span class="p">(</span><span class="n">dates</span><span class="p">).</span><span class="nf">filter_map</span> <span class="k">do</span> <span class="o">|</span><span class="n">date</span><span class="o">|</span>
+      <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">date</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_i</span><span class="p">)</span>
+      <span class="n">start_date</span> <span class="o">=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="p">.</span><span class="nf">local</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="nf">beginning_of_day</span>
+      <span class="n">end_date</span> <span class="o">=</span> <span class="n">start_date</span><span class="p">.</span><span class="nf">end_of_month</span><span class="p">.</span><span class="nf">end_of_day</span>
+      <span class="n">arel_table</span><span class="p">[</span><span class="ss">:created_at</span><span class="p">].</span><span class="nf">between</span><span class="p">(</span><span class="n">start_date</span><span class="o">..</span><span class="n">end_date</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">where</span><span class="p">(</span><span class="n">ranges</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="ss">:or</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>✅ Use Standard SQL Functions</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Good: LOWER, COALESCE, CASE work everywhere</span>
+<span class="n">scope</span> <span class="ss">:search</span><span class="p">,</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">term</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">where</span><span class="p">(</span><span class="s2">"LOWER(name) LIKE :term OR LOWER(email) LIKE :term"</span><span class="p">,</span>
+        <span class="ss">term: </span><span class="s2">"%</span><span class="si">#{</span><span class="n">term</span><span class="p">.</span><span class="nf">downcase</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># Good: COALESCE for fallbacks</span>
+<span class="n">order</span><span class="p">(</span><span class="no">Arel</span><span class="p">.</span><span class="nf">sql</span><span class="p">(</span><span class="s2">"COALESCE(last_message_at, created_at) DESC"</span><span class="p">))</span>
+
+<span class="c1"># Good: CASE for conditional ordering</span>
+<span class="n">order</span><span class="p">(</span><span class="no">Arel</span><span class="p">.</span><span class="nf">sql</span><span class="p">(</span><span class="s2">"CASE WHEN status = 'urgent' THEN 0 ELSE 1 END"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>✅ Process Dates in Ruby</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Good: Fetch timestamps, format in Ruby</span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">date_buckets_for</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">field</span><span class="p">:)</span>
+  <span class="n">pluck</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">filter_map</span> <span class="p">{</span> <span class="o">|</span><span class="n">timestamp</span><span class="o">|</span> <span class="n">timestamp</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="s2">"%Y-%m"</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">.</span><span class="nf">uniq</span>
+    <span class="p">.</span><span class="nf">first</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="24-patterns-to-avoid">2.4 Patterns to Avoid</h3>
+
+<p><strong>❌ MySQL-Specific Functions</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Bad: DATE_FORMAT is MySQL-only</span>
+<span class="n">month_sql</span> <span class="o">=</span> <span class="s2">"DATE_FORMAT(created_at, '%Y-%m')"</span>
+
+<span class="c1"># PostgreSQL equivalent: TO_CHAR(created_at, 'YYYY-MM')</span>
+<span class="c1"># Better: Process in Ruby (see above)</span>
+</code></pre></div></div>
+
+<p><strong>❌ Database-Specific Syntax</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Bad: MySQL's IFNULL</span>
+<span class="n">where</span><span class="p">(</span><span class="s2">"IFNULL(deleted_at, NOW()) &gt; ?"</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="nf">day</span><span class="p">.</span><span class="nf">ago</span><span class="p">)</span>
+
+<span class="c1"># Good: Standard COALESCE</span>
+<span class="n">where</span><span class="p">(</span><span class="s2">"COALESCE(deleted_at, CURRENT_TIMESTAMP) &gt; ?"</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="nf">day</span><span class="p">.</span><span class="nf">ago</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>❌ String Concatenation Operators</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Bad: MySQL uses CONCAT(), PostgreSQL uses ||</span>
+<span class="nb">select</span><span class="p">(</span><span class="s2">"CONCAT(first_name, ' ', last_name) AS full_name"</span><span class="p">)</span>
+
+<span class="c1"># Good: Use Ruby</span>
+<span class="k">def</span> <span class="nf">full_name</span>
+  <span class="s2">"</span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-the-migration-process">3. The Migration Process</h2>
+
+<h3 id="31-pre-migration-audit">3.1 Pre-Migration Audit</h3>
+
+<p>Before touching any configuration, we audited the entire codebase:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Find MySQL-specific SQL</span>
+<span class="nb">grep</span> <span class="nt">-r</span> <span class="s2">"DATE_FORMAT</span><span class="se">\|</span><span class="s2">GROUP_CONCAT</span><span class="se">\|</span><span class="s2">IFNULL</span><span class="se">\|</span><span class="s2">BINARY</span><span class="se">\s</span><span class="s2">"</span> app/
+
+<span class="c"># Find raw SQL that might be problematic</span>
+<span class="nb">grep</span> <span class="nt">-r</span> <span class="s2">"</span><span class="se">\.</span><span class="s2">where.*Arel</span><span class="se">\.</span><span class="s2">sql</span><span class="se">\|</span><span class="s2">execute</span><span class="se">\|</span><span class="s2">connection</span><span class="se">\.</span><span class="s2">"</span> app/
+
+<span class="c"># Check for MySQL gem references</span>
+<span class="nb">grep</span> <span class="nt">-r</span> <span class="s2">"mysql"</span> Gemfile config/
+</code></pre></div></div>
+
+<p><strong>Our findings:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Issue</th>
+      <th>Location</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DATE_FORMAT</code></td>
+      <td><code class="language-plaintext highlighter-rouge">app/models/access_request.rb</code></td>
+      <td>Rewrote using Ruby</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mysql2</code> gem</td>
+      <td><code class="language-plaintext highlighter-rouge">Gemfile</code></td>
+      <td>Replaced with <code class="language-plaintext highlighter-rouge">pg</code></td>
+    </tr>
+    <tr>
+      <td>MySQL config</td>
+      <td><code class="language-plaintext highlighter-rouge">config/database.yml</code></td>
+      <td>Rewrote for PostgreSQL</td>
+    </tr>
+    <tr>
+      <td>Docker MySQL</td>
+      <td><code class="language-plaintext highlighter-rouge">docker-compose.dev.yml</code></td>
+      <td>Replaced with PostgreSQL</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="32-the-critical-fix">3.2 The Critical Fix</h3>
+
+<p>The only code change required was in <code class="language-plaintext highlighter-rouge">access_request.rb</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: MySQL-specific</span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">date_buckets_for</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">field</span><span class="p">:)</span>
+  <span class="n">column</span> <span class="o">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">to_s</span>
+  <span class="n">qcol</span> <span class="o">=</span> <span class="n">connection</span><span class="p">.</span><span class="nf">quote_column_name</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+  <span class="n">month_sql</span> <span class="o">=</span> <span class="s2">"DATE_FORMAT(</span><span class="si">#{</span><span class="n">qcol</span><span class="si">}</span><span class="s2">, '%Y-%m')"</span>  <span class="c1"># ❌ MySQL-only</span>
+
+  <span class="n">for_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="no">Arel</span><span class="p">.</span><span class="nf">sql</span><span class="p">(</span><span class="n">month_sql</span><span class="p">))</span>
+    <span class="p">.</span><span class="nf">pluck</span><span class="p">(</span><span class="no">Arel</span><span class="p">.</span><span class="nf">sql</span><span class="p">(</span><span class="n">month_sql</span><span class="p">))</span>
+<span class="k">end</span>
+
+<span class="c1"># After: Database-agnostic Ruby</span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">date_buckets_for</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">field</span><span class="p">:)</span>
+  <span class="n">column</span> <span class="o">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">to_s</span>
+  <span class="k">return</span> <span class="p">[]</span> <span class="k">unless</span> <span class="no">DATE_BUCKET_FIELDS</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+  <span class="n">for_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">where</span><span class="p">.</span><span class="nf">not</span><span class="p">(</span><span class="n">column</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="n">column</span> <span class="o">=&gt;</span> <span class="ss">:desc</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">pluck</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">filter_map</span> <span class="p">{</span> <span class="o">|</span><span class="n">timestamp</span><span class="o">|</span> <span class="n">timestamp</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="s2">"%Y-%m"</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">.</span><span class="nf">uniq</span>
+    <span class="p">.</span><span class="nf">first</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">filter_map</span> <span class="k">do</span> <span class="o">|</span><span class="n">month</span><span class="o">|</span>
+      <span class="n">start_at</span> <span class="o">=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">month</span><span class="si">}</span><span class="s2">-01"</span><span class="p">)</span>
+      <span class="k">next</span> <span class="k">unless</span> <span class="n">start_at</span>
+
+      <span class="p">{</span>
+        <span class="ss">id: </span><span class="n">month</span><span class="p">,</span>
+        <span class="ss">name: </span><span class="n">start_at</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="s2">"%B %Y"</span><span class="p">),</span>
+        <span class="ss">from: </span><span class="n">start_at</span><span class="p">.</span><span class="nf">beginning_of_month</span><span class="p">.</span><span class="nf">beginning_of_day</span><span class="p">.</span><span class="nf">iso8601</span><span class="p">,</span>
+        <span class="ss">to: </span><span class="n">start_at</span><span class="p">.</span><span class="nf">end_of_month</span><span class="p">.</span><span class="nf">end_of_day</span><span class="p">.</span><span class="nf">iso8601</span>
+      <span class="p">}</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="33-configuration-changes">3.3 Configuration Changes</h3>
+
+<p><strong>Gemfile:</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Remove</span>
+<span class="n">gem</span> <span class="s1">'mysql2'</span><span class="p">,</span> <span class="s1">'~&gt; 0.5.6'</span>
+
+<span class="c1"># Add</span>
+<span class="n">gem</span> <span class="s1">'pg'</span><span class="p">,</span> <span class="s1">'~&gt; 1.5'</span>
+</code></pre></div></div>
+
+<p><strong>config/database.yml:</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">default</span><span class="pi">:</span> <span class="nl">&amp;default</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">unicode</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("RAILS_MAX_THREADS", 5) %&gt;</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("POSTGRES_USER", "postgres") %&gt;</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("POSTGRES_PASSWORD", "") %&gt;</span>
+  <span class="na">host</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("POSTGRES_HOST", "127.0.0.1") %&gt;</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("POSTGRES_PORT", 5432) %&gt;</span>
+
+<span class="na">development</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">wigiwork_development</span>
+
+<span class="na">test</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">wigiwork_test</span>
+
+<span class="na">production</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV["POSTGRES_DB"] %&gt;</span>
+</code></pre></div></div>
+
+<p><strong>docker-compose.dev.yml:</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">postgres</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:16</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">POSTGRES_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
+      <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">wigiwork_development</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5433:5432"</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD-SHELL"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">postgres"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">5s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">5s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">20</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">postgres_data:/var/lib/postgresql/data</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">postgres_data</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h3 id="34-json-to-jsonb-migration">3.4 JSON to JSONB Migration</h3>
+
+<p>MySQL’s <code class="language-plaintext highlighter-rouge">JSON</code> type works, but PostgreSQL’s <code class="language-plaintext highlighter-rouge">JSONB</code> is superior:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In migration files, change:</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">json</span> <span class="ss">:metadata</span>
+
+<span class="c1"># To:</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">jsonb</span> <span class="ss">:metadata</span><span class="p">,</span> <span class="ss">default: </span><span class="p">{}</span>
+</code></pre></div></div>
+
+<p><strong>Why JSONB?</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>JSON</th>
+      <th>JSONB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Storage</td>
+      <td>Text (parsed each query)</td>
+      <td>Binary (pre-parsed)</td>
+    </tr>
+    <tr>
+      <td>Indexing</td>
+      <td>❌ Not supported</td>
+      <td>✅ GIN indexes</td>
+    </tr>
+    <tr>
+      <td>Operators</td>
+      <td>Basic</td>
+      <td>Rich (<code class="language-plaintext highlighter-rouge">@&gt;</code>, <code class="language-plaintext highlighter-rouge">?</code>, <code class="language-plaintext highlighter-rouge">?|</code>, <code class="language-plaintext highlighter-rouge">?&amp;</code>)</td>
+    </tr>
+    <tr>
+      <td>Query speed</td>
+      <td>Slower</td>
+      <td>Faster</td>
+    </tr>
+    <tr>
+      <td>Write speed</td>
+      <td>Faster</td>
+      <td>Slightly slower</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>JSONB Query Examples:</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Find profiles with specific skill in JSONB array</span>
+<span class="no">Profile</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"skills @&gt; ?"</span><span class="p">,</span> <span class="p">[</span><span class="s1">'ruby'</span><span class="p">].</span><span class="nf">to_json</span><span class="p">)</span>
+
+<span class="c1"># Find users with specific setting</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"settings -&gt; 'notifications' -&gt;&gt; 'email' = ?"</span><span class="p">,</span> <span class="s1">'true'</span><span class="p">)</span>
+
+<span class="c1"># Check if key exists</span>
+<span class="no">Product</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"metadata ? 'featured'"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="35-running-the-migration">3.5 Running the Migration</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Update gems</span>
+bundle <span class="nb">install</span>
+
+<span class="c"># 2. Create databases</span>
+rails db:create
+
+<span class="c"># 3. Run migrations</span>
+rails db:migrate
+
+<span class="c"># 4. Verify schema</span>
+rails db:schema:dump
+
+<span class="c"># 5. Run test suite</span>
+bundle <span class="nb">exec </span>rspec
+
+<span class="c"># 6. Seed development data</span>
+rails db:seed
+</code></pre></div></div>
+
+<p><strong>Total downtime: Zero</strong> (for development). Production required a maintenance window for data migration.</p>
+
+<hr />
+
+<h2 id="4-postgresql-vs-mysql-a-technical-comparison">4. PostgreSQL vs MySQL: A Technical Comparison</h2>
+
+<h3 id="41-feature-comparison">4.1 Feature Comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>MySQL</th>
+      <th>PostgreSQL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>JSON Support</strong></td>
+      <td>JSON type, basic functions</td>
+      <td>JSONB with GIN indexes, rich operators</td>
+    </tr>
+    <tr>
+      <td><strong>Full-Text Search</strong></td>
+      <td>FULLTEXT indexes</td>
+      <td>tsvector/tsquery, ranking, dictionaries</td>
+    </tr>
+    <tr>
+      <td><strong>Geospatial</strong></td>
+      <td>Basic spatial</td>
+      <td>PostGIS (industry standard)</td>
+    </tr>
+    <tr>
+      <td><strong>Vector Search</strong></td>
+      <td>❌ None</td>
+      <td>pgvector extension</td>
+    </tr>
+    <tr>
+      <td><strong>Graph Queries</strong></td>
+      <td>❌ None</td>
+      <td>pgRouting, Apache AGE</td>
+    </tr>
+    <tr>
+      <td><strong>Arrays</strong></td>
+      <td>❌ None</td>
+      <td>Native array types with operators</td>
+    </tr>
+    <tr>
+      <td><strong>Range Types</strong></td>
+      <td>❌ None</td>
+      <td>int4range, daterange, etc.</td>
+    </tr>
+    <tr>
+      <td><strong>Check Constraints</strong></td>
+      <td>✅ Supported</td>
+      <td>✅ Supported</td>
+    </tr>
+    <tr>
+      <td><strong>Partial Indexes</strong></td>
+      <td>❌ None</td>
+      <td>✅ Supported</td>
+    </tr>
+    <tr>
+      <td><strong>Expression Indexes</strong></td>
+      <td>❌ Limited</td>
+      <td>✅ Full support</td>
+    </tr>
+    <tr>
+      <td><strong>CTEs (WITH queries)</strong></td>
+      <td>✅ Basic</td>
+      <td>✅ Recursive, materialized</td>
+    </tr>
+    <tr>
+      <td><strong>Window Functions</strong></td>
+      <td>✅ Supported</td>
+      <td>✅ More advanced</td>
+    </tr>
+    <tr>
+      <td><strong>UPSERT</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">ON DUPLICATE KEY</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ON CONFLICT</code> (more flexible)</td>
+    </tr>
+    <tr>
+      <td><strong>Transactions</strong></td>
+      <td>✅ InnoDB</td>
+      <td>✅ MVCC</td>
+    </tr>
+    <tr>
+      <td><strong>Replication</strong></td>
+      <td>✅ Built-in</td>
+      <td>✅ Streaming, logical</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42-performance-characteristics">4.2 Performance Characteristics</h3>
+
+<p><strong>MySQL Strengths:</strong></p>
+<ul>
+  <li>Simple read-heavy workloads</li>
+  <li>Large-scale web applications with basic queries</li>
+  <li>When you need maximum reads/second on simple queries</li>
+</ul>
+
+<p><strong>PostgreSQL Strengths:</strong></p>
+<ul>
+  <li>Complex queries with many joins</li>
+  <li>Write-heavy workloads (better MVCC)</li>
+  <li>Data integrity (stricter by default)</li>
+  <li>Advanced data types and indexing</li>
+</ul>
+
+<h3 id="43-why-postgresql-won-for-us">4.3 Why PostgreSQL Won for Us</h3>
+
+<p><strong>1. One Database for Everything</strong></p>
+
+<p>Instead of:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MySQL (primary data)
+  + Pinecone (vector search)
+  + Neo4j (graph queries)
+  + Elasticsearch (full-text)
+</code></pre></div></div>
+
+<p>We have:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PostgreSQL
+  + pgvector (vector search)
+  + pgRouting (graph queries)
+  + Built-in full-text search
+</code></pre></div></div>
+
+<p><strong>2. Better Data Integrity</strong></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- PostgreSQL: Strict by default</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">users</span> <span class="p">(</span><span class="n">email</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'not-an-email'</span><span class="p">);</span>
+<span class="c1">-- ERROR: violates check constraint</span>
+
+<span class="c1">-- MySQL: Often silently truncates or converts</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">users</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'this string is way too long for the column'</span><span class="p">);</span>
+<span class="c1">-- Silently truncated (depending on sql_mode)</span>
+</code></pre></div></div>
+
+<p><strong>3. Superior Indexing</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Partial index: Only index active users</span>
+<span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">where: </span><span class="s2">"status = 'active'"</span>
+
+<span class="c1"># Expression index: Index lowercased emails</span>
+<span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="s2">"LOWER(email)"</span>
+
+<span class="c1"># GIN index on JSONB for fast JSON queries</span>
+<span class="n">add_index</span> <span class="ss">:profiles</span><span class="p">,</span> <span class="ss">:skills</span><span class="p">,</span> <span class="ss">using: :gin</span>
+</code></pre></div></div>
+
+<p><strong>4. Native Array Support</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># PostgreSQL array columns</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:tags</span><span class="p">,</span> <span class="ss">array: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">default: </span><span class="p">[]</span>
+
+<span class="c1"># Query arrays</span>
+<span class="no">Profile</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"'ruby' = ANY(tags)"</span><span class="p">)</span>
+<span class="no">Profile</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"tags @&gt; ARRAY[?]"</span><span class="p">,</span> <span class="p">[</span><span class="s1">'ruby'</span><span class="p">,</span> <span class="s1">'rails'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-advanced-postgresql-features">5. Advanced PostgreSQL Features</h2>
+
+<h3 id="51-pgvector-ai-vector-embeddings">5.1 pgvector: AI Vector Embeddings</h3>
+
+<p>Store and query vector embeddings directly in PostgreSQL:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Enable extension</span>
+<span class="k">class</span> <span class="nc">EnablePgvector</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">8.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">enable_extension</span> <span class="s1">'vector'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Add vector column</span>
+<span class="k">class</span> <span class="nc">AddEmbeddingToProfiles</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">8.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:profiles</span><span class="p">,</span> <span class="ss">:embedding</span><span class="p">,</span> <span class="ss">:vector</span><span class="p">,</span> <span class="ss">limit: </span><span class="mi">1536</span>  <span class="c1"># OpenAI dimension</span>
+    <span class="n">add_index</span> <span class="ss">:profiles</span><span class="p">,</span> <span class="ss">:embedding</span><span class="p">,</span> <span class="ss">using: :ivfflat</span><span class="p">,</span> <span class="ss">opclass: :vector_cosine_ops</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/profile.rb</span>
+<span class="k">class</span> <span class="nc">Profile</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">similar_to</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="ss">limit: </span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">where</span><span class="p">.</span><span class="nf">not</span><span class="p">(</span><span class="ss">embedding: </span><span class="kp">nil</span><span class="p">)</span>
+      <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="no">Arel</span><span class="p">.</span><span class="nf">sql</span><span class="p">(</span><span class="s2">"embedding &lt;=&gt; '</span><span class="si">#{</span><span class="n">embedding</span><span class="si">}</span><span class="s2">'"</span><span class="p">))</span>
+      <span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Usage</span>
+<span class="n">similar_profiles</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">similar_to</span><span class="p">(</span><span class="n">openai_embedding</span><span class="p">,</span> <span class="ss">limit: </span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="52-postgis-geospatial-queries">5.2 PostGIS: Geospatial Queries</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Enable extension</span>
+<span class="n">enable_extension</span> <span class="s1">'postgis'</span>
+
+<span class="c1"># Add geography column</span>
+<span class="n">add_column</span> <span class="ss">:locations</span><span class="p">,</span> <span class="ss">:coordinates</span><span class="p">,</span> <span class="ss">:st_point</span><span class="p">,</span> <span class="ss">geographic: </span><span class="kp">true</span>
+<span class="n">add_index</span> <span class="ss">:locations</span><span class="p">,</span> <span class="ss">:coordinates</span><span class="p">,</span> <span class="ss">using: :gist</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Find locations within 10km</span>
+<span class="no">Location</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span>
+  <span class="s2">"ST_DWithin(coordinates, ST_MakePoint(?, ?)::geography, ?)"</span><span class="p">,</span>
+  <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="mi">10_000</span>  <span class="c1"># meters</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="53-pgrouting-graph-algorithms">5.3 pgRouting: Graph Algorithms</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Find shortest path between locations</span>
+<span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+  SELECT * FROM pgr_dijkstra(
+    'SELECT id, source, target, cost FROM edges',
+    </span><span class="si">#{</span><span class="n">start_node</span><span class="si">}</span><span class="sh">,
+    </span><span class="si">#{</span><span class="n">end_node</span><span class="si">}</span><span class="sh">,
+    directed := true
+  )
+</span><span class="no">SQL</span>
+</code></pre></div></div>
+
+<h3 id="54-full-text-search">5.4 Full-Text Search</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Add tsvector column</span>
+<span class="n">add_column</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:searchable</span><span class="p">,</span> <span class="ss">:tsvector</span>
+<span class="n">add_index</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:searchable</span><span class="p">,</span> <span class="ss">using: :gin</span>
+
+<span class="c1"># Keep it updated with a trigger</span>
+<span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+  CREATE TRIGGER articles_searchable_update
+  BEFORE INSERT OR UPDATE ON articles
+  FOR EACH ROW EXECUTE FUNCTION
+  tsvector_update_trigger(searchable, 'pg_catalog.english', title, body);
+</span><span class="no">SQL</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Search with ranking</span>
+<span class="no">Article</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"searchable @@ plainto_tsquery('english', ?)"</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+       <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="no">Arel</span><span class="p">.</span><span class="nf">sql</span><span class="p">(</span><span class="s2">"ts_rank(searchable, plainto_tsquery('english', '</span><span class="si">#{</span><span class="n">query</span><span class="si">}</span><span class="s2">')) DESC"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-multi-schema-architecture">6. Multi-Schema Architecture</h2>
+
+<h3 id="61-what-are-postgresql-schemas">6.1 What Are PostgreSQL Schemas?</h3>
+
+<p>PostgreSQL schemas are <strong>namespaces within a single database</strong>. Think of them as folders for your tables:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>database: wigiwork_production
+├── public (default schema)
+│   ├── users
+│   ├── profiles
+│   └── companies
+├── analytics
+│   ├── events
+│   ├── page_views
+│   └── conversions
+├── audit
+│   ├── user_actions
+│   └── api_requests
+└── cache
+    ├── cached_profiles
+    └── cached_searches
+</code></pre></div></div>
+
+<h3 id="62-benefits-of-multi-schema-architecture">6.2 Benefits of Multi-Schema Architecture</h3>
+
+<p><strong>1. Logical Separation Without Multiple Databases</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># One connection pool, multiple schemas</span>
+<span class="k">class</span> <span class="nc">AnalyticsEvent</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">table_name</span> <span class="o">=</span> <span class="s1">'analytics.events'</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">AuditLog</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">table_name</span> <span class="o">=</span> <span class="s1">'audit.user_actions'</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>2. Different Permissions Per Schema</strong></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Analytics team can only access analytics schema</span>
+<span class="k">GRANT</span> <span class="k">USAGE</span> <span class="k">ON</span> <span class="k">SCHEMA</span> <span class="n">analytics</span> <span class="k">TO</span> <span class="n">analytics_role</span><span class="p">;</span>
+<span class="k">GRANT</span> <span class="k">SELECT</span> <span class="k">ON</span> <span class="k">ALL</span> <span class="n">TABLES</span> <span class="k">IN</span> <span class="k">SCHEMA</span> <span class="n">analytics</span> <span class="k">TO</span> <span class="n">analytics_role</span><span class="p">;</span>
+
+<span class="c1">-- No access to public schema</span>
+<span class="k">REVOKE</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="k">SCHEMA</span> <span class="k">public</span> <span class="k">FROM</span> <span class="n">analytics_role</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>3. Simplified Backup Strategies</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Backup only the audit schema</span>
+pg_dump <span class="nt">-n</span> audit wigiwork_production <span class="o">&gt;</span> audit_backup.sql
+
+<span class="c"># Backup everything except cache</span>
+pg_dump <span class="nt">-N</span> cache wigiwork_production <span class="o">&gt;</span> production_backup.sql
+</code></pre></div></div>
+
+<p><strong>4. Schema-Level Maintenance</strong></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Truncate all cache tables without affecting production</span>
+<span class="k">TRUNCATE</span> <span class="k">TABLE</span> <span class="k">cache</span><span class="p">.</span><span class="n">cached_profiles</span><span class="p">,</span> <span class="k">cache</span><span class="p">.</span><span class="n">cached_searches</span><span class="p">;</span>
+
+<span class="c1">-- Drop and recreate analytics schema</span>
+<span class="k">DROP</span> <span class="k">SCHEMA</span> <span class="n">analytics</span> <span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">SCHEMA</span> <span class="n">analytics</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="63-setting-up-multi-schema-in-rails">6.3 Setting Up Multi-Schema in Rails</h3>
+
+<p><strong>Migration to create schemas:</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateAnalyticsSchema</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">8.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">up</span>
+    <span class="n">execute</span> <span class="s2">"CREATE SCHEMA IF NOT EXISTS analytics"</span>
+    <span class="n">execute</span> <span class="s2">"CREATE SCHEMA IF NOT EXISTS audit"</span>
+    <span class="n">execute</span> <span class="s2">"CREATE SCHEMA IF NOT EXISTS cache"</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">down</span>
+    <span class="n">execute</span> <span class="s2">"DROP SCHEMA IF EXISTS cache CASCADE"</span>
+    <span class="n">execute</span> <span class="s2">"DROP SCHEMA IF EXISTS audit CASCADE"</span>
+    <span class="n">execute</span> <span class="s2">"DROP SCHEMA IF EXISTS analytics CASCADE"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Models with schema prefixes:</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/analytics/event.rb</span>
+<span class="k">module</span> <span class="nn">Analytics</span>
+  <span class="k">class</span> <span class="nc">Event</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">table_name</span> <span class="o">=</span> <span class="s1">'analytics.events'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/audit/user_action.rb</span>
+<span class="k">module</span> <span class="nn">Audit</span>
+  <span class="k">class</span> <span class="nc">UserAction</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">table_name</span> <span class="o">=</span> <span class="s1">'audit.user_actions'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Cross-schema queries work seamlessly:</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Join across schemas</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="s2">"JOIN audit.user_actions ON audit.user_actions.user_id = users.id"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"audit.user_actions.action = ?"</span><span class="p">,</span> <span class="s2">"login"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="64-schemas-vs-multiple-databases">6.4 Schemas vs. Multiple Databases</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Multiple Databases</th>
+      <th>Multiple Schemas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Connection pools</strong></td>
+      <td>Separate per DB</td>
+      <td>Shared</td>
+    </tr>
+    <tr>
+      <td><strong>Cross-queries</strong></td>
+      <td>Complex/impossible</td>
+      <td>Native JOINs</td>
+    </tr>
+    <tr>
+      <td><strong>Transactions</strong></td>
+      <td>Distributed (2PC)</td>
+      <td>Single transaction</td>
+    </tr>
+    <tr>
+      <td><strong>Backups</strong></td>
+      <td>Per database</td>
+      <td>Per schema or together</td>
+    </tr>
+    <tr>
+      <td><strong>Permissions</strong></td>
+      <td>Database-level</td>
+      <td>Schema-level (granular)</td>
+    </tr>
+    <tr>
+      <td><strong>Migrations</strong></td>
+      <td>Separate per DB</td>
+      <td>Single migration</td>
+    </tr>
+    <tr>
+      <td><strong>Complexity</strong></td>
+      <td>Higher</td>
+      <td>Lower</td>
+    </tr>
+    <tr>
+      <td><strong>Rails support</strong></td>
+      <td>Multiple configs</td>
+      <td>Single config</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Our recommendation:</strong> Use schemas for logical separation within the same application. Use separate databases only for truly isolated services or multi-tenant SaaS.</p>
+
+<h3 id="65-when-to-use-each-pattern">6.5 When to Use Each Pattern</h3>
+
+<p><strong>Use Multiple Schemas When:</strong></p>
+<ul>
+  <li>Separating concerns (analytics, audit, cache)</li>
+  <li>Different retention policies per data type</li>
+  <li>Granular permission control needed</li>
+  <li>Data is related and needs cross-queries</li>
+</ul>
+
+<p><strong>Use Multiple Databases When:</strong></p>
+<ul>
+  <li>Complete data isolation required (multi-tenant)</li>
+  <li>Different scaling requirements</li>
+  <li>Regulatory compliance requires separation</li>
+  <li>Microservices with independent lifecycles</li>
+</ul>
+
+<hr />
+
+<h2 id="7-migration-tips-and-lessons-learned">7. Migration Tips and Lessons Learned</h2>
+
+<h3 id="71-before-you-start">7.1 Before You Start</h3>
+
+<p><strong>1. Audit your codebase thoroughly</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Find all raw SQL</span>
+<span class="nb">grep</span> <span class="nt">-rn</span> <span class="s2">"execute</span><span class="se">\|\.</span><span class="s2">sql</span><span class="se">\|</span><span class="s2">Arel</span><span class="se">\.</span><span class="s2">sql"</span> app/ <span class="nt">--include</span><span class="o">=</span><span class="s2">"*.rb"</span>
+
+<span class="c"># Find MySQL-specific functions</span>
+<span class="nb">grep</span> <span class="nt">-rn</span> <span class="s2">"DATE_FORMAT</span><span class="se">\|</span><span class="s2">IFNULL</span><span class="se">\|</span><span class="s2">GROUP_CONCAT</span><span class="se">\|</span><span class="s2">BINARY</span><span class="se">\|</span><span class="s2">STRAIGHT_JOIN"</span> app/
+
+<span class="c"># Check gems for MySQL dependencies</span>
+bundle <span class="nb">exec </span>gem dependency mysql2
+</code></pre></div></div>
+
+<p><strong>2. Run tests on PostgreSQL locally first</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/database.yml for CI</span>
+<span class="na">test</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">myapp_test</span>
+</code></pre></div></div>
+
+<p><strong>3. Document all discrepancies</strong></p>
+
+<p>Create a migration checklist (like our <code class="language-plaintext highlighter-rouge">mysql_to_postgresql.md</code>) tracking every issue found.</p>
+
+<h3 id="72-data-migration-strategies">7.2 Data Migration Strategies</h3>
+
+<p><strong>Option A: Fresh Start (Recommended for Development)</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># On PostgreSQL</span>
+rails db:create db:migrate db:seed
+</code></pre></div></div>
+
+<p><strong>Option B: pgloader (For Production Data)</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install pgloader</span>
+brew <span class="nb">install </span>pgloader  <span class="c"># or apt-get</span>
+
+<span class="c"># Create migration script</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> migrate.load <span class="o">&lt;&lt;</span> <span class="sh">'</span><span class="no">EOF</span><span class="sh">'
+LOAD DATABASE
+  FROM mysql://root:password@localhost/myapp_production
+  INTO postgresql://postgres@localhost/myapp_production
+
+WITH include drop, create tables, create indexes, reset sequences
+
+SET work_mem to '16MB', maintenance_work_mem to '512 MB'
+
+CAST type datetime to timestamptz using zero-dates-to-null,
+     type date to date using zero-dates-to-null
+
+ALTER SCHEMA 'myapp_production' RENAME TO 'public';
+</span><span class="no">EOF
+
+</span><span class="c"># Run migration</span>
+pgloader migrate.load
+</code></pre></div></div>
+
+<p><strong>Option C: Rails-Native Export/Import</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Export from MySQL</span>
+<span class="n">namespace</span> <span class="ss">:export</span> <span class="k">do</span>
+  <span class="n">task</span> <span class="ss">users: :environment</span> <span class="k">do</span>
+    <span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="s1">'users.json'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+      <span class="no">User</span><span class="p">.</span><span class="nf">find_each</span> <span class="p">{</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span> <span class="n">f</span><span class="p">.</span><span class="nf">puts</span> <span class="n">u</span><span class="p">.</span><span class="nf">to_json</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Import to PostgreSQL</span>
+<span class="n">namespace</span> <span class="ss">:import</span> <span class="k">do</span>
+  <span class="n">task</span> <span class="ss">users: :environment</span> <span class="k">do</span>
+    <span class="no">File</span><span class="p">.</span><span class="nf">readlines</span><span class="p">(</span><span class="s1">'users.json'</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+      <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="73-common-gotchas">7.3 Common Gotchas</h3>
+
+<p><strong>1. Auto-increment vs. SERIAL</strong></p>
+
+<p>MySQL uses <code class="language-plaintext highlighter-rouge">AUTO_INCREMENT</code>, PostgreSQL uses <code class="language-plaintext highlighter-rouge">SERIAL</code> or <code class="language-plaintext highlighter-rouge">IDENTITY</code>. Rails handles this automatically, but check sequences after migration:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Fix sequence if IDs are out of sync</span>
+<span class="k">SELECT</span> <span class="n">setval</span><span class="p">(</span><span class="s1">'users_id_seq'</span><span class="p">,</span> <span class="p">(</span><span class="k">SELECT</span> <span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">users</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p><strong>2. Boolean Handling</strong></p>
+
+<p>MySQL often stores booleans as <code class="language-plaintext highlighter-rouge">TINYINT(1)</code>. PostgreSQL uses native <code class="language-plaintext highlighter-rouge">BOOLEAN</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># May need explicit casting in raw SQL</span>
+<span class="n">where</span><span class="p">(</span><span class="s2">"active = true"</span><span class="p">)</span>  <span class="c1"># PostgreSQL</span>
+<span class="n">where</span><span class="p">(</span><span class="s2">"active = 1"</span><span class="p">)</span>     <span class="c1"># MySQL</span>
+</code></pre></div></div>
+
+<p><strong>3. Case Sensitivity</strong></p>
+
+<p>PostgreSQL string comparisons are case-sensitive by default:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># MySQL: case-insensitive by default</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'Test@Example.com'</span><span class="p">)</span>  <span class="c1"># Finds test@example.com</span>
+
+<span class="c1"># PostgreSQL: case-sensitive</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"LOWER(email) = LOWER(?)"</span><span class="p">,</span> <span class="s1">'Test@Example.com'</span><span class="p">)</span>
+<span class="c1"># Or use citext extension for case-insensitive columns</span>
+</code></pre></div></div>
+
+<p><strong>4. Group By Strictness</strong></p>
+
+<p>PostgreSQL requires all non-aggregated columns in GROUP BY:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># MySQL: Allows this (picks arbitrary value)</span>
+<span class="nb">select</span><span class="p">(</span><span class="s2">"users.*, COUNT(orders.id)"</span><span class="p">)</span>
+  <span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:orders</span><span class="p">)</span>
+  <span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="s2">"users.id"</span><span class="p">)</span>
+
+<span class="c1"># PostgreSQL: Must include all selected columns</span>
+<span class="nb">select</span><span class="p">(</span><span class="s2">"users.id, users.email, COUNT(orders.id)"</span><span class="p">)</span>
+  <span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:orders</span><span class="p">)</span>
+  <span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="s2">"users.id, users.email"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="74-post-migration-checklist">7.4 Post-Migration Checklist</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Verify all tests pass</span>
+bundle <span class="nb">exec </span>rspec
+
+<span class="c"># 2. Check for deprecation warnings</span>
+<span class="nv">RAILS_ENV</span><span class="o">=</span><span class="nb">test </span>rails runner <span class="s2">"puts ActiveRecord::Base.connection.adapter_name"</span>
+
+<span class="c"># 3. Regenerate schema</span>
+rails db:schema:dump
+
+<span class="c"># 4. Verify schema.rb has PostgreSQL syntax</span>
+<span class="nb">grep</span> <span class="s2">"create_table"</span> db/schema.rb | <span class="nb">head</span>
+
+<span class="c"># 5. Run security scan</span>
+bundle <span class="nb">exec </span>brakeman <span class="nt">-q</span> <span class="nt">-w2</span>
+
+<span class="c"># 6. Regenerate API documentation</span>
+bundle <span class="nb">exec </span>rails rswag:specs:swaggerize
+
+<span class="c"># 7. Performance baseline</span>
+rails runner <span class="s2">"Benchmark.measure { User.count }"</span>
+</code></pre></div></div>
+
+<h3 id="75-lessons-we-learned">7.5 Lessons We Learned</h3>
+
+<p><strong>1. Write database-agnostic code from day one</strong></p>
+
+<p>The single MySQL-specific function we had took 30 minutes to rewrite. If we’d had dozens, it would have been a multi-day effort.</p>
+
+<p><strong>2. Use JSONB defaults in migrations</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Always specify defaults for JSONB</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">jsonb</span> <span class="ss">:settings</span><span class="p">,</span> <span class="ss">default: </span><span class="p">{}</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">jsonb</span> <span class="ss">:tags</span><span class="p">,</span> <span class="ss">default: </span><span class="p">[]</span>
+</code></pre></div></div>
+
+<p><strong>3. Leverage PostgreSQL-specific features gradually</strong></p>
+
+<p>Don’t rewrite everything immediately. Start with:</p>
+<ul>
+  <li>JSONB for new features</li>
+  <li>Partial indexes for performance</li>
+  <li>Full-text search when needed</li>
+</ul>
+
+<p><strong>4. Monitor query performance post-migration</strong></p>
+
+<p>PostgreSQL’s query planner is different. Some queries may need new indexes:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Add explain logging in development</span>
+<span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">status: :active</span><span class="p">).</span><span class="nf">explain</span>
+</code></pre></div></div>
+
+<p><strong>5. Document your extensions</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/migrate/001_enable_extensions.rb</span>
+<span class="k">class</span> <span class="nc">EnableExtensions</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">8.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="c1"># Core extensions we use</span>
+    <span class="n">enable_extension</span> <span class="s1">'pgcrypto'</span>  <span class="c1"># UUID generation</span>
+    <span class="n">enable_extension</span> <span class="s1">'citext'</span>    <span class="c1"># Case-insensitive text</span>
+
+    <span class="c1"># Feature-specific (enable when needed)</span>
+    <span class="c1"># enable_extension 'vector'   # AI embeddings</span>
+    <span class="c1"># enable_extension 'postgis'  # Geospatial</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Migrating from MySQL to PostgreSQL doesn’t have to be painful. With database-agnostic code patterns and a systematic approach, our migration required:</p>
+
+<ul>
+  <li><strong>1 code fix</strong> (DATE_FORMAT → Ruby)</li>
+  <li><strong>4 configuration file updates</strong></li>
+  <li><strong>0 model changes</strong> (beyond JSON → JSONB)</li>
+  <li><strong>0 downtime</strong> (for development)</li>
+</ul>
+
+<p>The benefits far outweigh the effort:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Before (MySQL + Services)</th>
+      <th>After (PostgreSQL)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3+ external services</td>
+      <td>1 database</td>
+    </tr>
+    <tr>
+      <td>Multiple connection pools</td>
+      <td>Single pool</td>
+    </tr>
+    <tr>
+      <td>Cross-service latency</td>
+      <td>Native queries</td>
+    </tr>
+    <tr>
+      <td>Complex sync logic</td>
+      <td>Referential integrity</td>
+    </tr>
+    <tr>
+      <td>Higher infrastructure cost</td>
+      <td>Lower cost</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>PostgreSQL isn’t just a MySQL replacement—it’s a <strong>platform for building sophisticated applications</strong>. With extensions like pgvector, PostGIS, and pgRouting, you can consolidate your entire data layer into a single, powerful database.</p>
+
+<h3 id="key-takeaways">Key Takeaways</h3>
+
+<ol>
+  <li><strong>Write database-agnostic code</strong> — Use ActiveRecord/Arel, avoid raw SQL functions</li>
+  <li><strong>Audit before migrating</strong> — Find MySQL-specific code early</li>
+  <li><strong>Use JSONB over JSON</strong> — Better indexing, better queries</li>
+  <li><strong>Consider schemas over databases</strong> — Simpler architecture, better performance</li>
+  <li><strong>Leverage PostgreSQL features</strong> — Partial indexes, arrays, full-text search</li>
+  <li><strong>Plan for extensions</strong> — pgvector, PostGIS, pgRouting when needed</li>
+  <li><strong>Test thoroughly</strong> — Run your full suite on PostgreSQL before production</li>
+</ol>
+
+<p>The best database is the one that grows with your needs. PostgreSQL does exactly that.</p>
+
+<hr />
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><strong>PostgreSQL Official Docs</strong>: <a href="https://www.postgresql.org/docs/">postgresql.org/docs</a></li>
+  <li><strong>pgvector Extension</strong>: <a href="https://github.com/pgvector/pgvector">github.com/pgvector/pgvector</a></li>
+  <li><strong>PostGIS Documentation</strong>: <a href="https://postgis.net/docs/">postgis.net/docs</a></li>
+  <li><strong>pgRouting Documentation</strong>: <a href="https://pgrouting.org/">pgrouting.org</a></li>
+  <li><strong>Rails PostgreSQL Guide</strong>: <a href="https://guides.rubyonrails.org/active_record_postgresql.html">guides.rubyonrails.org/active_record_postgresql.html</a></li>
+  <li><strong>pgloader</strong>: <a href="https://pgloader.io/">pgloader.io</a></li>
+</ul>
+
+<hr />
+
+<p><em>This post documents our migration of the Wigiwork API from MySQL to PostgreSQL. The patterns described here enabled a migration with minimal code changes and zero regressions—proving that investment in database-agnostic code pays dividends when requirements evolve.</em></p>
+
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
