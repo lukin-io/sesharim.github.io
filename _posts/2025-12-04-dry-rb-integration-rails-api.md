@@ -3,14 +3,14 @@ layout: post
 title: "From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API"
 date: 2025-12-04
 author: Max Lukin
-tags: [rails, dry-rb, functional-programming, refactoring, types, validation, architecture]
+tags: [rails, dry-rb, functional-programming, refactoring, types, validation, architecture, events]
 categories: [engineering, rails, best-practices, refactoring]
-description: "A practical guide to integrating dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, and dry-container improve maintainability, testability, and code clarity."
+description: "A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity."
 ---
 
 > _"The best code isn't clever—it's obvious. dry-rb makes Rails code obvious."_
 
-Every Rails developer has written code that works but feels wrong. Manual type coercion scattered across controllers. Validation logic duplicated between models and services. Deeply nested conditionals handling success and failure cases. These patterns work, but they accumulate into technical debt.
+Every Rails developer has written code that works but feels wrong. Manual type coercion scattered across controllers. Validation logic duplicated between models and services. Deeply nested conditionals handling success and failure cases. Configuration constants scattered across files. Side effects mixed with business logic. These patterns work, but they accumulate into technical debt.
 
 After shipping dozens of API endpoints, we integrated **dry-rb** into our Rails API. This post documents the transformation—with real before/after examples showing how each gem improves specific code patterns.
 
@@ -25,9 +25,13 @@ After shipping dozens of API endpoints, we integrated **dry-rb** into our Rails 
 5. [dry-monads: Functional Error Handling](#5-dry-monads-functional-error-handling)
 6. [dry-validation: Contract-Based Validation](#6-dry-validation-contract-based-validation)
 7. [dry-container + dry-auto_inject: Dependency Injection](#7-dry-container--dry-auto_inject-dependency-injection)
-8. [Other dry-rb Gems Worth Exploring](#8-other-dry-rb-gems-worth-exploring)
-9. [Benefits and Tradeoffs](#9-benefits-and-tradeoffs)
-10. [Conclusion](#10-conclusion)
+8. [dry-matcher: Pattern Matching for Results](#8-dry-matcher-pattern-matching-for-results)
+9. [dry-configurable: Thread-Safe Configuration](#9-dry-configurable-thread-safe-configuration)
+10. [dry-initializer: Declarative Parameter DSL](#10-dry-initializer-declarative-parameter-dsl)
+11. [dry-events: Pub/Sub Event System](#11-dry-events-pubsub-event-system)
+12. [Other dry-rb Gems Worth Exploring](#12-other-dry-rb-gems-worth-exploring)
+13. [Benefits and Tradeoffs](#13-benefits-and-tradeoffs)
+14. [Conclusion](#14-conclusion)
 
 ---
 
@@ -44,6 +48,8 @@ Rails conventions are excellent for getting started quickly. But as applications
 | Controller conditionals | Simple flows | Multiple success/failure paths |
 | Manual type coercion | Occasional use | Dozens of fields need processing |
 | Class method calls | Small apps | Testing requires stubbing globals |
+| Scattered constants | One-off values | Configuration needs structure |
+| Inline side effects | Simple actions | Need audit trail or event-driven architecture |
 
 ### 1.2 Real Example: Profile Actions Payload
 
@@ -110,6 +116,10 @@ The [dry-rb](https://dry-rb.org/gems/) ecosystem provides focused, composable ge
 | **dry-schema** | Schema coercion | Strong parameters edge cases |
 | **dry-container** | Dependency registry | Global class references |
 | **dry-auto_inject** | Constructor injection | Manual dependency passing |
+| **dry-matcher** | Result pattern matching | Case statements on results |
+| **dry-configurable** | Thread-safe configuration | Scattered constants |
+| **dry-initializer** | Param/option DSL | Boilerplate initialize methods |
+| **dry-events** | Pub/sub event system | Inline side effects |
 
 ### Our Gemfile Addition
 
@@ -123,6 +133,10 @@ gem "dry-validation", "~> 1.11"
 gem "dry-schema", "~> 1.14"
 gem "dry-container", "~> 0.11"
 gem "dry-auto_inject", "~> 0.9"
+gem "dry-matcher", "~> 1.0"
+gem "dry-configurable", "~> 1.2"
+gem "dry-initializer", "~> 3.1"
+gem "dry-events", "~> 1.0"
 ```
 
 ---
@@ -631,13 +645,12 @@ Import = Dry::AutoInject(AppContainer)
 
 # For Rails controllers (memoized accessors)
 module Deps
-  def self.[](*keys)
-    Module.new do
-      keys.each do |key|
+  def self.included(base)
+    base.class_eval do
+      AppContainer.keys.each do |key|
         define_method(key) do
-          ivar = "@_dep_#{key}"
-          return instance_variable_get(ivar) if instance_variable_defined?(ivar)
-          instance_variable_set(ivar, AppContainer.resolve(key))
+          @_deps_cache ||= {}
+          @_deps_cache[key] ||= AppContainer[key]
         end
       end
     end
@@ -650,7 +663,7 @@ end
 ```ruby
 # app/controllers/api/v1/profiles_controller.rb
 class ProfilesController < ApplicationController
-  include Deps[:actions_builder, :visibility_flags]  # Inject dependencies
+  include Deps  # Inject all registered dependencies
 
   def show
     flags = visibility_flags.get(@profile)           # Use injected service
@@ -694,9 +707,699 @@ end
 
 ---
 
-## 8. Other dry-rb Gems Worth Exploring
+## 8. dry-matcher: Pattern Matching for Results
 
-### 8.1 dry-transaction: Multi-Step Business Operations
+### 8.1 The Problem: Verbose Result Handling
+
+```ruby
+# Before: Manual success/failure checks
+def show
+  result = actions_builder.call(profile: @profile, client_user: current_user)
+
+  if result.success?
+    context[:actions] = result.value!
+  else
+    case result.failure
+    when :not_found
+      head :not_found
+    when :unauthorized
+      head :unauthorized
+    else
+      render json: { error: result.failure }, status: :unprocessable_entity
+    end
+  end
+end
+```
+
+**Issues:**
+- Verbose conditional logic
+- Easy to forget failure cases
+- Not composable
+- Repeated patterns across controllers
+
+### 8.2 The Solution: Pattern Matching Concern
+
+```ruby
+# app/controllers/concerns/result_matchable.rb
+require "dry/matcher/result_matcher"
+
+module ResultMatchable
+  extend ActiveSupport::Concern
+
+  included do
+    class_attribute :result_matcher, default: Dry::Matcher::ResultMatcher
+  end
+
+  # Match on a Dry::Monads::Result with pattern matching
+  def match_result(result, &block)
+    result_matcher.call(result, &block)
+  end
+
+  # Extract value from Success or return nil for Failure
+  def unwrap_result(result)
+    result.success? ? result.value! : nil
+  end
+
+  # Returns [success?, value_or_error]
+  def result_tuple(result)
+    if result.success?
+      [true, result.value!]
+    else
+      [false, result.failure]
+    end
+  end
+end
+```
+
+### 8.3 Controller with Pattern Matching
+
+```ruby
+# app/controllers/api/v1/profiles_controller.rb
+class ProfilesController < ApplicationController
+  include ResultMatchable  # Add pattern matching
+
+  def show
+    result = actions_builder.call(profile: @profile, client_user: current_user)
+
+    # Simple extraction
+    context[:actions] = unwrap_result(result)
+
+    # Or full pattern matching for complex flows
+    match_result(result) do |m|
+      m.success { |actions| context[:actions] = actions }
+      m.failure(:not_found) { head :not_found; return }
+      m.failure(:unauthorized) { head :unauthorized; return }
+      m.failure { |error| Rails.logger.warn("Actions failed: #{error}") }
+    end
+
+    render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+  end
+end
+```
+
+### 8.4 Before vs After
+
+**Before:**
+```ruby
+# 15 lines of conditional logic
+if result.success?
+  context[:actions] = result.value!
+else
+  case result.failure
+  when :not_found then head :not_found
+  when :unauthorized then head :unauthorized
+  else render_error(result.failure)
+  end
+end
+```
+
+**After:**
+```ruby
+# 1 line for simple cases
+context[:actions] = unwrap_result(result)
+
+# Or declarative matching for complex cases
+match_result(result) do |m|
+  m.success { |v| context[:actions] = v }
+  m.failure(:not_found) { head :not_found }
+  m.failure { |e| render_error(e) }
+end
+```
+
+### 8.5 Benefits
+
+| Without dry-matcher | With dry-matcher |
+|---------------------|------------------|
+| `if/case` statements | Declarative blocks |
+| Easy to miss cases | Exhaustive matching |
+| Scattered handling | Centralized concern |
+| Hard to test branches | Each handler testable |
+
+---
+
+## 9. dry-configurable: Thread-Safe Configuration
+
+### 9.1 The Problem: Scattered Constants
+
+```ruby
+# Before: Constants scattered across files
+class ProfileBlueprint < ApplicationBlueprint
+  ACCESS_STATUS_VALUES = %w[none requested approved denied removed shared].freeze
+  CACHE_TTL = 5.minutes
+end
+
+class AccessRequest < ApplicationRecord
+  EXPIRY_DAYS = 30
+end
+
+class ProfilesController < ApplicationController
+  MAX_PER_PAGE = 100
+end
+```
+
+**Issues:**
+- Configuration scattered across classes
+- Hard to find all config values
+- No nesting or organization
+- Testing requires constant stubbing
+- Not thread-safe for dynamic changes
+
+### 9.2 The Solution: Centralized Configuration
+
+```ruby
+# app/config/profile_config.rb
+require "dry/configurable"
+
+class ProfileConfig
+  extend Dry::Configurable
+
+  # Actions settings
+  setting :actions do
+    setting :cache_ttl, default: 5.minutes
+    setting :default_access_status, default: "none"
+    setting :default_profile_viewed, default: false
+    setting :default_is_saved, default: false
+
+    setting :access_status_values, default: %w[none requested approved denied removed shared].freeze
+    setting :thumb_status_values, default: %w[liked disliked].freeze
+    setting :access_end_reason_values, default: %w[expired declined blocked removed].freeze
+
+    setting :status_mapping, default: {
+      "pending" => "requested",
+      "approved" => "approved",
+      "declined" => "denied",
+      "blocked" => "denied",
+      "expired" => "removed"
+    }.freeze
+  end
+
+  # Visibility settings
+  setting :visibility do
+    setting :default_mode, default: "visible"
+    setting :modes, default: %w[visible semi_anonymous fully_anonymous].freeze
+  end
+
+  # Access request settings
+  setting :access do
+    setting :request_expiry_days, default: 30
+    setting :auto_approve_verified_companies, default: false
+    setting :max_pending_per_company, default: 100
+  end
+
+  # Event publishing settings
+  setting :events do
+    setting :publish_profile_views, default: true
+    setting :publish_access_events, default: true
+  end
+end
+```
+
+### 9.3 Usage in Code
+
+```ruby
+# Access nested settings with dot notation
+ProfileConfig.config.actions.cache_ttl           # => 5.minutes
+ProfileConfig.config.actions.status_mapping      # => {"pending" => "requested", ...}
+ProfileConfig.config.visibility.default_mode     # => "visible"
+ProfileConfig.config.access.request_expiry_days  # => 30
+
+# Use in service objects
+class ActionsBuilder
+  def default_actions_struct
+    Profiles::Actions.new(
+      access_status: config.default_access_status,
+      profile_viewed: config.default_profile_viewed,
+      is_saved: config.default_is_saved
+    )
+  end
+
+  private
+
+  def config
+    ProfileConfig.config.actions
+  end
+end
+```
+
+### 9.4 Testing with Configuration
+
+```ruby
+RSpec.describe ActionsBuilder do
+  # Override config for test
+  before do
+    allow(ProfileConfig.config.actions).to receive(:cache_ttl).and_return(0)
+  end
+
+  # Or use configure block
+  around do |example|
+    original = ProfileConfig.config.actions.cache_ttl
+    ProfileConfig.configure { |c| c.actions.cache_ttl = 0 }
+    example.run
+    ProfileConfig.configure { |c| c.actions.cache_ttl = original }
+  end
+end
+```
+
+### 9.5 Before vs After
+
+**Before:**
+```ruby
+# Hunt through 10 files to find all profile-related constants
+grep -r "CACHE_TTL\|EXPIRY_DAYS\|MAX_" app/
+```
+
+**After:**
+```ruby
+# One file, organized by domain
+ProfileConfig.config  # => nested configuration tree
+```
+
+### 9.6 Benefits
+
+| Scattered Constants | dry-configurable |
+|--------------------|------------------|
+| Find: grep across codebase | Find: one file |
+| Organize: N/A | Organize: nested settings |
+| Test: stub constants | Test: configure block |
+| Thread-safe: No | Thread-safe: Yes |
+| Document: comments | Document: structure IS docs |
+
+---
+
+## 10. dry-initializer: Declarative Parameter DSL
+
+### 10.1 The Problem: Boilerplate Initialize Methods
+
+```ruby
+# Before: Manual parameter handling
+class ActionsBuilder
+  def initialize(profile:, client_user:)
+    @profile = profile
+    @client_user = client_user
+    @profile_user = profile&.user
+  end
+
+  def self.call(profile:, client_user:)
+    new(profile: profile, client_user: client_user).call
+  end
+
+  private
+
+  attr_reader :profile, :client_user, :profile_user
+end
+```
+
+**Issues:**
+- Boilerplate `@x = x` assignments
+- Manual `attr_reader` for each param
+- No type coercion
+- No default values
+- `self.call` pattern repeated everywhere
+
+### 10.2 The Solution: Declarative Parameters
+
+```ruby
+# app/services/profiles/actions_builder.rb
+require "dry/initializer"
+
+module Profiles
+  class ActionsBuilder
+    extend Dry::Initializer
+
+    # Required parameters
+    param :profile
+    param :client_user
+
+    # Derived option with default
+    option :profile_user, default: proc { profile&.user }
+
+    def self.call(profile:, client_user:)
+      new(profile, client_user).call
+    end
+
+    def call
+      return Success(default_actions_struct) unless valid_context?
+      Success(build_actions_struct)
+    end
+
+    # params are accessible directly - no attr_reader needed
+    private
+
+    def valid_context?
+      profile.present? && client_user.present? && client_user.client?
+    end
+  end
+end
+```
+
+### 10.3 Advanced Features
+
+```ruby
+class OrderProcessor
+  extend Dry::Initializer
+
+  # Required param with type coercion
+  param :order_id, Types::Integer
+
+  # Optional param with default
+  param :notify, default: proc { true }
+
+  # Named options (keyword args)
+  option :logger, default: proc { Rails.logger }
+  option :mailer, default: proc { OrderMailer }
+
+  # Type-checked option
+  option :priority, Types::String.enum("low", "normal", "high"), default: proc { "normal" }
+
+  # Reader visibility
+  option :api_key, reader: :private
+
+  def call
+    logger.info("Processing order #{order_id} with priority #{priority}")
+    # ...
+  end
+end
+
+# Usage
+processor = OrderProcessor.new(123, true, priority: "high")
+processor.order_id  # => 123
+processor.priority  # => "high"
+```
+
+### 10.4 Before vs After
+
+**Before (19 lines):**
+```ruby
+class ActionsBuilder
+  def initialize(profile:, client_user:)
+    @profile = profile
+    @client_user = client_user
+    @profile_user = profile&.user
+  end
+
+  def self.call(profile:, client_user:)
+    new(profile: profile, client_user: client_user).call
+  end
+
+  private
+
+  attr_reader :profile, :client_user, :profile_user
+
+  def call
+    # ...
+  end
+end
+```
+
+**After (10 lines):**
+```ruby
+class ActionsBuilder
+  extend Dry::Initializer
+
+  param :profile
+  param :client_user
+  option :profile_user, default: proc { profile&.user }
+
+  def self.call(profile:, client_user:)
+    new(profile, client_user).call
+  end
+
+  def call
+    # ...
+  end
+end
+```
+
+### 10.5 Benefits
+
+| Manual Initialize | dry-initializer |
+|-------------------|-----------------|
+| `@x = x` boilerplate | Declarative `param`/`option` |
+| Manual `attr_reader` | Auto-generated readers |
+| No type coercion | Built-in type support |
+| No defaults DSL | `default: proc { }` |
+| All public readers | `reader: :private` option |
+
+---
+
+## 11. dry-events: Pub/Sub Event System
+
+### 11.1 The Problem: Inline Side Effects
+
+```ruby
+# Before: Side effects mixed with business logic
+class ProfilesController < ApplicationController
+  def show
+    @profile = Profile.find(params[:id])
+
+    # Business logic
+    context = build_context(@profile)
+
+    # Side effect #1: Analytics
+    Analytics.track("profile_viewed", {
+      profile_id: @profile.id,
+      viewer_id: current_user&.id
+    })
+
+    # Side effect #2: Logging
+    AuditLog.create!(
+      action: "profile_view",
+      resource: @profile,
+      user: current_user
+    )
+
+    # Side effect #3: Cache warming
+    ProfileCacheWarmer.perform_async(@profile.id) if should_warm_cache?
+
+    render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+  end
+end
+```
+
+**Issues:**
+- Controller bloated with side effects
+- Hard to test business logic in isolation
+- Adding new side effects = modifying controller
+- Side effects tightly coupled to triggering code
+- No audit trail of "what events exist"
+
+### 11.2 The Solution: Event Publisher
+
+```ruby
+# app/events/publisher.rb
+require "dry/events"
+
+class EventPublisher
+  include Dry::Events::Publisher[:app]
+
+  # Profile events
+  register_event("profile.viewed")
+  register_event("profile.actions_computed")
+
+  # Access request events
+  register_event("access.requested")
+  register_event("access.approved")
+  register_event("access.declined")
+
+  # Chat events
+  register_event("chat.room_accessed")
+
+  class << self
+    def instance
+      @instance ||= new
+    end
+
+    def publish(event_name, payload = {})
+      return unless should_publish?(event_name)
+
+      instance.publish(event_name, payload.merge(published_at: Time.current))
+    end
+
+    def subscribe(listener_or_event, &block)
+      if block_given?
+        instance.subscribe(listener_or_event, &block)
+      else
+        instance.subscribe(listener_or_event)
+      end
+    end
+
+    private
+
+    def should_publish?(event_name)
+      return false unless ProfileConfig.config.events.publish_profile_views if event_name.start_with?("profile.")
+      return false unless ProfileConfig.config.events.publish_access_events if event_name.start_with?("access.")
+      true
+    end
+  end
+end
+```
+
+### 11.3 Publishing Events
+
+```ruby
+# app/controllers/api/v1/profiles_controller.rb
+class ProfilesController < ApplicationController
+  def show
+    @profile = Profile.find(params[:id])
+    context = build_context(@profile)
+
+    # Publish event - side effects handled by subscribers
+    EventPublisher.publish("profile.viewed", {
+      profile_id: @profile.id,
+      viewer_id: current_user&.id,
+      viewer_role: current_user&.role
+    })
+
+    render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+  end
+end
+
+# app/services/profiles/actions_builder.rb
+class ActionsBuilder
+  def call
+    actions = build_actions_struct
+
+    # Publish event with computed data
+    EventPublisher.publish("profile.actions_computed", {
+      profile_id: profile.id,
+      client_user_id: client_user.id,
+      access_status: actions.access_status,
+      has_chat: actions.chat_id.present?
+    })
+
+    Success(actions)
+  end
+end
+```
+
+### 11.4 Subscribing to Events
+
+```ruby
+# config/initializers/event_subscribers.rb
+
+# Block-based subscriber
+EventPublisher.subscribe("profile.viewed") do |event|
+  Analytics.track("profile_view", event.payload)
+end
+
+# Object-based subscriber
+class AuditListener
+  def on_profile_viewed(event)
+    AuditLog.create!(
+      action: "profile_view",
+      resource_type: "Profile",
+      resource_id: event.payload[:profile_id],
+      user_id: event.payload[:viewer_id],
+      occurred_at: event.payload[:published_at]
+    )
+  end
+
+  def on_access_requested(event)
+    AuditLog.create!(action: "access_request", **event.payload)
+  end
+
+  def on_access_approved(event)
+    AuditLog.create!(action: "access_approval", **event.payload)
+  end
+end
+
+EventPublisher.subscribe(AuditListener.new)
+
+# Conditional subscriber
+class CacheWarmerListener
+  def on_profile_viewed(event)
+    return unless should_warm_cache?(event.payload[:profile_id])
+
+    ProfileCacheWarmer.perform_async(event.payload[:profile_id])
+  end
+
+  private
+
+  def should_warm_cache?(profile_id)
+    # Logic to determine if cache should be warmed
+  end
+end
+
+EventPublisher.subscribe(CacheWarmerListener.new)
+```
+
+### 11.5 Before vs After
+
+**Before (controller with inline side effects):**
+```ruby
+def show
+  @profile = Profile.find(params[:id])
+
+  # Side effect #1
+  Analytics.track("profile_viewed", { profile_id: @profile.id })
+
+  # Side effect #2
+  AuditLog.create!(action: "profile_view", resource: @profile)
+
+  # Side effect #3
+  ProfileCacheWarmer.perform_async(@profile.id)
+
+  render json: { data: ProfileBlueprint.render_as_hash(@profile) }
+end
+```
+
+**After (clean controller, events handle side effects):**
+```ruby
+def show
+  @profile = Profile.find(params[:id])
+
+  EventPublisher.publish("profile.viewed", {
+    profile_id: @profile.id,
+    viewer_id: current_user&.id
+  })
+
+  render json: { data: ProfileBlueprint.render_as_hash(@profile) }
+end
+```
+
+### 11.6 Testing Events
+
+```ruby
+RSpec.describe ProfilesController do
+  describe "GET #show" do
+    it "publishes profile.viewed event" do
+      expect(EventPublisher).to receive(:publish).with(
+        "profile.viewed",
+        hash_including(profile_id: profile.id, viewer_id: user.id)
+      )
+
+      get :show, params: { id: profile.id }
+    end
+  end
+end
+
+RSpec.describe AuditListener do
+  describe "#on_profile_viewed" do
+    let(:event) { double(payload: { profile_id: 1, viewer_id: 2, published_at: Time.current }) }
+
+    it "creates audit log entry" do
+      expect { subject.on_profile_viewed(event) }.to change(AuditLog, :count).by(1)
+    end
+  end
+end
+```
+
+### 11.7 Benefits
+
+| Inline Side Effects | dry-events |
+|--------------------|------------|
+| Mixed with business logic | Separated via pub/sub |
+| Hard to test in isolation | Each listener testable |
+| Adding effects = modify caller | Adding effects = new subscriber |
+| No event catalog | `register_event` documents all |
+| Tight coupling | Loose coupling |
+| Synchronous only | Async-ready (queue subscribers) |
+
+---
+
+## 12. Other dry-rb Gems Worth Exploring
+
+### 12.1 dry-transaction: Multi-Step Business Operations
 
 Perfect for complex workflows like order processing or user registration:
 
@@ -741,62 +1444,7 @@ result = CreateOrder.new.call(order_params)
 result.success? # => true/false
 ```
 
-### 8.2 dry-matcher: Pattern Matching for Results
-
-Elegant handling of different result types:
-
-```ruby
-# Define matcher
-require "dry/matcher/result_matcher"
-
-# Use in controller
-Dry::Matcher::ResultMatcher.call(result) do |m|
-  m.success do |value|
-    render json: { data: value }, status: :ok
-  end
-
-  m.failure :validation do |errors|
-    render json: { errors: errors }, status: :unprocessable_entity
-  end
-
-  m.failure :not_found do
-    head :not_found
-  end
-
-  m.failure do |error|
-    render json: { error: error }, status: :internal_server_error
-  end
-end
-```
-
-### 8.3 dry-configurable: Thread-Safe Configuration
-
-Replace scattered constants with structured config:
-
-```ruby
-# app/config/profile_config.rb
-class ProfileConfig
-  extend Dry::Configurable
-
-  setting :max_skills, default: 50
-  setting :cache_ttl, default: 1.hour
-  setting :visibility_modes, default: %w[public private friends]
-
-  setting :api do
-    setting :rate_limit, default: 100
-    setting :timeout, default: 30
-  end
-end
-
-# Usage
-ProfileConfig.config.max_skills           # => 50
-ProfileConfig.config.api.rate_limit       # => 100
-
-# Override in tests
-ProfileConfig.configure { |c| c.max_skills = 10 }
-```
-
-### 8.4 dry-effects: Algebraic Effects
+### 12.2 dry-effects: Algebraic Effects
 
 Advanced: dependency injection via effects (alternative to dry-container):
 
@@ -818,24 +1466,27 @@ result = Dry::Effects.handler.with(
 ) { ProcessPayment.new.call(100) }
 ```
 
-### 8.5 Gem Selection Guide
+### 12.3 Gem Selection Guide
 
 | Gem | When to Use | Complexity |
 |-----|-------------|------------|
 | **dry-types** | Any project (foundational) | Low |
 | **dry-struct** | Data transfer objects, value objects | Low |
+| **dry-configurable** | Configuration management | Low |
+| **dry-initializer** | Service object parameters | Low |
 | **dry-monads** | Service objects with failures | Medium |
 | **dry-validation** | API input validation | Medium |
 | **dry-container** | Large apps, testing focus | Medium |
+| **dry-matcher** | Result pattern matching | Medium |
+| **dry-events** | Event-driven architecture | Medium |
 | **dry-transaction** | Multi-step workflows | Medium |
-| **dry-configurable** | Complex configuration | Low |
 | **dry-effects** | Advanced FP patterns | High |
 
 ---
 
-## 9. Benefits and Tradeoffs
+## 13. Benefits and Tradeoffs
 
-### 9.1 Benefits
+### 13.1 Benefits
 
 **1. Explicit Over Implicit**
 ```ruby
@@ -881,7 +1532,24 @@ contract.call(thumb_status: "invalid").errors.to_h
 # => { thumb_status: ["must be one of: liked, disliked"] }
 ```
 
-### 9.2 Tradeoffs
+**5. Event-Driven Architecture**
+```ruby
+# Before: Side effects scattered in controllers
+Analytics.track(...)
+AuditLog.create!(...)
+CacheWarmer.perform_async(...)
+
+# After: Single event, multiple handlers
+EventPublisher.publish("profile.viewed", { ... })
+```
+
+**6. Centralized Configuration**
+```ruby
+# Before: grep -r "CACHE_TTL" app/
+# After: ProfileConfig.config.actions.cache_ttl
+```
+
+### 13.2 Tradeoffs
 
 **1. Learning Curve**
 - Team needs to learn dry-rb idioms
@@ -891,7 +1559,7 @@ contract.call(thumb_status: "invalid").errors.to_h
 **2. Indirection**
 - Types defined in one place, used in another
 - Following data flow requires understanding container
-- Debugging may span multiple abstractions
+- Events may be handled far from where they're published
 
 **3. Overhead for Simple Cases**
 ```ruby
@@ -903,11 +1571,11 @@ attr_accessor :is_active
 ```
 
 **4. Gems Add Dependencies**
-- 7 gems for full suite
+- 11 gems for full suite
 - Version compatibility to manage
 - Bundle size increases
 
-### 9.3 When to Use dry-rb
+### 13.3 When to Use dry-rb
 
 **✅ Good Fit:**
 - APIs with complex data contracts
@@ -915,6 +1583,7 @@ attr_accessor :is_active
 - Apps where testability is priority
 - Teams comfortable with FP concepts
 - Large apps with many developers
+- Event-driven or audit-heavy systems
 
 **❌ Poor Fit:**
 - Simple CRUD apps
@@ -924,7 +1593,7 @@ attr_accessor :is_active
 
 ---
 
-## 10. Conclusion
+## 14. Conclusion
 
 Integrating dry-rb into our Rails API transformed code that "worked" into code that's **obvious, testable, and maintainable**:
 
@@ -934,7 +1603,12 @@ Integrating dry-rb into our Rails API transformed code that "worked" into code t
 | Type validation | Manual per-field | Declarative |
 | Error handling | try/rescue + nil | Result monad |
 | Dependencies | Hard-coded classes | Injected |
+| Configuration | Scattered constants | Centralized |
+| Side effects | Inline in controllers | Event-driven |
+| Service parameters | Manual initialize | Declarative DSL |
+| Result handling | if/case statements | Pattern matching |
 | Test isolation | Integration only | Unit + integration |
+| Gems used | 0 | 11 |
 
 ### Key Takeaways
 
@@ -942,8 +1616,12 @@ Integrating dry-rb into our Rails API transformed code that "worked" into code t
 2. **Add dry-struct for data transfer** — Especially for API responses
 3. **Use dry-monads in services** — Replace boolean/nil returns
 4. **Add dry-validation for API inputs** — Before data hits your models
-5. **Introduce dry-container gradually** — When testing pain increases
-6. **Don't over-engineer** — A simple hash is fine for simple data
+5. **Use dry-configurable early** — Centralize config before it scatters
+6. **Add dry-initializer to services** — Reduce boilerplate immediately
+7. **Introduce dry-container gradually** — When testing pain increases
+8. **Add dry-matcher for cleaner controllers** — Pattern matching is elegant
+9. **Use dry-events for side effects** — Decouple analytics, logging, notifications
+10. **Don't over-engineer** — A simple hash is fine for simple data
 
 ### The Return on Investment
 
@@ -951,8 +1629,10 @@ The initial investment—learning curves, refactoring, new patterns—pays divid
 
 - **Fewer bugs** — Type mismatches caught at construction, not runtime
 - **Faster debugging** — Follow explicit contracts, not implicit conventions
-- **Easier onboarding** — Types document themselves
+- **Easier onboarding** — Types and events document themselves
 - **Confident refactoring** — Change implementation, types verify compatibility
+- **Testable architecture** — Unit test components in isolation
+- **Scalable patterns** — Event-driven architecture grows with your app
 
 dry-rb doesn't replace Rails conventions—it **complements them** where they fall short. Use the right tool for each job.
 
@@ -965,9 +1645,13 @@ dry-rb doesn't replace Rails conventions—it **complements them** where they fa
 - **dry-types Documentation**: [dry-rb.org/gems/dry-types](https://dry-rb.org/gems/dry-types)
 - **dry-monads Documentation**: [dry-rb.org/gems/dry-monads](https://dry-rb.org/gems/dry-monads)
 - **dry-validation Documentation**: [dry-rb.org/gems/dry-validation](https://dry-rb.org/gems/dry-validation)
+- **dry-events Documentation**: [dry-rb.org/gems/dry-events](https://dry-rb.org/gems/dry-events)
+- **dry-configurable Documentation**: [dry-rb.org/gems/dry-configurable](https://dry-rb.org/gems/dry-configurable)
+- **dry-initializer Documentation**: [dry-rb.org/gems/dry-initializer](https://dry-rb.org/gems/dry-initializer)
+- **dry-matcher Documentation**: [dry-rb.org/gems/dry-matcher](https://dry-rb.org/gems/dry-matcher)
 - **Trailblazer (alternative)**: [trailblazer.to](https://trailblazer.to/) (uses dry-rb under the hood)
 
 ---
 
-*This post documents our integration of dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, and established patterns that scale across 100+ endpoints.*
+*This post documents our integration of 11 dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.*
 

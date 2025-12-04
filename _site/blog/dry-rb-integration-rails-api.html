@@ -37,8 +37,8 @@
 <meta property="og:title" content="From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API" />
 <meta name="author" content="Max Lukin" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A practical guide to integrating dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, and dry-container improve maintainability, testability, and code clarity." />
-<meta property="og:description" content="A practical guide to integrating dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, and dry-container improve maintainability, testability, and code clarity." />
+<meta name="description" content="A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity." />
+<meta property="og:description" content="A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity." />
 <link rel="canonical" href="http://localhost:4000/blog/dry-rb-integration-rails-api" />
 <meta property="og:url" content="http://localhost:4000/blog/dry-rb-integration-rails-api" />
 <meta property="og:site_name" content="Software Engineering consultant" />
@@ -47,7 +47,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-12-04T00:00:00+00:00","datePublished":"2025-12-04T00:00:00+00:00","description":"A practical guide to integrating dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, and dry-container improve maintainability, testability, and code clarity.","headline":"From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/dry-rb-integration-rails-api"},"url":"http://localhost:4000/blog/dry-rb-integration-rails-api"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-12-04T00:00:00+00:00","datePublished":"2025-12-04T00:00:00+00:00","description":"A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity.","headline":"From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/dry-rb-integration-rails-api"},"url":"http://localhost:4000/blog/dry-rb-integration-rails-api"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -98,7 +98,7 @@
   <p><em>“The best code isn’t clever—it’s obvious. dry-rb makes Rails code obvious.”</em></p>
 </blockquote>
 
-<p>Every Rails developer has written code that works but feels wrong. Manual type coercion scattered across controllers. Validation logic duplicated between models and services. Deeply nested conditionals handling success and failure cases. These patterns work, but they accumulate into technical debt.</p>
+<p>Every Rails developer has written code that works but feels wrong. Manual type coercion scattered across controllers. Validation logic duplicated between models and services. Deeply nested conditionals handling success and failure cases. Configuration constants scattered across files. Side effects mixed with business logic. These patterns work, but they accumulate into technical debt.</p>
 
 <p>After shipping dozens of API endpoints, we integrated <strong>dry-rb</strong> into our Rails API. This post documents the transformation—with real before/after examples showing how each gem improves specific code patterns.</p>
 
@@ -114,9 +114,13 @@
   <li><a href="#5-dry-monads-functional-error-handling">dry-monads: Functional Error Handling</a></li>
   <li><a href="#6-dry-validation-contract-based-validation">dry-validation: Contract-Based Validation</a></li>
   <li><a href="#7-dry-container--dry-auto_inject-dependency-injection">dry-container + dry-auto_inject: Dependency Injection</a></li>
-  <li><a href="#8-other-dry-rb-gems-worth-exploring">Other dry-rb Gems Worth Exploring</a></li>
-  <li><a href="#9-benefits-and-tradeoffs">Benefits and Tradeoffs</a></li>
-  <li><a href="#10-conclusion">Conclusion</a></li>
+  <li><a href="#8-dry-matcher-pattern-matching-for-results">dry-matcher: Pattern Matching for Results</a></li>
+  <li><a href="#9-dry-configurable-thread-safe-configuration">dry-configurable: Thread-Safe Configuration</a></li>
+  <li><a href="#10-dry-initializer-declarative-parameter-dsl">dry-initializer: Declarative Parameter DSL</a></li>
+  <li><a href="#11-dry-events-pubsub-event-system">dry-events: Pub/Sub Event System</a></li>
+  <li><a href="#12-other-dry-rb-gems-worth-exploring">Other dry-rb Gems Worth Exploring</a></li>
+  <li><a href="#13-benefits-and-tradeoffs">Benefits and Tradeoffs</a></li>
+  <li><a href="#14-conclusion">Conclusion</a></li>
 </ol>
 
 <hr />
@@ -160,6 +164,16 @@
       <td>Class method calls</td>
       <td>Small apps</td>
       <td>Testing requires stubbing globals</td>
+    </tr>
+    <tr>
+      <td>Scattered constants</td>
+      <td>One-off values</td>
+      <td>Configuration needs structure</td>
+    </tr>
+    <tr>
+      <td>Inline side effects</td>
+      <td>Simple actions</td>
+      <td>Need audit trail or event-driven architecture</td>
     </tr>
   </tbody>
 </table>
@@ -265,6 +279,26 @@
       <td>Constructor injection</td>
       <td>Manual dependency passing</td>
     </tr>
+    <tr>
+      <td><strong>dry-matcher</strong></td>
+      <td>Result pattern matching</td>
+      <td>Case statements on results</td>
+    </tr>
+    <tr>
+      <td><strong>dry-configurable</strong></td>
+      <td>Thread-safe configuration</td>
+      <td>Scattered constants</td>
+    </tr>
+    <tr>
+      <td><strong>dry-initializer</strong></td>
+      <td>Param/option DSL</td>
+      <td>Boilerplate initialize methods</td>
+    </tr>
+    <tr>
+      <td><strong>dry-events</strong></td>
+      <td>Pub/sub event system</td>
+      <td>Inline side effects</td>
+    </tr>
   </tbody>
 </table>
 
@@ -279,6 +313,10 @@
 <span class="n">gem</span> <span class="s2">"dry-schema"</span><span class="p">,</span> <span class="s2">"~&gt; 1.14"</span>
 <span class="n">gem</span> <span class="s2">"dry-container"</span><span class="p">,</span> <span class="s2">"~&gt; 0.11"</span>
 <span class="n">gem</span> <span class="s2">"dry-auto_inject"</span><span class="p">,</span> <span class="s2">"~&gt; 0.9"</span>
+<span class="n">gem</span> <span class="s2">"dry-matcher"</span><span class="p">,</span> <span class="s2">"~&gt; 1.0"</span>
+<span class="n">gem</span> <span class="s2">"dry-configurable"</span><span class="p">,</span> <span class="s2">"~&gt; 1.2"</span>
+<span class="n">gem</span> <span class="s2">"dry-initializer"</span><span class="p">,</span> <span class="s2">"~&gt; 3.1"</span>
+<span class="n">gem</span> <span class="s2">"dry-events"</span><span class="p">,</span> <span class="s2">"~&gt; 1.0"</span>
 </code></pre></div></div>
 
 <hr />
@@ -848,13 +886,12 @@
 
 <span class="c1"># For Rails controllers (memoized accessors)</span>
 <span class="k">module</span> <span class="nn">Deps</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">[]</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">)</span>
-    <span class="no">Module</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
-      <span class="n">keys</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+      <span class="no">AppContainer</span><span class="p">.</span><span class="nf">keys</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span>
         <span class="n">define_method</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">do</span>
-          <span class="n">ivar</span> <span class="o">=</span> <span class="s2">"@_dep_</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span>
-          <span class="k">return</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="n">ivar</span><span class="p">)</span> <span class="k">if</span> <span class="n">instance_variable_defined?</span><span class="p">(</span><span class="n">ivar</span><span class="p">)</span>
-          <span class="nb">instance_variable_set</span><span class="p">(</span><span class="n">ivar</span><span class="p">,</span> <span class="no">AppContainer</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+          <span class="vi">@_deps_cache</span> <span class="o">||=</span> <span class="p">{}</span>
+          <span class="vi">@_deps_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">||=</span> <span class="no">AppContainer</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">end</span>
       <span class="k">end</span>
     <span class="k">end</span>
@@ -866,7 +903,7 @@
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
 <span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="kp">include</span> <span class="no">Deps</span><span class="p">[</span><span class="ss">:actions_builder</span><span class="p">,</span> <span class="ss">:visibility_flags</span><span class="p">]</span>  <span class="c1"># Inject dependencies</span>
+  <span class="kp">include</span> <span class="no">Deps</span>  <span class="c1"># Inject all registered dependencies</span>
 
   <span class="k">def</span> <span class="nf">show</span>
     <span class="n">flags</span> <span class="o">=</span> <span class="n">visibility_flags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>           <span class="c1"># Use injected service</span>
@@ -929,9 +966,776 @@
 
 <hr />
 
-<h2 id="8-other-dry-rb-gems-worth-exploring">8. Other dry-rb Gems Worth Exploring</h2>
+<h2 id="8-dry-matcher-pattern-matching-for-results">8. dry-matcher: Pattern Matching for Results</h2>
 
-<h3 id="81-dry-transaction-multi-step-business-operations">8.1 dry-transaction: Multi-Step Business Operations</h3>
+<h3 id="81-the-problem-verbose-result-handling">8.1 The Problem: Verbose Result Handling</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Manual success/failure checks</span>
+<span class="k">def</span> <span class="nf">show</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="nf">success?</span>
+    <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="nf">value!</span>
+  <span class="k">else</span>
+    <span class="k">case</span> <span class="n">result</span><span class="p">.</span><span class="nf">failure</span>
+    <span class="k">when</span> <span class="ss">:not_found</span>
+      <span class="n">head</span> <span class="ss">:not_found</span>
+    <span class="k">when</span> <span class="ss">:unauthorized</span>
+      <span class="n">head</span> <span class="ss">:unauthorized</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">error: </span><span class="n">result</span><span class="p">.</span><span class="nf">failure</span> <span class="p">},</span> <span class="ss">status: :unprocessable_entity</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ul>
+  <li>Verbose conditional logic</li>
+  <li>Easy to forget failure cases</li>
+  <li>Not composable</li>
+  <li>Repeated patterns across controllers</li>
+</ul>
+
+<h3 id="82-the-solution-pattern-matching-concern">8.2 The Solution: Pattern Matching Concern</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/concerns/result_matchable.rb</span>
+<span class="nb">require</span> <span class="s2">"dry/matcher/result_matcher"</span>
+
+<span class="k">module</span> <span class="nn">ResultMatchable</span>
+  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+  <span class="n">included</span> <span class="k">do</span>
+    <span class="n">class_attribute</span> <span class="ss">:result_matcher</span><span class="p">,</span> <span class="ss">default: </span><span class="no">Dry</span><span class="o">::</span><span class="no">Matcher</span><span class="o">::</span><span class="no">ResultMatcher</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Match on a Dry::Monads::Result with pattern matching</span>
+  <span class="k">def</span> <span class="nf">match_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">result_matcher</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Extract value from Success or return nil for Failure</span>
+  <span class="k">def</span> <span class="nf">unwrap_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">.</span><span class="nf">success?</span> <span class="p">?</span> <span class="n">result</span><span class="p">.</span><span class="nf">value!</span> <span class="p">:</span> <span class="kp">nil</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Returns [success?, value_or_error]</span>
+  <span class="k">def</span> <span class="nf">result_tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="nf">success?</span>
+      <span class="p">[</span><span class="kp">true</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="nf">value!</span><span class="p">]</span>
+    <span class="k">else</span>
+      <span class="p">[</span><span class="kp">false</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="nf">failure</span><span class="p">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="83-controller-with-pattern-matching">8.3 Controller with Pattern Matching</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
+<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="kp">include</span> <span class="no">ResultMatchable</span>  <span class="c1"># Add pattern matching</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+
+    <span class="c1"># Simple extraction</span>
+    <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">unwrap_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># Or full pattern matching for complex flows</span>
+    <span class="n">match_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">m</span><span class="o">|</span>
+      <span class="n">m</span><span class="p">.</span><span class="nf">success</span> <span class="p">{</span> <span class="o">|</span><span class="n">actions</span><span class="o">|</span> <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span> <span class="p">}</span>
+      <span class="n">m</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="ss">:not_found</span><span class="p">)</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:not_found</span><span class="p">;</span> <span class="k">return</span> <span class="p">}</span>
+      <span class="n">m</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="ss">:unauthorized</span><span class="p">)</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:unauthorized</span><span class="p">;</span> <span class="k">return</span> <span class="p">}</span>
+      <span class="n">m</span><span class="p">.</span><span class="nf">failure</span> <span class="p">{</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">"Actions failed: </span><span class="si">#{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="84-before-vs-after">8.4 Before vs After</h3>
+
+<p><strong>Before:</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 15 lines of conditional logic</span>
+<span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="nf">success?</span>
+  <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="nf">value!</span>
+<span class="k">else</span>
+  <span class="k">case</span> <span class="n">result</span><span class="p">.</span><span class="nf">failure</span>
+  <span class="k">when</span> <span class="ss">:not_found</span> <span class="k">then</span> <span class="n">head</span> <span class="ss">:not_found</span>
+  <span class="k">when</span> <span class="ss">:unauthorized</span> <span class="k">then</span> <span class="n">head</span> <span class="ss">:unauthorized</span>
+  <span class="k">else</span> <span class="n">render_error</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nf">failure</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>After:</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 1 line for simple cases</span>
+<span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">unwrap_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># Or declarative matching for complex cases</span>
+<span class="n">match_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">m</span><span class="o">|</span>
+  <span class="n">m</span><span class="p">.</span><span class="nf">success</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> <span class="p">}</span>
+  <span class="n">m</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="ss">:not_found</span><span class="p">)</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:not_found</span> <span class="p">}</span>
+  <span class="n">m</span><span class="p">.</span><span class="nf">failure</span> <span class="p">{</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span> <span class="n">render_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="85-benefits">8.5 Benefits</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Without dry-matcher</th>
+      <th>With dry-matcher</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">if/case</code> statements</td>
+      <td>Declarative blocks</td>
+    </tr>
+    <tr>
+      <td>Easy to miss cases</td>
+      <td>Exhaustive matching</td>
+    </tr>
+    <tr>
+      <td>Scattered handling</td>
+      <td>Centralized concern</td>
+    </tr>
+    <tr>
+      <td>Hard to test branches</td>
+      <td>Each handler testable</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="9-dry-configurable-thread-safe-configuration">9. dry-configurable: Thread-Safe Configuration</h2>
+
+<h3 id="91-the-problem-scattered-constants">9.1 The Problem: Scattered Constants</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Constants scattered across files</span>
+<span class="k">class</span> <span class="nc">ProfileBlueprint</span> <span class="o">&lt;</span> <span class="no">ApplicationBlueprint</span>
+  <span class="no">ACCESS_STATUS_VALUES</span> <span class="o">=</span> <span class="sx">%w[none requested approved denied removed shared]</span><span class="p">.</span><span class="nf">freeze</span>
+  <span class="no">CACHE_TTL</span> <span class="o">=</span> <span class="mi">5</span><span class="p">.</span><span class="nf">minutes</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">AccessRequest</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="no">EXPIRY_DAYS</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="no">MAX_PER_PAGE</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ul>
+  <li>Configuration scattered across classes</li>
+  <li>Hard to find all config values</li>
+  <li>No nesting or organization</li>
+  <li>Testing requires constant stubbing</li>
+  <li>Not thread-safe for dynamic changes</li>
+</ul>
+
+<h3 id="92-the-solution-centralized-configuration">9.2 The Solution: Centralized Configuration</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/profile_config.rb</span>
+<span class="nb">require</span> <span class="s2">"dry/configurable"</span>
+
+<span class="k">class</span> <span class="nc">ProfileConfig</span>
+  <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Configurable</span>
+
+  <span class="c1"># Actions settings</span>
+  <span class="n">setting</span> <span class="ss">:actions</span> <span class="k">do</span>
+    <span class="n">setting</span> <span class="ss">:cache_ttl</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">5</span><span class="p">.</span><span class="nf">minutes</span>
+    <span class="n">setting</span> <span class="ss">:default_access_status</span><span class="p">,</span> <span class="ss">default: </span><span class="s2">"none"</span>
+    <span class="n">setting</span> <span class="ss">:default_profile_viewed</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">false</span>
+    <span class="n">setting</span> <span class="ss">:default_is_saved</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">false</span>
+
+    <span class="n">setting</span> <span class="ss">:access_status_values</span><span class="p">,</span> <span class="ss">default: </span><span class="sx">%w[none requested approved denied removed shared]</span><span class="p">.</span><span class="nf">freeze</span>
+    <span class="n">setting</span> <span class="ss">:thumb_status_values</span><span class="p">,</span> <span class="ss">default: </span><span class="sx">%w[liked disliked]</span><span class="p">.</span><span class="nf">freeze</span>
+    <span class="n">setting</span> <span class="ss">:access_end_reason_values</span><span class="p">,</span> <span class="ss">default: </span><span class="sx">%w[expired declined blocked removed]</span><span class="p">.</span><span class="nf">freeze</span>
+
+    <span class="n">setting</span> <span class="ss">:status_mapping</span><span class="p">,</span> <span class="ss">default: </span><span class="p">{</span>
+      <span class="s2">"pending"</span> <span class="o">=&gt;</span> <span class="s2">"requested"</span><span class="p">,</span>
+      <span class="s2">"approved"</span> <span class="o">=&gt;</span> <span class="s2">"approved"</span><span class="p">,</span>
+      <span class="s2">"declined"</span> <span class="o">=&gt;</span> <span class="s2">"denied"</span><span class="p">,</span>
+      <span class="s2">"blocked"</span> <span class="o">=&gt;</span> <span class="s2">"denied"</span><span class="p">,</span>
+      <span class="s2">"expired"</span> <span class="o">=&gt;</span> <span class="s2">"removed"</span>
+    <span class="p">}.</span><span class="nf">freeze</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Visibility settings</span>
+  <span class="n">setting</span> <span class="ss">:visibility</span> <span class="k">do</span>
+    <span class="n">setting</span> <span class="ss">:default_mode</span><span class="p">,</span> <span class="ss">default: </span><span class="s2">"visible"</span>
+    <span class="n">setting</span> <span class="ss">:modes</span><span class="p">,</span> <span class="ss">default: </span><span class="sx">%w[visible semi_anonymous fully_anonymous]</span><span class="p">.</span><span class="nf">freeze</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Access request settings</span>
+  <span class="n">setting</span> <span class="ss">:access</span> <span class="k">do</span>
+    <span class="n">setting</span> <span class="ss">:request_expiry_days</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">30</span>
+    <span class="n">setting</span> <span class="ss">:auto_approve_verified_companies</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">false</span>
+    <span class="n">setting</span> <span class="ss">:max_pending_per_company</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">100</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Event publishing settings</span>
+  <span class="n">setting</span> <span class="ss">:events</span> <span class="k">do</span>
+    <span class="n">setting</span> <span class="ss">:publish_profile_views</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
+    <span class="n">setting</span> <span class="ss">:publish_access_events</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="93-usage-in-code">9.3 Usage in Code</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Access nested settings with dot notation</span>
+<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span>           <span class="c1"># =&gt; 5.minutes</span>
+<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">status_mapping</span>      <span class="c1"># =&gt; {"pending" =&gt; "requested", ...}</span>
+<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">visibility</span><span class="p">.</span><span class="nf">default_mode</span>     <span class="c1"># =&gt; "visible"</span>
+<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">access</span><span class="p">.</span><span class="nf">request_expiry_days</span>  <span class="c1"># =&gt; 30</span>
+
+<span class="c1"># Use in service objects</span>
+<span class="k">class</span> <span class="nc">ActionsBuilder</span>
+  <span class="k">def</span> <span class="nf">default_actions_struct</span>
+    <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+      <span class="ss">access_status: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_access_status</span><span class="p">,</span>
+      <span class="ss">profile_viewed: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_profile_viewed</span><span class="p">,</span>
+      <span class="ss">is_saved: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_is_saved</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">config</span>
+    <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="94-testing-with-configuration">9.4 Testing with Configuration</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ActionsBuilder</span> <span class="k">do</span>
+  <span class="c1"># Override config for test</span>
+  <span class="n">before</span> <span class="k">do</span>
+    <span class="n">allow</span><span class="p">(</span><span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:cache_ttl</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Or use configure block</span>
+  <span class="n">around</span> <span class="k">do</span> <span class="o">|</span><span class="n">example</span><span class="o">|</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span>
+    <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">}</span>
+    <span class="n">example</span><span class="p">.</span><span class="nf">run</span>
+    <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span> <span class="o">=</span> <span class="n">original</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="95-before-vs-after">9.5 Before vs After</h3>
+
+<p><strong>Before:</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Hunt through 10 files to find all profile-related constants</span>
+<span class="n">grep</span> <span class="o">-</span><span class="n">r</span> <span class="s2">"CACHE_TTL</span><span class="se">\|</span><span class="s2">EXPIRY_DAYS</span><span class="se">\|</span><span class="s2">MAX_"</span> <span class="n">app</span><span class="o">/</span>
+</code></pre></div></div>
+
+<p><strong>After:</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># One file, organized by domain</span>
+<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span>  <span class="c1"># =&gt; nested configuration tree</span>
+</code></pre></div></div>
+
+<h3 id="96-benefits">9.6 Benefits</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Scattered Constants</th>
+      <th>dry-configurable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Find: grep across codebase</td>
+      <td>Find: one file</td>
+    </tr>
+    <tr>
+      <td>Organize: N/A</td>
+      <td>Organize: nested settings</td>
+    </tr>
+    <tr>
+      <td>Test: stub constants</td>
+      <td>Test: configure block</td>
+    </tr>
+    <tr>
+      <td>Thread-safe: No</td>
+      <td>Thread-safe: Yes</td>
+    </tr>
+    <tr>
+      <td>Document: comments</td>
+      <td>Document: structure IS docs</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="10-dry-initializer-declarative-parameter-dsl">10. dry-initializer: Declarative Parameter DSL</h2>
+
+<h3 id="101-the-problem-boilerplate-initialize-methods">10.1 The Problem: Boilerplate Initialize Methods</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Manual parameter handling</span>
+<span class="k">class</span> <span class="nc">ActionsBuilder</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="vi">@profile</span> <span class="o">=</span> <span class="n">profile</span>
+    <span class="vi">@client_user</span> <span class="o">=</span> <span class="n">client_user</span>
+    <span class="vi">@profile_user</span> <span class="o">=</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="n">new</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="nb">attr_reader</span> <span class="ss">:profile</span><span class="p">,</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:profile_user</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ul>
+  <li>Boilerplate <code class="language-plaintext highlighter-rouge">@x = x</code> assignments</li>
+  <li>Manual <code class="language-plaintext highlighter-rouge">attr_reader</code> for each param</li>
+  <li>No type coercion</li>
+  <li>No default values</li>
+  <li><code class="language-plaintext highlighter-rouge">self.call</code> pattern repeated everywhere</li>
+</ul>
+
+<h3 id="102-the-solution-declarative-parameters">10.2 The Solution: Declarative Parameters</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/profiles/actions_builder.rb</span>
+<span class="nb">require</span> <span class="s2">"dry/initializer"</span>
+
+<span class="k">module</span> <span class="nn">Profiles</span>
+  <span class="k">class</span> <span class="nc">ActionsBuilder</span>
+    <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Initializer</span>
+
+    <span class="c1"># Required parameters</span>
+    <span class="n">param</span> <span class="ss">:profile</span>
+    <span class="n">param</span> <span class="ss">:client_user</span>
+
+    <span class="c1"># Derived option with default</span>
+    <span class="n">option</span> <span class="ss">:profile_user</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span> <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+      <span class="n">new</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">call</span>
+      <span class="k">return</span> <span class="no">Success</span><span class="p">(</span><span class="n">default_actions_struct</span><span class="p">)</span> <span class="k">unless</span> <span class="n">valid_context?</span>
+      <span class="no">Success</span><span class="p">(</span><span class="n">build_actions_struct</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="c1"># params are accessible directly - no attr_reader needed</span>
+    <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">valid_context?</span>
+      <span class="n">profile</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">client?</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="103-advanced-features">10.3 Advanced Features</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OrderProcessor</span>
+  <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Initializer</span>
+
+  <span class="c1"># Required param with type coercion</span>
+  <span class="n">param</span> <span class="ss">:order_id</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Integer</span>
+
+  <span class="c1"># Optional param with default</span>
+  <span class="n">param</span> <span class="ss">:notify</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="kp">true</span> <span class="p">}</span>
+
+  <span class="c1"># Named options (keyword args)</span>
+  <span class="n">option</span> <span class="ss">:logger</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span> <span class="p">}</span>
+  <span class="n">option</span> <span class="ss">:mailer</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="no">OrderMailer</span> <span class="p">}</span>
+
+  <span class="c1"># Type-checked option</span>
+  <span class="n">option</span> <span class="ss">:priority</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">String</span><span class="p">.</span><span class="nf">enum</span><span class="p">(</span><span class="s2">"low"</span><span class="p">,</span> <span class="s2">"normal"</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">),</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="s2">"normal"</span> <span class="p">}</span>
+
+  <span class="c1"># Reader visibility</span>
+  <span class="n">option</span> <span class="ss">:api_key</span><span class="p">,</span> <span class="ss">reader: :private</span>
+
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"Processing order </span><span class="si">#{</span><span class="n">order_id</span><span class="si">}</span><span class="s2"> with priority </span><span class="si">#{</span><span class="n">priority</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Usage</span>
+<span class="n">processor</span> <span class="o">=</span> <span class="no">OrderProcessor</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">priority: </span><span class="s2">"high"</span><span class="p">)</span>
+<span class="n">processor</span><span class="p">.</span><span class="nf">order_id</span>  <span class="c1"># =&gt; 123</span>
+<span class="n">processor</span><span class="p">.</span><span class="nf">priority</span>  <span class="c1"># =&gt; "high"</span>
+</code></pre></div></div>
+
+<h3 id="104-before-vs-after">10.4 Before vs After</h3>
+
+<p><strong>Before (19 lines):</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ActionsBuilder</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="vi">@profile</span> <span class="o">=</span> <span class="n">profile</span>
+    <span class="vi">@client_user</span> <span class="o">=</span> <span class="n">client_user</span>
+    <span class="vi">@profile_user</span> <span class="o">=</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="n">new</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="nb">attr_reader</span> <span class="ss">:profile</span><span class="p">,</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:profile_user</span>
+
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>After (10 lines):</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ActionsBuilder</span>
+  <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Initializer</span>
+
+  <span class="n">param</span> <span class="ss">:profile</span>
+  <span class="n">param</span> <span class="ss">:client_user</span>
+  <span class="n">option</span> <span class="ss">:profile_user</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span> <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="n">new</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="105-benefits">10.5 Benefits</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Manual Initialize</th>
+      <th>dry-initializer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@x = x</code> boilerplate</td>
+      <td>Declarative <code class="language-plaintext highlighter-rouge">param</code>/<code class="language-plaintext highlighter-rouge">option</code></td>
+    </tr>
+    <tr>
+      <td>Manual <code class="language-plaintext highlighter-rouge">attr_reader</code></td>
+      <td>Auto-generated readers</td>
+    </tr>
+    <tr>
+      <td>No type coercion</td>
+      <td>Built-in type support</td>
+    </tr>
+    <tr>
+      <td>No defaults DSL</td>
+      <td><code class="language-plaintext highlighter-rouge">default: proc { }</code></td>
+    </tr>
+    <tr>
+      <td>All public readers</td>
+      <td><code class="language-plaintext highlighter-rouge">reader: :private</code> option</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="11-dry-events-pubsub-event-system">11. dry-events: Pub/Sub Event System</h2>
+
+<h3 id="111-the-problem-inline-side-effects">11.1 The Problem: Inline Side Effects</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Side effects mixed with business logic</span>
+<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="c1"># Business logic</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>
+
+    <span class="c1"># Side effect #1: Analytics</span>
+    <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"profile_viewed"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">viewer_id: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span>
+    <span class="p">})</span>
+
+    <span class="c1"># Side effect #2: Logging</span>
+    <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
+      <span class="ss">action: </span><span class="s2">"profile_view"</span><span class="p">,</span>
+      <span class="ss">resource: </span><span class="vi">@profile</span><span class="p">,</span>
+      <span class="ss">user: </span><span class="n">current_user</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Side effect #3: Cache warming</span>
+    <span class="no">ProfileCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">should_warm_cache?</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ul>
+  <li>Controller bloated with side effects</li>
+  <li>Hard to test business logic in isolation</li>
+  <li>Adding new side effects = modifying controller</li>
+  <li>Side effects tightly coupled to triggering code</li>
+  <li>No audit trail of “what events exist”</li>
+</ul>
+
+<h3 id="112-the-solution-event-publisher">11.2 The Solution: Event Publisher</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/events/publisher.rb</span>
+<span class="nb">require</span> <span class="s2">"dry/events"</span>
+
+<span class="k">class</span> <span class="nc">EventPublisher</span>
+  <span class="kp">include</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Events</span><span class="o">::</span><span class="no">Publisher</span><span class="p">[</span><span class="ss">:app</span><span class="p">]</span>
+
+  <span class="c1"># Profile events</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">)</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"profile.actions_computed"</span><span class="p">)</span>
+
+  <span class="c1"># Access request events</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"access.requested"</span><span class="p">)</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"access.approved"</span><span class="p">)</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"access.declined"</span><span class="p">)</span>
+
+  <span class="c1"># Chat events</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"chat.room_accessed"</span><span class="p">)</span>
+
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">instance</span>
+      <span class="vi">@instance</span> <span class="o">||=</span> <span class="n">new</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">payload</span> <span class="o">=</span> <span class="p">{})</span>
+      <span class="k">return</span> <span class="k">unless</span> <span class="n">should_publish?</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
+
+      <span class="n">instance</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">payload</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="ss">published_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">))</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="n">listener_or_event</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="k">if</span> <span class="nb">block_given?</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="n">listener_or_event</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="n">listener_or_event</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">should_publish?</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">events</span><span class="p">.</span><span class="nf">publish_profile_views</span> <span class="k">if</span> <span class="n">event_name</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"profile."</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">events</span><span class="p">.</span><span class="nf">publish_access_events</span> <span class="k">if</span> <span class="n">event_name</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"access."</span><span class="p">)</span>
+      <span class="kp">true</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="113-publishing-events">11.3 Publishing Events</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
+<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>
+
+    <span class="c1"># Publish event - side effects handled by subscribers</span>
+    <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">viewer_id: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">viewer_role: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">role</span>
+    <span class="p">})</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/services/profiles/actions_builder.rb</span>
+<span class="k">class</span> <span class="nc">ActionsBuilder</span>
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="n">build_actions_struct</span>
+
+    <span class="c1"># Publish event with computed data</span>
+    <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.actions_computed"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">profile_id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">client_user_id: </span><span class="n">client_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">access_status: </span><span class="n">actions</span><span class="p">.</span><span class="nf">access_status</span><span class="p">,</span>
+      <span class="ss">has_chat: </span><span class="n">actions</span><span class="p">.</span><span class="nf">chat_id</span><span class="p">.</span><span class="nf">present?</span>
+    <span class="p">})</span>
+
+    <span class="no">Success</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="114-subscribing-to-events">11.4 Subscribing to Events</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/initializers/event_subscribers.rb</span>
+
+<span class="c1"># Block-based subscriber</span>
+<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">event</span><span class="o">|</span>
+  <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"profile_view"</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Object-based subscriber</span>
+<span class="k">class</span> <span class="nc">AuditListener</span>
+  <span class="k">def</span> <span class="nf">on_profile_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
+      <span class="ss">action: </span><span class="s2">"profile_view"</span><span class="p">,</span>
+      <span class="ss">resource_type: </span><span class="s2">"Profile"</span><span class="p">,</span>
+      <span class="ss">resource_id: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">],</span>
+      <span class="ss">user_id: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:viewer_id</span><span class="p">],</span>
+      <span class="ss">occurred_at: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:published_at</span><span class="p">]</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">on_access_requested</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">action: </span><span class="s2">"access_request"</span><span class="p">,</span> <span class="o">**</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">on_access_approved</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">action: </span><span class="s2">"access_approval"</span><span class="p">,</span> <span class="o">**</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="no">AuditListener</span><span class="p">.</span><span class="nf">new</span><span class="p">)</span>
+
+<span class="c1"># Conditional subscriber</span>
+<span class="k">class</span> <span class="nc">CacheWarmerListener</span>
+  <span class="k">def</span> <span class="nf">on_profile_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">unless</span> <span class="n">should_warm_cache?</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">])</span>
+
+    <span class="no">ProfileCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">should_warm_cache?</span><span class="p">(</span><span class="n">profile_id</span><span class="p">)</span>
+    <span class="c1"># Logic to determine if cache should be warmed</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="no">CacheWarmerListener</span><span class="p">.</span><span class="nf">new</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="115-before-vs-after">11.5 Before vs After</h3>
+
+<p><strong>Before (controller with inline side effects):</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="c1"># Side effect #1</span>
+  <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"profile_viewed"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">})</span>
+
+  <span class="c1"># Side effect #2</span>
+  <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">action: </span><span class="s2">"profile_view"</span><span class="p">,</span> <span class="ss">resource: </span><span class="vi">@profile</span><span class="p">)</span>
+
+  <span class="c1"># Side effect #3</span>
+  <span class="no">ProfileCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>After (clean controller, events handle side effects):</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+    <span class="ss">viewer_id: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span>
+  <span class="p">})</span>
+
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="116-testing-events">11.6 Testing Events</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ProfilesController</span> <span class="k">do</span>
+  <span class="n">describe</span> <span class="s2">"GET #show"</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">"publishes profile.viewed event"</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="no">EventPublisher</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:publish</span><span class="p">).</span><span class="nf">with</span><span class="p">(</span>
+        <span class="s2">"profile.viewed"</span><span class="p">,</span>
+        <span class="n">hash_including</span><span class="p">(</span><span class="ss">profile_id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">viewer_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+      <span class="p">)</span>
+
+      <span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">AuditListener</span> <span class="k">do</span>
+  <span class="n">describe</span> <span class="s2">"#on_profile_viewed"</span> <span class="k">do</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:event</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="ss">payload: </span><span class="p">{</span> <span class="ss">profile_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">viewer_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">published_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="p">})</span> <span class="p">}</span>
+
+    <span class="n">it</span> <span class="s2">"creates audit log entry"</span> <span class="k">do</span>
+      <span class="n">expect</span> <span class="p">{</span> <span class="n">subject</span><span class="p">.</span><span class="nf">on_profile_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">}.</span><span class="nf">to</span> <span class="n">change</span><span class="p">(</span><span class="no">AuditLog</span><span class="p">,</span> <span class="ss">:count</span><span class="p">).</span><span class="nf">by</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="117-benefits">11.7 Benefits</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Inline Side Effects</th>
+      <th>dry-events</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mixed with business logic</td>
+      <td>Separated via pub/sub</td>
+    </tr>
+    <tr>
+      <td>Hard to test in isolation</td>
+      <td>Each listener testable</td>
+    </tr>
+    <tr>
+      <td>Adding effects = modify caller</td>
+      <td>Adding effects = new subscriber</td>
+    </tr>
+    <tr>
+      <td>No event catalog</td>
+      <td><code class="language-plaintext highlighter-rouge">register_event</code> documents all</td>
+    </tr>
+    <tr>
+      <td>Tight coupling</td>
+      <td>Loose coupling</td>
+    </tr>
+    <tr>
+      <td>Synchronous only</td>
+      <td>Async-ready (queue subscribers)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="12-other-dry-rb-gems-worth-exploring">12. Other dry-rb Gems Worth Exploring</h2>
+
+<h3 id="121-dry-transaction-multi-step-business-operations">12.1 dry-transaction: Multi-Step Business Operations</h3>
 
 <p>Perfect for complex workflows like order processing or user registration:</p>
 
@@ -975,60 +1779,7 @@
 <span class="n">result</span><span class="p">.</span><span class="nf">success?</span> <span class="c1"># =&gt; true/false</span>
 </code></pre></div></div>
 
-<h3 id="82-dry-matcher-pattern-matching-for-results">8.2 dry-matcher: Pattern Matching for Results</h3>
-
-<p>Elegant handling of different result types:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define matcher</span>
-<span class="nb">require</span> <span class="s2">"dry/matcher/result_matcher"</span>
-
-<span class="c1"># Use in controller</span>
-<span class="no">Dry</span><span class="o">::</span><span class="no">Matcher</span><span class="o">::</span><span class="no">ResultMatcher</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">m</span><span class="o">|</span>
-  <span class="n">m</span><span class="p">.</span><span class="nf">success</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>
-    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="n">value</span> <span class="p">},</span> <span class="ss">status: :ok</span>
-  <span class="k">end</span>
-
-  <span class="n">m</span><span class="p">.</span><span class="nf">failure</span> <span class="ss">:validation</span> <span class="k">do</span> <span class="o">|</span><span class="n">errors</span><span class="o">|</span>
-    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">errors: </span><span class="n">errors</span> <span class="p">},</span> <span class="ss">status: :unprocessable_entity</span>
-  <span class="k">end</span>
-
-  <span class="n">m</span><span class="p">.</span><span class="nf">failure</span> <span class="ss">:not_found</span> <span class="k">do</span>
-    <span class="n">head</span> <span class="ss">:not_found</span>
-  <span class="k">end</span>
-
-  <span class="n">m</span><span class="p">.</span><span class="nf">failure</span> <span class="k">do</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span>
-    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">error: </span><span class="n">error</span> <span class="p">},</span> <span class="ss">status: :internal_server_error</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<h3 id="83-dry-configurable-thread-safe-configuration">8.3 dry-configurable: Thread-Safe Configuration</h3>
-
-<p>Replace scattered constants with structured config:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/profile_config.rb</span>
-<span class="k">class</span> <span class="nc">ProfileConfig</span>
-  <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Configurable</span>
-
-  <span class="n">setting</span> <span class="ss">:max_skills</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">50</span>
-  <span class="n">setting</span> <span class="ss">:cache_ttl</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">1</span><span class="p">.</span><span class="nf">hour</span>
-  <span class="n">setting</span> <span class="ss">:visibility_modes</span><span class="p">,</span> <span class="ss">default: </span><span class="sx">%w[public private friends]</span>
-
-  <span class="n">setting</span> <span class="ss">:api</span> <span class="k">do</span>
-    <span class="n">setting</span> <span class="ss">:rate_limit</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">100</span>
-    <span class="n">setting</span> <span class="ss">:timeout</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">30</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="c1"># Usage</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">max_skills</span>           <span class="c1"># =&gt; 50</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">api</span><span class="p">.</span><span class="nf">rate_limit</span>       <span class="c1"># =&gt; 100</span>
-
-<span class="c1"># Override in tests</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">max_skills</span> <span class="o">=</span> <span class="mi">10</span> <span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="84-dry-effects-algebraic-effects">8.4 dry-effects: Algebraic Effects</h3>
+<h3 id="122-dry-effects-algebraic-effects">12.2 dry-effects: Algebraic Effects</h3>
 
 <p>Advanced: dependency injection via effects (alternative to dry-container):</p>
 
@@ -1049,7 +1800,7 @@
 <span class="p">)</span> <span class="p">{</span> <span class="no">ProcessPayment</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">}</span>
 </code></pre></div></div>
 
-<h3 id="85-gem-selection-guide">8.5 Gem Selection Guide</h3>
+<h3 id="123-gem-selection-guide">12.3 Gem Selection Guide</h3>
 
 <table>
   <thead>
@@ -1071,6 +1822,16 @@
       <td>Low</td>
     </tr>
     <tr>
+      <td><strong>dry-configurable</strong></td>
+      <td>Configuration management</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <td><strong>dry-initializer</strong></td>
+      <td>Service object parameters</td>
+      <td>Low</td>
+    </tr>
+    <tr>
       <td><strong>dry-monads</strong></td>
       <td>Service objects with failures</td>
       <td>Medium</td>
@@ -1086,14 +1847,19 @@
       <td>Medium</td>
     </tr>
     <tr>
-      <td><strong>dry-transaction</strong></td>
-      <td>Multi-step workflows</td>
+      <td><strong>dry-matcher</strong></td>
+      <td>Result pattern matching</td>
       <td>Medium</td>
     </tr>
     <tr>
-      <td><strong>dry-configurable</strong></td>
-      <td>Complex configuration</td>
-      <td>Low</td>
+      <td><strong>dry-events</strong></td>
+      <td>Event-driven architecture</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td><strong>dry-transaction</strong></td>
+      <td>Multi-step workflows</td>
+      <td>Medium</td>
     </tr>
     <tr>
       <td><strong>dry-effects</strong></td>
@@ -1105,9 +1871,9 @@
 
 <hr />
 
-<h2 id="9-benefits-and-tradeoffs">9. Benefits and Tradeoffs</h2>
+<h2 id="13-benefits-and-tradeoffs">13. Benefits and Tradeoffs</h2>
 
-<h3 id="91-benefits">9.1 Benefits</h3>
+<h3 id="131-benefits">13.1 Benefits</h3>
 
 <p><strong>1. Explicit Over Implicit</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: What can access_status be? Check the code...</span>
@@ -1149,7 +1915,22 @@
 <span class="c1"># =&gt; { thumb_status: ["must be one of: liked, disliked"] }</span>
 </code></pre></div></div>
 
-<h3 id="92-tradeoffs">9.2 Tradeoffs</h3>
+<p><strong>5. Event-Driven Architecture</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Side effects scattered in controllers</span>
+<span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="no">CacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="c1"># After: Single event, multiple handlers</span>
+<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">,</span> <span class="p">{</span> <span class="o">...</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p><strong>6. Centralized Configuration</strong></p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: grep -r "CACHE_TTL" app/</span>
+<span class="c1"># After: ProfileConfig.config.actions.cache_ttl</span>
+</code></pre></div></div>
+
+<h3 id="132-tradeoffs">13.2 Tradeoffs</h3>
 
 <p><strong>1. Learning Curve</strong></p>
 <ul>
@@ -1162,7 +1943,7 @@
 <ul>
   <li>Types defined in one place, used in another</li>
   <li>Following data flow requires understanding container</li>
-  <li>Debugging may span multiple abstractions</li>
+  <li>Events may be handled far from where they’re published</li>
 </ul>
 
 <p><strong>3. Overhead for Simple Cases</strong></p>
@@ -1175,12 +1956,12 @@
 
 <p><strong>4. Gems Add Dependencies</strong></p>
 <ul>
-  <li>7 gems for full suite</li>
+  <li>11 gems for full suite</li>
   <li>Version compatibility to manage</li>
   <li>Bundle size increases</li>
 </ul>
 
-<h3 id="93-when-to-use-dry-rb">9.3 When to Use dry-rb</h3>
+<h3 id="133-when-to-use-dry-rb">13.3 When to Use dry-rb</h3>
 
 <p><strong>✅ Good Fit:</strong></p>
 <ul>
@@ -1189,6 +1970,7 @@
   <li>Apps where testability is priority</li>
   <li>Teams comfortable with FP concepts</li>
   <li>Large apps with many developers</li>
+  <li>Event-driven or audit-heavy systems</li>
 </ul>
 
 <p><strong>❌ Poor Fit:</strong></p>
@@ -1201,7 +1983,7 @@
 
 <hr />
 
-<h2 id="10-conclusion">10. Conclusion</h2>
+<h2 id="14-conclusion">14. Conclusion</h2>
 
 <p>Integrating dry-rb into our Rails API transformed code that “worked” into code that’s <strong>obvious, testable, and maintainable</strong>:</p>
 
@@ -1235,9 +2017,34 @@
       <td>Injected</td>
     </tr>
     <tr>
+      <td>Configuration</td>
+      <td>Scattered constants</td>
+      <td>Centralized</td>
+    </tr>
+    <tr>
+      <td>Side effects</td>
+      <td>Inline in controllers</td>
+      <td>Event-driven</td>
+    </tr>
+    <tr>
+      <td>Service parameters</td>
+      <td>Manual initialize</td>
+      <td>Declarative DSL</td>
+    </tr>
+    <tr>
+      <td>Result handling</td>
+      <td>if/case statements</td>
+      <td>Pattern matching</td>
+    </tr>
+    <tr>
       <td>Test isolation</td>
       <td>Integration only</td>
       <td>Unit + integration</td>
+    </tr>
+    <tr>
+      <td>Gems used</td>
+      <td>0</td>
+      <td>11</td>
     </tr>
   </tbody>
 </table>
@@ -1249,7 +2056,11 @@
   <li><strong>Add dry-struct for data transfer</strong> — Especially for API responses</li>
   <li><strong>Use dry-monads in services</strong> — Replace boolean/nil returns</li>
   <li><strong>Add dry-validation for API inputs</strong> — Before data hits your models</li>
+  <li><strong>Use dry-configurable early</strong> — Centralize config before it scatters</li>
+  <li><strong>Add dry-initializer to services</strong> — Reduce boilerplate immediately</li>
   <li><strong>Introduce dry-container gradually</strong> — When testing pain increases</li>
+  <li><strong>Add dry-matcher for cleaner controllers</strong> — Pattern matching is elegant</li>
+  <li><strong>Use dry-events for side effects</strong> — Decouple analytics, logging, notifications</li>
   <li><strong>Don’t over-engineer</strong> — A simple hash is fine for simple data</li>
 </ol>
 
@@ -1260,8 +2071,10 @@
 <ul>
   <li><strong>Fewer bugs</strong> — Type mismatches caught at construction, not runtime</li>
   <li><strong>Faster debugging</strong> — Follow explicit contracts, not implicit conventions</li>
-  <li><strong>Easier onboarding</strong> — Types document themselves</li>
+  <li><strong>Easier onboarding</strong> — Types and events document themselves</li>
   <li><strong>Confident refactoring</strong> — Change implementation, types verify compatibility</li>
+  <li><strong>Testable architecture</strong> — Unit test components in isolation</li>
+  <li><strong>Scalable patterns</strong> — Event-driven architecture grows with your app</li>
 </ul>
 
 <p>dry-rb doesn’t replace Rails conventions—it <strong>complements them</strong> where they fall short. Use the right tool for each job.</p>
@@ -1276,12 +2089,16 @@
   <li><strong>dry-types Documentation</strong>: <a href="https://dry-rb.org/gems/dry-types">dry-rb.org/gems/dry-types</a></li>
   <li><strong>dry-monads Documentation</strong>: <a href="https://dry-rb.org/gems/dry-monads">dry-rb.org/gems/dry-monads</a></li>
   <li><strong>dry-validation Documentation</strong>: <a href="https://dry-rb.org/gems/dry-validation">dry-rb.org/gems/dry-validation</a></li>
+  <li><strong>dry-events Documentation</strong>: <a href="https://dry-rb.org/gems/dry-events">dry-rb.org/gems/dry-events</a></li>
+  <li><strong>dry-configurable Documentation</strong>: <a href="https://dry-rb.org/gems/dry-configurable">dry-rb.org/gems/dry-configurable</a></li>
+  <li><strong>dry-initializer Documentation</strong>: <a href="https://dry-rb.org/gems/dry-initializer">dry-rb.org/gems/dry-initializer</a></li>
+  <li><strong>dry-matcher Documentation</strong>: <a href="https://dry-rb.org/gems/dry-matcher">dry-rb.org/gems/dry-matcher</a></li>
   <li><strong>Trailblazer (alternative)</strong>: <a href="https://trailblazer.to/">trailblazer.to</a> (uses dry-rb under the hood)</li>
 </ul>
 
 <hr />
 
-<p><em>This post documents our integration of dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, and established patterns that scale across 100+ endpoints.</em></p>
+<p><em>This post documents our integration of 11 dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.</em></p>
 
 
   </div>
