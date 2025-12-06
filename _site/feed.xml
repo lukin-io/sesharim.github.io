@@ -5,9 +5,216 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 Dec 2025 10:45:36 +0000</pubDate>
-    <lastBuildDate>Thu, 04 Dec 2025 10:45:36 +0000</lastBuildDate>
+    <pubDate>Sat, 06 Dec 2025 22:18:11 +0200</pubDate>
+    <lastBuildDate>Sat, 06 Dec 2025 22:18:11 +0200</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>Neverlands Browser Bot Game Design Analyst</title>
+        <description>&lt;p&gt;layout: post
+title: “Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst”
+date: 2025-12-06
+author: Max Lukin
+tags: [ai, game-design, bots, playwright, openai, mmorpg, analysis]
+categories: [engineering, game-design, AI]
+description: “How we built a Playwright + GPT-5.1 pipeline that logs into neverlands.ru, captures real game screens, and turns them into structured design insights for your own MMORPG.”
+—&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;We built a &lt;strong&gt;browser bot + GPT-5.1 analyst&lt;/strong&gt; that logs into neverlands.ru, captures real game screens, and turns them into structured JSON.&lt;/li&gt;
+    &lt;li&gt;The goal is &lt;strong&gt;game design research&lt;/strong&gt;, not automation: extract systems, loops, and UX patterns to feed your own GDD.&lt;/li&gt;
+    &lt;li&gt;Everything runs locally: credentials live in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt;, GPT only ever sees &lt;strong&gt;HTML snapshots&lt;/strong&gt;, not your password.&lt;/li&gt;
+    &lt;li&gt;The stack is small and explicit: &lt;strong&gt;Node 18 + Playwright + dotenv + OpenAI API&lt;/strong&gt;, wired through a few focused TypeScript scripts.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-build-a-bot-for-neverlands&quot;&gt;Why build a bot for Neverlands?&lt;/h2&gt;
+
+&lt;p&gt;Neverlands is a long-running browser MMORPG with &lt;strong&gt;mature systems&lt;/strong&gt;: inventory, combat, economy, events, social layers. Instead of cloning it, we want to &lt;strong&gt;study&lt;/strong&gt; it:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What progression and compulsion loops does it use?&lt;/li&gt;
+  &lt;li&gt;How are shops, currencies, and sinks structured?&lt;/li&gt;
+  &lt;li&gt;Which UI patterns make the game readable (or confusing)?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Doing this manually is slow. Screenshots pile up, notes get messy, and you miss subtle connections. The solution: a &lt;strong&gt;repeatable pipeline&lt;/strong&gt; that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Logs into your account.&lt;/li&gt;
+  &lt;li&gt;Visits interesting screens (home, character, inventory, shop, PvP…).&lt;/li&gt;
+  &lt;li&gt;Saves HTML + screenshots.&lt;/li&gt;
+  &lt;li&gt;Asks GPT-5.1 to extract features and player needs into machine-readable JSON.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Those JSON files become the raw material for your &lt;strong&gt;game design document&lt;/strong&gt;, where you remix Neverlands-inspired ideas into your own world.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;architecture-at-a-glance&quot;&gt;Architecture at a glance&lt;/h2&gt;
+
+&lt;p&gt;The repo is intentionally small:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bot/        # Playwright automation
+  login.ts  # log in + save session
+  crawl.ts  # visit screens + save HTML/PNG
+
+analyzer/
+  analyzeScreens.ts  # send HTML to GPT-5.1 using promt.md
+
+data/
+  session/   # Playwright storage state
+  raw/       # captured HTML + screenshots
+  analysis/  # GPT JSON outputs
+
+promt.md     # &quot;game design analyst&quot; prompt template
+doc/         # human docs (setup, usage, dev)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The heart of the system is &lt;strong&gt;promt.md&lt;/strong&gt;: a prompt that tells GPT-5.1 to behave like a &lt;strong&gt;game design analyst&lt;/strong&gt;. For each HTML snapshot it:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Identifies visible systems/features (e.g., daily quests, energy, shop widgets).&lt;/li&gt;
+  &lt;li&gt;Describes how they seem to work from the UI.&lt;/li&gt;
+  &lt;li&gt;Classifies the player need they target (progression, social, mastery, etc.).&lt;/li&gt;
+  &lt;li&gt;Suggests how you might adapt the idea for your own MMORPG.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Outputs are strict JSON, so you can script on top of them later.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;technical-implementation&quot;&gt;Technical implementation&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-login-with-playwright&quot;&gt;1. Login with Playwright&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bot/login.ts&lt;/code&gt; uses &lt;strong&gt;Playwright&lt;/strong&gt; to open &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://www.neverlands.ru/&lt;/code&gt;, fill the login form, and save a session:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Credentials come from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv&lt;/code&gt;:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NEVERLANDS_USERNAME&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NEVERLANDS_PASSWORD&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Form selectors are configurable:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NEVERLANDS_USERNAME_SELECTOR&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NEVERLANDS_PASSWORD_SELECTOR&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NEVERLANDS_SUBMIT_SELECTOR&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The URL is normalized so any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://neverlands.ru&lt;/code&gt; is rewritten to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://www.neverlands.ru/&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;On success, storage state is written to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data/session/neverlands.json&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You run it with:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm run login
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;2-crawling-key-game-screens&quot;&gt;2. Crawling key game screens&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bot/crawl.ts&lt;/code&gt; reuses the saved session to open specific URLs and capture HTML + PNG:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Screens are defined as a small list of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ id, url }&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;For each screen, we:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;page.goto(url, { waitUntil: &apos;networkidle&apos; })&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;Save DOM: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data/raw/&amp;lt;id&amp;gt;.html&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;Save screenshot: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data/raw/&amp;lt;id&amp;gt;.png&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can start with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;home&lt;/code&gt;, then add pages like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inventory&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;character&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shop&lt;/code&gt;, or any internal route Neverlands exposes.&lt;/p&gt;
+
+&lt;p&gt;Run the crawl:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm run crawl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;3-gpt-51-analysis&quot;&gt;3. GPT-5.1 analysis&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;analyzer/analyzeScreens.ts&lt;/code&gt; reads every &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*.html&lt;/code&gt; file in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data/raw/&lt;/code&gt;, then calls the OpenAI Chat Completions API:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Uses &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OPENAI_API_KEY&lt;/code&gt; from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Defaults to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OPENAI_MODEL=gpt-5.1&lt;/code&gt; (configurable).&lt;/li&gt;
+  &lt;li&gt;Loads &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;promt.md&lt;/code&gt; as the &lt;strong&gt;system&lt;/strong&gt; message.&lt;/li&gt;
+  &lt;li&gt;Sends the HTML as the &lt;strong&gt;user&lt;/strong&gt; message.&lt;/li&gt;
+  &lt;li&gt;Requests &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;response_format: json_object&lt;/code&gt; to keep outputs parseable.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Each result is saved as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data/analysis/&amp;lt;screen&amp;gt;-&amp;lt;hash&amp;gt;.json&lt;/code&gt;, giving you versioned feature maps per screen.&lt;/p&gt;
+
+&lt;p&gt;Run analysis:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm run analyze
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;from-json-to-a-game-design-document&quot;&gt;From JSON to a game design document&lt;/h2&gt;
+
+&lt;p&gt;Once you have JSON outputs, you’re holding a &lt;strong&gt;Neverlands feature index&lt;/strong&gt;. Typical next steps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Group features by system: combat, economy, social, events, meta.&lt;/li&gt;
+  &lt;li&gt;Identify loops: daily quests → currencies → shops → upgrades.&lt;/li&gt;
+  &lt;li&gt;Tag ideas as &lt;strong&gt;keep / adapt / avoid&lt;/strong&gt; for your own game.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Because the analysis is structured, it’s easy to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Generate Markdown “inspiration cards” per feature.&lt;/li&gt;
+  &lt;li&gt;Build tables comparing Neverlands to other games you crawl later.&lt;/li&gt;
+  &lt;li&gt;Feed the JSON back into another GPT-5.1 pass to draft full sections of your GDD.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The bot doesn’t design the game for you—but it &lt;strong&gt;amplifies your research&lt;/strong&gt; so you can spend time on synthesis, not screenshot wrangling.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;safety-tos-and-scope&quot;&gt;Safety, ToS, and scope&lt;/h2&gt;
+
+&lt;p&gt;Even though neverlands.ru allows bots, we built this stack with a conservative mindset:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Credentials live only in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; on your machine.&lt;/li&gt;
+  &lt;li&gt;GPT never sees your password or cookies, only HTML.&lt;/li&gt;
+  &lt;li&gt;The intended use is &lt;strong&gt;analysis&lt;/strong&gt;, not auto-play or farming.&lt;/li&gt;
+  &lt;li&gt;Screen lists are small and intentional, not full-site crawlers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you adapt this to other games, always re-check each game’s ToS and keep your rate of requests reasonable.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;where-to-go-next&quot;&gt;Where to go next&lt;/h2&gt;
+
+&lt;p&gt;With the core pipeline in place, the most interesting work is ahead:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add more screens and flows (e.g., onboarding, high-level PvP, events).&lt;/li&gt;
+  &lt;li&gt;Enrich &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;promt.md&lt;/code&gt; with new fields (risk flags, UX pain points, monetization patterns).&lt;/li&gt;
+  &lt;li&gt;Build a small UI or static site to browse the analyzed features.&lt;/li&gt;
+  &lt;li&gt;Compare Neverlands against other browser MMORPGs using the same pipeline.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The end goal: a &lt;strong&gt;living game design document&lt;/strong&gt; for your own project, grounded in real, battle-tested systems—but with your own take on what makes them fun.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 06 Dec 2025 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/blog/neverlands-browser-bot-game-design-analyst</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/neverlands-browser-bot-game-design-analyst</guid>
+        
+        
+      </item>
     
       <item>
         <title>From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API</title>
@@ -2018,7 +2225,7 @@
 &lt;p&gt;&lt;em&gt;This post documents our integration of 11 dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.&lt;/em&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Thu, 04 Dec 2025 00:00:00 +0000</pubDate>
+        <pubDate>Thu, 04 Dec 2025 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/dry-rb-integration-rails-api</link>
         <guid isPermaLink="true">http://localhost:4000/blog/dry-rb-integration-rails-api</guid>
         
@@ -3234,7 +3441,7 @@ rails runner &lt;span class=&quot;s2&quot;&gt;&quot;Benchmark.measure { User.cou
 &lt;p&gt;&lt;em&gt;This post documents our migration of the Wigiwork API from MySQL to PostgreSQL. The patterns described here enabled a migration with minimal code changes and zero regressions—proving that investment in database-agnostic code pays dividends when requirements evolve.&lt;/em&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Wed, 03 Dec 2025 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 03 Dec 2025 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/mysql-to-postgresql-migration-guide</link>
         <guid isPermaLink="true">http://localhost:4000/blog/mysql-to-postgresql-migration-guide</guid>
         
@@ -3834,7 +4041,7 @@ Final documentation (AFTER verification):
 &lt;p&gt;&lt;strong&gt;The framework is the force multiplier. Experience is choosing to use it.&lt;/strong&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Tue, 02 Dec 2025 00:00:00 +0000</pubDate>
+        <pubDate>Tue, 02 Dec 2025 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/zero-gap-api-development-with-ai</link>
         <guid isPermaLink="true">http://localhost:4000/blog/zero-gap-api-development-with-ai</guid>
         
@@ -4703,7 +4910,7 @@ Fix any issues before considering this complete.
 &lt;p&gt;&lt;em&gt;This post was written while building Elselands—a browser-based MMORPG recreating the classic Neverlands.ru experience with modern Rails tooling. The documentation-driven approach described here enabled rapid development of 9 major Neverlands-inspired systems, 100+ models, and comprehensive test coverage in a fraction of the time traditional development would require.&lt;/em&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
+        <pubDate>Thu, 27 Nov 2025 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai</link>
         <guid isPermaLink="true">http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai</guid>
         
@@ -5673,7 +5880,7 @@ Fix any issues before considering this complete.
 
 &lt;p&gt;Drop this file into your Jekyll blog’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; (renaming it with the proper date + slug), tweak the title/metadata, and you’ve got a comprehensive, code-heavy guide to WebSockets with Rails ready to publish.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 19 Nov 2025 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/websockets-rails-actioncable</link>
         <guid isPermaLink="true">http://localhost:4000/blog/websockets-rails-actioncable</guid>
         
@@ -5899,7 +6106,7 @@ With explicit contracts, repo-level laws, and non-negotiable verification, tools
 
 &lt;p&gt;&lt;strong&gt;Choose the driver.&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 29 Oct 2025 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 29 Oct 2025 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/blog/ai-senior-vs-junior</link>
         <guid isPermaLink="true">http://localhost:4000/blog/ai-senior-vs-junior</guid>
         
@@ -6161,7 +6368,7 @@ Return only the requested code + file paths; do not invent fields outside the sc
 
 &lt;p&gt;By unifying our standards and making them prompt‑aware, we get the best of both worlds: &lt;strong&gt;Rails defaults&lt;/strong&gt; that keep us fast, and &lt;strong&gt;clear rules&lt;/strong&gt; that keep humans and AI aligned. The result is higher‑quality code with far less friction.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 09 Sep 2025 09:00:00 +0000</pubDate>
+        <pubDate>Tue, 09 Sep 2025 12:00:00 +0300</pubDate>
         <link>http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</link>
         <guid isPermaLink="true">http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</guid>
         
@@ -6523,7 +6730,7 @@ Use healthchecks plus a small wait loop before starting Rails.&lt;/li&gt;
 
 &lt;p&gt;Happy shipping — and goodbye to “works on my machine.” 🚀&lt;/p&gt;
 </description>
-        <pubDate>Thu, 04 Sep 2025 09:00:00 +0000</pubDate>
+        <pubDate>Thu, 04 Sep 2025 12:00:00 +0300</pubDate>
         <link>http://localhost:4000/blog/containerizing-rails-dev-with-docker</link>
         <guid isPermaLink="true">http://localhost:4000/blog/containerizing-rails-dev-with-docker</guid>
         
@@ -6833,7 +7040,7 @@ effects.&lt;/li&gt;
 &lt;p&gt;By following these patterns, your Rails apps will remain consistent,
 reliable, and scalable.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 01 Sep 2025 09:00:00 +0000</pubDate>
+        <pubDate>Mon, 01 Sep 2025 12:00:00 +0300</pubDate>
         <link>http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb</link>
         <guid isPermaLink="true">http://localhost:4000/blog/acid_in_rails_postgresql_vs_mongodb</guid>
         
@@ -6847,236 +7054,6 @@ reliable, and scalable.&lt;/p&gt;
         <category>patterns</category>
         
         <category>acis</category>
-        
-      </item>
-    
-      <item>
-        <title>A tiny Rails console banner that show app stats every time you run rails c</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;Quick win for everyday Rails work: print a small, colorized stats banner &lt;strong&gt;every time&lt;/strong&gt; you open &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails console&lt;/code&gt; — users, companies, profiles, attachments, etc. It’s zero‑maintenance and runs only in the console.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;tldr--roadmap&quot;&gt;TL;DR / Roadmap&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Pick one approach&lt;/strong&gt;:
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;Option A — Initializer (console‑only)&lt;/strong&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/initializers/console_banner.rb&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Option B — Console hook (bulletproof)&lt;/strong&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/console_banner.rb&lt;/code&gt; + a small addition in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/application.rb&lt;/code&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails c&lt;/code&gt; and enjoy the banner.&lt;/li&gt;
-  &lt;li&gt;If you use &lt;strong&gt;Spring&lt;/strong&gt;, run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/spring stop&lt;/code&gt; once (or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DISABLE_SPRING=1 rails c&lt;/code&gt;) if you don’t see it the first time.&lt;/li&gt;
-  &lt;li&gt;Optional: colorize, add DB/Redis checks, or timing per query.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;why-this-exists&quot;&gt;Why this exists&lt;/h2&gt;
-&lt;p&gt;When I open the console, I want context fast: &lt;em&gt;how many users are in the DB? which environment am I in? what database am I connected to?&lt;/em&gt;
-A tiny banner answers those in ~1ms of code you’ll forget about.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;option-a--initializer-that-runs-only-in-the-console&quot;&gt;Option A — Initializer that runs only in the console&lt;/h2&gt;
-&lt;p&gt;Create &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/initializers/console_banner.rb&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/initializers/console_banner.rb&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Prints a banner when you start `rails console` (and only then).&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;after_initialize&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
-      &lt;span class=&quot;c1&quot;&gt;# Ensure DB is reachable&lt;/span&gt;
-      &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection&lt;/span&gt;
-
-      &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;Users&quot;&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;Companies&quot;&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Company&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Company&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;Profiles&quot;&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Profile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;Resumes&quot;&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Resume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Resume&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;Attachments&quot;&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Attachment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Attachment&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;AccessRequests&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AccessRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AccessRequest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compact&lt;/span&gt;
-
-      &lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;max&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[1m--- Application Stats ---&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[0m&quot;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;klass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;klass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;StandardError&lt;/span&gt;
-          &lt;span class=&quot;s2&quot;&gt;&quot;N/A&quot;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;is_a?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;zero?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;31&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# red if 0, green otherwise&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total %-&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s: &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[0m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-      &lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection_db_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;unknown&quot;&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Environment: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; | DB: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;---------------------------&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;StandardError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;warn&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[console banner] skipped: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt; minimal code, works in most setups.
-&lt;strong&gt;Cons:&lt;/strong&gt; very rare boot orders may skip it; see Option B if that happens.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;option-b--console-hook-bulletproof&quot;&gt;Option B — Console hook (bulletproof)&lt;/h2&gt;
-&lt;p&gt;1) Create &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/console_banner.rb&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/console_banner.rb&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;ConsoleBanner&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print!&lt;/span&gt;
-    &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;s2&quot;&gt;&quot;Users&quot;&lt;/span&gt;          &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;s2&quot;&gt;&quot;Companies&quot;&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Company&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Company&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-      &lt;span class=&quot;s2&quot;&gt;&quot;Profiles&quot;&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Profile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-      &lt;span class=&quot;s2&quot;&gt;&quot;Resumes&quot;&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Resume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Resume&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-      &lt;span class=&quot;s2&quot;&gt;&quot;Attachments&quot;&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ActiveStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Attachment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Attachment&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-      &lt;span class=&quot;s2&quot;&gt;&quot;AccessRequests&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;defined?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AccessRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AccessRequest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compact&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;max&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[1m--- Application Stats ---&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[0m&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;klass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;klass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;N/A&quot;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;is_a?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;zero?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;31&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total %-&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;s: &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;m%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\e&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;[0m&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection_db_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;unknown&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Environment: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; | DB: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;---------------------------&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;StandardError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;warn&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[console banner] skipped: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;ConsoleBanner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print!&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;2) Register it in &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/application.rb&lt;/code&gt;&lt;/strong&gt; (inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;class Application &amp;lt; Rails::Application&lt;/code&gt;):&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/application.rb&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;YourApp&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Application&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;# ... other config&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;console&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;config/console_banner&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Pros:&lt;/strong&gt; guaranteed to run &lt;strong&gt;only&lt;/strong&gt; in console and always load.
-&lt;strong&gt;Cons:&lt;/strong&gt; two small files instead of one.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;example-what-it-looks-like&quot;&gt;Example: What it looks like&lt;/h2&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails c
-
---- Application Stats ---
-  User Count (19.0ms)  SELECT COUNT(*) FROM `users` /*application=&apos;WigiworkBack&apos;*/
-Total Users         : 53
-  Company Count (3.2ms)  SELECT COUNT(*) FROM `companies` /*application=&apos;WigiworkBack&apos;*/
-Total Companies     : 2
-  Profile Count (0.3ms)  SELECT COUNT(*) FROM `profiles` /*application=&apos;WigiworkBack&apos;*/
-Total Profiles      : 52
-  Resume Count (0.2ms)  SELECT COUNT(*) FROM `resumes` /*application=&apos;WigiworkBack&apos;*/
-Total Resumes       : 37
-  ActiveStorage::Attachment Count (0.3ms)  SELECT COUNT(*) FROM `active_storage_attachments` /*application=&apos;WigiworkBack&apos;*/
-Total Attachments   : 0
-  AccessRequest Count (0.2ms)  SELECT COUNT(*) FROM `access_requests` /*application=&apos;WigiworkBack&apos;*/
-Total AccessRequests: 4
-Environment: development | DB: wigiwork_development
----------------------------
-
-Loading development environment (Rails 8.0.2)
-3.4.4 :001 &amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Note: The SQL lines appear if you have SQL logging enabled (default in development). The “green/red” colorization shown in the code depends on whether the count is zero.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Nothing prints?&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Stop Spring: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/spring stop&lt;/code&gt;, then &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails c&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;Try &lt;strong&gt;Option B&lt;/strong&gt; so the code is wired via the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;console&lt;/code&gt; hook.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Errors about constant not defined?&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Wrap optional models with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;defined?(Model) ? Model : nil&lt;/code&gt; (already done above).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Production console&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;This also runs in production console; that’s usually fine. If you want it dev‑only, guard with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if Rails.env.development?&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;optional-enhancements&quot;&gt;Optional enhancements&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Timing per query:&lt;/strong&gt; wrap &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;klass.count&lt;/code&gt; in a small timer and print duration.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Health checks:&lt;/strong&gt; ping Redis or Sidekiq before printing.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;More models:&lt;/strong&gt; add whatever gives you signal (e.g., &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MessageThread&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JobTitle&lt;/code&gt;, etc.).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;how-youll-use-it-nothing-fancy&quot;&gt;How you’ll use it (nothing fancy)&lt;/h2&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/rails console
-&lt;span class=&quot;c&quot;&gt;# or just&lt;/span&gt;
-rails c
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;steps-checklist&quot;&gt;Steps checklist&lt;/h2&gt;
-&lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Choose &lt;strong&gt;Option A&lt;/strong&gt; (initializer) or &lt;strong&gt;Option B&lt;/strong&gt; (console hook).&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Create the files at the exact paths above.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;(If using Spring) run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/spring stop&lt;/code&gt; once.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails c&lt;/code&gt; → confirm the banner displays.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Extend with timers / health checks as needed.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 25 Aug 2025 09:00:00 +0000</pubDate>
-        <link>http://localhost:4000/blog/rails-console-startup-banner</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/rails-console-startup-banner</guid>
-        
-        <category>rails-8</category>
-        
-        <category>console</category>
-        
-        
-        <category>rails</category>
-        
-        <category>performance</category>
-        
-        <category>api</category>
-        
-        <category>optimization</category>
-        
-        <category>blueprinter</category>
-        
-        <category>ransack</category>
-        
-        <category>caching</category>
         
       </item>
     
