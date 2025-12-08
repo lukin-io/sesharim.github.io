@@ -1,3 +1,4 @@
+---
 layout: post
 title: "Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst"
 date: 2025-12-06
