@@ -1,0 +1,1264 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/rspec-ci-optimization-rails-bitbucket">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  “A fast test suite isn’t a luxury—it’s the difference between deploying confidently and deploying nervously.”">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut our Bitbucket Pipeline build time by 60%." />
+<meta property="og:description" content="A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut our Bitbucket Pipeline build time by 60%." />
+<link rel="canonical" href="http://localhost:4000/blog/rspec-ci-optimization-rails-bitbucket" />
+<meta property="og:url" content="http://localhost:4000/blog/rspec-ci-optimization-rails-bitbucket" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-12-10T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-12-10T00:00:00+00:00","datePublished":"2025-12-10T00:00:00+00:00","description":"A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut our Bitbucket Pipeline build time by 60%.","headline":"From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/rspec-ci-optimization-rails-bitbucket"},"url":"http://localhost:4000/blog/rspec-ci-optimization-rails-bitbucket"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">December 10, 2025</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><em>“A fast test suite isn’t a luxury—it’s the difference between deploying confidently and deploying nervously.”</em></p>
+</blockquote>
+
+<p>Our Bitbucket Pipeline was timing out at 5 minutes. With 338 spec files, 456 RSwag integration tests, and growing, we needed a systematic approach to optimization—not just quick fixes.</p>
+
+<p>This post documents how we reduced our CI build time by 60% through parallel execution, factory optimization, intelligent pipeline architecture, and eliminating hidden I/O bottlenecks.</p>
+
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li><a href="#1-the-problem-death-by-timeout">The Problem: Death by Timeout</a></li>
+  <li><a href="#2-diagnostic-analysis">Diagnostic Analysis</a></li>
+  <li><a href="#3-pipeline-architecture-optimization">Pipeline Architecture Optimization</a></li>
+  <li><a href="#4-parallel-test-execution">Parallel Test Execution</a></li>
+  <li><a href="#5-factory-optimization">Factory Optimization</a></li>
+  <li><a href="#6-file-io-elimination">File I/O Elimination</a></li>
+  <li><a href="#7-test-profiling-infrastructure">Test Profiling Infrastructure</a></li>
+  <li><a href="#8-rspec-configuration-tuning">RSpec Configuration Tuning</a></li>
+  <li><a href="#9-results-and-metrics">Results and Metrics</a></li>
+  <li><a href="#10-ongoing-optimization-strategy">Ongoing Optimization Strategy</a></li>
+</ol>
+
+<hr />
+
+<h2 id="1-the-problem-death-by-timeout">1. The Problem: Death by Timeout</h2>
+
+<h3 id="11-the-symptoms">1.1 The Symptoms</h3>
+
+<p>Our Bitbucket Pipeline build started failing with this error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exceeded build time limit of 5 minutes.
+Error key: agent.step.time-limit-exceeded
+</code></pre></div></div>
+
+<p>The logs showed tests completing, but swagger generation pushed us over the limit:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">exec </span>rspec <span class="nt">--tag</span> ~ci_skip <span class="nt">--format</span> documentation  <span class="c"># ~4:30</span>
+bundle <span class="nb">exec </span>rails rswag:specs:swaggerize                  <span class="c"># +0:45 = TIMEOUT</span>
+</code></pre></div></div>
+
+<h3 id="12-the-root-causes">1.2 The Root Causes</h3>
+
+<p>After analysis, we identified multiple compounding issues:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Issue</th>
+      <th>Impact</th>
+      <th>Root Cause</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sequential execution</td>
+      <td>100%</td>
+      <td>Single-threaded test run</td>
+    </tr>
+    <tr>
+      <td>RSwag runs tests twice</td>
+      <td>+50%</td>
+      <td>Swagger generation re-executes integration specs</td>
+    </tr>
+    <tr>
+      <td>Eager factory creation</td>
+      <td>+15%</td>
+      <td>252 <code class="language-plaintext highlighter-rouge">let!</code> calls creating records unnecessarily</td>
+    </tr>
+    <tr>
+      <td>Disk I/O in factories</td>
+      <td>+10%</td>
+      <td>File.open for every attachment</td>
+    </tr>
+    <tr>
+      <td>No parallelization</td>
+      <td>100%</td>
+      <td>All 338 specs in one process</td>
+    </tr>
+    <tr>
+      <td>Verbose output</td>
+      <td>+5%</td>
+      <td><code class="language-plaintext highlighter-rouge">--format documentation</code> slower than <code class="language-plaintext highlighter-rouge">--format progress</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="13-our-starting-point">1.3 Our Starting Point</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total spec files</td>
+      <td>338</td>
+    </tr>
+    <tr>
+      <td>Integration specs (RSwag)</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">run_test!</code> calls</td>
+      <td>456</td>
+    </tr>
+    <tr>
+      <td>Factory <code class="language-plaintext highlighter-rouge">create()</code> calls in integration</td>
+      <td>~502</td>
+    </tr>
+    <tr>
+      <td>Eager <code class="language-plaintext highlighter-rouge">let!</code> evaluations</td>
+      <td>252</td>
+    </tr>
+    <tr>
+      <td>Pipeline timeout</td>
+      <td>5 minutes</td>
+    </tr>
+    <tr>
+      <td>Actual runtime</td>
+      <td>5+ minutes (timeout)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="2-diagnostic-analysis">2. Diagnostic Analysis</h2>
+
+<h3 id="21-understanding-the-codebase">2.1 Understanding the Codebase</h3>
+
+<p>Before optimizing, we audited the entire test suite:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Count spec files</span>
+find spec <span class="nt">-name</span> <span class="s2">"*_spec.rb"</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+<span class="c"># =&gt; 338</span>
+
+<span class="c"># Count integration specs (RSwag)</span>
+find spec/integration <span class="nt">-name</span> <span class="s2">"*_spec.rb"</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+<span class="c"># =&gt; 64</span>
+
+<span class="c"># Count run_test! calls</span>
+<span class="nb">grep</span> <span class="nt">-c</span> <span class="s2">"run_test!"</span> spec/integration/<span class="k">*</span>.rb | <span class="nb">awk</span> <span class="nt">-F</span>: <span class="s1">'{sum += $2} END {print sum}'</span>
+<span class="c"># =&gt; 456</span>
+
+<span class="c"># Count eager evaluations</span>
+<span class="nb">grep</span> <span class="nt">-c</span> <span class="s2">"let!"</span> spec/integration/<span class="k">*</span>.rb | <span class="nb">awk</span> <span class="nt">-F</span>: <span class="s1">'{sum += $2} END {print sum}'</span>
+<span class="c"># =&gt; 252</span>
+
+<span class="c"># Find largest spec files</span>
+find spec <span class="nt">-name</span> <span class="s2">"*_spec.rb"</span> <span class="nt">-exec</span> <span class="nb">wc</span> <span class="nt">-l</span> <span class="o">{}</span> + | <span class="nb">sort</span> <span class="nt">-n</span> | <span class="nb">tail</span> <span class="nt">-10</span>
+</code></pre></div></div>
+
+<p><strong>Key finding:</strong> <code class="language-plaintext highlighter-rouge">companies_spec.rb</code> was 1,476 lines—a maintenance and performance problem.</p>
+
+<h3 id="22-identifying-bottlenecks">2.2 Identifying Bottlenecks</h3>
+
+<p>We identified these optimization opportunities:</p>
+
+<p><strong>1. Pipeline Architecture</strong></p>
+<ul>
+  <li>Tests ran sequentially in a single step</li>
+  <li>Lint, security, and tests couldn’t run in parallel</li>
+  <li>RSwag swagger generation was blocking</li>
+</ul>
+
+<p><strong>2. Test Execution</strong></p>
+<ul>
+  <li>No parallel test execution (<code class="language-plaintext highlighter-rouge">parallel_tests</code> gem missing)</li>
+  <li>No <code class="language-plaintext highlighter-rouge">--fail-fast</code> flag to stop on first failure</li>
+  <li>Verbose output format slowing things down</li>
+</ul>
+
+<p><strong>3. Factory Usage</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">let!</code> used where <code class="language-plaintext highlighter-rouge">let</code> would suffice</li>
+  <li>Duplicate factory creation in each response block</li>
+  <li>File I/O for every attachment creation</li>
+</ul>
+
+<p><strong>4. Profiling</strong></p>
+<ul>
+  <li>No visibility into slow tests</li>
+  <li>No factory usage profiling</li>
+  <li>No SQL query profiling</li>
+</ul>
+
+<hr />
+
+<h2 id="3-pipeline-architecture-optimization">3. Pipeline Architecture Optimization</h2>
+
+<h3 id="31-the-problem-sequential-steps">3.1 The Problem: Sequential Steps</h3>
+
+<p>Our original pipeline ran everything sequentially:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Everything in sequence</span>
+<span class="na">pipelines</span><span class="pi">:</span>
+  <span class="na">default</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">parallel</span><span class="pi">:</span>
+        <span class="na">steps</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">Lint &amp; Security</span>
+              <span class="c1"># ... linting</span>
+          <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">RSpec + DB prepare</span>
+              <span class="na">script</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundle exec rspec --tag ~ci_skip --format documentation</span>
+                <span class="pi">-</span> <span class="s">bundle exec rails rswag:specs:swaggerize</span>  <span class="c1"># Re-runs integration specs!</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ol>
+  <li>Single test step runs all 338 specs sequentially</li>
+  <li><code class="language-plaintext highlighter-rouge">rswag:specs:swaggerize</code> re-runs integration specs for swagger generation</li>
+  <li>No separation of fast vs slow tests</li>
+</ol>
+
+<h3 id="32-the-solution-three-way-parallelization">3.2 The Solution: Three-Way Parallelization</h3>
+
+<p>We split the pipeline into three parallel test steps:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># After: Parallel execution by test type</span>
+<span class="na">image</span><span class="pi">:</span> <span class="s">ruby:3.4</span>
+
+<span class="na">options</span><span class="pi">:</span>
+  <span class="na">size</span><span class="pi">:</span> <span class="s">4x</span>
+  <span class="na">max-time</span><span class="pi">:</span> <span class="m">10</span>  <span class="c1"># Increased from 5 to 10 minutes</span>
+
+<span class="na">definitions</span><span class="pi">:</span>
+  <span class="na">caches</span><span class="pi">:</span>
+    <span class="na">bundler</span><span class="pi">:</span> <span class="s">vendor/bundle</span>
+    <span class="na">bootsnap</span><span class="pi">:</span> <span class="s">tmp/cache/bootsnap</span>  <span class="c1"># NEW: Cache Rails boot</span>
+  <span class="na">services</span><span class="pi">:</span>
+    <span class="na">postgres</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:16</span>
+      <span class="na">variables</span><span class="pi">:</span>
+        <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">wigiwork_test</span>
+        <span class="na">POSTGRES_USER</span><span class="pi">:</span> <span class="s">postgres</span>
+        <span class="na">POSTGRES_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
+
+<span class="na">pipelines</span><span class="pi">:</span>
+  <span class="na">default</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">parallel</span><span class="pi">:</span>
+        <span class="na">steps</span><span class="pi">:</span>
+          <span class="c1"># Step 1: Linting &amp; Security (no database needed)</span>
+          <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">Lint &amp; Security</span>
+              <span class="na">caches</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundler</span>
+              <span class="na">script</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundle exec rubocop</span>
+                <span class="pi">-</span> <span class="s">bundle exec brakeman -q -w2</span>
+                <span class="pi">-</span> <span class="s">bundle exec bundle audit check --update</span>
+
+          <span class="c1"># Step 2: Fast specs (models, blueprints, policies)</span>
+          <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">Unit &amp; Model Tests</span>
+              <span class="na">services</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">postgres</span>
+              <span class="na">caches</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundler</span>
+                <span class="pi">-</span> <span class="s">bootsnap</span>
+              <span class="na">script</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundle exec rspec spec/models spec/blueprints spec/policies \</span>
+                    <span class="s">spec/services spec/jobs --tag ~ci_skip --fail-fast --format progress</span>
+
+          <span class="c1"># Step 3: Integration specs + Swagger generation</span>
+          <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">Integration Tests + Swagger</span>
+              <span class="na">services</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">postgres</span>
+              <span class="na">caches</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundler</span>
+                <span class="pi">-</span> <span class="s">bootsnap</span>
+              <span class="na">script</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bundle exec rspec spec/integration spec/requests \</span>
+                    <span class="s">--tag ~ci_skip --fail-fast --format progress</span>
+                <span class="pi">-</span> <span class="s">bundle exec rails rswag:specs:swaggerize</span>
+
+    <span class="c1"># Sequential step after parallel completes</span>
+    <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Verify Seeds</span>
+        <span class="na">services</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">postgres</span>
+        <span class="na">caches</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">bundler</span>
+        <span class="na">script</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">bundle exec rails db:seed:replant</span>
+</code></pre></div></div>
+
+<h3 id="33-key-changes-explained">3.3 Key Changes Explained</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Change</th>
+      <th>Before</th>
+      <th>After</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Timeout</td>
+      <td>5 min</td>
+      <td>10 min</td>
+      <td>Safety margin</td>
+    </tr>
+    <tr>
+      <td>Parallel steps</td>
+      <td>2</td>
+      <td>3</td>
+      <td>~40% faster</td>
+    </tr>
+    <tr>
+      <td>Test splitting</td>
+      <td>None</td>
+      <td>Unit vs Integration</td>
+      <td>Better parallelization</td>
+    </tr>
+    <tr>
+      <td>Bootsnap cache</td>
+      <td>Missing</td>
+      <td>Added</td>
+      <td>Faster Rails boot</td>
+    </tr>
+    <tr>
+      <td>Output format</td>
+      <td><code class="language-plaintext highlighter-rouge">documentation</code></td>
+      <td><code class="language-plaintext highlighter-rouge">progress</code></td>
+      <td>Less I/O overhead</td>
+    </tr>
+    <tr>
+      <td>Fail behavior</td>
+      <td>Run all</td>
+      <td><code class="language-plaintext highlighter-rouge">--fail-fast</code></td>
+      <td>Fail faster</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="34-why-split-unit-and-integration-tests">3.4 Why Split Unit and Integration Tests?</h3>
+
+<p><strong>Unit tests (models, policies, services):</strong></p>
+<ul>
+  <li>Fast to execute (minimal database interaction)</li>
+  <li>Many small files</li>
+  <li>Good candidates for parallel execution</li>
+</ul>
+
+<p><strong>Integration tests (RSwag, requests):</strong></p>
+<ul>
+  <li>Slower (full request/response cycle)</li>
+  <li>Generate Swagger documentation</li>
+  <li>Benefit from running together for swagger generation</li>
+</ul>
+
+<p>By splitting them, we:</p>
+<ol>
+  <li>Get faster feedback on unit test failures</li>
+  <li>Keep swagger generation with its source specs</li>
+  <li>Allow better cache utilization</li>
+</ol>
+
+<hr />
+
+<h2 id="4-parallel-test-execution">4. Parallel Test Execution</h2>
+
+<h3 id="41-adding-parallel_tests-gem">4.1 Adding parallel_tests Gem</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">parallel_tests</code> gem runs specs across multiple CPU cores:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Gemfile</span>
+<span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s2">"parallel_tests"</span>
+  <span class="n">gem</span> <span class="s2">"test-prof"</span>  <span class="c1"># Profiling</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="42-pipeline-integration">4.2 Pipeline Integration</h3>
+
+<p>For multi-process execution in CI:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Option A: parallel_tests with database per process</span>
+<span class="na">script</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">bundle exec rake parallel:create parallel:prepare</span>
+  <span class="pi">-</span> <span class="s">bundle exec parallel_rspec spec/ --tag ~ci_skip -n </span><span class="m">4</span>
+
+<span class="c1"># Option B: Simple parallel within steps (what we chose)</span>
+<span class="c1"># Each parallel step runs a subset of specs</span>
+</code></pre></div></div>
+
+<p><strong>We chose Option B</strong> because:</p>
+<ul>
+  <li>Bitbucket Pipelines already provides step-level parallelism</li>
+  <li>Simpler database setup (one DB per step)</li>
+  <li>Easier to debug failures</li>
+  <li>Cache utilization is better with separate steps</li>
+</ul>
+
+<h3 id="43-local-development-usage">4.3 Local Development Usage</h3>
+
+<p>For local development, <code class="language-plaintext highlighter-rouge">parallel_tests</code> shines:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run all specs across 4 cores</span>
+bundle <span class="nb">exec </span>parallel_rspec spec/ <span class="nt">-n</span> 4
+
+<span class="c"># Run with specific pattern</span>
+bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">-n</span> auto
+
+<span class="c"># Profile parallel execution</span>
+<span class="nv">PROFILE</span><span class="o">=</span>1 bundle <span class="nb">exec </span>parallel_rspec spec/
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-factory-optimization">5. Factory Optimization</h2>
+
+<h3 id="51-the-problem-eager-evaluation">5.1 The Problem: Eager Evaluation</h3>
+
+<p>Our integration specs used <code class="language-plaintext highlighter-rouge">let!</code> excessively:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Every response block creates its own fixtures</span>
+<span class="n">path</span> <span class="s1">'/api/v1/projects'</span> <span class="k">do</span>
+  <span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>     <span class="c1"># Created immediately</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># Created immediately</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># Created immediately</span>
+    <span class="n">run_test!</span>
+  <span class="k">end</span>
+
+  <span class="n">response</span> <span class="s1">'422'</span><span class="p">,</span> <span class="s1">'validation error'</span> <span class="k">do</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>     <span class="c1"># DUPLICATE creation!</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># DUPLICATE creation!</span>
+    <span class="n">run_test!</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">let!</code> creates records even if not referenced</li>
+  <li>Each <code class="language-plaintext highlighter-rouge">response</code> block creates duplicate fixtures</li>
+  <li>252 eager evaluations across integration specs</li>
+</ol>
+
+<h3 id="52-the-solution-lazy-evaluation">5.2 The Solution: Lazy Evaluation</h3>
+
+<p>Convert <code class="language-plaintext highlighter-rouge">let!</code> to <code class="language-plaintext highlighter-rouge">let</code> where the lazy evaluation chain works:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># After: Lazy evaluation with explicit eager loading only when needed</span>
+<span class="n">path</span> <span class="s1">'/api/v1/projects'</span> <span class="k">do</span>
+  <span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
+    <span class="c1"># Project must exist before request - keep as let!</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:project</span><span class="p">,</span> <span class="ss">profile: </span><span class="n">profile</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="n">let</span><span class="p">(</span><span class="ss">:Authorization</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"Bearer </span><span class="si">#{</span><span class="n">jwt_for</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>  <span class="c1"># References user → triggers creation</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:profile_id</span><span class="p">)</span> <span class="p">{</span> <span class="n">profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>  <span class="c1"># References profile → triggers creation</span>
+
+    <span class="n">run_test!</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>The key insight:</strong> <code class="language-plaintext highlighter-rouge">let</code> is lazy—it only creates records when first accessed. If <code class="language-plaintext highlighter-rouge">Authorization</code> references <code class="language-plaintext highlighter-rouge">user</code>, and <code class="language-plaintext highlighter-rouge">profile_id</code> references <code class="language-plaintext highlighter-rouge">profile</code>, the chain triggers automatically.</p>
+
+<p><strong>Use <code class="language-plaintext highlighter-rouge">let!</code> only when:</strong></p>
+<ol>
+  <li>Record must exist in database before the request</li>
+  <li>No other <code class="language-plaintext highlighter-rouge">let</code> references it</li>
+  <li>It’s tested via side effects (e.g., count changes)</li>
+</ol>
+
+<h3 id="53-before-vs-after-projects_specrb">5.3 Before vs After: projects_spec.rb</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: 26 let! calls</span>
+<span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="no">Project</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">}</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+
+<span class="c1"># After: 5 let! calls (only for records that must pre-exist)</span>
+<span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="no">Project</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">}</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Reduction: 26 → 5 eager evaluations</strong> in one file.</p>
+
+<h3 id="54-shared-contexts-for-common-patterns">5.4 Shared Contexts for Common Patterns</h3>
+
+<p>For repeated patterns, use shared contexts:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/support/shared_examples/company_authenticated_context.rb</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">shared_context</span> <span class="s1">'authenticated company user'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:company</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:company</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:company_owner</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">,</span> <span class="ss">:client</span><span class="p">,</span> <span class="ss">company: </span><span class="n">company</span><span class="p">,</span> <span class="ss">company_role: :owner</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:Authorization</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"Bearer </span><span class="si">#{</span><span class="n">jwt_for</span><span class="p">(</span><span class="n">company_owner</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:company_id</span><span class="p">)</span> <span class="p">{</span> <span class="n">company</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="c1"># Usage in specs</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s1">'Companies API'</span> <span class="k">do</span>
+  <span class="n">include_context</span> <span class="s1">'authenticated company user'</span>
+
+  <span class="n">path</span> <span class="s1">'/api/v1/companies/{company_id}/profile'</span> <span class="k">do</span>
+    <span class="c1"># company, company_owner, Authorization, company_id all available</span>
+    <span class="c1"># Created lazily when first accessed</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-file-io-elimination">6. File I/O Elimination</h2>
+
+<h3 id="61-the-problem-disk-reads-for-every-attachment">6.1 The Problem: Disk Reads for Every Attachment</h3>
+
+<p>Our attachment factory read from disk on every creation:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Disk I/O for every attachment</span>
+<span class="n">factory</span> <span class="ss">:attachment</span> <span class="k">do</span>
+  <span class="n">after</span><span class="p">(</span><span class="ss">:build</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">attachment</span><span class="o">|</span>
+    <span class="k">next</span> <span class="k">if</span> <span class="n">attachment</span><span class="p">.</span><span class="nf">file</span><span class="p">.</span><span class="nf">attached?</span>
+
+    <span class="n">attachment</span><span class="p">.</span><span class="nf">file</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span>
+      <span class="ss">io: </span><span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"spec/fixtures/files/image.png"</span><span class="p">)),</span>  <span class="c1"># DISK I/O!</span>
+      <span class="ss">filename: </span><span class="s2">"image.png"</span><span class="p">,</span>
+      <span class="ss">content_type: </span><span class="s2">"image/png"</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Impact:</strong></p>
+<ul>
+  <li>85+ <code class="language-plaintext highlighter-rouge">create(:attachment)</code> calls across specs</li>
+  <li>Each call reads from disk</li>
+  <li>~0.5-2ms per read adds up</li>
+</ul>
+
+<h3 id="62-the-solution-in-memory-minimal-files">6.2 The Solution: In-Memory Minimal Files</h3>
+
+<p>We created minimal valid files stored in memory:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/support/minimal_files.rb</span>
+<span class="k">module</span> <span class="nn">MinimalFiles</span>
+  <span class="c1"># Minimal valid 1x1 transparent PNG (67 bytes)</span>
+  <span class="no">PNG</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mh">0x89</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">,</span> <span class="mh">0x4E</span><span class="p">,</span> <span class="mh">0x47</span><span class="p">,</span> <span class="mh">0x0D</span><span class="p">,</span> <span class="mh">0x0A</span><span class="p">,</span> <span class="mh">0x1A</span><span class="p">,</span> <span class="mh">0x0A</span><span class="p">,</span>  <span class="c1"># PNG signature</span>
+    <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x0D</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x44</span><span class="p">,</span> <span class="mh">0x52</span><span class="p">,</span>  <span class="c1"># IHDR chunk</span>
+    <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span>  <span class="c1"># 1x1 dimensions</span>
+    <span class="mh">0x08</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x90</span><span class="p">,</span> <span class="mh">0x77</span><span class="p">,</span> <span class="mh">0x53</span><span class="p">,</span>  <span class="c1"># 8-bit RGB</span>
+    <span class="mh">0xDE</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x0C</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x44</span><span class="p">,</span> <span class="mh">0x41</span><span class="p">,</span>  <span class="c1"># IDAT chunk</span>
+    <span class="mh">0x54</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">,</span> <span class="mh">0xD7</span><span class="p">,</span> <span class="mh">0x63</span><span class="p">,</span> <span class="mh">0xF8</span><span class="p">,</span> <span class="mh">0x0F</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span>  <span class="c1"># Compressed data</span>
+    <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">,</span> <span class="mh">0xD8</span><span class="p">,</span> <span class="mh">0x4E</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span>  <span class="c1"># CRC</span>
+    <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x45</span><span class="p">,</span> <span class="mh">0x4E</span><span class="p">,</span> <span class="mh">0x44</span><span class="p">,</span> <span class="mh">0xAE</span><span class="p">,</span>  <span class="c1"># IEND chunk</span>
+    <span class="mh">0x42</span><span class="p">,</span> <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x82</span>                                  <span class="c1"># CRC</span>
+  <span class="p">].</span><span class="nf">pack</span><span class="p">(</span><span class="s2">"C*"</span><span class="p">).</span><span class="nf">freeze</span>
+
+  <span class="c1"># Minimal valid PDF (193 bytes)</span>
+  <span class="no">PDF</span> <span class="o">=</span> <span class="o">&lt;&lt;~</span><span class="no">PDF</span><span class="p">.</span><span class="nf">freeze</span><span class="sh">
+    %PDF-1.4
+    1 0 obj&lt;&lt;/Type/Catalog/Pages 2 0 R&gt;&gt;endobj
+    2 0 obj&lt;&lt;/Type/Pages/Kids[3 0 R]/Count 1&gt;&gt;endobj
+    3 0 obj&lt;&lt;/Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R&gt;&gt;endobj
+    xref
+    0 4
+    0000000000 65535 f
+    0000000009 00000 n
+    0000000052 00000 n
+    0000000101 00000 n
+    trailer&lt;&lt;/Size 4/Root 1 0 R&gt;&gt;
+    startxref
+    178
+    %%EOF
+</span><span class="no">  PDF</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">io_for</span><span class="p">(</span><span class="n">type</span><span class="p">)</span>
+    <span class="k">case</span> <span class="n">type</span><span class="p">.</span><span class="nf">to_sym</span>
+    <span class="k">when</span> <span class="ss">:png</span><span class="p">,</span> <span class="ss">:image</span><span class="p">,</span> <span class="ss">:avatar</span><span class="p">,</span> <span class="ss">:real_image</span>
+      <span class="no">StringIO</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">PNG</span><span class="p">)</span>
+    <span class="k">when</span> <span class="ss">:pdf</span><span class="p">,</span> <span class="ss">:file</span><span class="p">,</span> <span class="ss">:document</span>
+      <span class="no">StringIO</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">PDF</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="no">StringIO</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">PDF</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">content_type_for</span><span class="p">(</span><span class="n">type</span><span class="p">)</span>
+    <span class="k">case</span> <span class="n">type</span><span class="p">.</span><span class="nf">to_sym</span>
+    <span class="k">when</span> <span class="ss">:png</span><span class="p">,</span> <span class="ss">:image</span><span class="p">,</span> <span class="ss">:avatar</span><span class="p">,</span> <span class="ss">:real_image</span> <span class="k">then</span> <span class="s2">"image/png"</span>
+    <span class="k">else</span> <span class="s2">"application/pdf"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">filename_for</span><span class="p">(</span><span class="n">type</span><span class="p">)</span>
+    <span class="k">case</span> <span class="n">type</span><span class="p">.</span><span class="nf">to_sym</span>
+    <span class="k">when</span> <span class="ss">:png</span><span class="p">,</span> <span class="ss">:image</span><span class="p">,</span> <span class="ss">:avatar</span><span class="p">,</span> <span class="ss">:real_image</span> <span class="k">then</span> <span class="s2">"image.png"</span>
+    <span class="k">else</span> <span class="s2">"test.pdf"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="63-updated-factory">6.3 Updated Factory</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/factories/attachments.rb</span>
+<span class="n">factory</span> <span class="ss">:attachment</span> <span class="k">do</span>
+  <span class="n">after</span><span class="p">(</span><span class="ss">:build</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">attachment</span><span class="o">|</span>
+    <span class="k">next</span> <span class="k">if</span> <span class="n">attachment</span><span class="p">.</span><span class="nf">file</span><span class="p">.</span><span class="nf">attached?</span>
+
+    <span class="n">file_type</span> <span class="o">=</span> <span class="k">case</span> <span class="n">attachment</span><span class="p">.</span><span class="nf">attachment_type</span>
+                <span class="k">when</span> <span class="s2">"image"</span><span class="p">,</span> <span class="s2">"avatar"</span><span class="p">,</span> <span class="s2">"real_image"</span> <span class="k">then</span> <span class="ss">:image</span>
+                <span class="k">else</span> <span class="ss">:pdf</span>
+                <span class="k">end</span>
+
+    <span class="c1"># In-memory file - no disk I/O!</span>
+    <span class="n">attachment</span><span class="p">.</span><span class="nf">file</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span>
+      <span class="ss">io: </span><span class="no">MinimalFiles</span><span class="p">.</span><span class="nf">io_for</span><span class="p">(</span><span class="n">file_type</span><span class="p">),</span>
+      <span class="ss">filename: </span><span class="no">MinimalFiles</span><span class="p">.</span><span class="nf">filename_for</span><span class="p">(</span><span class="n">file_type</span><span class="p">),</span>
+      <span class="ss">content_type: </span><span class="no">MinimalFiles</span><span class="p">.</span><span class="nf">content_type_for</span><span class="p">(</span><span class="n">file_type</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="64-why-this-is-safe">6.4 Why This Is Safe</h3>
+
+<p><strong>Concerns we addressed:</strong></p>
+
+<ol>
+  <li><strong>“Will validations still work?”</strong>
+    <ul>
+      <li>Yes! The files have valid headers (PNG signature, PDF structure)</li>
+      <li>Content-type validation passes</li>
+    </ul>
+  </li>
+  <li><strong>“What about <code class="language-plaintext highlighter-rouge">fixture_file_upload</code> in request specs?”</strong>
+    <ul>
+      <li>Unchanged! Request specs that test actual upload behavior still use <code class="language-plaintext highlighter-rouge">fixture_file_upload</code></li>
+      <li>Only factory-created attachments use in-memory files</li>
+    </ul>
+  </li>
+  <li><strong>“Is 67 bytes enough for a valid image?”</strong>
+    <ul>
+      <li>Yes! It’s a valid 1x1 transparent PNG</li>
+      <li>Any library reading it will parse it correctly</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="65-performance-impact">6.5 Performance Impact</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Before</th>
+      <th>After</th>
+      <th>Improvement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Read fixture file</td>
+      <td>~0.5-2ms</td>
+      <td>~0.01ms</td>
+      <td>50-200x</td>
+    </tr>
+    <tr>
+      <td>Memory allocation</td>
+      <td>File buffer</td>
+      <td>String</td>
+      <td>Minimal</td>
+    </tr>
+    <tr>
+      <td>I/O operations</td>
+      <td>Disk read</td>
+      <td>None</td>
+      <td>Eliminated</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="7-test-profiling-infrastructure">7. Test Profiling Infrastructure</h2>
+
+<h3 id="71-adding-test-prof-gem">7.1 Adding test-prof Gem</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">test-prof</code> gem provides deep insights into test performance:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Gemfile</span>
+<span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s2">"test-prof"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="72-testprof-configuration">7.2 TestProf Configuration</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/support/test_prof.rb</span>
+<span class="k">if</span> <span class="k">defined?</span><span class="p">(</span><span class="no">TestProf</span><span class="p">)</span>
+  <span class="c1"># FactoryProf: Profile factory usage</span>
+  <span class="no">TestProf</span><span class="o">::</span><span class="no">FactoryProf</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">mode</span> <span class="o">=</span> <span class="ss">:flamegraph</span> <span class="k">if</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"FPROF_FLAMEGRAPH"</span><span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="c1"># EventProf: Profile SQL queries and factory creates</span>
+  <span class="no">TestProf</span><span class="o">::</span><span class="no">EventProf</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">per_example</span> <span class="o">=</span> <span class="kp">true</span> <span class="k">if</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"EVENT_PROF_EXAMPLES"</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Native FactoryBot profiling (no TestProf required)</span>
+<span class="k">if</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"FACTORY_PROF"</span><span class="p">]</span>
+  <span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+    <span class="n">factory_stats</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span> <span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">count: </span><span class="mi">0</span><span class="p">,</span> <span class="ss">time: </span><span class="mf">0.0</span> <span class="p">}</span> <span class="p">}</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="ss">:suite</span><span class="p">)</span> <span class="k">do</span>
+      <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s2">"factory_bot.run_factory"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Notifications</span><span class="o">::</span><span class="no">Event</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">factory_stats</span><span class="p">[</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:name</span><span class="p">]][</span><span class="ss">:count</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">factory_stats</span><span class="p">[</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:name</span><span class="p">]][</span><span class="ss">:time</span><span class="p">]</span> <span class="o">+=</span> <span class="n">event</span><span class="p">.</span><span class="nf">duration</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">after</span><span class="p">(</span><span class="ss">:suite</span><span class="p">)</span> <span class="k">do</span>
+      <span class="nb">puts</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">=== FactoryBot Profiling Report ==="</span>
+      <span class="nb">puts</span> <span class="s2">"%-40s %10s %15s"</span> <span class="o">%</span> <span class="p">[</span><span class="s2">"Factory"</span><span class="p">,</span> <span class="s2">"Count"</span><span class="p">,</span> <span class="s2">"Time (ms)"</span><span class="p">]</span>
+      <span class="nb">puts</span> <span class="s2">"-"</span> <span class="o">*</span> <span class="mi">67</span>
+
+      <span class="n">factory_stats</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="ss">:time</span><span class="p">]</span> <span class="p">}.</span><span class="nf">first</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">stats</span><span class="o">|</span>
+        <span class="nb">puts</span> <span class="s2">"%-40s %10d %15.2f"</span> <span class="o">%</span> <span class="p">[</span><span class="nb">name</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="ss">:count</span><span class="p">],</span> <span class="n">stats</span><span class="p">[</span><span class="ss">:time</span><span class="p">]]</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="73-profiling-commands">7.3 Profiling Commands</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Profile slow examples (show top 10)</span>
+<span class="nv">PROFILE</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Profile factory usage (find N+1 factories)</span>
+<span class="nv">FPROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Profile factory usage with flamegraph</span>
+<span class="nv">FPROF</span><span class="o">=</span>1 <span class="nv">FPROF_FLAMEGRAPH</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Profile SQL queries</span>
+<span class="nv">EVENT_PROF</span><span class="o">=</span>sql.active_record bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Profile factory create events</span>
+<span class="nv">EVENT_PROF</span><span class="o">=</span>factory.create bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Native factory profiling</span>
+<span class="nv">FACTORY_PROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Combined: slow examples + factory stats</span>
+<span class="nv">PROFILE</span><span class="o">=</span>1 <span class="nv">FACTORY_PROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+</code></pre></div></div>
+
+<h3 id="74-sample-factory-profile-output">7.4 Sample Factory Profile Output</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>=== FactoryBot Profiling Report ===
+Factory                                      Count       Time (ms)
+-------------------------------------------------------------------
+user                                           156         1234.56
+profile                                        142          987.65
+company                                         89          654.32
+attachment                                      85          432.10
+job_post                                        45          321.00
+company_benefit                                 34          210.50
+...
+-------------------------------------------------------------------
+TOTAL                                          892         5432.10
+</code></pre></div></div>
+
+<p><strong>What to look for:</strong></p>
+<ul>
+  <li>Factories with high count but low time → OK</li>
+  <li>Factories with low count but high time → Optimize factory</li>
+  <li>Factories called more than expected → Check for cascades</li>
+</ul>
+
+<h3 id="75-testprofs-let_it_be">7.5 TestProf’s let_it_be</h3>
+
+<p>For specs that can share fixtures across examples:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/rails_helper.rb</span>
+<span class="nb">require</span> <span class="s1">'test_prof/recipes/rspec/let_it_be'</span>
+
+<span class="c1"># Usage in specs</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ProfileBlueprint</span> <span class="k">do</span>
+  <span class="c1"># Created once for ALL examples in this describe block</span>
+  <span class="n">let_it_be</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let_it_be</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s2">"serializes id"</span> <span class="k">do</span>
+    <span class="c1"># user and profile are reused, not recreated</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">described_class</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">profile</span><span class="p">)).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s2">"serializes username"</span> <span class="k">do</span>
+    <span class="c1"># Same user and profile from above</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">described_class</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">profile</span><span class="p">)).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">username: </span><span class="n">profile</span><span class="p">.</span><span class="nf">username</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Use <code class="language-plaintext highlighter-rouge">let_it_be</code> when:</strong></p>
+<ul>
+  <li>Fixtures are read-only in all examples</li>
+  <li>Examples don’t modify the records</li>
+  <li>You have many examples using the same data</li>
+</ul>
+
+<hr />
+
+<h2 id="8-rspec-configuration-tuning">8. RSpec Configuration Tuning</h2>
+
+<h3 id="81-updated-spec_helperrb">8.1 Updated spec_helper.rb</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/spec_helper.rb</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="c1"># Focus on tagged examples during development</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">filter_run_when_matching</span> <span class="ss">:focus</span>
+
+  <span class="c1"># Persist example status for --only-failures</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">example_status_persistence_file_path</span> <span class="o">=</span> <span class="s2">"spec/examples.txt"</span>
+
+  <span class="c1"># Profile slow examples (enable via PROFILE=1)</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">profile_examples</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"PROFILE"</span><span class="p">]</span> <span class="p">?</span> <span class="mi">10</span> <span class="p">:</span> <span class="kp">false</span>
+
+  <span class="c1"># Random order to surface order dependencies</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">order</span> <span class="o">=</span> <span class="ss">:random</span>
+  <span class="no">Kernel</span><span class="p">.</span><span class="nf">srand</span> <span class="n">config</span><span class="p">.</span><span class="nf">seed</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="82-key-configuration-choices">8.2 Key Configuration Choices</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Value</th>
+      <th>Rationale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">profile_examples</code></td>
+      <td>Conditional</td>
+      <td>Only profile when explicitly requested</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">order</code></td>
+      <td><code class="language-plaintext highlighter-rouge">:random</code></td>
+      <td>Surface hidden dependencies</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">example_status_persistence</code></td>
+      <td>Enabled</td>
+      <td>Support <code class="language-plaintext highlighter-rouge">--only-failures</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">filter_run_when_matching :focus</code></td>
+      <td>Enabled</td>
+      <td>Focus on tagged tests during dev</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="83-rspec-file">8.3 .rspec File</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--require spec_helper
+</code></pre></div></div>
+
+<p>Keep it minimal. Command-line options are easier to manage in CI.</p>
+
+<hr />
+
+<h2 id="9-results-and-metrics">9. Results and Metrics</h2>
+
+<h3 id="91-before-vs-after-comparison">9.1 Before vs After Comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Before</th>
+      <th>After</th>
+      <th>Improvement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pipeline timeout</td>
+      <td>5 min</td>
+      <td>10 min</td>
+      <td>2x headroom</td>
+    </tr>
+    <tr>
+      <td>Parallel steps</td>
+      <td>2</td>
+      <td>3</td>
+      <td>50% more parallelism</td>
+    </tr>
+    <tr>
+      <td>Actual build time</td>
+      <td>5+ min (timeout)</td>
+      <td>~3 min</td>
+      <td>60% faster</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">let!</code> calls</td>
+      <td>252</td>
+      <td>~150</td>
+      <td>40% reduction</td>
+    </tr>
+    <tr>
+      <td>Disk I/O per run</td>
+      <td>85+ file reads</td>
+      <td>0</td>
+      <td>Eliminated</td>
+    </tr>
+    <tr>
+      <td>Test output</td>
+      <td>Verbose</td>
+      <td>Progress</td>
+      <td>Less I/O</td>
+    </tr>
+    <tr>
+      <td>Fail behavior</td>
+      <td>Run all</td>
+      <td>Fail-fast</td>
+      <td>Faster feedback</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="92-pipeline-execution-timeline">9.2 Pipeline Execution Timeline</h3>
+
+<p><strong>Before:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Lint &amp; Security] ████████░░░░░░░░░░ 2:00
+                  [RSpec + Swagger] ██████████████████ 5:00+ TIMEOUT!
+</code></pre></div></div>
+
+<p><strong>After:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Lint &amp; Security] ████████░░░░░░░░░░ 2:00
+[Unit Tests]      ████████░░░░░░░░░░ 1:30
+[Integration]     ████████████░░░░░░ 2:30
+                           [Seeds]  ████░░░░░░░░░░░░░░ 0:30
+─────────────────────────────────────────────────────────────
+Total wall time: ~3:00 (limited by slowest parallel step)
+</code></pre></div></div>
+
+<h3 id="93-what-we-shipped">9.3 What We Shipped</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Files Changed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gemfile</td>
+      <td>Added <code class="language-plaintext highlighter-rouge">parallel_tests</code>, <code class="language-plaintext highlighter-rouge">test-prof</code></td>
+    </tr>
+    <tr>
+      <td>bitbucket-pipelines.yml</td>
+      <td>Restructured to 3 parallel steps</td>
+    </tr>
+    <tr>
+      <td>spec/spec_helper.rb</td>
+      <td>Enabled profiling, focus filtering</td>
+    </tr>
+    <tr>
+      <td>spec/rails_helper.rb</td>
+      <td>Added TestProf recipes</td>
+    </tr>
+    <tr>
+      <td>spec/support/test_prof.rb</td>
+      <td>New profiling configuration</td>
+    </tr>
+    <tr>
+      <td>spec/support/minimal_files.rb</td>
+      <td>New in-memory file module</td>
+    </tr>
+    <tr>
+      <td>spec/factories/attachments.rb</td>
+      <td>Use MinimalFiles</td>
+    </tr>
+    <tr>
+      <td>spec/factories/gallery_images.rb</td>
+      <td>Use MinimalFiles</td>
+    </tr>
+    <tr>
+      <td>spec/integration/projects_spec.rb</td>
+      <td>Convert let! → let</td>
+    </tr>
+    <tr>
+      <td>spec/integration/working_knowledge_spec.rb</td>
+      <td>Convert let! → let</td>
+    </tr>
+    <tr>
+      <td>spec/support/shared_examples/*</td>
+      <td>New shared contexts</td>
+    </tr>
+    <tr>
+      <td>spec/support/shared_schemas/*</td>
+      <td>Extracted common schemas</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="10-ongoing-optimization-strategy">10. Ongoing Optimization Strategy</h2>
+
+<h3 id="101-monitoring-commands">10.1 Monitoring Commands</h3>
+
+<p>Run these periodically to identify new bottlenecks:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Find slowest 10 examples</span>
+<span class="nv">PROFILE</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Find factory N+1 issues</span>
+<span class="nv">FPROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Identify SQL-heavy tests</span>
+<span class="nv">EVENT_PROF</span><span class="o">=</span>sql.active_record bundle <span class="nb">exec </span>rspec
+
+<span class="c"># Check factory creation counts</span>
+<span class="nv">FACTORY_PROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
+</code></pre></div></div>
+
+<h3 id="102-guidelines-for-new-tests">10.2 Guidelines for New Tests</h3>
+
+<ol>
+  <li><strong>Prefer <code class="language-plaintext highlighter-rouge">let</code> over <code class="language-plaintext highlighter-rouge">let!</code></strong> unless record must pre-exist</li>
+  <li><strong>Use shared contexts</strong> for repeated patterns</li>
+  <li><strong>Keep integration specs focused</strong> — one endpoint per file if large</li>
+  <li><strong>Use <code class="language-plaintext highlighter-rouge">let_it_be</code></strong> for read-only fixtures in model/blueprint specs</li>
+  <li><strong>Avoid factory cascades</strong> — use <code class="language-plaintext highlighter-rouge">build_stubbed</code> when possible</li>
+</ol>
+
+<h3 id="103-ci-pipeline-guidelines">10.3 CI Pipeline Guidelines</h3>
+
+<ol>
+  <li><strong>Split by test type</strong> — Unit vs Integration</li>
+  <li><strong>Use <code class="language-plaintext highlighter-rouge">--fail-fast</code></strong> in CI — Fail fast, fix fast</li>
+  <li><strong>Cache aggressively</strong> — Bundler, Bootsnap, build artifacts</li>
+  <li><strong>Monitor build times</strong> — Set alerts for regression</li>
+</ol>
+
+<h3 id="104-future-optimizations">10.4 Future Optimizations</h3>
+
+<p><strong>If builds slow down again:</strong></p>
+
+<ol>
+  <li><strong>Add more parallel steps</strong> — Split integration by domain</li>
+  <li><strong>Use parallel_tests within steps</strong> — Multi-process per step</li>
+  <li><strong>Consider test splitting by timing</strong> — Distribute by historical runtime</li>
+  <li><strong>Evaluate CI provider</strong> — GitHub Actions has better parallelization</li>
+</ol>
+
+<hr />
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ol>
+  <li><strong>Profile before optimizing</strong> — Measure, don’t guess</li>
+  <li><strong>Parallelize at multiple levels</strong> — Pipeline steps + test processes</li>
+  <li><strong>Lazy evaluation is your friend</strong> — <code class="language-plaintext highlighter-rouge">let</code> over <code class="language-plaintext highlighter-rouge">let!</code></li>
+  <li><strong>Eliminate I/O</strong> — In-memory beats disk every time</li>
+  <li><strong>Fail fast</strong> — <code class="language-plaintext highlighter-rouge">--fail-fast</code> saves minutes on broken builds</li>
+  <li><strong>Split wisely</strong> — Unit tests separate from integration</li>
+  <li><strong>Cache everything</strong> — Bundler, Bootsnap, build artifacts</li>
+  <li><strong>Document your profiling</strong> — Future you will thank present you</li>
+</ol>
+
+<h3 id="the-real-win">The Real Win</h3>
+
+<p>The 60% speed improvement is great, but the real win is <strong>confidence</strong>. Fast tests mean:</p>
+
+<ul>
+  <li>Developers run tests locally more often</li>
+  <li>CI catches issues before they merge</li>
+  <li>Deployments happen without anxiety</li>
+  <li>The test suite stays fast as the codebase grows</li>
+</ul>
+
+<p>Slow tests become ignored tests. Ignored tests become broken tests. Broken tests become production bugs.</p>
+
+<p><strong>Invest in your test infrastructure. It pays dividends every single day.</strong></p>
+
+<hr />
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><strong>parallel_tests</strong>: <a href="https://github.com/grosser/parallel_tests">github.com/grosser/parallel_tests</a></li>
+  <li><strong>test-prof</strong>: <a href="https://test-prof.evilmartians.io/">test-prof.evilmartians.io</a></li>
+  <li><strong>RSpec Best Practices</strong>: <a href="https://www.betterspecs.org/">betterspecs.org</a></li>
+  <li><strong>FactoryBot Optimization</strong>: <a href="https://github.com/thoughtbot/factory_bot/blob/main/GETTING_STARTED.md#best-practices">thoughtbot/factory_bot</a></li>
+  <li><strong>Bitbucket Pipelines Reference</strong>: <a href="https://support.atlassian.com/bitbucket-cloud/docs/bitbucket-pipelines-configuration-reference/">support.atlassian.com/bitbucket-cloud/docs/bitbucket-pipelines-configuration-reference</a></li>
+  <li><strong>GitHub Actions for Rails</strong>: <a href="https://docs.github.com/en/actions">docs.github.com/actions</a></li>
+</ul>
+
+<hr />
+
+<p><em>This post documents the optimization of the Wigiwork API test suite from timeout failures to sub-3-minute builds. The patterns described here—parallel execution, factory optimization, I/O elimination, and profiling infrastructure—are applicable to any Rails application with a growing test suite.</em></p>
+
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
