@@ -1,0 +1,1744 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Integrating LLM Services into Your Rails API: A Complete Architecture Guide | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/llm-integration-rails-fastapi-architecture">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  “The best integration isn’t the most technically impressive—it’s the one that fits your existing patterns while leaving room to evolve.”">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Integrating LLM Services into Your Rails API: A Complete Architecture Guide | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Integrating LLM Services into Your Rails API: A Complete Architecture Guide" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide to integrating a FastAPI LLM backend with an existing Ruby on Rails API—covering architecture patterns, streaming strategies, authentication reconciliation, and the case for internal gem isolation." />
+<meta property="og:description" content="A comprehensive guide to integrating a FastAPI LLM backend with an existing Ruby on Rails API—covering architecture patterns, streaming strategies, authentication reconciliation, and the case for internal gem isolation." />
+<link rel="canonical" href="http://localhost:4000/blog/llm-integration-rails-fastapi-architecture" />
+<meta property="og:url" content="http://localhost:4000/blog/llm-integration-rails-fastapi-architecture" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-12-16T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Integrating LLM Services into Your Rails API: A Complete Architecture Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2025-12-16T00:00:00+00:00","datePublished":"2025-12-16T00:00:00+00:00","description":"A comprehensive guide to integrating a FastAPI LLM backend with an existing Ruby on Rails API—covering architecture patterns, streaming strategies, authentication reconciliation, and the case for internal gem isolation.","headline":"Integrating LLM Services into Your Rails API: A Complete Architecture Guide","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/llm-integration-rails-fastapi-architecture"},"url":"http://localhost:4000/blog/llm-integration-rails-fastapi-architecture"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      Integrating LLM Services into Your Rails API: A Complete Architecture Guide
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">December 16, 2025</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><em>“The best integration isn’t the most technically impressive—it’s the one that fits your existing patterns while leaving room to evolve.”</em></p>
+</blockquote>
+
+<p>We needed to integrate a custom LLM chat service (FastAPI/Python) with our existing Ruby on Rails API. The challenge wasn’t just “call an HTTP endpoint”—it was designing an architecture that handles real-time streaming, centralized billing, authentication reconciliation, and future scalability without rewriting our entire stack.</p>
+
+<p>This post documents our architectural analysis, the top integration patterns we evaluated, and why we chose an internal gem approach that mirrors our existing <code class="language-plaintext highlighter-rouge">fraudify</code> and <code class="language-plaintext highlighter-rouge">notify</code> engines.</p>
+
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li><a href="#1-the-challenge-two-worlds-colliding">The Challenge: Two Worlds Colliding</a></li>
+  <li><a href="#2-understanding-the-integration-landscape">Understanding the Integration Landscape</a></li>
+  <li><a href="#3-top-3-recommended-integration-patterns">Top 3 Recommended Integration Patterns</a></li>
+  <li><a href="#4-streaming-architecture-actioncontrollerlive-vs-direct-sse">Streaming Architecture: ActionController::Live vs Direct SSE</a></li>
+  <li><a href="#5-http-client-patterns-with-faraday">HTTP Client Patterns with Faraday</a></li>
+  <li><a href="#6-authentication-reconciliation-strategies">Authentication Reconciliation Strategies</a></li>
+  <li><a href="#7-the-case-for-internal-gem-isolation">The Case for Internal Gem Isolation</a></li>
+  <li><a href="#8-security-considerations">Security Considerations</a></li>
+  <li><a href="#9-performance-optimization">Performance Optimization</a></li>
+  <li><a href="#10-implementation-roadmap">Implementation Roadmap</a></li>
+  <li><a href="#11-key-takeaways">Key Takeaways</a></li>
+</ol>
+
+<hr />
+
+<h2 id="1-the-challenge-two-worlds-colliding">1. The Challenge: Two Worlds Colliding</h2>
+
+<h3 id="11-the-starting-point">1.1 The Starting Point</h3>
+
+<p>Our Rails API is a mature, JWT-based backend serving a Next.js frontend:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Technology</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Authentication</strong></td>
+      <td>Devise + JWT (HS256)</td>
+      <td>1-day expiration, JTIMatcher revocation</td>
+    </tr>
+    <tr>
+      <td><strong>Authorization</strong></td>
+      <td>Pundit</td>
+      <td>Deny-by-default policies</td>
+    </tr>
+    <tr>
+      <td><strong>Serialization</strong></td>
+      <td>Blueprinter</td>
+      <td>Envelope pattern (<code class="language-plaintext highlighter-rouge">success</code>, <code class="language-plaintext highlighter-rouge">message</code>, <code class="language-plaintext highlighter-rouge">data</code>, <code class="language-plaintext highlighter-rouge">meta</code>)</td>
+    </tr>
+    <tr>
+      <td><strong>Real-time</strong></td>
+      <td>ActionCable</td>
+      <td><code class="language-plaintext highlighter-rouge">solid_cable</code> adapter in production</td>
+    </tr>
+    <tr>
+      <td><strong>HTTP Client</strong></td>
+      <td>Faraday</td>
+      <td>OAuth profile fetching with retry logic</td>
+    </tr>
+    <tr>
+      <td><strong>Background Jobs</strong></td>
+      <td>Sidekiq + Redis</td>
+      <td>Queues: critical, default, mailers, low</td>
+    </tr>
+    <tr>
+      <td><strong>Rate Limiting</strong></td>
+      <td>Rack::Attack</td>
+      <td>IP/user throttling, blocklists</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="12-the-new-requirement">1.2 The New Requirement</h3>
+
+<p>We needed to integrate an <strong>AI Chat Service</strong>—a FastAPI LLM backend that provides:</p>
+
+<ul>
+  <li><strong>Conversational candidate search</strong> via natural language</li>
+  <li><strong>Intent classification</strong> (search, chat, user_action)</li>
+  <li><strong>Session management</strong> in MongoDB</li>
+  <li><strong>Vector search</strong> with pgvector</li>
+  <li><strong>Real-time streaming</strong> for AI responses</li>
+</ul>
+
+<h3 id="13-the-core-questions">1.3 The Core Questions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Why It Matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>How do users authenticate to the LLM service?</td>
+      <td>FastAPI expects OAuth2 + scopes; Rails uses Devise JWT</td>
+    </tr>
+    <tr>
+      <td>Who owns billing/credits?</td>
+      <td>Must deduct before or after AI response</td>
+    </tr>
+    <tr>
+      <td>How do we stream responses?</td>
+      <td>LLM generates tokens incrementally</td>
+    </tr>
+    <tr>
+      <td>Where does session state live?</td>
+      <td>MongoDB (FastAPI) vs PostgreSQL (Rails)</td>
+    </tr>
+    <tr>
+      <td>How do we maintain our API patterns?</td>
+      <td>Frontend expects consistent envelopes</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="2-understanding-the-integration-landscape">2. Understanding the Integration Landscape</h2>
+
+<h3 id="21-six-integration-patterns-analyzed">2.1 Six Integration Patterns Analyzed</h3>
+
+<p>We evaluated six distinct architectural patterns:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Pattern</th>
+      <th>Best For</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A: API Gateway</strong> ⭐</td>
+      <td>Rails proxies all requests</td>
+      <td>Security, billing, simplicity</td>
+    </tr>
+    <tr>
+      <td><strong>B: Shared JWT</strong></td>
+      <td>Frontend calls both services</td>
+      <td>Low latency, independent scaling</td>
+    </tr>
+    <tr>
+      <td><strong>C: Service Mesh</strong></td>
+      <td>Istio/Linkerd handles routing</td>
+      <td>Kubernetes environments</td>
+    </tr>
+    <tr>
+      <td><strong>D: Message Queue</strong></td>
+      <td>Async via Redis/RabbitMQ</td>
+      <td>High-volume batch processing</td>
+    </tr>
+    <tr>
+      <td><strong>E: GraphQL Federation</strong></td>
+      <td>Schema-stitched gateway</td>
+      <td>GraphQL-first teams</td>
+    </tr>
+    <tr>
+      <td><strong>F: Hybrid</strong></td>
+      <td>Gateway + direct streaming</td>
+      <td>Best streaming UX</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="22-comparison-matrix">2.2 Comparison Matrix</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Criteria</th>
+      <th style="text-align: center">A: Gateway</th>
+      <th style="text-align: center">B: Shared JWT</th>
+      <th style="text-align: center">C: Mesh</th>
+      <th style="text-align: center">D: Queue</th>
+      <th style="text-align: center">E: GraphQL</th>
+      <th style="text-align: center">F: Hybrid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Setup Complexity</strong></td>
+      <td style="text-align: center">Low</td>
+      <td style="text-align: center">Medium</td>
+      <td style="text-align: center">High</td>
+      <td style="text-align: center">Medium</td>
+      <td style="text-align: center">High</td>
+      <td style="text-align: center">Medium</td>
+    </tr>
+    <tr>
+      <td><strong>Latency</strong></td>
+      <td style="text-align: center">+50ms</td>
+      <td style="text-align: center">Lowest</td>
+      <td style="text-align: center">Low</td>
+      <td style="text-align: center">Variable</td>
+      <td style="text-align: center">Medium</td>
+      <td style="text-align: center">Mixed</td>
+    </tr>
+    <tr>
+      <td><strong>Security</strong></td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td><strong>Billing Accuracy</strong></td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td><strong>Streaming UX</strong></td>
+      <td style="text-align: center">Good</td>
+      <td style="text-align: center">Best</td>
+      <td style="text-align: center">Good</td>
+      <td style="text-align: center">Poor</td>
+      <td style="text-align: center">Good</td>
+      <td style="text-align: center">Best</td>
+    </tr>
+    <tr>
+      <td><strong>Scalability</strong></td>
+      <td style="text-align: center">Medium</td>
+      <td style="text-align: center">High</td>
+      <td style="text-align: center">High</td>
+      <td style="text-align: center">High</td>
+      <td style="text-align: center">Medium</td>
+      <td style="text-align: center">High</td>
+    </tr>
+    <tr>
+      <td><strong>Fits Rails API</strong></td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="3-top-3-recommended-integration-patterns">3. Top 3 Recommended Integration Patterns</h2>
+
+<p>Based on our analysis, we recommend a <strong>progressive approach</strong>: start simple, evolve when needed.</p>
+
+<h3 id="31--1-option-a--api-gateway-start-here">3.1 🥇 #1: Option A — API Gateway (Start Here)</h3>
+
+<p><strong>Pattern</strong>: Rails acts as the sole entry point; all AI requests proxy through Rails to FastAPI.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────────────────────────────────────────────────────────┐
+│                         Next.js Frontend                             │
+│                              │                                       │
+│                    JWT Bearer Token (Devise)                         │
+│                              ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                    Rails API Gateway                           │  │
+│  │  • Authenticate (Devise JWT)                                   │  │
+│  │  • Authorize (Pundit)                                          │  │
+│  │  • Check/Deduct Credits                                        │  │
+│  │  • Call FastAPI via Faraday                                    │  │
+│  │  • Transform Response                                          │  │
+│  │  • Audit Log                                                   │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                              │                                       │
+│                    X-Service-Token + User Context                    │
+│                              ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                    FastAPI LLM Backend                         │  │
+│  │  • Intent Classification                                       │  │
+│  │  • Vector Search (pgvector)                                    │  │
+│  │  • AI Response Generation                                      │  │
+│  │  • Session State (MongoDB)                                     │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<p><strong>Advantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Why It Matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ Single auth layer</td>
+      <td>No JWT sharing across services</td>
+    </tr>
+    <tr>
+      <td>✅ Centralized billing</td>
+      <td>Credits deducted in Rails before response</td>
+    </tr>
+    <tr>
+      <td>✅ FastAPI never exposed</td>
+      <td>Better security posture</td>
+    </tr>
+    <tr>
+      <td>✅ Consistent API patterns</td>
+      <td>Frontend gets standard envelopes</td>
+    </tr>
+    <tr>
+      <td>✅ Full audit trail</td>
+      <td>Every request logged in Rails</td>
+    </tr>
+    <tr>
+      <td>✅ Matches existing patterns</td>
+      <td>Faraday already used for OAuth</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Disadvantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ +50ms latency</td>
+      <td>Acceptable for most use cases</td>
+    </tr>
+    <tr>
+      <td>⚠️ Rails becomes bottleneck</td>
+      <td>Evolve to Option F if needed</td>
+    </tr>
+    <tr>
+      <td>⚠️ Thread usage for streaming</td>
+      <td>Monitor Puma pool exhaustion</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Security Aspects:</strong></p>
+
+<ul>
+  <li>FastAPI not publicly accessible (network isolation)</li>
+  <li>Service token validates internal traffic</li>
+  <li>Pundit enforces authorization in Rails</li>
+  <li>Rate limiting via Rack::Attack</li>
+</ul>
+
+<p><strong>Performance Aspects:</strong></p>
+
+<ul>
+  <li>Single additional network hop</li>
+  <li>Connection pooling via Faraday</li>
+  <li>Caching possible at gateway layer</li>
+  <li>Streaming adds thread pressure</li>
+</ul>
+
+<hr />
+
+<h3 id="32--2-option-f--hybrid-gateway--direct-streaming-evolve-to">3.2 🥈 #2: Option F — Hybrid Gateway + Direct Streaming (Evolve To)</h3>
+
+<p><strong>Pattern</strong>: Rails proxies sync requests; streaming goes directly to FastAPI with short-lived tokens.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                    ┌──── REST ────► Rails (auth, billing, sessions)
+Frontend ───────────┤
+                    └──── SSE ─────► FastAPI directly (streaming)
+</code></pre></div></div>
+
+<p><strong>When to adopt:</strong></p>
+
+<ul>
+  <li>Streaming latency &gt; 200ms through Rails</li>
+  <li>Rails Puma thread pool exhausted during peak</li>
+  <li>Need to scale streaming independently</li>
+</ul>
+
+<p><strong>Advantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Why It Matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ Best streaming latency</td>
+      <td>No proxy for token-by-token delivery</td>
+    </tr>
+    <tr>
+      <td>✅ Rails not blocked</td>
+      <td>Threads freed during streaming</td>
+    </tr>
+    <tr>
+      <td>✅ Billing still centralized</td>
+      <td>Via webhook completion</td>
+    </tr>
+    <tr>
+      <td>✅ Independent scaling</td>
+      <td>Streaming scales separately</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Disadvantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ Two auth mechanisms</td>
+      <td>Short-lived tokens (2-5 min TTL)</td>
+    </tr>
+    <tr>
+      <td>⚠️ CORS complexity</td>
+      <td>FastAPI needs CORS for streaming endpoint</td>
+    </tr>
+    <tr>
+      <td>⚠️ Billing post-facto</td>
+      <td>Webhook reconciliation required</td>
+    </tr>
+    <tr>
+      <td>⚠️ More complex frontend</td>
+      <td>Two endpoints to manage</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Security Aspects:</strong></p>
+
+<ul>
+  <li>Short-lived stream tokens limit exposure</li>
+  <li>FastAPI validates token signature</li>
+  <li>Webhook authentication for completion events</li>
+  <li>Network still restricts non-streaming endpoints</li>
+</ul>
+
+<p><strong>Performance Aspects:</strong></p>
+
+<ul>
+  <li>Lowest possible streaming latency</li>
+  <li>No Rails threads tied up during streams</li>
+  <li>Scales horizontally (add FastAPI instances)</li>
+  <li>Webhook adds small billing delay</li>
+</ul>
+
+<hr />
+
+<h3 id="33--3-oauth-strategy-2--service-jwt-with-scopes-enhancement">3.3 🥉 #3: OAuth Strategy 2 — Service JWT with Scopes (Enhancement)</h3>
+
+<p><strong>Pattern</strong>: Rails issues short-lived internal JWT with scope claims for FastAPI.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"sub"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"company_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">456</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"client"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scopes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"llm:chat:send"</span><span class="p">,</span><span class="w"> </span><span class="s2">"llm:chat:read"</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"aud"</span><span class="p">:</span><span class="w"> </span><span class="s2">"llm-chat"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iss"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rails-api"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"exp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1702500000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"iat"</span><span class="p">:</span><span class="w"> </span><span class="mi">1702499700</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>When to adopt:</strong></p>
+
+<ul>
+  <li>FastAPI team wants scope enforcement</li>
+  <li>Planning to expose FastAPI directly later</li>
+  <li>Need audit trail of which scopes were used</li>
+</ul>
+
+<p><strong>Advantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Why It Matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ FastAPI can enforce scopes</td>
+      <td>Independent authorization layer</td>
+    </tr>
+    <tr>
+      <td>✅ Short TTL limits exposure</td>
+      <td>2-5 minute tokens</td>
+    </tr>
+    <tr>
+      <td>✅ Maintains scope semantics</td>
+      <td>Aligns with OAuth requirements</td>
+    </tr>
+    <tr>
+      <td>✅ Future-proof</td>
+      <td>Ready for direct access patterns</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Disadvantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ Two JWT secrets</td>
+      <td>Separate internal vs public secrets</td>
+    </tr>
+    <tr>
+      <td>⚠️ Token generation overhead</td>
+      <td>Minimal (~1ms)</td>
+    </tr>
+    <tr>
+      <td>⚠️ FastAPI needs JWT validation</td>
+      <td>Standard library available</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="34-evolution-path">3.4 Evolution Path</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Week 1-2              Week 3-4              If Needed
+────────────────────────────────────────────────────────►
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│    Option A     │───►│   + Strategy 2  │───►│    Option F     │
+│ (Gateway + SSE) │    │   (JWT Scopes)  │    │    (Hybrid)     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+        ▲                      ▲                      ▲
+        │                      │                      │
+   Start here           If FastAPI needs        If streaming
+                       scope enforcement        bottlenecks
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-streaming-architecture-actioncontrollerlive-vs-direct-sse">4. Streaming Architecture: ActionController::Live vs Direct SSE</h2>
+
+<h3 id="41-the-streaming-decision">4.1 The Streaming Decision</h3>
+
+<p>Real-time AI responses require streaming—the LLM generates tokens incrementally, and users expect to see them appear progressively. We evaluated two approaches:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Streaming Path</th>
+      <th style="text-align: center"><code class="language-plaintext highlighter-rouge">ActionController::Live</code>?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Option A (Gateway)</strong></td>
+      <td>Frontend → <strong>Rails</strong> → FastAPI</td>
+      <td style="text-align: center">✅ Yes</td>
+    </tr>
+    <tr>
+      <td><strong>Option F (Hybrid)</strong></td>
+      <td>Frontend → <strong>FastAPI directly</strong></td>
+      <td style="text-align: center">❌ No</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42-option-a-rails-proxies-streaming-with-actioncontrollerlive">4.2 Option A: Rails Proxies Streaming with ActionController::Live</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/llm_gateway/streams_controller.rb</span>
+<span class="k">module</span> <span class="nn">Api</span>
+  <span class="k">module</span> <span class="nn">V1</span>
+    <span class="k">module</span> <span class="nn">LlmGateway</span>
+      <span class="k">class</span> <span class="nc">StreamsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+        <span class="kp">include</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Live</span>
+
+        <span class="k">def</span> <span class="nf">chat_stream</span>
+          <span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"text/event-stream"</span>
+          <span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s2">"Cache-Control"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"no-cache"</span>
+          <span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s2">"X-Accel-Buffering"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"no"</span>  <span class="c1"># Disable nginx buffering</span>
+          <span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s2">"Connection"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"keep-alive"</span>
+
+          <span class="n">sse</span> <span class="o">=</span> <span class="no">SSE</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">stream</span><span class="p">,</span> <span class="ss">retry: </span><span class="mi">300</span><span class="p">,</span> <span class="ss">event: </span><span class="s2">"message"</span><span class="p">)</span>
+
+          <span class="k">begin</span>
+            <span class="no">LlmGateway</span><span class="o">::</span><span class="no">StreamingClient</span><span class="p">.</span><span class="nf">chat_stream</span><span class="p">(</span>
+              <span class="ss">query: </span><span class="n">params</span><span class="p">[</span><span class="ss">:query</span><span class="p">],</span>
+              <span class="ss">user: </span><span class="n">current_user</span><span class="p">,</span>
+              <span class="ss">session_id: </span><span class="n">params</span><span class="p">[</span><span class="ss">:session_id</span><span class="p">]</span>
+            <span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">chunk</span><span class="o">|</span>
+              <span class="n">sse</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="ss">event: </span><span class="s2">"chunk"</span><span class="p">)</span>
+            <span class="k">end</span>
+
+            <span class="n">sse</span><span class="p">.</span><span class="nf">write</span><span class="p">({</span> <span class="ss">done: </span><span class="kp">true</span> <span class="p">},</span> <span class="ss">event: </span><span class="s2">"complete"</span><span class="p">)</span>
+          <span class="k">rescue</span> <span class="no">IOError</span><span class="p">,</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Live</span><span class="o">::</span><span class="no">ClientDisconnected</span>
+            <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"[LLM Gateway] Client disconnected"</span>
+          <span class="k">ensure</span>
+            <span class="n">sse</span><span class="p">.</span><span class="nf">close</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>ActionController::Live Advantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ Full control</td>
+      <td>Credits deducted, audit logged, errors transformed</td>
+    </tr>
+    <tr>
+      <td>✅ FastAPI hidden</td>
+      <td>No public exposure of LLM service</td>
+    </tr>
+    <tr>
+      <td>✅ Consistent patterns</td>
+      <td>Same auth/error handling as REST endpoints</td>
+    </tr>
+    <tr>
+      <td>✅ Simpler frontend</td>
+      <td>One endpoint, one auth mechanism</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>ActionController::Live Disadvantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ Thread per stream</td>
+      <td>Puma thread tied up for duration</td>
+    </tr>
+    <tr>
+      <td>⚠️ Added latency</td>
+      <td>+10-50ms per hop for token forwarding</td>
+    </tr>
+    <tr>
+      <td>⚠️ Memory pressure</td>
+      <td>Long-lived connections use memory</td>
+    </tr>
+    <tr>
+      <td>⚠️ Nginx buffering</td>
+      <td>Must disable with <code class="language-plaintext highlighter-rouge">X-Accel-Buffering: no</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="43-option-f-direct-fastapi-streaming">4.3 Option F: Direct FastAPI Streaming</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──────────┐     1. POST /chat/init      ┌──────────┐
+│ Frontend │ ───────────────────────────► │  Rails   │
+│          │ ◄─────────────────────────── │          │
+│          │     { stream_token, url }    │          │
+│          │                              └──────────┘
+│          │
+│          │     2. GET /stream?token=xxx
+│          │ ─────────────────────────────►
+│          │                              ┌──────────┐
+│          │ ◄─────────────────────────── │ FastAPI  │
+│          │     SSE: data chunks          │          │
+└──────────┘                              │          │
+                                          │          │
+                 3. POST /webhook          │          │
+           ┌──────────────────────────────│          │
+           │    { session_id, tokens }    └──────────┘
+           ▼
+      ┌──────────┐
+      │  Rails   │  → Deduct credits
+      └──────────┘
+</code></pre></div></div>
+
+<p><strong>Direct Streaming Advantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ Lowest latency</td>
+      <td>No proxy between client and LLM</td>
+    </tr>
+    <tr>
+      <td>✅ No thread pressure</td>
+      <td>Rails threads not blocked</td>
+    </tr>
+    <tr>
+      <td>✅ Independent scaling</td>
+      <td>Streaming scales separately</td>
+    </tr>
+    <tr>
+      <td>✅ Better UX</td>
+      <td>Faster token delivery</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Direct Streaming Disadvantages:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ Token management</td>
+      <td>Rails must issue/validate short-lived tokens</td>
+    </tr>
+    <tr>
+      <td>⚠️ CORS complexity</td>
+      <td>FastAPI needs cross-origin configuration</td>
+    </tr>
+    <tr>
+      <td>⚠️ Billing timing</td>
+      <td>Post-facto via webhook</td>
+    </tr>
+    <tr>
+      <td>⚠️ Two auth flows</td>
+      <td>Frontend handles two authentication patterns</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="44-when-to-choose-each">4.4 When to Choose Each</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Recommendation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Starting out, simpler architecture</td>
+      <td>Option A (<code class="language-plaintext highlighter-rouge">ActionController::Live</code>)</td>
+    </tr>
+    <tr>
+      <td>High concurrent streams (100+)</td>
+      <td>Option F (direct)</td>
+    </tr>
+    <tr>
+      <td>Streaming latency critical (&lt;50ms)</td>
+      <td>Option F (direct)</td>
+    </tr>
+    <tr>
+      <td>Don’t want FastAPI exposed</td>
+      <td>Option A (gateway)</td>
+    </tr>
+    <tr>
+      <td>Need real-time credit validation</td>
+      <td>Option A (gateway)</td>
+    </tr>
+    <tr>
+      <td>Rails server resource constrained</td>
+      <td>Option F (direct)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="5-http-client-patterns-with-faraday">5. HTTP Client Patterns with Faraday</h2>
+
+<h3 id="51-why-faraday">5.1 Why Faraday?</h3>
+
+<p>Our codebase already uses Faraday for OAuth profile fetching. Extending this pattern to the LLM service maintains consistency:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Existing pattern: app/services/oauth/google_profile_fetcher.rb</span>
+<span class="k">def</span> <span class="nf">connection</span>
+  <span class="vi">@connection</span> <span class="o">||=</span> <span class="no">Faraday</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">url: </span><span class="no">GOOGLE_API_URL</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:json</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:retry</span><span class="p">,</span> <span class="ss">max: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">interval: </span><span class="mf">0.1</span><span class="p">,</span> <span class="ss">backoff_factor: </span><span class="mi">2</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">response</span> <span class="ss">:raise_error</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">adapter</span> <span class="no">Faraday</span><span class="p">.</span><span class="nf">default_adapter</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">options</span><span class="p">.</span><span class="nf">timeout</span> <span class="o">=</span> <span class="mi">5</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="52-llmgateway-client-with-faraday">5.2 LlmGateway Client with Faraday</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/llm_gateway/client.rb</span>
+<span class="k">module</span> <span class="nn">LlmGateway</span>
+  <span class="k">class</span> <span class="nc">Client</span>
+    <span class="k">class</span> <span class="nc">Error</span> <span class="o">&lt;</span> <span class="no">StandardError</span><span class="p">;</span> <span class="k">end</span>
+    <span class="k">class</span> <span class="nc">TimeoutError</span> <span class="o">&lt;</span> <span class="no">Error</span><span class="p">;</span> <span class="k">end</span>
+    <span class="k">class</span> <span class="nc">ServiceUnavailable</span> <span class="o">&lt;</span> <span class="no">Error</span><span class="p">;</span> <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="n">query</span><span class="p">:,</span> <span class="n">user</span><span class="p">:,</span> <span class="ss">session_id: </span><span class="kp">nil</span><span class="p">)</span>
+      <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="s2">"/api/v1/llm-chat/recruiter/chat"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+        <span class="n">req</span><span class="p">.</span><span class="nf">headers</span><span class="p">.</span><span class="nf">merge!</span><span class="p">(</span><span class="n">auth_headers</span><span class="p">(</span><span class="n">user</span><span class="p">))</span>
+        <span class="n">req</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">query: </span><span class="n">query</span><span class="p">,</span> <span class="ss">session_id: </span><span class="n">session_id</span> <span class="p">}.</span><span class="nf">compact</span><span class="p">.</span><span class="nf">to_json</span>
+      <span class="k">end</span>
+
+      <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">,</span> <span class="ss">symbolize_names: </span><span class="kp">true</span><span class="p">)</span>
+    <span class="k">rescue</span> <span class="no">Faraday</span><span class="o">::</span><span class="no">TimeoutError</span>
+      <span class="k">raise</span> <span class="no">TimeoutError</span><span class="p">,</span> <span class="s2">"AI service timeout"</span>
+    <span class="k">rescue</span> <span class="no">Faraday</span><span class="o">::</span><span class="no">ConnectionFailed</span>
+      <span class="k">raise</span> <span class="no">ServiceUnavailable</span><span class="p">,</span> <span class="s2">"AI service unavailable"</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">connection</span>
+      <span class="vi">@connection</span> <span class="o">||=</span> <span class="no">Faraday</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">url: </span><span class="n">config</span><span class="p">.</span><span class="nf">base_url</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:json</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:retry</span><span class="p">,</span>
+          <span class="ss">max: </span><span class="mi">2</span><span class="p">,</span>
+          <span class="ss">interval: </span><span class="mf">0.5</span><span class="p">,</span>
+          <span class="ss">backoff_factor: </span><span class="mi">2</span><span class="p">,</span>
+          <span class="ss">exceptions: </span><span class="p">[</span><span class="no">Faraday</span><span class="o">::</span><span class="no">TimeoutError</span><span class="p">,</span> <span class="no">Faraday</span><span class="o">::</span><span class="no">ConnectionFailed</span><span class="p">]</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">response</span> <span class="ss">:raise_error</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">adapter</span> <span class="no">Faraday</span><span class="p">.</span><span class="nf">default_adapter</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">options</span><span class="p">.</span><span class="nf">timeout</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># LLM needs longer timeout</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">options</span><span class="p">.</span><span class="nf">open_timeout</span> <span class="o">=</span> <span class="mi">5</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">auth_headers</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span>
+        <span class="s2">"X-Service-Token"</span> <span class="o">=&gt;</span> <span class="n">config</span><span class="p">.</span><span class="nf">service_token</span><span class="p">,</span>
+        <span class="s2">"X-User-Id"</span> <span class="o">=&gt;</span> <span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">.</span><span class="nf">to_s</span><span class="p">,</span>
+        <span class="s2">"X-Company-Id"</span> <span class="o">=&gt;</span> <span class="n">user</span><span class="p">.</span><span class="nf">company_id</span><span class="p">.</span><span class="nf">to_s</span><span class="p">,</span>
+        <span class="s2">"X-User-Role"</span> <span class="o">=&gt;</span> <span class="n">user</span><span class="p">.</span><span class="nf">role</span><span class="p">.</span><span class="nf">to_s</span><span class="p">,</span>
+        <span class="s2">"X-Request-Id"</span> <span class="o">=&gt;</span> <span class="no">SecureRandom</span><span class="p">.</span><span class="nf">uuid</span>
+      <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="53-faraday-advantages">5.3 Faraday Advantages</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ Consistent with codebase</td>
+      <td>Same pattern as OAuth services</td>
+    </tr>
+    <tr>
+      <td>✅ Built-in retry</td>
+      <td>Automatic backoff for transient failures</td>
+    </tr>
+    <tr>
+      <td>✅ Middleware stack</td>
+      <td>Request/response transformation</td>
+    </tr>
+    <tr>
+      <td>✅ Configurable timeouts</td>
+      <td>Per-connection settings</td>
+    </tr>
+    <tr>
+      <td>✅ Connection pooling</td>
+      <td>Reuse connections efficiently</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="54-faraday-disadvantages">5.4 Faraday Disadvantages</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ Not streaming-native</td>
+      <td>Use <code class="language-plaintext highlighter-rouge">Net::HTTP</code> for SSE streaming</td>
+    </tr>
+    <tr>
+      <td>⚠️ Sync by default</td>
+      <td>Wrap in background job if needed</td>
+    </tr>
+    <tr>
+      <td>⚠️ Memory for large responses</td>
+      <td>Stream to file if needed</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="55-streaming-client-nethttp">5.5 Streaming Client (Net::HTTP)</h3>
+
+<p>For SSE streaming, we use <code class="language-plaintext highlighter-rouge">Net::HTTP</code> directly:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/llm_gateway/streaming_client.rb</span>
+<span class="k">module</span> <span class="nn">LlmGateway</span>
+  <span class="k">class</span> <span class="nc">StreamingClient</span>
+    <span class="k">def</span> <span class="nf">chat_stream</span><span class="p">(</span><span class="n">query</span><span class="p">:,</span> <span class="n">user</span><span class="p">:,</span> <span class="ss">session_id: </span><span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">config</span><span class="p">.</span><span class="nf">base_url</span><span class="si">}</span><span class="s2">/api/v1/llm-chat/recruiter/chat/stream"</span><span class="p">)</span>
+
+      <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+      <span class="n">request</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"application/json"</span>
+      <span class="n">request</span><span class="p">[</span><span class="s2">"Accept"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"text/event-stream"</span>
+      <span class="n">request</span><span class="p">[</span><span class="s2">"X-Service-Token"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="nf">service_token</span>
+      <span class="n">request</span><span class="p">[</span><span class="s2">"X-User-Id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">.</span><span class="nf">to_s</span>
+
+      <span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">query: </span><span class="n">query</span><span class="p">,</span> <span class="ss">session_id: </span><span class="n">session_id</span> <span class="p">}.</span><span class="nf">compact</span><span class="p">.</span><span class="nf">to_json</span>
+
+      <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">)</span>
+      <span class="n">http</span><span class="p">.</span><span class="nf">use_ssl</span> <span class="o">=</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s2">"https"</span>
+      <span class="n">http</span><span class="p">.</span><span class="nf">read_timeout</span> <span class="o">=</span> <span class="mi">120</span>
+
+      <span class="n">http</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="n">response</span><span class="p">.</span><span class="nf">read_body</span> <span class="k">do</span> <span class="o">|</span><span class="n">chunk</span><span class="o">|</span>
+          <span class="n">buffer</span> <span class="o">+=</span> <span class="n">chunk</span>
+          <span class="k">while</span> <span class="p">(</span><span class="n">line_end</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">.</span><span class="nf">index</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">))</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">.</span><span class="nf">slice!</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">).</span><span class="nf">strip</span>
+            <span class="k">next</span> <span class="k">if</span> <span class="n">line</span><span class="p">.</span><span class="nf">empty?</span> <span class="o">||</span> <span class="o">!</span><span class="n">line</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"data: "</span><span class="p">)</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">6</span><span class="o">..</span><span class="p">]</span>
+            <span class="k">next</span> <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s2">"[DONE]"</span>
+
+            <span class="n">parsed</span> <span class="o">=</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="ss">symbolize_names: </span><span class="kp">true</span><span class="p">)</span> <span class="k">rescue</span> <span class="kp">nil</span>
+            <span class="n">block</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span> <span class="k">if</span> <span class="n">parsed</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-authentication-reconciliation-strategies">6. Authentication Reconciliation Strategies</h2>
+
+<h3 id="61-the-problem">6.1 The Problem</h3>
+
+<p>FastAPI requirements specify <strong>OAuth2 Bearer + scopes</strong> (<code class="language-plaintext highlighter-rouge">llm:chat:send</code>, <code class="language-plaintext highlighter-rouge">llm:chat:read</code>, <code class="language-plaintext highlighter-rouge">llm:chat:delete</code>), while Rails uses <strong>Devise JWT (HS256)</strong>. How do we reconcile these?</p>
+
+<h3 id="62-three-strategies">6.2 Three Strategies</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Strategy</th>
+      <th>Frontend → Rails</th>
+      <th>Rails → FastAPI</th>
+      <th>FastAPI Validates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Gateway Auth</strong></td>
+      <td>Current JWT</td>
+      <td>Service token + headers</td>
+      <td><code class="language-plaintext highlighter-rouge">X-Service-Token</code></td>
+    </tr>
+    <tr>
+      <td><strong>2. Service JWT</strong></td>
+      <td>Current JWT</td>
+      <td>Short-lived JWT (2-5 min)</td>
+      <td>Internal JWT signature</td>
+    </tr>
+    <tr>
+      <td><strong>3. Central IdP</strong></td>
+      <td>IdP JWT</td>
+      <td>Same IdP JWT</td>
+      <td>IdP public key</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="63-strategy-comparison">6.3 Strategy Comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Criteria</th>
+      <th style="text-align: center">Strategy 1</th>
+      <th style="text-align: center">Strategy 2</th>
+      <th style="text-align: center">Strategy 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Migration Effort</strong></td>
+      <td style="text-align: center">None</td>
+      <td style="text-align: center">Low</td>
+      <td style="text-align: center">High</td>
+    </tr>
+    <tr>
+      <td><strong>FastAPI Complexity</strong></td>
+      <td style="text-align: center">Minimal</td>
+      <td style="text-align: center">Moderate</td>
+      <td style="text-align: center">Moderate</td>
+    </tr>
+    <tr>
+      <td><strong>Scope Enforcement</strong></td>
+      <td style="text-align: center">Rails only</td>
+      <td style="text-align: center">Both services</td>
+      <td style="text-align: center">Both services</td>
+    </tr>
+    <tr>
+      <td><strong>Token Lifetime</strong></td>
+      <td style="text-align: center">N/A</td>
+      <td style="text-align: center">2-5 minutes</td>
+      <td style="text-align: center">~1 hour</td>
+    </tr>
+    <tr>
+      <td><strong>Public FastAPI</strong></td>
+      <td style="text-align: center">❌</td>
+      <td style="text-align: center">❌</td>
+      <td style="text-align: center">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Fits Option A</strong></td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐</td>
+    </tr>
+    <tr>
+      <td><strong>Fits Option F</strong></td>
+      <td style="text-align: center">⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐</td>
+      <td style="text-align: center">⭐⭐⭐⭐⭐</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="64-our-recommendation-start-with-strategy-1">6.4 Our Recommendation: Start with Strategy 1</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>X-Service-Token: &lt;shared-secret&gt;
+X-User-Id: 123
+X-Company-Id: 456
+X-User-Role: client
+X-Company-Role: owner
+X-Request-Id: uuid-for-tracing
+</code></pre></div></div>
+
+<p><strong>Why:</strong></p>
+
+<ul>
+  <li>Zero auth migration on main product API</li>
+  <li>FastAPI stays simple (no JWT library needed)</li>
+  <li>Pundit enforces scope-like permissions in Rails</li>
+  <li>Network isolation keeps FastAPI internal</li>
+</ul>
+
+<hr />
+
+<h2 id="7-the-case-for-internal-gem-isolation">7. The Case for Internal Gem Isolation</h2>
+
+<h3 id="71-the-pattern-internal-rails-engines">7.1 The Pattern: Internal Rails Engines</h3>
+
+<p>We already use internal gems for cross-cutting concerns:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Gem</th>
+      <th>Path</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fraudify</code></td>
+      <td><code class="language-plaintext highlighter-rouge">./fraudify</code></td>
+      <td>Fraud detection, risk scoring, OTP gating</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">notify</code></td>
+      <td><code class="language-plaintext highlighter-rouge">./notify</code></td>
+      <td>SMS/email delivery, provider routing, templates</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Both are Rails engines with isolated namespaces, configurations, and test suites.</p>
+
+<h3 id="72-why-create-a-llm_gateway-gem">7.2 Why Create a <code class="language-plaintext highlighter-rouge">llm_gateway</code> Gem?</h3>
+
+<p><strong>Same pattern, new domain:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>llm_gateway/
+├── Gemfile
+├── llm_gateway.gemspec
+├── lib/
+│   ├── llm_gateway.rb              # Configuration + entry point
+│   ├── llm_gateway/
+│   │   ├── version.rb
+│   │   ├── engine.rb           # Rails engine
+│   │   └── configuration.rb
+│   └── generators/
+│       └── llm_gateway/
+│           └── install_generator.rb
+├── app/
+│   ├── services/llm_gateway/
+│   │   ├── client.rb           # HTTP client
+│   │   ├── streaming_client.rb # SSE streaming
+│   │   └── validator.rb        # Input validation
+│   ├── models/llm_gateway/
+│   │   └── session.rb          # Session tracking
+│   └── jobs/llm_gateway/
+│       └── cleanup_sessions_job.rb
+├── db/migrate/
+├── spec/
+└── doc/
+</code></pre></div></div>
+
+<h3 id="73-advantages-of-gem-isolation">7.3 Advantages of Gem Isolation</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅ <strong>Single responsibility</strong></td>
+      <td>Gem handles only AI gateway logic</td>
+    </tr>
+    <tr>
+      <td>✅ <strong>Independent testing</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">cd llm_gateway &amp;&amp; bundle exec rspec</code></td>
+    </tr>
+    <tr>
+      <td>✅ <strong>Clear boundaries</strong></td>
+      <td>Host app sees only public API</td>
+    </tr>
+    <tr>
+      <td>✅ <strong>Versioned</strong></td>
+      <td>Own changelog, semantic versioning</td>
+    </tr>
+    <tr>
+      <td>✅ <strong>Reusable</strong></td>
+      <td>Could be used by other Rails apps</td>
+    </tr>
+    <tr>
+      <td>✅ <strong>Team ownership</strong></td>
+      <td>Clear ownership of AI integration</td>
+    </tr>
+    <tr>
+      <td>✅ <strong>Configuration isolation</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">LlmGateway.configure</code> separate from app config</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="74-disadvantages-of-gem-isolation">7.4 Disadvantages of Gem Isolation</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Disadvantage</th>
+      <th>Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>⚠️ More files</td>
+      <td>Generator creates boilerplate</td>
+    </tr>
+    <tr>
+      <td>⚠️ Indirection</td>
+      <td>Clear documentation</td>
+    </tr>
+    <tr>
+      <td>⚠️ Dependency management</td>
+      <td>Careful version pinning</td>
+    </tr>
+    <tr>
+      <td>⚠️ Learning curve</td>
+      <td>Follow existing gem patterns</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="75-configuration-pattern">7.5 Configuration Pattern</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># lib/llm_gateway.rb</span>
+<span class="k">module</span> <span class="nn">LlmGateway</span>
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="nb">attr_accessor</span> <span class="ss">:configuration</span>
+
+    <span class="k">def</span> <span class="nf">configure</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">configuration</span> <span class="o">||=</span> <span class="no">Configuration</span><span class="p">.</span><span class="nf">new</span>
+      <span class="k">yield</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">Configuration</span>
+    <span class="nb">attr_accessor</span> <span class="ss">:base_url</span><span class="p">,</span> <span class="ss">:service_token</span><span class="p">,</span> <span class="ss">:timeout</span><span class="p">,</span> <span class="ss">:stream_timeout</span><span class="p">,</span> <span class="ss">:sandbox</span><span class="p">,</span> <span class="ss">:logger</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@base_url</span>       <span class="o">=</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"LLM_SERVICE_BASE_URL"</span><span class="p">,</span> <span class="s2">"http://localhost:8000"</span><span class="p">)</span>
+      <span class="vi">@service_token</span>  <span class="o">=</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"LLM_SERVICE_TOKEN"</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
+      <span class="vi">@timeout</span>        <span class="o">=</span> <span class="mi">30</span>
+      <span class="vi">@stream_timeout</span> <span class="o">=</span> <span class="mi">120</span>
+      <span class="vi">@sandbox</span>        <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
+      <span class="vi">@logger</span>         <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">public_send</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s2">"[llm_gateway] </span><span class="si">#{</span><span class="n">msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="76-host-app-integration">7.6 Host App Integration</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Gemfile</span>
+<span class="n">gem</span> <span class="s2">"fraudify"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"fraudify"</span>
+<span class="n">gem</span> <span class="s2">"notify"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"notify"</span>
+<span class="n">gem</span> <span class="s2">"llm_gateway"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"llm_gateway"</span>  <span class="c1"># ← NEW</span>
+
+<span class="c1"># config/initializers/llm_gateway.rb</span>
+<span class="no">LlmGateway</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">base_url</span>      <span class="o">=</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"LLM_SERVICE_BASE_URL"</span><span class="p">)</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">service_token</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"LLM_SERVICE_TOKEN"</span><span class="p">)</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">timeout</span>       <span class="o">=</span> <span class="mi">30</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">sandbox</span>       <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="8-security-considerations">8. Security Considerations</h2>
+
+<h3 id="81-network-isolation">8.1 Network Isolation</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────────────────────────────────────────────────────┐
+│                         PUBLIC INTERNET                          │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                    Load Balancer                           │  │
+│  │                    (HTTPS only)                            │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                    Rails API                               │  │
+│  │                    (Authenticates, Authorizes)             │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                              │                                   │
+│                    INTERNAL NETWORK ONLY                         │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                    FastAPI LLM                             │  │
+│  │                    (Trusts X-Service-Token)                │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<h3 id="82-rate-limiting">8.2 Rate Limiting</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/initializers/rack_attack.rb</span>
+
+<span class="c1"># General AI endpoint limit</span>
+<span class="no">Rack</span><span class="o">::</span><span class="no">Attack</span><span class="p">.</span><span class="nf">throttle</span><span class="p">(</span><span class="s2">"llm_gateway/user"</span><span class="p">,</span> <span class="ss">limit: </span><span class="mi">100</span><span class="p">,</span> <span class="ss">period: </span><span class="mi">1</span><span class="p">.</span><span class="nf">minute</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+  <span class="k">if</span> <span class="n">req</span><span class="p">.</span><span class="nf">path</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"/api/v1/llm-chat"</span><span class="p">)</span>
+    <span class="n">req</span><span class="p">.</span><span class="nf">env</span><span class="p">[</span><span class="s2">"HTTP_AUTHORIZATION"</span><span class="p">].</span><span class="nf">presence</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Stricter streaming limit</span>
+<span class="no">Rack</span><span class="o">::</span><span class="no">Attack</span><span class="p">.</span><span class="nf">throttle</span><span class="p">(</span><span class="s2">"llm_gateway/stream"</span><span class="p">,</span> <span class="ss">limit: </span><span class="mi">10</span><span class="p">,</span> <span class="ss">period: </span><span class="mi">1</span><span class="p">.</span><span class="nf">minute</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+  <span class="n">req</span><span class="p">.</span><span class="nf">ip</span> <span class="k">if</span> <span class="n">req</span><span class="p">.</span><span class="nf">path</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="s2">"/chat/stream"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Credit check before expensive operations</span>
+<span class="no">Rack</span><span class="o">::</span><span class="no">Attack</span><span class="p">.</span><span class="nf">blocklist</span><span class="p">(</span><span class="s2">"llm_gateway/no_credits"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+  <span class="k">if</span> <span class="n">req</span><span class="p">.</span><span class="nf">path</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"/api/v1/llm-chat"</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">req</span><span class="p">.</span><span class="nf">post?</span>
+    <span class="c1"># Check company credits via cache</span>
+    <span class="no">LlmGateway</span><span class="o">::</span><span class="no">CreditChecker</span><span class="p">.</span><span class="nf">blocked?</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="83-input-validation">8.3 Input Validation</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/llm_gateway/validator.rb</span>
+<span class="k">module</span> <span class="nn">LlmGateway</span>
+  <span class="k">class</span> <span class="nc">Validator</span>
+    <span class="no">MAX_QUERY_LENGTH</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="no">ALLOWED_INTENTS</span> <span class="o">=</span> <span class="sx">%w[search chat user_action]</span><span class="p">.</span><span class="nf">freeze</span>
+
+    <span class="c1"># Forward-compatible profile ID regex</span>
+    <span class="no">PROFILE_ID_PATTERN</span> <span class="o">=</span> <span class="sr">/\A(id_[a-f0-9]{8}|[a-f0-9]{24})\z/</span>
+
+    <span class="k">class</span> <span class="nc">ValidationError</span> <span class="o">&lt;</span> <span class="no">StandardError</span><span class="p">;</span> <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">validate_chat_params!</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+      <span class="n">validate_query!</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:query</span><span class="p">])</span>
+      <span class="n">validate_intent!</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:user_intent</span><span class="p">])</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user_intent</span><span class="p">]</span>
+      <span class="n">validate_profile_id!</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">])</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">]</span>
+    <span class="k">end</span>
+
+    <span class="nb">private_class_method</span> <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">validate_query!</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+      <span class="k">raise</span> <span class="no">ValidationError</span><span class="p">,</span> <span class="s2">"Query is required"</span> <span class="k">if</span> <span class="n">query</span><span class="p">.</span><span class="nf">blank?</span>
+      <span class="k">raise</span> <span class="no">ValidationError</span><span class="p">,</span> <span class="s2">"Query too long"</span> <span class="k">if</span> <span class="n">query</span><span class="p">.</span><span class="nf">length</span> <span class="o">&gt;</span> <span class="no">MAX_QUERY_LENGTH</span>
+    <span class="k">end</span>
+
+    <span class="nb">private_class_method</span> <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">validate_profile_id!</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nb">id</span><span class="p">.</span><span class="nf">match?</span><span class="p">(</span><span class="no">PROFILE_ID_PATTERN</span><span class="p">)</span>
+      <span class="k">raise</span> <span class="no">ValidationError</span><span class="p">,</span> <span class="s2">"Invalid profile_id format"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="84-audit-logging">8.4 Audit Logging</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/llm_gateway/audit_logger.rb</span>
+<span class="k">module</span> <span class="nn">LlmGateway</span>
+  <span class="k">class</span> <span class="nc">AuditLogger</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">log_request</span><span class="p">(</span><span class="n">user</span><span class="p">:,</span> <span class="n">action</span><span class="p">:,</span> <span class="n">params</span><span class="p">:,</span> <span class="ss">metadata: </span><span class="p">{})</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span>
+        <span class="s2">"[LLM Gateway Audit] "</span> <span class="p">\</span>
+        <span class="s2">"user_id=</span><span class="si">#{</span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2"> "</span> <span class="p">\</span>
+        <span class="s2">"company_id=</span><span class="si">#{</span><span class="n">user</span><span class="p">.</span><span class="nf">company_id</span><span class="si">}</span><span class="s2"> "</span> <span class="p">\</span>
+        <span class="s2">"action=</span><span class="si">#{</span><span class="n">action</span><span class="si">}</span><span class="s2"> "</span> <span class="p">\</span>
+        <span class="s2">"query_preview=</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:query</span><span class="p">]</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">truncate</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span> <span class="p">\</span>
+        <span class="s2">"metadata=</span><span class="si">#{</span><span class="n">metadata</span><span class="p">.</span><span class="nf">to_json</span><span class="si">}</span><span class="s2">"</span>
+      <span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="9-performance-optimization">9. Performance Optimization</h2>
+
+<h3 id="91-connection-pooling">9.1 Connection Pooling</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use connection_pool gem for high-traffic scenarios</span>
+<span class="n">gem</span> <span class="s2">"connection_pool"</span>
+
+<span class="c1"># app/services/llm_gateway/client.rb</span>
+<span class="k">def</span> <span class="nf">connection</span>
+  <span class="vi">@connection_pool</span> <span class="o">||=</span> <span class="no">ConnectionPool</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">size: </span><span class="mi">10</span><span class="p">,</span> <span class="ss">timeout: </span><span class="mi">5</span><span class="p">)</span> <span class="k">do</span>
+    <span class="no">Faraday</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">url: </span><span class="n">config</span><span class="p">.</span><span class="nf">base_url</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+      <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:json</span>
+      <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:retry</span><span class="p">,</span> <span class="ss">max: </span><span class="mi">2</span>
+      <span class="n">f</span><span class="p">.</span><span class="nf">response</span> <span class="ss">:raise_error</span>
+      <span class="n">f</span><span class="p">.</span><span class="nf">adapter</span> <span class="ss">:net_http_persistent</span>  <span class="c1"># Keep-alive connections</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+  <span class="vi">@connection_pool</span><span class="p">.</span><span class="nf">with</span> <span class="p">{</span> <span class="o">|</span><span class="n">conn</span><span class="o">|</span> <span class="n">conn</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="92-caching-session-lookups">9.2 Caching Session Lookups</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/llm_gateway/session.rb</span>
+<span class="k">class</span> <span class="nc">LlmGateway::Session</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="c1"># Cache recent sessions for listing</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">recent_for</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="ss">limit: </span><span class="mi">10</span><span class="p">)</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"llm_gateway:sessions:</span><span class="si">#{</span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="ss">expires_in: </span><span class="mi">5</span><span class="p">.</span><span class="nf">minutes</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">where</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">last_activity_at: :desc</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">to_a</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="93-background-processing-for-heavy-operations">9.3 Background Processing for Heavy Operations</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># For long-running AI tasks, use Sidekiq</span>
+<span class="k">class</span> <span class="nc">LlmGateway::ProcessQueryJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:default</span>
+
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">session_id</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="no">LlmGateway</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">chat</span><span class="p">(</span><span class="ss">query: </span><span class="n">query</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">,</span> <span class="ss">session_id: </span><span class="n">session_id</span><span class="p">)</span>
+
+    <span class="c1"># Broadcast result via ActionCable</span>
+    <span class="no">LlmGatewayChannel</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="ss">event: </span><span class="s2">"query_complete"</span><span class="p">,</span> <span class="ss">data: </span><span class="n">result</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="94-timeouts-and-circuit-breaking">9.4 Timeouts and Circuit Breaking</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/llm_gateway/client.rb</span>
+<span class="no">TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="no">OPEN_TIMEOUT</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="k">def</span> <span class="nf">connection</span>
+  <span class="vi">@connection</span> <span class="o">||=</span> <span class="no">Faraday</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">url: </span><span class="n">config</span><span class="p">.</span><span class="nf">base_url</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">options</span><span class="p">.</span><span class="nf">timeout</span> <span class="o">=</span> <span class="no">TIMEOUT</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">options</span><span class="p">.</span><span class="nf">open_timeout</span> <span class="o">=</span> <span class="no">OPEN_TIMEOUT</span>
+
+    <span class="c1"># Circuit breaker via middleware</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">use</span> <span class="no">Faraday</span><span class="o">::</span><span class="no">Response</span><span class="o">::</span><span class="no">RaiseError</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">request</span> <span class="ss">:retry</span><span class="p">,</span>
+      <span class="ss">max: </span><span class="mi">2</span><span class="p">,</span>
+      <span class="ss">interval: </span><span class="mf">0.5</span><span class="p">,</span>
+      <span class="ss">backoff_factor: </span><span class="mi">2</span><span class="p">,</span>
+      <span class="ss">retry_statuses: </span><span class="p">[</span><span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="10-implementation-roadmap">10. Implementation Roadmap</h2>
+
+<h3 id="101-phase-0-pre-implementation-decisions">10.1 Phase 0: Pre-Implementation Decisions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Decision</th>
+      <th>Choice</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Integration Pattern</td>
+      <td>Option A (API Gateway)</td>
+    </tr>
+    <tr>
+      <td>OAuth Strategy</td>
+      <td>Strategy 1 (Gateway Auth)</td>
+    </tr>
+    <tr>
+      <td>Streaming</td>
+      <td>SSE via <code class="language-plaintext highlighter-rouge">ActionController::Live</code></td>
+    </tr>
+    <tr>
+      <td>Package Structure</td>
+      <td>Internal gem (<code class="language-plaintext highlighter-rouge">llm_gateway</code>)</td>
+    </tr>
+    <tr>
+      <td>Session Storage</td>
+      <td>Dual (Rails for billing, FastAPI for conversation)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="102-phase-1-foundation-week-1">10.2 Phase 1: Foundation (Week 1)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ Create llm_gateway gem structure
+✅ Implement LlmGateway::Client with Faraday
+✅ Add LlmGateway::Session model and migration
+✅ Configure routes
+✅ Add environment variables to .env.example
+</code></pre></div></div>
+
+<h3 id="103-phase-2-core-endpoints-week-1-2">10.3 Phase 2: Core Endpoints (Week 1-2)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ Implement RecruiterController (chat, sessions CRUD)
+✅ Create Blueprints for responses
+✅ Add Pundit policy (LlmGatewayRecruiterPolicy)
+✅ Integrate with CreditTransaction system
+✅ Add input validation
+</code></pre></div></div>
+
+<h3 id="104-phase-3-streaming-week-2">10.4 Phase 3: Streaming (Week 2)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ Implement StreamsController with ActionController::Live
+✅ Add LlmGateway::StreamingClient
+✅ Create ActionCable channel for notifications
+✅ Add Redis Pub/Sub event publisher
+</code></pre></div></div>
+
+<h3 id="105-phase-4-production-readiness-week-3">10.5 Phase 4: Production Readiness (Week 3)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ Add Rack::Attack rate limiting
+✅ Implement audit logging
+✅ Write specs (request, model, service)
+✅ Create RSwag documentation
+✅ Update flow/PRD docs
+✅ Load testing and optimization
+</code></pre></div></div>
+
+<h3 id="106-phase-5-evolution-if-needed">10.6 Phase 5: Evolution (If Needed)</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>⏳ Monitor streaming latency
+⏳ If bottleneck: implement Option F (Hybrid)
+⏳ Add Redis Streams for durable events
+⏳ Scale FastAPI independently
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="11-key-takeaways">11. Key Takeaways</h2>
+
+<h3 id="111-architecture-decisions">11.1 Architecture Decisions</h3>
+
+<ol>
+  <li><strong>Start with the simplest pattern that works</strong> — Option A gives you full control without complexity</li>
+  <li><strong>Plan for evolution</strong> — Design boundaries that allow migrating to Option F later</li>
+  <li><strong>Keep auth in one place</strong> — Rails as gateway simplifies security model</li>
+  <li><strong>Streaming adds complexity</strong> — Understand thread implications before committing</li>
+</ol>
+
+<h3 id="112-implementation-patterns">11.2 Implementation Patterns</h3>
+
+<ol>
+  <li><strong>Follow existing codebase patterns</strong> — Use Faraday if you already use Faraday</li>
+  <li><strong>Isolate as internal gem</strong> — Clear boundaries, independent testing, reusability</li>
+  <li><strong>Forward-compatible validation</strong> — Accept future ID formats, don’t hardcode</li>
+  <li><strong>Correlation IDs everywhere</strong> — End-to-end tracing saves debugging hours</li>
+</ol>
+
+<h3 id="113-security--performance">11.3 Security &amp; Performance</h3>
+
+<ol>
+  <li><strong>Network isolation is your friend</strong> — FastAPI never public = simpler security</li>
+  <li><strong>Rate limit aggressively</strong> — AI endpoints are expensive; protect them</li>
+  <li><strong>Cache wisely</strong> — Session lookups, credit checks, not AI responses</li>
+  <li><strong>Monitor thread usage</strong> — <code class="language-plaintext highlighter-rouge">ActionController::Live</code> ties up Puma threads</li>
+</ol>
+
+<h3 id="114-the-evolution-mindset">11.4 The Evolution Mindset</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Don't overbuild:
+  ✗ "Let's add Kafka for events" → Start with Redis Pub/Sub
+  ✗ "Let's use Option F from day one" → Start with Option A
+  ✗ "Let's add GraphQL federation" → REST proxy works fine
+
+Do plan for growth:
+  ✓ Design boundaries that allow swapping implementations
+  ✓ Use feature flags to toggle between streaming modes
+  ✓ Keep metrics on latency and thread usage
+  ✓ Document decision triggers for evolution
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><strong>Faraday HTTP Client</strong>: <a href="https://lostisland.github.io/faraday/">lostisland.github.io/faraday</a></li>
+  <li><strong>ActionController::Live</strong>: <a href="https://api.rubyonrails.org/classes/ActionController/Live.html">api.rubyonrails.org/classes/ActionController/Live.html</a></li>
+  <li><strong>Server-Sent Events (SSE)</strong>: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">developer.mozilla.org/docs/Web/API/Server-sent_events</a></li>
+  <li><strong>Rails Engines Guide</strong>: <a href="https://guides.rubyonrails.org/engines.html">guides.rubyonrails.org/engines.html</a></li>
+  <li><strong>Rack::Attack</strong>: <a href="https://github.com/rack/rack-attack">github.com/rack/rack-attack</a></li>
+  <li><strong>Devise JWT</strong>: <a href="https://github.com/waiting-for-dev/devise-jwt">github.com/waiting-for-dev/devise-jwt</a></li>
+  <li><strong>Pundit Authorization</strong>: <a href="https://github.com/varvet/pundit">github.com/varvet/pundit</a></li>
+  <li><strong>Blueprinter Serialization</strong>: <a href="https://github.com/procore/blueprinter">github.com/procore/blueprinter</a></li>
+</ul>
+
+<hr />
+
+<p><em>This post documents our architectural analysis for integrating an LLM chat service with our Rails API. The patterns described here—API Gateway, progressive streaming, internal gem isolation—are applicable to any Rails application integrating external AI/ML services. The key insight: start simple, plan boundaries, evolve when metrics justify it.</em></p>
+
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
