@@ -6,6 +6,8 @@ author: Max Lukin
 tags: [rails, llm, ai, fastapi, integration, architecture, sse, streaming, api-gateway, microservices]
 categories: [engineering, rails, ai, architecture]
 description: "A comprehensive guide to integrating a FastAPI LLM backend with an existing Ruby on Rails API—covering architecture patterns, streaming strategies, authentication reconciliation, and the case for internal gem isolation."
+published: false
+hide: true
 ---
 
 > _"The best integration isn't the most technically impressive—it's the one that fits your existing patterns while leaving room to evolve."_
