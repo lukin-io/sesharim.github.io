@@ -304,6 +304,13 @@ html[data-theme="dark"] .theme-toggle-btn .sun-icon {
   margin-bottom: 1.25rem;
 }
 
+/* Intro paragraph - slightly larger for emphasis */
+.content-section p.intro {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: var(--foreground);
+}
+
 .content-section a {
   text-decoration: underline;
   text-decoration-style: dashed;
@@ -312,6 +319,45 @@ html[data-theme="dark"] .theme-toggle-btn .sun-icon {
 
 .content-section a:hover {
   text-decoration-style: solid;
+}
+
+/* Inline tech tags */
+.content-section code {
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  background-color: var(--muted);
+  border-radius: 0.25rem;
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+/* Section divider */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+  opacity: 0.5;
+}
+
+/* Social links - icon row */
+.social-links {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.social-links a {
+  color: var(--light-gray);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-links a:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
 }
 
 /* Blockquotes */
