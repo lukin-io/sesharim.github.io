@@ -110,6 +110,10 @@
 </url>
 <url>
 <loc>http://localhost:4000/cv.pdf</loc>
+<lastmod>2026-01-01T23:44:43+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/old_cv.pdf</loc>
 <lastmod>2025-05-12T19:51:12+03:00</lastmod>
 </url>
 </urlset>
