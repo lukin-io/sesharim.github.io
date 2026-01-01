@@ -1,0 +1,749 @@
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>How to Start with Agentic Development: What to Know, What to Automate, and How to Use It | Software Engineering consultant</title>
+  
+  <meta name="theme-color">
+
+  <link rel="canonical" href="http://localhost:4000/blog/how-to-start-agentic-development">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <meta name="description"
+    content="  TL;DR      Agentic development is a loop: Plan → Act (tools) → Observe → Decide → Repeat.    The biggest productivity gains come from determinism, not prom...">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>How to Start with Agentic Development: What to Know, What to Automate, and How to Use It | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="How to Start with Agentic Development: What to Know, What to Automate, and How to Use It" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases speed without sacrificing code quality." />
+<meta property="og:description" content="A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases speed without sacrificing code quality." />
+<link rel="canonical" href="http://localhost:4000/blog/how-to-start-agentic-development" />
+<meta property="og:url" content="http://localhost:4000/blog/how-to-start-agentic-development" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-01-01T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How to Start with Agentic Development: What to Know, What to Automate, and How to Use It" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2026-01-01T00:00:00+02:00","datePublished":"2026-01-01T00:00:00+02:00","description":"A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases speed without sacrificing code quality.","headline":"How to Start with Agentic Development: What to Know, What to Automate, and How to Use It","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/how-to-start-agentic-development"},"url":"http://localhost:4000/blog/how-to-start-agentic-development"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
+    <header>
+      &nbsp;
+    </header>
+
+    <main>
+      <article class="w-full">
+  <!-- Navigation -->
+  <nav class="mb-8">
+    <div class="flex items-center justify-between">
+      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span class="font-medium">All Posts</span>
+      </a>
+      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
+          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
+          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </svg>
+        <span class="text-sm">Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Post header -->
+  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
+    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
+      How to Start with Agentic Development: What to Know, What to Automate, and How to Use It
+    </h1>
+    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
+      <time class="text-sm font-medium">January 1, 2026</time>
+      
+        <span class="text-sm">by Max Lukin</span>
+      
+    </div>
+  </header>
+
+  <!-- Post content -->
+  <div class="prose prose-lg max-w-none">
+    <blockquote>
+  <p><strong>TL;DR</strong></p>
+
+  <ul>
+    <li>Agentic development is a loop: <strong>Plan → Act (tools) → Observe → Decide → Repeat</strong>.</li>
+    <li>The biggest productivity gains come from <strong>determinism, not prompting</strong>: a single verify command, quality gates, and enforcement via hooks.</li>
+    <li>The “must-know” stack in 2026: <strong>AGENTS.md</strong>, <strong>Skills</strong>, <strong>MCP</strong>, <strong>RAG</strong>, <strong>LSP</strong>, <strong>Hooks</strong>, and <strong>Workflows</strong>.</li>
+    <li>My two most effective multipliers:
+      <ul>
+        <li><strong>Contract-first + verification gates</strong> (“Zero‑Gap API development”)</li>
+        <li><strong>Documentation hierarchy + Flow docs with Responsible Files</strong> (documentation-driven development that scales)</li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<h2 id="why-agentic-development-feels-different-from-ai-coding-assistants">Why agentic development feels different from “AI coding assistants”</h2>
+
+<p>Autocomplete and chat are mostly <strong>suggestion engines</strong>.</p>
+
+<p>Agentic development is when the model runs a structured loop with tools:</p>
+
+<ul>
+  <li>it reads your repo conventions</li>
+  <li>it edits multiple files</li>
+  <li>it runs commands</li>
+  <li>it interprets errors</li>
+  <li>it iterates until the system is green</li>
+</ul>
+
+<p>That means your productivity is no longer limited by “how well can I prompt?”<br />
+It’s limited by <strong>how well your repo communicates intent and enforces correctness</strong>.</p>
+
+<p>The modern skill is not “prompting.”<br />
+It’s <strong>context engineering + verification engineering</strong>.</p>
+
+<hr />
+
+<h2 id="the-mental-model-the-agent-loop">The mental model: the agent loop</h2>
+
+<p>An “agent” is just a loop with tool use:</p>
+
+<ol>
+  <li><strong>Plan</strong> (what files, what changes, what tests)</li>
+  <li><strong>Act</strong> (edit files, run commands, call tools)</li>
+  <li><strong>Observe</strong> (test output, logs, compiler errors, lint)</li>
+  <li><strong>Decide</strong> (fix, rollback, re-plan)</li>
+  <li>Repeat until done</li>
+</ol>
+
+<p>Your job (as a senior engineer) is to make this loop:</p>
+
+<ul>
+  <li><strong>well-scoped</strong> (small diffs, explicit “definition of done”)</li>
+  <li><strong>well-instrumented</strong> (fast tests + lint + security checks)</li>
+  <li><strong>hard to cheat</strong> (quality gates / hooks / CI)</li>
+  <li><strong>context-efficient</strong> (agent sees the right context, not more context)</li>
+</ul>
+
+<hr />
+
+<h2 id="glossary-plugins-skills-mcp-rag-lsp-hooks-workflows">Glossary: plugins, skills, MCP, RAG, LSP, hooks, workflows</h2>
+
+<p>Here’s the vocabulary, in a practical order:</p>
+
+<h3 id="agentsmd">AGENTS.md</h3>
+<p>A repo-local “operating manual” for coding agents.</p>
+
+<p><strong>What it’s for</strong></p>
+<ul>
+  <li>Encode how <em>this repo</em> works (commands, conventions, boundaries)</li>
+  <li>Stop re-explaining the same rules every session</li>
+  <li>Make agent behavior predictable across tasks</li>
+</ul>
+
+<p>Think: <code class="language-plaintext highlighter-rouge">README.md</code> for agents, but stricter and more actionable.</p>
+
+<hr />
+
+<h3 id="skills">Skills</h3>
+<p>A “Skill” is a packaged workflow (instructions + optional resources/scripts) that the agent can load on demand.</p>
+
+<p><strong>What it’s for</strong></p>
+<ul>
+  <li>Turn your best senior workflows into reusable modules:
+    <ul>
+      <li>“Implement Rails endpoint from contract + request specs”</li>
+      <li>“Safe refactor: characterization tests first”</li>
+      <li>“Write flow doc + Responsible Files table”</li>
+    </ul>
+  </li>
+  <li>Reduce quality drift and context repetition</li>
+</ul>
+
+<p>If AGENTS.md is global repo policy, Skills are <strong>repeatable procedures</strong>.</p>
+
+<hr />
+
+<h3 id="hooks">Hooks</h3>
+<p>Hooks are automation that runs at specific moments (after edits, before stopping, etc.).</p>
+
+<p><strong>What it’s for</strong></p>
+<ul>
+  <li>Enforce quality without relying on “remember to do it”</li>
+  <li>Auto-format after edits</li>
+  <li>Block dangerous operations</li>
+  <li>Require <code class="language-plaintext highlighter-rouge">bin/verify</code> passing before the agent can “finish”</li>
+</ul>
+
+<p>Prompts are best-effort. Hooks are default behavior.</p>
+
+<hr />
+
+<h3 id="workflows">Workflows</h3>
+<p>Workflows are your end-to-end process:</p>
+<ul>
+  <li>feature → tests → verify → docs → PR</li>
+  <li>bugfix → reproduction test → fix → verify → postmortem note</li>
+</ul>
+
+<p>Skills + hooks + CI turn workflows into a system.</p>
+
+<hr />
+
+<h3 id="rag-retrieval-augmented-generation">RAG (Retrieval-Augmented Generation)</h3>
+<p>RAG is the pattern of retrieving relevant docs/files and injecting them as context for the model.</p>
+
+<p><strong>What it’s for</strong></p>
+<ul>
+  <li>Ground the agent in <em>your</em> docs and code</li>
+  <li>Reduce hallucinations</li>
+  <li>Make “documentation-driven development” actually useful to the model</li>
+</ul>
+
+<p>In practice: RAG is how an agent “remembers” your system without you pasting the whole repo.</p>
+
+<hr />
+
+<h3 id="lsp-language-server-protocol">LSP (Language Server Protocol)</h3>
+<p>LSP is what powers “go to definition,” “find references,” “rename symbol,” etc.</p>
+
+<p><strong>What it’s for</strong></p>
+<ul>
+  <li>Semantic navigation beats grep for refactors and correctness</li>
+  <li>Agents become safer when they can reliably answer:
+    <ul>
+      <li>“Where is this symbol used?”</li>
+      <li>“What implements this interface?”</li>
+      <li>“What breaks if I change this method signature?”</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h3 id="mcp-model-context-protocol">MCP (Model Context Protocol)</h3>
+<p>MCP is a standard way to connect an agent to tools and data sources (issue trackers, DB schema, docs, internal APIs).</p>
+
+<p><strong>What it’s for</strong></p>
+<ul>
+  <li>Reduce copy/paste context</li>
+  <li>Give structured, permissioned access to external systems</li>
+  <li>Make tool integrations reusable across clients/vendors</li>
+</ul>
+
+<p>MCP is most useful when your bottleneck is <strong>access to information/tools</strong>, not coding speed.</p>
+
+<hr />
+
+<h2 id="the-agentic-stack-in-one-picture">The “agentic stack” in one picture</h2>
+
+<p>A practical way to visualize the stack:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Workflow (what to do)
+  └─ Hooks (force it to happen)
+      └─ Tool/data access (MCP)
+          └─ Context feeding (RAG + LSP)
+              └─ Skills (repeatable procedures)
+                  └─ AGENTS.md (repo rules + commands + DoD)
+</code></pre></div></div>
+
+<p>If you want a big productivity jump: build from the bottom up.</p>
+
+<hr />
+
+<h2 id="the-senior-engineer-principle-determinism-beats-prompting">The senior engineer principle: determinism beats prompting</h2>
+
+<p>If something must happen every time:</p>
+<ul>
+  <li>formatting</li>
+  <li>tests</li>
+  <li>lint</li>
+  <li>security scan</li>
+  <li>contract compliance check</li>
+</ul>
+
+<p>…don’t “ask the model to remember.”</p>
+
+<p>Make it <strong>one command</strong> and/or enforce it with <strong>hooks</strong> + CI.</p>
+
+<p>This is the same reason “Zero‑Gap API Development” works: it’s a deterministic pipeline (contract → implement → verify → document), not vibes.<br />
+And it’s the same reason documentation-driven development scales for large systems: it creates deterministic “where to look” maps.</p>
+
+<hr />
+
+<h2 id="a-universal-framework-that-scales-requirements--implementation--documentation">A universal framework that scales: Requirements → Implementation → Documentation</h2>
+
+<p>This generalizes cleanly across Rails monoliths, Go services, and polyglot repos:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──────────────────────────────────────────────┐
+│ Layer 1: Requirements / Contracts            │
+│ - Interfaces / OpenAPI / protobuf / specs    │
+│ - Single source of truth                     │
+└──────────────────────────────────────────────┘
+                     ↓
+┌──────────────────────────────────────────────┐
+│ Layer 2: Implementation + Verification       │
+│ - Code + tests + lint + security             │
+│ - One “judge” command: bin/verify            │
+└──────────────────────────────────────────────┘
+                     ↓
+┌──────────────────────────────────────────────┐
+│ Layer 3: Documentation / Memory              │
+│ - Flow docs (how it’s implemented)           │
+│ - PRDs (why it exists)                       │
+│ - Responsible Files tables                   │
+└──────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<p>Two key rules:</p>
+<ul>
+  <li><strong>Docs are generated/updated only after verification passes</strong></li>
+  <li><strong>Contracts are treated as the canonical truth</strong> (or explicitly flagged when reality diverges)</li>
+</ul>
+
+<hr />
+
+<h2 id="step-1-add-agentsmd-to-every-repo">Step 1: Add AGENTS.md to every repo</h2>
+
+<p>Put this at the repo root. Keep it short and operational.</p>
+
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># AGENTS.md — Project instructions for coding agents</span>
+
+<span class="gu">## Prime directive</span>
+<span class="p">-</span> Prefer small, verifiable changes.
+<span class="p">-</span> Never skip verification commands.
+<span class="p">-</span> If unsure: add/adjust tests first to lock behavior.
+
+<span class="gu">## Commands (source of truth)</span>
+<span class="gu">### Ruby / Rails</span>
+<span class="p">-</span> Setup: bundle install
+<span class="p">-</span> Test:  bin/test
+<span class="p">-</span> Lint:  bin/lint
+<span class="p">-</span> Verify (must pass before PR): bin/verify
+<span class="p">-</span> Security: bin/security
+
+<span class="gu">### Go (if present)</span>
+<span class="p">-</span> Test:  make test
+<span class="p">-</span> Lint:  make lint
+<span class="p">-</span> Verify: make verify
+
+<span class="gu">### Node (if present)</span>
+<span class="p">-</span> Test:  pnpm test
+<span class="p">-</span> Lint:  pnpm lint
+<span class="p">-</span> Typecheck: pnpm typecheck
+
+<span class="gu">## Definition of Done</span>
+<span class="p">-</span> [ ] Implementation matches contract/specs
+<span class="p">-</span> [ ] Tests added/updated and pass
+<span class="p">-</span> [ ] Lint/static checks pass
+<span class="p">-</span> [ ] Security checks pass
+<span class="p">-</span> [ ] Docs updated (flow + PRD) if behavior changed
+<span class="p">-</span> [ ] No unrelated refactors in same diff
+
+<span class="gu">## Safety boundaries</span>
+<span class="p">-</span> Don’t touch secrets/credentials or production config.
+<span class="p">-</span> Ask before adding dependencies or changing CI.
+</code></pre></div></div>
+
+<p>This alone reduces agent thrash dramatically.</p>
+
+<hr />
+
+<h2 id="step-2-create-one-judge-command-binverify">Step 2: Create one “judge command” (<code class="language-plaintext highlighter-rouge">bin/verify</code>)</h2>
+
+<p>Agents converge faster when there’s exactly one command that says “reality is correct.”</p>
+
+<h3 id="rails-example">Rails example</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
+
+<span class="nb">echo</span> <span class="s2">"==&gt; Lint"</span>
+bundle <span class="nb">exec </span>rubocop
+
+<span class="nb">echo</span> <span class="s2">"==&gt; Tests"</span>
+bundle <span class="nb">exec </span>rspec
+
+<span class="nb">echo</span> <span class="s2">"==&gt; Security (brakeman)"</span>
+bundle <span class="nb">exec </span>brakeman <span class="nt">-q</span> <span class="nt">-w2</span>
+
+<span class="nb">echo</span> <span class="s2">"==&gt; Dependency audit"</span>
+bundle <span class="nb">exec </span>bundle audit check <span class="nt">--update</span>
+
+<span class="nb">echo</span> <span class="s2">"==&gt; API docs generation (if used)"</span>
+bundle <span class="nb">exec </span>rails rswag:specs:swaggerize
+
+<span class="nb">echo</span> <span class="s2">"✅ verify passed"</span>
+</code></pre></div></div>
+
+<h3 id="go-example">Go example</h3>
+
+<div class="language-makefile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">verify</span><span class="o">:</span>
+	<span class="p">@</span>gofmt <span class="nt">-w</span> .
+	<span class="p">@</span>golangci-lint run
+	<span class="p">@</span>go <span class="nb">test</span> ./...
+</code></pre></div></div>
+
+<p>The exact tools don’t matter.<br />
+What matters is: <strong>one obvious place to run the truth.</strong></p>
+
+<hr />
+
+<h2 id="step-3-use-contract-first-development-especially-for-apis">Step 3: Use contract-first development (especially for APIs)</h2>
+
+<p>My most reliable pattern for AI-assisted Rails APIs is contract-first:</p>
+
+<ul>
+  <li>treat an interface/spec as canonical truth</li>
+  <li>implement strictly against it</li>
+  <li>verify via gates</li>
+  <li>then update docs</li>
+</ul>
+
+<h3 id="safe-defaults-matter-required-fields-are-never-null">Safe defaults matter (required fields are never null)</h3>
+<p>In contract-first work, required fields should not come back as null “because DB is sparse.”</p>
+
+<p>Use safe defaults by type:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>String</td>
+      <td><code class="language-plaintext highlighter-rouge">""</code></td>
+    </tr>
+    <tr>
+      <td>Number</td>
+      <td><code class="language-plaintext highlighter-rouge">0</code> or minimum valid</td>
+    </tr>
+    <tr>
+      <td>Boolean</td>
+      <td><code class="language-plaintext highlighter-rouge">false</code></td>
+    </tr>
+    <tr>
+      <td>Array</td>
+      <td><code class="language-plaintext highlighter-rouge">[]</code></td>
+    </tr>
+    <tr>
+      <td>Object</td>
+      <td>minimal valid object</td>
+    </tr>
+    <tr>
+      <td>Timestamp</td>
+      <td><code class="language-plaintext highlighter-rouge">Time.current.iso8601</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This removes a common “agent bug class”: missing fields / inconsistent shapes.</p>
+
+<h3 id="discrepancy-tagging-impl-vs-doc">Discrepancy tagging: <code class="language-plaintext highlighter-rouge">[IMPL]</code> vs <code class="language-plaintext highlighter-rouge">[DOC]</code></h3>
+<p>When auditing contract compliance, classify gaps:</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">[IMPL]</code></strong> → code is wrong, fix it now, rerun verification</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">[DOC]</code></strong> → the doc/contract is wrong (DB/model reality differs), flag it, don’t silently change requirements</li>
+</ul>
+
+<p>This small habit prevents teams from corrupting the source of truth.</p>
+
+<hr />
+
+<h2 id="step-4-documentation-driven-development-for-complex-systems">Step 4: Documentation-driven development for complex systems</h2>
+
+<p>When systems explode in complexity (MMORPG-scale, or any mature SaaS), your bottleneck becomes <strong>coherence</strong>, not raw coding time.</p>
+
+<p>The pattern that scales:</p>
+
+<h3 id="documentation-hierarchy">Documentation hierarchy</h3>
+<ul>
+  <li><strong>GDD / vision docs</strong>: what the system is</li>
+  <li><strong>Feature docs</strong>: what each subsystem must do</li>
+  <li><strong>Flow docs</strong>: how it’s implemented (step-by-step + file ownership)</li>
+</ul>
+
+<p>This is the structure that makes large Rails monoliths maintainable, and also makes AI agents effective because they can retrieve the correct context instead of guessing.</p>
+
+<h3 id="flow-docs--responsible-files-tables">Flow docs + Responsible Files tables</h3>
+<p>Flow docs should include:</p>
+
+<ul>
+  <li>“Use case” steps that trace UI → controller → service → persistence → broadcast</li>
+  <li>Key behaviors / invariants</li>
+  <li>A “Responsible Files” table so anyone (human or agent) can jump to the right code immediately</li>
+</ul>
+
+<p>Example table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Purpose</th>
+      <th>File</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Combat service</td>
+      <td><code class="language-plaintext highlighter-rouge">app/services/game/combat/turn_based_combat_service.rb</code></td>
+    </tr>
+    <tr>
+      <td>Stimulus controller</td>
+      <td><code class="language-plaintext highlighter-rouge">app/javascript/controllers/turn_combat_controller.js</code></td>
+    </tr>
+    <tr>
+      <td>View</td>
+      <td><code class="language-plaintext highlighter-rouge">app/views/combat/_battle.html.erb</code></td>
+    </tr>
+    <tr>
+      <td>Config</td>
+      <td><code class="language-plaintext highlighter-rouge">config/gameplay/combat_actions.yml</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This is the best “RAG corpus” you can build: docs that directly point to code.</p>
+
+<hr />
+
+<h2 id="step-5-turn-your-best-practices-into-skills">Step 5: Turn your best practices into Skills</h2>
+
+<p>Here’s the trick: you already wrote the workflows in prose.</p>
+
+<p>Now you package them so the agent can apply them repeatedly.</p>
+
+<h3 id="skill-ideas-that-map-to-real-work">Skill ideas that map to real work</h3>
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">rails-zero-gap-endpoint</code></strong>
+    <ul>
+      <li>input: requirement doc (contract), expected behavior</li>
+      <li>output: controller + serializer/blueprint + request specs + docs updates</li>
+      <li>gate: must pass <code class="language-plaintext highlighter-rouge">bin/verify</code></li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">flow-doc-maintainer</code></strong>
+    <ul>
+      <li>update flow steps</li>
+      <li>update Responsible Files table</li>
+      <li>append version history (never overwrite)</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">safe-refactor</code></strong>
+    <ul>
+      <li>add characterization tests first</li>
+      <li>refactor</li>
+      <li>rerun verify</li>
+      <li>summarize risk and coverage</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">go-service-skeleton</code></strong>
+    <ul>
+      <li>standard layout (cmd/, internal/, pkg/)</li>
+      <li>health, metrics, config, structured logging</li>
+      <li>make verify/test/lint</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="skill-template-conceptual">Skill template (conceptual)</h3>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># SKILL.md</span>
+name: rails-zero-gap-endpoint
+description: Implements a Rails API endpoint from a contract/spec with tests, verification, and doc updates.
+
+<span class="gu">## Steps</span>
+<span class="p">1.</span> Read contract/spec in doc/requirements/<span class="ge">**</span>.
+<span class="p">2.</span> Identify response shapes and status codes.
+<span class="p">3.</span> Implement with serializers/blueprints.
+<span class="p">4.</span> Add request specs (success + error cases).
+<span class="p">5.</span> Run bin/verify; fix until green.
+<span class="p">6.</span> Update flow doc + PRD notes; append version history.
+</code></pre></div></div>
+
+<p>The point is not “more features.”<br />
+The point is <strong>standardizing your best engineering behavior</strong>.</p>
+
+<hr />
+
+<h2 id="step-6-add-hooks-so-quality-is-automatic">Step 6: Add hooks so quality is automatic</h2>
+
+<p>Once <code class="language-plaintext highlighter-rouge">bin/verify</code> exists, hooks become a superpower.</p>
+
+<p>High ROI hooks:</p>
+<ul>
+  <li><strong>Format after edits</strong></li>
+  <li><strong>Block sensitive files</strong></li>
+  <li><strong>Don’t stop until verify passes</strong></li>
+  <li><strong>Auto-add a short change log entry for docs</strong></li>
+</ul>
+
+<p>This is how you get “ship faster” <em>and</em> “ship safer” at the same time.</p>
+
+<hr />
+
+<h2 id="when-to-use-rag-vs-lsp-vs-mcp">When to use RAG vs LSP vs MCP</h2>
+
+<h3 id="use-rag-when-you-have-good-docs-but-agents-dont-see-them">Use RAG when you have good docs but agents don’t see them</h3>
+<p>If you already maintain:</p>
+<ul>
+  <li>contracts/specs</li>
+  <li>flow docs</li>
+  <li>ADRs</li>
+  <li>runbooks</li>
+</ul>
+
+<p>…RAG turns that into a searchable memory.</p>
+
+<p><strong>Best practice:</strong> write docs in chunks that can be retrieved (short sections, clear headings, explicit file names).</p>
+
+<h3 id="use-lsp-when-correctness-depends-on-understanding-symbol-relationships">Use LSP when correctness depends on understanding symbol relationships</h3>
+<p>Refactors, renames, interface changes → you want semantic certainty.</p>
+
+<h3 id="use-mcp-when-the-bottleneck-is-tooldata-access">Use MCP when the bottleneck is tool/data access</h3>
+<p>If your “context” lives outside the repo:</p>
+<ul>
+  <li>DB schema details</li>
+  <li>tickets/PRDs in trackers</li>
+  <li>dashboards/logs</li>
+  <li>internal service catalogs</li>
+</ul>
+
+<p>…MCP makes that safe and standardized.</p>
+
+<hr />
+
+<h2 id="a-practical-daily-workflow-that-compounds-productivity">A practical daily workflow that compounds productivity</h2>
+
+<h3 id="feature-workflow">Feature workflow</h3>
+<ol>
+  <li>Define/confirm contract/spec (or acceptance criteria)</li>
+  <li>Agent generates a plan: files + tests + risks</li>
+  <li>Implement smallest vertical slice</li>
+  <li>Run <code class="language-plaintext highlighter-rouge">bin/verify</code> until green</li>
+  <li>Audit for gaps (<code class="language-plaintext highlighter-rouge">[IMPL]</code> / <code class="language-plaintext highlighter-rouge">[DOC]</code>)</li>
+  <li>Update flow doc + PRD notes</li>
+</ol>
+
+<h3 id="bugfix-workflow">Bugfix workflow</h3>
+<ol>
+  <li>Reproduce + write failing test</li>
+  <li>Minimal fix</li>
+  <li><code class="language-plaintext highlighter-rouge">bin/verify</code></li>
+  <li>Add a short note to flow doc/runbook if it’s a recurring class</li>
+</ol>
+
+<h3 id="refactor-workflow">Refactor workflow</h3>
+<ol>
+  <li>Add characterization tests (freeze behavior)</li>
+  <li>Refactor</li>
+  <li><code class="language-plaintext highlighter-rouge">bin/verify</code></li>
+  <li>Optional: second agent acts as a paranoid reviewer (coverage + edge cases)</li>
+</ol>
+
+<hr />
+
+<h2 id="a-60-minute-starter-kit-checklist">A 60-minute “starter kit” checklist</h2>
+
+<p>If you want immediate impact, do this in your next repo:</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add <code class="language-plaintext highlighter-rouge">AGENTS.md</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add <code class="language-plaintext highlighter-rouge">bin/verify</code> (one truth command)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add <code class="language-plaintext highlighter-rouge">bin/test</code>, <code class="language-plaintext highlighter-rouge">bin/lint</code>, <code class="language-plaintext highlighter-rouge">bin/security</code>, <code class="language-plaintext highlighter-rouge">bin/format</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add <code class="language-plaintext highlighter-rouge">/doc/</code> map in README (what doc is where)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add 1 Skill for your most common task</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add 1–2 hooks to enforce formatting + verify</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />In CI: run <code class="language-plaintext highlighter-rouge">bin/verify</code> (same as local)</li>
+</ul>
+
+<p>This is the shortest path to “significantly increase daily process.”</p>
+
+<hr />
+
+<h2 id="closing-the-real-multiplier-is-the-system">Closing: the real multiplier is the system</h2>
+
+<p>AI doesn’t make a team fast.<br />
+<strong>A fast feedback loop makes a team fast.</strong></p>
+
+<p>Agentic development works when:</p>
+
+<ul>
+  <li><strong>Truth is easy to check</strong> (<code class="language-plaintext highlighter-rouge">bin/verify</code>)</li>
+  <li><strong>Intent is easy to find</strong> (contracts + flow docs + Responsible Files)</li>
+  <li><strong>Quality is enforced</strong> (hooks + CI)</li>
+  <li><strong>Workflows are reusable</strong> (Skills)</li>
+</ul>
+
+<p>Once those exist, models become replaceable.<br />
+Your process stays.</p>
+
+  </div>
+
+  <!-- Post footer -->
+  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
+    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-medium">Back to all posts</span>
+    </a>
+  </footer>
+</article>
+
+    </main>
+
+    <footer>
+      <div class="flex justify-center p-2 m-2">
+  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
+      <g>
+        <!-- File outline -->
+        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Down arrow for download -->
+        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Download bar -->
+        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
+      </g>
+    </svg>
+    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
+  </a>
+</div>
+
+    </footer>
+  </body>
+
+</html>
