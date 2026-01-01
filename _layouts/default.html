@@ -32,6 +32,17 @@
         localStorage.setItem('theme', newTheme);
       }
     }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
   </script>
 </body>
 </html>

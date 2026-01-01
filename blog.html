@@ -17,6 +17,14 @@ title: Blog
   <header class="hero">
     <h1>Blog</h1>
     <p class="subtitle">Writing about technologies I work with</p>
+    <a href="/search" class="search-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Search posts
+      <kbd>/</kbd>
+    </a>
   </header>
 
   <!-- Blog posts list -->
@@ -27,12 +35,7 @@ title: Blog
           <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
         </h2>
         <div class="post-meta">
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
-          {% if post.tags %}
-            {% for tag in post.tags limit:3 %}
-              <span class="tag">{{ tag }}</span>
-            {% endfor %}
-          {% endif %}
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
         </div>
         {% if post.description %}
           <p class="excerpt">{{ post.description }}</p>

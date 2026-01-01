@@ -66,6 +66,22 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Page fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main {
+  animation: fadeIn 0.3s ease-out;
+}
+
 /* View Transitions API for smooth theme switching */
 :root {
   view-transition-name: root;
@@ -86,11 +102,13 @@ body {
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 a:hover {
   text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  text-underline-offset: 3px;
 }
 
 /* Focus styles */
@@ -106,6 +124,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--foreground);
   margin-top: 0;
+  line-height: 1.1;
 }
 
 /* Code styling */

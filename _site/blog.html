@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -86,6 +88,14 @@
   <header class="hero">
     <h1>Blog</h1>
     <p class="subtitle">Writing about technologies I work with</p>
+    <a href="/search" class="search-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Search posts
+      <kbd>/</kbd>
+    </a>
   </header>
 
   <!-- Blog posts list -->
@@ -96,16 +106,7 @@
           <a href="/blog/how-to-start-agentic-development">How to Start with Agentic Development: What to Know, What to Automate, and How to Use It</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2026-01-01T00:00:00+02:00">January 1, 2026</time>
-          
-            
-              <span class="tag">ai</span>
-            
-              <span class="tag">agentic-development</span>
-            
-              <span class="tag">software-engineering</span>
-            
-          
+          <time datetime="2026-01-01T00:00:00+02:00">Jan 1, 2026</time>
         </div>
         
           <p class="excerpt">A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases speed without sacrificing code quality.</p>
@@ -117,16 +118,7 @@
           <a href="/blog/rspec-ci-optimization-rails-bitbucket">From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-12-10T00:00:00+02:00">December 10, 2025</time>
-          
-            
-              <span class="tag">rails</span>
-            
-              <span class="tag">rspec</span>
-            
-              <span class="tag">ci-cd</span>
-            
-          
+          <time datetime="2025-12-10T00:00:00+02:00">Dec 10, 2025</time>
         </div>
         
           <p class="excerpt">A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut our Bitbucket Pipeline build time by 60%.</p>
@@ -138,16 +130,7 @@
           <a href="/blog/neverlands-browser-bot-game-design-analyst">Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-12-06T00:00:00+02:00">December 6, 2025</time>
-          
-            
-              <span class="tag">ai</span>
-            
-              <span class="tag">game-design</span>
-            
-              <span class="tag">bots</span>
-            
-          
+          <time datetime="2025-12-06T00:00:00+02:00">Dec 6, 2025</time>
         </div>
         
           <p class="excerpt">How we built a Playwright + GPT-5.1 pipeline that logs into neverlands.ru, captures real game screens, and turns them into structured design insights for your own MMORPG.</p>
@@ -159,16 +142,7 @@
           <a href="/blog/dry-rb-integration-rails-api">From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-12-04T00:00:00+02:00">December 4, 2025</time>
-          
-            
-              <span class="tag">rails</span>
-            
-              <span class="tag">dry-rb</span>
-            
-              <span class="tag">functional-programming</span>
-            
-          
+          <time datetime="2025-12-04T00:00:00+02:00">Dec 4, 2025</time>
         </div>
         
           <p class="excerpt">A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity.</p>
@@ -180,16 +154,7 @@
           <a href="/blog/mysql-to-postgresql-migration-guide">From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-12-03T00:00:00+02:00">December 3, 2025</time>
-          
-            
-              <span class="tag">rails</span>
-            
-              <span class="tag">postgresql</span>
-            
-              <span class="tag">mysql</span>
-            
-          
+          <time datetime="2025-12-03T00:00:00+02:00">Dec 3, 2025</time>
         </div>
         
           <p class="excerpt">A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL's advanced features, and multi-schema architecture strategies.</p>
@@ -201,16 +166,7 @@
           <a href="/blog/zero-gap-api-development-with-ai">Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-12-02T00:00:00+02:00">December 2, 2025</time>
-          
-            
-              <span class="tag">ai</span>
-            
-              <span class="tag">software-engineering</span>
-            
-              <span class="tag">rails</span>
-            
-          
+          <time datetime="2025-12-02T00:00:00+02:00">Dec 2, 2025</time>
         </div>
         
           <p class="excerpt">A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation.</p>
@@ -222,16 +178,7 @@
           <a href="/blog/building-browser-mmorpg-with-rails-and-ai">Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-11-27T00:00:00+02:00">November 27, 2025</time>
-          
-            
-              <span class="tag">rails</span>
-            
-              <span class="tag">mmorpg</span>
-            
-              <span class="tag">game-development</span>
-            
-          
+          <time datetime="2025-11-27T00:00:00+02:00">Nov 27, 2025</time>
         </div>
         
           <p class="excerpt">A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and "inspired-by" patterns enable rapid development of complex game systems.</p>
@@ -243,16 +190,7 @@
           <a href="/blog/websockets-rails-actioncable">From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-11-19T00:00:00+02:00">November 19, 2025</time>
-          
-            
-              <span class="tag">rails</span>
-            
-              <span class="tag">websockets</span>
-            
-              <span class="tag">actioncable</span>
-            
-          
+          <time datetime="2025-11-19T00:00:00+02:00">Nov 19, 2025</time>
         </div>
         
           <p class="excerpt">Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns.</p>
@@ -264,16 +202,7 @@
           <a href="/blog/ai-senior-vs-junior">AI Will Make Your Team Slower—Unless a Senior Engineer Drives It</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-10-29T00:00:00+02:00">October 29, 2025</time>
-          
-            
-              <span class="tag">ai</span>
-            
-              <span class="tag">software-engineering</span>
-            
-              <span class="tag">rails</span>
-            
-          
+          <time datetime="2025-10-29T00:00:00+02:00">Oct 29, 2025</time>
         </div>
         
           <p class="excerpt">A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.</p>
@@ -285,16 +214,7 @@
           <a href="/blog/consolidating-rails-api-guide-for-cursor-ide">One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-09-09T12:00:00+03:00">September 9, 2025</time>
-          
-            
-              <span class="tag">Ruby on Rails</span>
-            
-              <span class="tag">API</span>
-            
-              <span class="tag">Blueprinter</span>
-            
-          
+          <time datetime="2025-09-09T12:00:00+03:00">Sep 9, 2025</time>
         </div>
         
           <p class="excerpt">How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.</p>
@@ -306,16 +226,7 @@
           <a href="/blog/containerizing-rails-dev-with-docker">Containerizing Your Rails Development with Docker + Dev Containers</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-09-04T12:00:00+03:00">September 4, 2025</time>
-          
-            
-              <span class="tag">docker</span>
-            
-              <span class="tag">devcontainers</span>
-            
-              <span class="tag">rails</span>
-            
-          
+          <time datetime="2025-09-04T12:00:00+03:00">Sep 4, 2025</time>
         </div>
         
           <p class="excerpt">Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.</p>
@@ -327,14 +238,7 @@
           <a href="/blog/acid_in_rails_postgresql_vs_mongodb">ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-09-01T12:00:00+03:00">September 1, 2025</time>
-          
-            
-              <span class="tag">rails-8</span>
-            
-              <span class="tag">database</span>
-            
-          
+          <time datetime="2025-09-01T12:00:00+03:00">Sep 1, 2025</time>
         </div>
         
           <p class="excerpt">ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns</p>
@@ -346,14 +250,7 @@
           <a href="/blog/rails-console-startup-banner">A tiny Rails console banner that show app stats every time you run rails c</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-25T12:00:00+03:00">August 25, 2025</time>
-          
-            
-              <span class="tag">rails-8</span>
-            
-              <span class="tag">console</span>
-            
-          
+          <time datetime="2025-08-25T12:00:00+03:00">Aug 25, 2025</time>
         </div>
         
           <p class="excerpt">A tiny Rails console banner that show app stats every time you run rails c</p>
@@ -365,16 +262,7 @@
           <a href="/blog/rails-profile-endpoint-optimization-first-person">Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-15T12:00:00+03:00">August 15, 2025</time>
-          
-            
-              <span class="tag">rails-8</span>
-            
-              <span class="tag">rack</span>
-            
-              <span class="tag">healthcheck</span>
-            
-          
+          <time datetime="2025-08-15T12:00:00+03:00">Aug 15, 2025</time>
         </div>
         
           <p class="excerpt">Optimizing a Complex Rails Profile Endpoint</p>
@@ -386,16 +274,7 @@
           <a href="/blog/rails-8-stable-up-health-endpoint-env-driven">Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-14T15:00:00+03:00">August 14, 2025</time>
-          
-            
-              <span class="tag">rails-8</span>
-            
-              <span class="tag">rack</span>
-            
-              <span class="tag">healthcheck</span>
-            
-          
+          <time datetime="2025-08-14T15:00:00+03:00">Aug 14, 2025</time>
         </div>
         
           <p class="excerpt">A battle-tested, copy‑paste `/up` endpoint for Rails API apps—no autoloading traps, no brittle config. One initializer, ENV‑driven settings, optional DB/Redis checks, clear status semantics, and end‑to‑end tests.</p>
@@ -407,10 +286,7 @@
           <a href="/blog/mastering-freeze_time-in-rails-tests">Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-12T03:01:01+03:00">August 12, 2025</time>
-          
-            
-          
+          <time datetime="2025-08-12T03:01:01+03:00">Aug 12, 2025</time>
         </div>
         
           <p class="excerpt">If your test suite ever fails “only sometimes,” there’s a good chance time is involved. Rails ships with the excellent ActiveSupport::Testing::TimeHelpers, giving you tools like freeze_time, travel_to, and travel to control the clock deterministically. In this post, you’ll learn when...</p>
@@ -422,10 +298,7 @@
           <a href="/blog/rails-under-the-hood">Under-the-Hood Mechanisms of Ruby on Rails You Should Know</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-11T03:01:01+03:00">August 11, 2025</time>
-          
-            
-          
+          <time datetime="2025-08-11T03:01:01+03:00">Aug 11, 2025</time>
         </div>
         
           <p class="excerpt">If you’re comfortable writing Rails apps but want to really understand what’s going on under the hood—and use that knowledge to make better technical decisions—this is your map.
@@ -438,10 +311,7 @@
           <a href="/blog/rails-instrumentation-notifications-logsubscriber">Rails Instrumentation Notifications Logsubscriber</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-11T00:00:00+03:00">August 11, 2025</time>
-          
-            
-          
+          <time datetime="2025-08-11T00:00:00+03:00">Aug 11, 2025</time>
         </div>
         
           <p class="excerpt">
@@ -461,10 +331,7 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
           <a href="/blog/mastering-activesupport-logsubscriber-rails8">Mastering Activesupport Logsubscriber Rails8</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-08-11T00:00:00+03:00">August 11, 2025</time>
-          
-            
-          
+          <time datetime="2025-08-11T00:00:00+03:00">Aug 11, 2025</time>
         </div>
         
           <p class="excerpt">layout: post title: “Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns” date: 2025-08-11 tags: [ruby-on-rails, rails-8, logging, logsubscriber, observability, json-logs] description: “A practical, production-grade guide to ActiveSupport::LogSubscriber for Rails 8+: structured JSON logs, log tags, and per-tenant...</p>
@@ -476,10 +343,7 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
           <a href="/blog/securing-jwt-with-rsa-keys">Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-07-30T03:01:01+03:00">July 30, 2025</time>
-          
-            
-          
+          <time datetime="2025-07-30T03:01:01+03:00">Jul 30, 2025</time>
         </div>
         
           <p class="excerpt">Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
@@ -492,16 +356,7 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
           <a href="/blog/debugging-devise-jwt">From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2025-07-24T00:00:00+03:00">July 24, 2025</time>
-          
-            
-              <span class="tag">rails</span>
-            
-              <span class="tag">devise</span>
-            
-              <span class="tag">jwt</span>
-            
-          
+          <time datetime="2025-07-24T00:00:00+03:00">Jul 24, 2025</time>
         </div>
         
           <p class="excerpt">A step‑by‑step log of the dead‑ends and the final, tidy setup— complete with code snippets, failure‑app JSON errors, and cURL recipes.
@@ -514,10 +369,7 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
           <a href="/blog/minimalism-war-family-and-lessons">Minimalism, Family, war and lessons</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2024-02-09T02:01:01+02:00">February 9, 2024</time>
-          
-            
-          
+          <time datetime="2024-02-09T02:01:01+02:00">Feb 9, 2024</time>
         </div>
         
           <p class="excerpt">In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one...</p>
@@ -529,10 +381,7 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
           <a href="/blog/principles-for-writing-maintainable-code">Principles for Writing Maintainable Code</a>
         </h2>
         <div class="post-meta">
-          <time datetime="2020-09-12T15:00:00+03:00">September 12, 2020</time>
-          
-            
-          
+          <time datetime="2020-09-12T15:00:00+03:00">Sep 12, 2020</time>
         </div>
         
           <p class="excerpt">Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows....</p>
@@ -545,34 +394,33 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
     </main>
 
     <footer class="site-footer">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-      <polyline points="7 10 12 15 17 10"/>
-      <line x1="12" y1="15" x2="12" y2="3"/>
-    </svg>
-    <span>Download CV</span>
-  </a>
-  <span style="opacity: 0.5;">·</span>
-  <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle light & dark theme" aria-label="Toggle theme" aria-live="polite">
-    <!-- Moon icon (shown in light mode) -->
-    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
-    </svg>
-    <!-- Sun icon (shown in dark mode) -->
-    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
-      <path d="M6.343 17.657l-1.414 1.414"/>
-      <path d="M6.343 6.343l-1.414 -1.414"/>
-      <path d="M17.657 6.343l1.414 -1.414"/>
-      <path d="M17.657 17.657l1.414 1.414"/>
-      <path d="M4 12h-2"/>
-      <path d="M12 4v-2"/>
-      <path d="M20 12h2"/>
-      <path d="M12 20v2"/>
-    </svg>
-  </button>
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
     </footer>
@@ -596,6 +444,17 @@ description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifica
         localStorage.setItem('theme', newTheme);
       }
     }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
   </script>
 </body>
 </html>

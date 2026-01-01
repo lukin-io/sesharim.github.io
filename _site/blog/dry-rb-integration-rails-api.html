@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -76,24 +78,27 @@
     <main>
       <article>
   <!-- Back navigation -->
-  <a href="/blog" class="back-link">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12"/>
-      <polyline points="12 19 5 12 12 5"/>
+  <a href="/blog" class="back-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 12h10"/>
     </svg>
-    <span>Back to all posts</span>
+    <span>Blog</span>
   </a>
 
   <!-- Post header -->
   <header style="margin-bottom: 2.5rem;">
     <h1 class="post-title">From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API</h1>
     <div class="post-meta">
-      <time datetime="2025-12-04T00:00:00+02:00">December 4, 2025</time>
+      <time datetime="2025-12-04T00:00:00+02:00">Dec 4, 2025</time>
+      
+      
+      
+      <span>· 44 min read</span>
       
         <span>· Max Lukin</span>
       
       
-        <span>· <span class="tag">rails</span><span class="tag">dry-rb</span><span class="tag">functional-programming</span><span class="tag">refactoring</span><span class="tag">types</span><span class="tag">validation</span><span class="tag">architecture</span><span class="tag">events</span></span>
+        <span class="post-tags"><a href="/search?q=rails" class="tag">rails</a><a href="/search?q=dry-rb" class="tag">dry-rb</a><a href="/search?q=functional-programming" class="tag">functional-programming</a><a href="/search?q=refactoring" class="tag">refactoring</a><a href="/search?q=types" class="tag">types</a><a href="/search?q=validation" class="tag">validation</a><a href="/search?q=architecture" class="tag">architecture</a><a href="/search?q=events" class="tag">events</a></span>
       
     </div>
   </header>
@@ -2109,49 +2114,100 @@
 
   </div>
 
-  <!-- Post footer -->
-  <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-    <a href="/blog" class="back-link">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"/>
-        <polyline points="12 19 5 12 12 5"/>
-      </svg>
-      <span>Back to all posts</span>
-    </a>
-  </footer>
+  <!-- Post navigation (Previous/Next) -->
+  
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+      
+      
+      
+
+  <nav class="post-navigation">
+    
+      <a href="/blog/mysql-to-postgresql-migration-guide" class="post-nav-link post-nav-prev">
+        <span class="post-nav-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Older
+        </span>
+        <span class="post-nav-title">From MySQL to PostgreSQL: A Practical Migration Guide...</span>
+      </a>
+    
+    
+      <a href="/blog/neverlands-browser-bot-game-design-analyst" class="post-nav-link post-nav-next">
+        <span class="post-nav-label">
+          Newer
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
+        <span class="post-nav-title">Turning Neverlands Into Design Fuel: A Browser Bot...</span>
+      </a>
+    
+  </nav>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/>
+      <polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
 </article>
+
+<script>
+  // Show/hide back-to-top button based on scroll position
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+</script>
 
     </main>
 
     <footer class="site-footer">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-      <polyline points="7 10 12 15 17 10"/>
-      <line x1="12" y1="15" x2="12" y2="3"/>
-    </svg>
-    <span>Download CV</span>
-  </a>
-  <span style="opacity: 0.5;">·</span>
-  <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle light & dark theme" aria-label="Toggle theme" aria-live="polite">
-    <!-- Moon icon (shown in light mode) -->
-    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
-    </svg>
-    <!-- Sun icon (shown in dark mode) -->
-    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
-      <path d="M6.343 17.657l-1.414 1.414"/>
-      <path d="M6.343 6.343l-1.414 -1.414"/>
-      <path d="M17.657 6.343l1.414 -1.414"/>
-      <path d="M17.657 17.657l1.414 1.414"/>
-      <path d="M4 12h-2"/>
-      <path d="M12 4v-2"/>
-      <path d="M20 12h2"/>
-      <path d="M12 20v2"/>
-    </svg>
-  </button>
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
     </footer>
@@ -2175,6 +2231,17 @@
         localStorage.setItem('theme', newTheme);
       }
     }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
   </script>
 </body>
 </html>
