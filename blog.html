@@ -14,7 +14,7 @@ title: Blog
   </a>
 
   <!-- Page header -->
-  <header class="hero">
+  <header class="hero blog-hero">
     <h1>Blog</h1>
     <p class="subtitle">Writing about technologies I work with</p>
     <a href="/search" class="search-link">
@@ -28,20 +28,37 @@ title: Blog
   </header>
 
   <!-- Blog posts list -->
-  <div>
+  <div class="posts-list">
+    {% assign current_year = nil %}
     {% for post in site.posts %}
-      <article class="post-preview">
-        <h2>
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+      {% assign post_year = post.date | date: "%Y" %}
+      {% if post_year != current_year %}
+        {% assign current_year = post_year %}
+        <div class="year-divider">
+          <span>{{ current_year }}</span>
         </div>
-        {% if post.description %}
-          <p class="excerpt">{{ post.description }}</p>
-        {% elsif post.excerpt %}
-          <p class="excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
-        {% endif %}
+      {% endif %}
+
+      {% assign words = post.content | number_of_words %}
+      {% assign read_time = words | divided_by: 200 %}
+      {% if read_time < 1 %}{% assign read_time = 1 %}{% endif %}
+
+      <article class="post-preview">
+        <a href="{{ post.url | relative_url }}" class="post-preview-link">
+          <div class="post-header">
+            <h2>{{ post.title }}</h2>
+            <div class="post-meta">
+              <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d" }}</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">{{ read_time }} min</span>
+            </div>
+          </div>
+          {% if post.description %}
+            <p class="excerpt">{{ post.description | truncatewords: 25 }}</p>
+          {% elsif post.excerpt %}
+            <p class="excerpt">{{ post.excerpt | strip_html | truncatewords: 25 }}</p>
+          {% endif %}
+        </a>
       </article>
     {% endfor %}
   </div>

@@ -1,5 +1,4 @@
-/* Global styles inspired by steipete.me */
-/* Adapted for Jekyll site */
+/* Global styles */
 
 /* Font definitions - Using Atkinson Hyperlegible */
 @font-face {
@@ -28,6 +27,7 @@
   --content-max-width: 920px;
   --light-gray: #6b7280;
   --box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  view-transition-name: root;
 }
 
 html[data-theme="dark"] {
@@ -83,10 +83,6 @@ main {
 }
 
 /* View Transitions API for smooth theme switching */
-:root {
-  view-transition-name: root;
-}
-
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.25s;
@@ -176,13 +172,5 @@ button {
 
 button:disabled {
   cursor: default;
-}
-
-/* Active navigation indicator */
-.active-nav {
-  text-decoration: underline;
-  text-decoration-style: wavy;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
 }
 

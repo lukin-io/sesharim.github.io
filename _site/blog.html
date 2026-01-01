@@ -85,7 +85,7 @@
   </a>
 
   <!-- Page header -->
-  <header class="hero">
+  <header class="hero blog-hero">
     <h1>Blog</h1>
     <p class="subtitle">Writing about technologies I work with</p>
     <a href="/search" class="search-link">
@@ -99,293 +99,558 @@
   </header>
 
   <!-- Blog posts list -->
-  <div>
+  <div class="posts-list">
     
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/how-to-start-agentic-development">How to Start with Agentic Development: What to Know, What to Automate, and How to Use It</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2026-01-01T00:00:00+02:00">Jan 1, 2026</time>
-        </div>
-        
-          <p class="excerpt">A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases speed without sacrificing code quality.</p>
-        
-      </article>
     
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/rspec-ci-optimization-rails-bitbucket">From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-12-10T00:00:00+02:00">Dec 10, 2025</time>
+      
+      
+        
+        <div class="year-divider">
+          <span>2026</span>
         </div>
-        
-          <p class="excerpt">A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut our Bitbucket Pipeline build time by 60%.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/neverlands-browser-bot-game-design-analyst">Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-12-06T00:00:00+02:00">Dec 6, 2025</time>
-        </div>
-        
-          <p class="excerpt">How we built a Playwright + GPT-5.1 pipeline that logs into neverlands.ru, captures real game screens, and turns them into structured design insights for your own MMORPG.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/dry-rb-integration-rails-api">From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-12-04T00:00:00+02:00">Dec 4, 2025</time>
-        </div>
-        
-          <p class="excerpt">A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/mysql-to-postgresql-migration-guide">From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-12-03T00:00:00+02:00">Dec 3, 2025</time>
-        </div>
-        
-          <p class="excerpt">A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL's advanced features, and multi-schema architecture strategies.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/zero-gap-api-development-with-ai">Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-12-02T00:00:00+02:00">Dec 2, 2025</time>
-        </div>
-        
-          <p class="excerpt">A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/building-browser-mmorpg-with-rails-and-ai">Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-11-27T00:00:00+02:00">Nov 27, 2025</time>
-        </div>
-        
-          <p class="excerpt">A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and "inspired-by" patterns enable rapid development of complex game systems.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/websockets-rails-actioncable">From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-11-19T00:00:00+02:00">Nov 19, 2025</time>
-        </div>
-        
-          <p class="excerpt">Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/ai-senior-vs-junior">AI Will Make Your Team Slower—Unless a Senior Engineer Drives It</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-10-29T00:00:00+02:00">Oct 29, 2025</time>
-        </div>
-        
-          <p class="excerpt">A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/consolidating-rails-api-guide-for-cursor-ide">One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-09-09T12:00:00+03:00">Sep 9, 2025</time>
-        </div>
-        
-          <p class="excerpt">How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/containerizing-rails-dev-with-docker">Containerizing Your Rails Development with Docker + Dev Containers</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-09-04T12:00:00+03:00">Sep 4, 2025</time>
-        </div>
-        
-          <p class="excerpt">Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/acid_in_rails_postgresql_vs_mongodb">ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-09-01T12:00:00+03:00">Sep 1, 2025</time>
-        </div>
-        
-          <p class="excerpt">ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/rails-console-startup-banner">A tiny Rails console banner that show app stats every time you run rails c</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-25T12:00:00+03:00">Aug 25, 2025</time>
-        </div>
-        
-          <p class="excerpt">A tiny Rails console banner that show app stats every time you run rails c</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/rails-profile-endpoint-optimization-first-person">Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-15T12:00:00+03:00">Aug 15, 2025</time>
-        </div>
-        
-          <p class="excerpt">Optimizing a Complex Rails Profile Endpoint</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/rails-8-stable-up-health-endpoint-env-driven">Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-14T15:00:00+03:00">Aug 14, 2025</time>
-        </div>
-        
-          <p class="excerpt">A battle-tested, copy‑paste `/up` endpoint for Rails API apps—no autoloading traps, no brittle config. One initializer, ENV‑driven settings, optional DB/Redis checks, clear status semantics, and end‑to‑end tests.</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/mastering-freeze_time-in-rails-tests">Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-12T03:01:01+03:00">Aug 12, 2025</time>
-        </div>
-        
-          <p class="excerpt">If your test suite ever fails “only sometimes,” there’s a good chance time is involved. Rails ships with the excellent ActiveSupport::Testing::TimeHelpers, giving you tools like freeze_time, travel_to, and travel to control the clock deterministically. In this post, you’ll learn when...</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/rails-under-the-hood">Under-the-Hood Mechanisms of Ruby on Rails You Should Know</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-11T03:01:01+03:00">Aug 11, 2025</time>
-        </div>
-        
-          <p class="excerpt">If you’re comfortable writing Rails apps but want to really understand what’s going on under the hood—and use that knowledge to make better technical decisions—this is your map.
-</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/rails-instrumentation-notifications-logsubscriber">Rails Instrumentation Notifications Logsubscriber</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-11T00:00:00+03:00">Aug 11, 2025</time>
-        </div>
-        
-          <p class="excerpt">
+      
 
-layout: post
-title: “Deep Rails Instrumentation: ActiveSupport::Notifications &amp; LogSubscriber (Rails 8+)”
-date: 2025-08-11
-tags: [ruby-on-rails, rails-8, instrumentation, performance, logging]
-description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifications and ActiveSupport::LogSubscriber in Rails 8+.”
-—
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/how-to-start-agentic-development" class="post-preview-link">
+          <div class="post-header">
+            <h2>How to Start with Agentic Development: What to Know, What to Automate, and How to Use It</h2>
+            <div class="post-meta">
+              <time datetime="2026-01-01T00:00:00+02:00">Jan 1</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">12 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+        
+        <div class="year-divider">
+          <span>2025</span>
+        </div>
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rspec-ci-optimization-rails-bitbucket" class="post-preview-link">
+          <div class="post-header">
+            <h2>From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-10T00:00:00+02:00">Dec 10</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">23 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/neverlands-browser-bot-game-design-analyst" class="post-preview-link">
+          <div class="post-header">
+            <h2>Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-06T00:00:00+02:00">Dec 6</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">4 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">How we built a Playwright + GPT-5.1 pipeline that logs into neverlands.ru, captures real game screens, and turns them into structured design insights for your...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/dry-rb-integration-rails-api" class="post-preview-link">
+          <div class="post-header">
+            <h2>From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-04T00:00:00+02:00">Dec 4</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">44 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher,...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/mysql-to-postgresql-migration-guide" class="post-preview-link">
+          <div class="post-header">
+            <h2>From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-03T00:00:00+02:00">Dec 3</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">23 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL's advanced features, and multi-schema architecture strategies....</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/zero-gap-api-development-with-ai" class="post-preview-link">
+          <div class="post-header">
+            <h2>Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-02T00:00:00+02:00">Dec 2</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">12 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/building-browser-mmorpg-with-rails-and-ai" class="post-preview-link">
+          <div class="post-header">
+            <h2>Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI</h2>
+            <div class="post-meta">
+              <time datetime="2025-11-27T00:00:00+02:00">Nov 27</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">19 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and "inspired-by"...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/websockets-rails-actioncable" class="post-preview-link">
+          <div class="post-header">
+            <h2>From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable</h2>
+            <div class="post-meta">
+              <time datetime="2025-11-19T00:00:00+02:00">Nov 19</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">21 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/ai-senior-vs-junior" class="post-preview-link">
+          <div class="post-header">
+            <h2>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It</h2>
+            <div class="post-meta">
+              <time datetime="2025-10-29T00:00:00+02:00">Oct 29</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">5 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="post-preview-link">
+          <div class="post-header">
+            <h2>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</h2>
+            <div class="post-meta">
+              <time datetime="2025-09-09T12:00:00+03:00">Sep 9</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">7 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/containerizing-rails-dev-with-docker" class="post-preview-link">
+          <div class="post-header">
+            <h2>Containerizing Your Rails Development with Docker + Dev Containers</h2>
+            <div class="post-meta">
+              <time datetime="2025-09-04T12:00:00+03:00">Sep 4</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">8 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/acid_in_rails_postgresql_vs_mongodb" class="post-preview-link">
+          <div class="post-header">
+            <h2>ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns</h2>
+            <div class="post-meta">
+              <time datetime="2025-09-01T12:00:00+03:00">Sep 1</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">7 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-console-startup-banner" class="post-preview-link">
+          <div class="post-header">
+            <h2>A tiny Rails console banner that show app stats every time you run rails c</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-25T12:00:00+03:00">Aug 25</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">6 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A tiny Rails console banner that show app stats every time you run rails c</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-profile-endpoint-optimization-first-person" class="post-preview-link">
+          <div class="post-header">
+            <h2>Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-15T12:00:00+03:00">Aug 15</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">16 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Optimizing a Complex Rails Profile Endpoint</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-8-stable-up-health-endpoint-env-driven" class="post-preview-link">
+          <div class="post-header">
+            <h2>Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-14T15:00:00+03:00">Aug 14</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">15 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A battle-tested, copy‑paste `/up` endpoint for Rails API apps—no autoloading traps, no brittle config. One initializer, ENV‑driven settings, optional DB/Redis checks, clear status semantics, and...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/mastering-freeze_time-in-rails-tests" class="post-preview-link">
+          <div class="post-header">
+            <h2>Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-12T03:01:01+03:00">Aug 12</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">6 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">If your test suite ever fails “only sometimes,” there’s a good chance time is involved. Rails ships with the excellent ActiveSupport::Testing::TimeHelpers, giving you tools like...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-under-the-hood" class="post-preview-link">
+          <div class="post-header">
+            <h2>Under-the-Hood Mechanisms of Ruby on Rails You Should Know</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-11T03:01:01+03:00">Aug 11</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">3 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">If you’re comfortable writing Rails apps but want to really understand what’s going on under the hood—and use that knowledge to make better technical decisions—this...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-instrumentation-notifications-logsubscriber" class="post-preview-link">
+          <div class="post-header">
+            <h2>Deep Rails Instrumentation: ActiveSupport::Notifications & LogSubscriber (Rails 8+)</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-11T00:00:00+03:00">Aug 11</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">11 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Practical, copy-paste-ready patterns for ActiveSupport::Notifications and ActiveSupport::LogSubscriber in Rails 8+.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/mastering-activesupport-logsubscriber-rails8" class="post-preview-link">
+          <div class="post-header">
+            <h2>Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-11T00:00:00+03:00">Aug 11</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">10 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A practical, production-grade guide to ActiveSupport::LogSubscriber for Rails 8+: structured JSON logs, log tags, and per-tenant log routing.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/securing-jwt-with-rsa-keys" class="post-preview-link">
+          <div class="post-header">
+            <h2>Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</h2>
+            <div class="post-meta">
+              <time datetime="2025-07-30T03:01:01+03:00">Jul 30</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">3 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
 </p>
-        
+          
+        </a>
       </article>
     
+      
+      
+
+      
+      
+      
+
       <article class="post-preview">
-        <h2>
-          <a href="/blog/mastering-activesupport-logsubscriber-rails8">Mastering Activesupport Logsubscriber Rails8</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-08-11T00:00:00+03:00">Aug 11, 2025</time>
-        </div>
-        
-          <p class="excerpt">layout: post title: “Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns” date: 2025-08-11 tags: [ruby-on-rails, rails-8, logging, logsubscriber, observability, json-logs] description: “A practical, production-grade guide to ActiveSupport::LogSubscriber for Rails 8+: structured JSON logs, log tags, and per-tenant...</p>
-        
-      </article>
-    
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/securing-jwt-with-rsa-keys">Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-07-30T03:01:01+03:00">Jul 30, 2025</time>
-        </div>
-        
-          <p class="excerpt">Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
+        <a href="/blog/debugging-devise-jwt" class="post-preview-link">
+          <div class="post-header">
+            <h2>From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App</h2>
+            <div class="post-meta">
+              <time datetime="2025-07-24T00:00:00+03:00">Jul 24</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">9 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A step‑by‑step log of the dead‑ends and the final, tidy setup— complete with code snippets, failure‑app JSON errors, and cURL recipes.
 </p>
-        
+          
+        </a>
       </article>
     
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/debugging-devise-jwt">From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2025-07-24T00:00:00+03:00">Jul 24, 2025</time>
+      
+      
+        
+        <div class="year-divider">
+          <span>2024</span>
         </div>
-        
-          <p class="excerpt">A step‑by‑step log of the dead‑ends and the final, tidy setup— complete with code snippets, failure‑app JSON errors, and cURL recipes.
-</p>
-        
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/minimalism-war-family-and-lessons" class="post-preview-link">
+          <div class="post-header">
+            <h2>Minimalism, Family, war and lessons</h2>
+            <div class="post-meta">
+              <time datetime="2024-02-09T02:01:01+02:00">Feb 9</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">8 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK...</p>
+          
+        </a>
       </article>
     
-      <article class="post-preview">
-        <h2>
-          <a href="/blog/minimalism-war-family-and-lessons">Minimalism, Family, war and lessons</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2024-02-09T02:01:01+02:00">Feb 9, 2024</time>
+      
+      
+        
+        <div class="year-divider">
+          <span>2020</span>
         </div>
-        
-          <p class="excerpt">In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight crime. When I moved to Ukraine, I brought only one...</p>
-        
-      </article>
-    
+      
+
+      
+      
+      
+
       <article class="post-preview">
-        <h2>
-          <a href="/blog/principles-for-writing-maintainable-code">Principles for Writing Maintainable Code</a>
-        </h2>
-        <div class="post-meta">
-          <time datetime="2020-09-12T15:00:00+03:00">Sep 12, 2020</time>
-        </div>
-        
-          <p class="excerpt">Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple seams you can scale as your app (or game) grows....</p>
-        
+        <a href="/blog/principles-for-writing-maintainable-code" class="post-preview-link">
+          <div class="post-header">
+            <h2>Principles for Writing Maintainable Code</h2>
+            <div class="post-meta">
+              <time datetime="2020-09-12T15:00:00+03:00">Sep 12</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">9 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails...</p>
+          
+        </a>
       </article>
     
   </div>

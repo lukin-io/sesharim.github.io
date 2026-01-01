@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "Deep Rails Instrumentation: ActiveSupport::Notifications & LogSubscriber (Rails 8+)"
