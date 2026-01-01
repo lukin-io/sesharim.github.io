@@ -1,18 +1,48 @@
+<!DOCTYPE html>
 <html lang="en">
 {% include head.html %}
 
-  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
-    <header>
-      &nbsp;
-    </header>
-
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
     <main>
       {{ content }}
     </main>
 
-    <footer>
+    <footer class="site-footer">
       {% include footer.html %}
     </footer>
-  </body>
+  </div>
 
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
 </html>

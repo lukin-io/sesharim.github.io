@@ -1,0 +1,188 @@
+/* Global styles inspired by steipete.me */
+/* Adapted for Jekyll site */
+
+/* Font definitions - Using Atkinson Hyperlegible */
+@font-face {
+  font-family: "Atkinson";
+  src: url("https://fonts.gstatic.com/s/atkinsonhyperlegible/v11/9Bt43C1KxNDXMspQ1lPyU89-1h6ONRlW45GE5Q.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson";
+  src: url("https://fonts.gstatic.com/s/atkinsonhyperlegible/v11/9Bt73C1KxNDXMspQ1lPyU89-1h6ONRlW45G04pIo.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #fdfdfd;
+  --foreground: #282728;
+  --accent: #006cac;
+  --muted: #e6e6e6;
+  --border: #ece9e9;
+  --topbar-height: 3rem;
+  --content-max-width: 920px;
+  --light-gray: #6b7280;
+  --box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="dark"] {
+  --background: #0f0f0f;
+  --foreground: #eaedf3;
+  --accent: #ff6b01;
+  --muted: #343f60bf;
+  --border: #2d2d2d;
+  --light-gray: #9ca3af;
+}
+
+/* Base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-color: var(--border);
+}
+
+html {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Atkinson", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--foreground);
+  background-color: var(--background);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Page fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* View Transitions API for smooth theme switching */
+:root {
+  view-transition-name: root;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+
+/* Selection styling */
+::selection {
+  background-color: color-mix(in srgb, var(--accent) 75%, transparent);
+  color: var(--background);
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  text-underline-offset: 3px;
+}
+
+/* Focus styles */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px dashed var(--accent);
+  outline-offset: 2px;
+}
+
+/* Headings use mono font for techy feel */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "JetBrains Mono", "IBM Plex Mono", monospace;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-top: 0;
+  line-height: 1.1;
+}
+
+/* Code styling */
+code, pre {
+  font-family: "JetBrains Mono", "IBM Plex Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+code {
+  font-size: 0.9em;
+  color: var(--accent);
+  padding: 0.2em 0.4em;
+  background-color: var(--muted);
+  border-radius: 0.25rem;
+}
+
+pre {
+  background-color: var(--muted);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+}
+
+pre code {
+  color: var(--foreground);
+  padding: 0;
+  background-color: transparent;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Button reset */
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+/* Active navigation indicator */
+.active-nav {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+

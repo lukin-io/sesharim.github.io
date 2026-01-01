@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-VLFHH5CPGM');
   </script>
 
@@ -16,21 +18,38 @@
   
   <title>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It | Software Engineering consultant</title>
   
-  <meta name="theme-color">
+  <meta name="theme-color" content="#006cac">
 
   <link rel="canonical" href="http://localhost:4000/blog/ai-senior-vs-junior">
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+
   <meta name="description"
     content="  TL;DR      AI without strong engineering judgment amplifies bad practices, bloats scope, and quietly ships risk; the result is worse code, slower delivery,...">
   <meta name="keywords"
     content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
   <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It | Software Engineering consultant</title>
 <meta name="generator" content="Jekyll v4.4.1" />
@@ -53,47 +72,39 @@
 </head>
 
 
-  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
-    <header>
-      &nbsp;
-    </header>
-
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
     <main>
-      <article class="w-full">
-  <!-- Navigation -->
-  <nav class="mb-8">
-    <div class="flex items-center justify-between">
-      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-        <span class="font-medium">All Posts</span>
-      </a>
-      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
-          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
-          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-        </svg>
-        <span class="text-sm">Home</span>
-      </a>
-    </div>
-  </nav>
+      <article>
+  <!-- Back navigation -->
+  <a href="/blog" class="back-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 12h10"/>
+    </svg>
+    <span>Blog</span>
+  </a>
 
   <!-- Post header -->
-  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
-    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
-      AI Will Make Your Team Slower—Unless a Senior Engineer Drives It
-    </h1>
-    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
-      <time class="text-sm font-medium">October 29, 2025</time>
+  <header style="margin-bottom: 2.5rem;">
+    <h1 class="post-title">AI Will Make Your Team Slower—Unless a Senior Engineer Drives It</h1>
+    <div class="post-meta">
+      <time datetime="2025-10-29T00:00:00+02:00">Oct 29, 2025</time>
       
-        <span class="text-sm">by Max Lukin</span>
+      
+      
+      <span>· 5 min read</span>
+      
+        <span>· Max Lukin</span>
+      
+      
+        <span class="post-tags"><a href="/search?q=ai" class="tag">ai</a><a href="/search?q=software-engineering" class="tag">software-engineering</a><a href="/search?q=rails" class="tag">rails</a><a href="/search?q=blueprinter" class="tag">blueprinter</a><a href="/search?q=rspec" class="tag">rspec</a><a href="/search?q=codex" class="tag">codex</a><a href="/search?q=devex" class="tag">devex</a></span>
       
     </div>
   </header>
 
   <!-- Post content -->
-  <div class="prose prose-lg max-w-none">
+  <div class="prose post-content">
     <blockquote>
   <p><strong>TL;DR</strong></p>
 
@@ -291,37 +302,144 @@ With explicit contracts, repo-level laws, and non-negotiable verification, tools
 
   </div>
 
-  <!-- Post footer -->
-  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
-    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      <span class="font-medium">Back to all posts</span>
-    </a>
-  </footer>
+  <!-- Post navigation (Previous/Next) -->
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+      
+      
+      
+
+  <nav class="post-navigation">
+    
+      <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="post-nav-link post-nav-prev">
+        <span class="post-nav-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Older
+        </span>
+        <span class="post-nav-title">One Source of Truth: Consolidating Our Rails API...</span>
+      </a>
+    
+    
+      <a href="/blog/websockets-rails-actioncable" class="post-nav-link post-nav-next">
+        <span class="post-nav-label">
+          Newer
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
+        <span class="post-nav-title">From Theory to Production: Reliable WebSockets with Ruby...</span>
+      </a>
+    
+  </nav>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/>
+      <polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
 </article>
+
+<script>
+  // Show/hide back-to-top button based on scroll position
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+</script>
 
     </main>
 
-    <footer>
-      <div class="flex justify-center p-2 m-2">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
-      <g>
-        <!-- File outline -->
-        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Down arrow for download -->
-        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- Download bar -->
-        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
-      </g>
-    </svg>
-    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
-  </a>
+    <footer class="site-footer">
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
     </footer>
-  </body>
+  </div>
 
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
 </html>
