@@ -96,16 +96,7 @@
 <loc>http://localhost:4000/blog</loc>
 </url>
 <url>
-<loc>http://localhost:4000/contacts</loc>
-</url>
-<url>
 <loc>http://localhost:4000/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/projects</loc>
-</url>
-<url>
-<loc>http://localhost:4000/services</loc>
 </url>
 <url>
 <loc>http://localhost:4000/tools</loc>

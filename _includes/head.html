@@ -4,7 +4,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-VLFHH5CPGM');
   </script>
 
@@ -17,20 +16,37 @@
   {% else %}
   <title>{{ site.title }}</title>
   {% endif %}
-  <meta name="theme-color">
+  <meta name="theme-color" content="#006cac">
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "feed.xml" | absolute_url }}" />
   <link rel="shortcut icon" type="image/png" href="{{ "favicon.png" | absolute_url }}">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ "assets/css/styles.css" | relative_url }}">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{{ "assets/css/global.css" | relative_url }}">
+  <link rel="stylesheet" href="{{ "assets/css/custom.css" | relative_url }}">
+  <link rel="stylesheet" href="{{ "assets/css/typography.css" | relative_url }}">
+
   <meta name="description"
     content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
   <meta name="keywords"
     content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
   <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   {% seo %}
 </head>
