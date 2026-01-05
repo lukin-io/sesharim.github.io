@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns"

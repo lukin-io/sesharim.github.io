@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-VLFHH5CPGM');
   </script>
 
@@ -14,27 +16,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Software Engineering consultant</title>
+  <title>Blog | Software Engineering consultant</title>
   
-  <meta name="theme-color">
+  <meta name="theme-color" content="#006cac">
 
   <link rel="canonical" href="http://localhost:4000/blog">
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+
   <meta name="description"
     content="Experienced Ruby on Rails and Go developer specializing in scalable web applications">
   <meta name="keywords"
     content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
   <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Software Engineering consultant | Experienced Ruby on Rails and Go developer specializing in scalable web applications</title>
+<title>Blog | Software Engineering consultant</title>
 <meta name="generator" content="Jekyll v4.4.1" />
-<meta property="og:title" content="Software Engineering consultant" />
+<meta property="og:title" content="Blog" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Experienced Ruby on Rails and Go developer specializing in scalable web applications" />
 <meta property="og:description" content="Experienced Ruby on Rails and Go developer specializing in scalable web applications" />
@@ -43,703 +62,617 @@
 <meta property="og:site_name" content="Software Engineering consultant" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Software Engineering consultant" />
+<meta property="twitter:title" content="Blog" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Experienced Ruby on Rails and Go developer specializing in scalable web applications","headline":"Software Engineering consultant","url":"http://localhost:4000/blog"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Experienced Ruby on Rails and Go developer specializing in scalable web applications","headline":"Blog","url":"http://localhost:4000/blog"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
 
 
-  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
-    <header>
-      &nbsp;
-    </header>
-
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
     <main>
-      <div class="w-full">
-  <!-- Navigation header -->
-  <div class="flex items-center justify-between mb-8">
-    <a href="/" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 16 16" class="group-hover:-translate-x-1 transition-transform">
-        <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
-        <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-      </svg>
-      <span class="font-medium">Back to Home</span>
-    </a>
-  </div>
+      <div>
+  <!-- Back navigation -->
+  <a href="/" class="back-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    <span>Home</span>
+  </a>
 
-  <!-- Page title -->
-  <div class="mb-10">
-    <h1 class="font-display text-4xl md:text-5xl font-bold text-[#333d29] mb-3">Blog</h1>
-    <p class="text-[#333d29] text-lg opacity-80">Writing about technologies I work with</p>
-  </div>
+  <!-- Page header -->
+  <header class="hero blog-hero">
+    <h1>Blog</h1>
+    <p class="subtitle">Writing about technologies I work with</p>
+    <a href="/search" class="search-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Search posts
+      <kbd>/</kbd>
+    </a>
+  </header>
 
   <!-- Blog posts list -->
-  <div class="space-y-4">
+  <div class="posts-list">
     
-      <article class="group">
-        <a href="/blog/negotiating-discretionary-bonus-agreements" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Negotiating Discretionary Bonus Agreements: A Contract-First Playbook for Engineering Leaders
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A practical, contract-first guide for negotiating discretionary bonus agreements: red flags, safer language, and a ready-to-send email template.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">Ambiguity is a defect. In code, we fix it. In compensation agreements, we should fix it too. Disclaimer: I’m not a lawyer and this is not legal advice. Always get...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Jan 04, 2026
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
     
-      <article class="group">
-        <a href="/blog/rspec-ci-optimization-rails-bitbucket" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut our Bitbucket Pipeline build time by 60%.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">
-  “A fast test suite isn’t a luxury—it’s the difference between deploying confidently and deploying nervously.”
+      
+      
+        
+        <div class="year-divider">
+          <span>2026</span>
+        </div>
+      
 
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Dec 10, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/neverlands-browser-bot-game-design-analyst" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">How we built a Playwright + GPT-5.1 pipeline that logs into neverlands.ru, captures real game screens, and turns them into structured design insights for your own MMORPG.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">TL;DR We built a browser bot + GPT-5.1 analyst that logs into neverlands.ru, captures real game screens, and turns them into structured JSON. The goal is game design research, not...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Dec 06, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/dry-rb-integration-rails-api" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher, dry-configurable, dry-initializer, and dry-events improve maintainability, testability, and code clarity.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">
-  “The best code isn’t clever—it’s obvious. dry-rb makes Rails code obvious.”
+      
+      
+      
 
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Dec 04, 2025
-              </time>
+      <article class="post-preview">
+        <a href="/blog/negotiating-discretionary-bonus-agreements" class="post-preview-link">
+          <div class="post-header">
+            <h2>Negotiating Discretionary Bonus Agreements: A Contract-First Playbook for Engineering Leaders</h2>
+            <div class="post-meta">
+              <time datetime="2026-01-04T00:00:00+00:00">Jan 4</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">7 min</span>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
+          
+            <p class="excerpt">A practical, contract-first guide for negotiating discretionary bonus agreements: red flags, safer language, and a ready-to-send email template.</p>
+          
         </a>
       </article>
     
-      <article class="group">
-        <a href="/blog/mysql-to-postgresql-migration-guide" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL's advanced features, and multi-schema architecture strategies.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">
-  “The best time to write database-agnostic code is from day one. The second best time is before your migration.”
+      
+      
 
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Dec 03, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/zero-gap-api-development-with-ai" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">TL;DR Contract-first development with TypeScript interfaces as the single source of truth eliminates ambiguity and prevents frontend/backend drift. Systematic verification gates catch implementation gaps before they ship—not after. Discrepancy classification...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Dec 02, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/building-browser-mmorpg-with-rails-and-ai" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and "inspired-by" patterns enable rapid development of complex game systems.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">
-  “The hardest part of building a game isn’t the code—it’s keeping 50+ interconnected systems coherent while shipping features fast.”
+      
+      
+      
 
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Nov 27, 2025
-              </time>
+      <article class="post-preview">
+        <a href="/blog/how-to-start-agentic-development" class="post-preview-link">
+          <div class="post-header">
+            <h2>How to Start with Agentic Development: What to Know, What to Automate, and How to Use It</h2>
+            <div class="post-meta">
+              <time datetime="2026-01-01T00:00:00+00:00">Jan 1</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">12 min</span>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
+          
+            <p class="excerpt">A senior-engineer playbook for agentic development: the mental model, the tooling vocabulary (AGENTS.md, Skills, MCP, RAG, LSP, Hooks), and a practical repo setup that increases...</p>
+          
         </a>
       </article>
     
-      <article class="group">
-        <a href="/blog/websockets-rails-actioncable" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">
-  “WebSockets are easy… until you have to make them reliable and scalable.”
+      
+      
+        
+        <div class="year-divider">
+          <span>2025</span>
+        </div>
+      
 
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Nov 19, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/ai-senior-vs-junior" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                AI Will Make Your Team Slower—Unless a Senior Engineer Drives It
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">TL;DR AI without strong engineering judgment amplifies bad practices, bloats scope, and quietly ships risk; the result is worse code, slower delivery, more spend. AI paired with an experienced engineer—with...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Oct 29, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">We turned scattered conventions into a single PROJECT_CONTRIBUTION_GUIDE_v3.md that your editor and AI assistant can follow. This post explains the structure, the reasoning, and how to use it with Cursor...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Sep 09, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/containerizing-rails-dev-with-docker" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Containerizing Your Rails Development with Docker + Dev Containers
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Sep 04, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/acid_in_rails_postgresql_vs_mongodb" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Sep 01, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/rails-console-startup-banner" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                A tiny Rails console banner that show app stats every time you run rails c
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A tiny Rails console banner that show app stats every time you run rails c</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 25, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/rails-profile-endpoint-optimization-first-person" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">Optimizing a Complex Rails Profile Endpoint</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 15, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/rails-8-stable-up-health-endpoint-env-driven" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A battle-tested, copy‑paste `/up` endpoint for Rails API apps—no autoloading traps, no brittle config. One initializer, ENV‑driven settings, optional DB/Redis checks, clear status semantics, and end‑to‑end tests.</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 14, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/mastering-freeze_time-in-rails-tests" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">If your test suite ever fails “only sometimes,” there’s a good chance time is involved. Rails ships with the excellent ActiveSupport::Testing::TimeHelpers, giving you tools like freeze_time, travel_to, and travel to...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 12, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/rails-under-the-hood" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Under-the-Hood Mechanisms of Ruby on Rails You Should Know
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">If you’re comfortable writing Rails apps but want to really understand what’s going on under the hood—and use that knowledge to make better technical decisions—this is your map.
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 11, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/rails-instrumentation-notifications-logsubscriber" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Rails Instrumentation Notifications Logsubscriber
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">layout: post title: “Deep Rails Instrumentation: ActiveSupport::Notifications &amp; LogSubscriber (Rails 8+)” date: 2025-08-11 tags: [ruby-on-rails, rails-8, instrumentation, performance, logging] description: “Practical, copy-paste-ready patterns for ActiveSupport::Notifications and ActiveSupport::LogSubscriber in Rails 8+.”...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 11, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/mastering-activesupport-logsubscriber-rails8" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Mastering Activesupport Logsubscriber Rails8
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">layout: post title: “Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns” date: 2025-08-11 tags: [ruby-on-rails, rails-8, logging, logsubscriber, observability, json-logs] description: “A practical, production-grade guide to ActiveSupport::LogSubscriber...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Aug 11, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/securing-jwt-with-rsa-keys" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
-</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Jul 30, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
-      </article>
-    
-      <article class="group">
-        <a href="/blog/debugging-devise-jwt" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App
-              </h2>
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">A step‑by‑step log of the dead‑ends and the final, tidy setup— complete with code snippets, failure‑app JSON errors, and cURL recipes.
-</p>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">
-  “Postman logs me in, cURL gives ‘You need to sign in’, and somehow
-I can hit endpoints with no token at all—what on earth is going on?”
+      
+      
+      
 
+      <article class="post-preview">
+        <a href="/blog/rspec-ci-optimization-rails-bitbucket" class="post-preview-link">
+          <div class="post-header">
+            <h2>From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-10T00:00:00+00:00">Dec 10</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">23 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to optimizing RSpec test suites for CI pipelines—covering parallel execution, factory optimization, file I/O elimination, pipeline architecture, and profiling strategies that cut...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/neverlands-browser-bot-game-design-analyst" class="post-preview-link">
+          <div class="post-header">
+            <h2>Turning Neverlands Into Design Fuel: A Browser Bot + GPT-5.1 Game Analyst</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-06T00:00:00+00:00">Dec 6</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">4 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">How we built a Playwright + GPT-5.1 pipeline that logs into neverlands.ru, captures real game screens, and turns them into structured design insights for your...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/dry-rb-integration-rails-api" class="post-preview-link">
+          <div class="post-header">
+            <h2>From Rails Spaghetti to Structured Code: Integrating dry-rb into Your API</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-04T00:00:00+00:00">Dec 4</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">44 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to integrating 11 dry-rb gems into your Ruby on Rails API—showing real before/after examples of how dry-types, dry-struct, dry-monads, dry-validation, dry-container, dry-matcher,...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/mysql-to-postgresql-migration-guide" class="post-preview-link">
+          <div class="post-header">
+            <h2>From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-03T00:00:00+00:00">Dec 3</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">23 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to migrating your Rails application from MySQL to PostgreSQL—covering database-agnostic code patterns, the migration process, PostgreSQL's advanced features, and multi-schema architecture strategies....</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/zero-gap-api-development-with-ai" class="post-preview-link">
+          <div class="post-header">
+            <h2>Zero-Gap API Development: A Contract-First Framework for AI-Assisted Rails Engineering</h2>
+            <div class="post-meta">
+              <time datetime="2025-12-02T00:00:00+00:00">Dec 2</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">12 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A complete framework for shipping regression-free Rails APIs with AI assistants—combining contract-first development, systematic verification, and gap-free documentation.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/building-browser-mmorpg-with-rails-and-ai" class="post-preview-link">
+          <div class="post-header">
+            <h2>Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI</h2>
+            <div class="post-meta">
+              <time datetime="2025-11-27T00:00:00+00:00">Nov 27</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">19 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A comprehensive guide to building a turn-based browser MMORPG using Ruby on Rails, Hotwire, and AI-assisted development. Learn how documentation-driven workflows, feature decomposition, and "inspired-by"...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/websockets-rails-actioncable" class="post-preview-link">
+          <div class="post-header">
+            <h2>From Theory to Production: Reliable WebSockets with Ruby on Rails, JWT & ActionCable</h2>
+            <div class="post-meta">
+              <time datetime="2025-11-19T00:00:00+00:00">Nov 19</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">21 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Step-by-step guide to building reliable, authenticated, and scalable WebSockets in Rails using ActionCable and JWT, with practical code examples and architecture patterns.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/ai-senior-vs-junior" class="post-preview-link">
+          <div class="post-header">
+            <h2>AI Will Make Your Team Slower—Unless a Senior Engineer Drives It</h2>
+            <div class="post-meta">
+              <time datetime="2025-10-29T00:00:00+00:00">Oct 29</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">5 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A practical control loop (with code) for turning Codex-style assistants into force multipliers—and why experience is non-negotiable.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/consolidating-rails-api-guide-for-cursor-ide" class="post-preview-link">
+          <div class="post-header">
+            <h2>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</h2>
+            <div class="post-meta">
+              <time datetime="2025-09-09T09:00:00+00:00">Sep 9</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">7 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">How we merged Rails, RSpec, and Ruby rules into a single, enforceable guide—and how to attach it to Cursor prompts for consistent, efficient results.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/containerizing-rails-dev-with-docker" class="post-preview-link">
+          <div class="post-header">
+            <h2>Containerizing Your Rails Development with Docker + Dev Containers</h2>
+            <div class="post-meta">
+              <time datetime="2025-09-04T09:00:00+00:00">Sep 4</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">8 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Zero-setup onboarding, reproducible environments, and fewer 'works on my machine' moments.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/acid_in_rails_postgresql_vs_mongodb" class="post-preview-link">
+          <div class="post-header">
+            <h2>ACID in Rails PostgreSQL vs MongoDB - with Atomic Patterns</h2>
+            <div class="post-meta">
+              <time datetime="2025-09-01T09:00:00+00:00">Sep 1</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">7 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">ACID in Rails PostgreSQL vs MongoDB with Atomic Patterns</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-console-startup-banner" class="post-preview-link">
+          <div class="post-header">
+            <h2>A tiny Rails console banner that show app stats every time you run rails c</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-25T09:00:00+00:00">Aug 25</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">6 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A tiny Rails console banner that show app stats every time you run rails c</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-profile-endpoint-optimization-first-person" class="post-preview-link">
+          <div class="post-header">
+            <h2>Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-15T09:00:00+00:00">Aug 15</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">16 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Optimizing a Complex Rails Profile Endpoint</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-8-stable-up-health-endpoint-env-driven" class="post-preview-link">
+          <div class="post-header">
+            <h2>Rails 8: A Stable `/up` Health Endpoint with One Initializer (ENV‑driven)</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-14T12:00:00+00:00">Aug 14</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">15 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A battle-tested, copy‑paste `/up` endpoint for Rails API apps—no autoloading traps, no brittle config. One initializer, ENV‑driven settings, optional DB/Redis checks, clear status semantics, and...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/mastering-freeze_time-in-rails-tests" class="post-preview-link">
+          <div class="post-header">
+            <h2>Mastering freeze_time in Rails Tests: Practical Patterns and Pitfalls</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-12T00:01:01+00:00">Aug 12</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">6 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">If your test suite ever fails “only sometimes,” there’s a good chance time is involved. Rails ships with the excellent ActiveSupport::Testing::TimeHelpers, giving you tools like...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-under-the-hood" class="post-preview-link">
+          <div class="post-header">
+            <h2>Under-the-Hood Mechanisms of Ruby on Rails You Should Know</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-11T00:01:01+00:00">Aug 11</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">3 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">If you’re comfortable writing Rails apps but want to really understand what’s going on under the hood—and use that knowledge to make better technical decisions—this...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/rails-instrumentation-notifications-logsubscriber" class="post-preview-link">
+          <div class="post-header">
+            <h2>Deep Rails Instrumentation: ActiveSupport::Notifications & LogSubscriber (Rails 8+)</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-11T00:00:00+00:00">Aug 11</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">11 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Practical, copy-paste-ready patterns for ActiveSupport::Notifications and ActiveSupport::LogSubscriber in Rails 8+.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/mastering-activesupport-logsubscriber-rails8" class="post-preview-link">
+          <div class="post-header">
+            <h2>Mastering ActiveSupport::LogSubscriber (Rails 8+): JSON logs, per-tenant routing, and production patterns</h2>
+            <div class="post-meta">
+              <time datetime="2025-08-11T00:00:00+00:00">Aug 11</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">10 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">A practical, production-grade guide to ActiveSupport::LogSubscriber for Rails 8+: structured JSON logs, log tags, and per-tenant log routing.</p>
+          
+        </a>
+      </article>
+    
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/securing-jwt-with-rsa-keys" class="post-preview-link">
+          <div class="post-header">
+            <h2>Securing JWT Tokens in Rails API with Devise, Devise-JWT, and RSA Keys</h2>
+            <div class="post-meta">
+              <time datetime="2025-07-30T00:01:01+00:00">Jul 30</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">3 min</span>
+            </div>
+          </div>
+          
+            <p class="excerpt">Step-by-step guide to securing your Ruby on Rails API authentication using Devise, Devise-JWT, Doorkeeper-JWT, and RSA encryption keys.
 </p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Jul 24, 2025
-              </time>
-            </div>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
+          
         </a>
       </article>
     
-      <article class="group">
-        <a href="/blog/minimalism-war-family-and-lessons" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Minimalism, Family, war and lessons
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK police force to help fight...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Feb 09, 2024
-              </time>
+      
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/debugging-devise-jwt" class="post-preview-link">
+          <div class="post-header">
+            <h2>From 401s to JWT Bliss: Debugging Devise‑JWT on a Rails 8 API‑only App</h2>
+            <div class="post-meta">
+              <time datetime="2025-07-24T00:00:00+00:00">Jul 24</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">9 min</span>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </div>
+          
+            <p class="excerpt">A step‑by‑step log of the dead‑ends and the final, tidy setup— complete with code snippets, failure‑app JSON errors, and cURL recipes.
+</p>
+          
         </a>
       </article>
     
-      <article class="group">
-        <a href="/blog/principles-for-writing-maintainable-code" class="block bg-white rounded-lg border border-[#b6ad90] hover:border-[#a4ac86] hover:shadow-md transition-all duration-200 p-6 md:p-8">
-          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-            <div class="flex-1">
-              <h2 class="font-display text-xl md:text-2xl font-semibold text-[#333d29] mb-3 group-hover:text-[#656d4a] transition-colors">
-                Principles for Writing Maintainable Code
-              </h2>
-              
-              
-                <p class="text-[#333d29] leading-relaxed mb-4 opacity-80">Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails conventions, small POROs, and simple...</p>
-              
-            </div>
-            <div class="flex-shrink-0">
-              <time class="inline-block bg-[#b6ad90] text-[#333d29] rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap">
-                Sep 12, 2020
-              </time>
+      
+      
+        
+        <div class="year-divider">
+          <span>2024</span>
+        </div>
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/minimalism-war-family-and-lessons" class="post-preview-link">
+          <div class="post-header">
+            <h2>Minimalism, Family, war and lessons</h2>
+            <div class="post-meta">
+              <time datetime="2024-02-09T00:01:01+00:00">Feb 9</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">8 min</span>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-[#b6ad90] flex items-center gap-2 text-sm text-[#333d29] opacity-70">
-            <span>Read more</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:translate-x-1 transition-transform">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
+          
+            <p class="excerpt">In 2014, I decided to move to Kyiv, Ukraine. I had a great opportunity to work on an interesting project that integrated with the UK...</p>
+          
+        </a>
+      </article>
+    
+      
+      
+        
+        <div class="year-divider">
+          <span>2020</span>
+        </div>
+      
+
+      
+      
+      
+
+      <article class="post-preview">
+        <a href="/blog/principles-for-writing-maintainable-code" class="post-preview-link">
+          <div class="post-header">
+            <h2>Principles for Writing Maintainable Code</h2>
+            <div class="post-meta">
+              <time datetime="2020-09-12T12:00:00+00:00">Sep 12</time>
+              <span class="meta-sep">·</span>
+              <span class="read-time">9 min</span>
+            </div>
           </div>
+          
+            <p class="excerpt">Applications always change. This post collects practical principles and Rails‑friendly patterns I use to keep code maintainable over the long run—leaning on Ruby on Rails...</p>
+          
         </a>
       </article>
     
@@ -748,24 +681,68 @@ I can hit endpoints with no token at all—what on earth is going on?”
 
     </main>
 
-    <footer>
-      <div class="flex justify-center p-2 m-2">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
-      <g>
-        <!-- File outline -->
-        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Down arrow for download -->
-        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- Download bar -->
-        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
-      </g>
-    </svg>
-    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
-  </a>
+    <footer class="site-footer">
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
     </footer>
-  </body>
+  </div>
 
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
 </html>

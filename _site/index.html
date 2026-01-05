@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-VLFHH5CPGM');
   </script>
 
@@ -16,21 +18,38 @@
   
   <title>Software Engineering consultant</title>
   
-  <meta name="theme-color">
+  <meta name="theme-color" content="#006cac">
 
   <link rel="canonical" href="http://localhost:4000/">
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+
   <meta name="description"
     content="Experienced Ruby on Rails and Go developer specializing in scalable web applications">
   <meta name="keywords"
     content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
   <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Software Engineering consultant | Experienced Ruby on Rails and Go developer specializing in scalable web applications</title>
 <meta name="generator" content="Jekyll v4.4.1" />
@@ -51,130 +70,147 @@
 </head>
 
 
-  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
-    <header>
-      &nbsp;
-    </header>
-
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
     <main>
-      <div class="w-full">
-  <!-- Hero Section -->
-  <header class="mb-12">
-    <div class="flex flex-wrap items-center gap-4 mb-6">
-      <span class="p-3 bg-white rounded-full flex items-center justify-center text-[#656d4a] shadow-sm border border-[#b6ad90]"
-        style="width:5rem;height:5rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"
-          aria-labelledby="brain-cog-title">
-          <title id="brain-cog-title">Brain and cog icon</title>
-          <path d="m10.852 14.772-.383.923" />
-          <path d="m10.852 9.228-.383-.923" />
-          <path d="m13.148 14.772.382.924" />
-          <path d="m13.531 8.305-.383.923" />
-          <path d="m14.772 10.852.923-.383" />
-          <path d="m14.772 13.148.923.383" />
-          <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 0 0-5.63-1.446 3 3 0 0 0-.368 1.571 4 4 0 0 0-2.525 5.771" />
-          <path d="M17.998 5.125a4 4 0 0 1 2.525 5.771" />
-          <path d="M19.505 10.294a4 4 0 0 1-1.5 7.706" />
-          <path d="M4.032 17.483A4 4 0 0 0 11.464 20c.18-.311.892-.311 1.072 0a4 4 0 0 0 7.432-2.516" />
-          <path d="M4.5 10.291A4 4 0 0 0 6 18" />
-          <path d="M6.002 5.125a3 3 0 0 0 .4 1.375" />
-          <path d="m9.228 10.852-.923-.383" />
-          <path d="m9.228 13.148-.923.383" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      </span>
       <div>
-        <h1 class="font-display text-4xl md:text-5xl font-bold mb-2 text-[#333d29]">
-          Hello, I'm Max Lukin
-        </h1>
-        <p class="text-[#333d29] text-lg md:text-xl opacity-80">ex-Apple, Staff Software Engineer, consultant, and AI enthusiast.</p>
-      </div>
-    </div>
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Hello, I'm Max Lukin</h1>
+    <!-- <p class="subtitle">ex-Apple, Staff Software Engineer, consultant, and AI enthusiast.</p> -->
   </header>
 
   <!-- Main Content -->
-  <div class="space-y-8">
-    <section class="prose prose-lg max-w-none">
-      <p class="text-lg md:text-xl leading-relaxed">
-        I help businesses and companies grow by providing consulting, development, and support through effective
-        software engineering practices. I oversee the planning, execution, and delivery of software projects, ensuring they align
-        with business goals and timelines while offering cost-effective solutions <span class="font-semibold">remotely</span>.
-      </p>
-    </section>
+  <div class="content-section">
+    <p class="intro">
+      I help companies ship software that works—consulting, building, and leading engineering teams remotely.
+      From architecture to delivery, I make sure projects stay aligned with business goals without burning time or budget.
+    </p>
 
-    <section class="prose prose-lg max-w-none">
-      <p class="text-lg md:text-xl leading-relaxed">
-        I specialize in transforming ideas into reality, from <a
-          href="https://en.wikipedia.org/wiki/Minimum_viable_product" target="_blank" class="font-semibold text-blue-600 hover:text-blue-700 underline">MVP</a> and <a
-          href="https://en.wikipedia.org/wiki/Proof_of_concept" target="_blank" class="font-semibold text-blue-600 hover:text-blue-700 underline">proof-of-concept</a>
-        projects to fully functional <a href="https://en.wikipedia.org/wiki/Software_as_a_service" target="_blank"
-          class="font-semibold text-[#656d4a] hover:text-[#333d29] underline">SaaS</a>
-        products. My interests include large-scale web services, operational practices
-        like on-call and monitoring, developer tools, and engineering leadership.
-      </p>
-    </section>
+    <p>
+      I turn ideas into working products: MVPs that validate, SaaS that scales, and systems designed
+      to be maintained—not just shipped. Full stack, full lifecycle.
+    </p>
 
-    <section class="prose prose-lg max-w-none">
-      <p class="text-lg md:text-xl leading-relaxed">
-        I have been focused on <span class="font-semibold">AI</span> since its early stages and have gained valuable
-        experience building SaaS/Agents applications powered
-        by <span class="font-semibold">AI</span> using <a href="https://nextjs.org" target="_blank"
-          class="font-semibold text-[#656d4a] hover:text-[#333d29] underline">Next.js</a> and <a href="https://react.dev" target="_blank"
-          class="font-semibold text-[#656d4a] hover:text-[#333d29] underline">React.js</a>.
-        I also enjoy working on projects involving <a href="https://react.dev" target="_blank"
-          class="font-semibold text-[#656d4a] hover:text-[#333d29] underline">JavaScript/TypeScript</a>, <a href="https://rubyonrails.org" target="_blank"
-          class="font-semibold text-[#656d4a] hover:text-[#333d29] underline">Ruby on Rails</a>, and
-        <a href="https://go.dev" target="_blank" class="font-semibold text-blue-600 hover:text-blue-700 underline">Golang</a>.
-      </p>
-    </section>
+    <p>
+      15 years of experience. Staff Engineer at Apple. Medical systems for Fortune 500 healthcare.
+      Facial recognition for UK Met Police. I build software where failure isn't an option.
+    </p>
 
-    <section class="prose prose-lg max-w-none">
-      <p class="text-lg md:text-xl leading-relaxed">
-        With over <span class="font-semibold">14 years</span> of experience as a software engineer, I've contributed to
-        high-impact projects across major sectors,
-        including developing solutions for leading medical corporations and working on a facial recognition project with
-        the UK Metropolitan Police Force for crime detection and prevention.
-      </p>
-    </section>
+    <p>
+      I build AI-powered products—SaaS platforms, agents, automation—using
+      <code>Next.js</code>, <code>React</code>, <code>TypeScript</code>,
+      <code>Ruby on Rails</code>, and <code>Golang</code>.
+      I've also developed workflows for AI-assisted development (<code>MCP</code>, <code>RAG</code>, contract-first APIs)
+      that turn AI into a multiplier, not a liability.
+    </p>
 
-    <section class="prose prose-lg max-w-none">
-      <p class="text-lg md:text-xl leading-relaxed">
-        Sometimes <a href="/blog" class="font-semibold text-blue-600 hover:text-blue-700 underline">writing</a> about technologies I work with.
-      </p>
-    </section>
+    <hr class="section-divider">
 
-    <section class="prose prose-lg max-w-none">
-      <p class="text-lg md:text-xl leading-relaxed">
-        You can also find me on <a href="https://linkedin.com/in/lukin-io" target="_blank"
-          class="font-semibold text-[#656d4a] hover:text-[#333d29] underline">LinkedIn</a> (experience/recommendations) or <a href="https://github.com/lukin-io"
-          target="_blank" class="font-semibold text-blue-600 hover:text-blue-700 underline">GitHub</a>, or send me a message at <a
-          href="mailto:max@lukin.io&body=Consultation?" class="font-semibold text-blue-600 hover:text-blue-700 underline">max@lukin.io</a>
-      </p>
-    </section>
+    <p>
+      I <a href="/blog">write</a> about what I build.
+    </p>
+
+    <!-- Social links - icon style -->
+    <div class="social-links">
+      <a href="https://linkedin.com/in/lukin-io" target="_blank" title="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect x="2" y="9" width="4" height="12"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+      <a href="https://github.com/lukin-io" target="_blank" title="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+        </svg>
+      </a>
+      <a href="mailto:max@lukin.io" title="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </a>
+      <a href="/cv.pdf" target="_blank" title="Download CV">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </a>
+    </div>
   </div>
+
+  
 </div>
 
     </main>
 
-    <footer>
-      <div class="flex justify-center p-2 m-2">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
-      <g>
-        <!-- File outline -->
-        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Down arrow for download -->
-        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- Download bar -->
-        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
-      </g>
-    </svg>
-    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
-  </a>
+    <footer class="site-footer">
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
     </footer>
-  </body>
+  </div>
 
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
 </html>

@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 05 Jan 2026 08:20:58 +0000</pubDate>
-    <lastBuildDate>Mon, 05 Jan 2026 08:20:58 +0000</lastBuildDate>
+    <pubDate>Mon, 05 Jan 2026 08:21:39 +0000</pubDate>
+    <lastBuildDate>Mon, 05 Jan 2026 08:21:39 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -354,6 +354,664 @@ Best regards,
         <category>career</category>
         
         <category>leadership</category>
+        
+      </item>
+    
+      <item>
+        <title>How to Start with Agentic Development: What to Know, What to Automate, and How to Use It</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Agentic development is a loop: &lt;strong&gt;Plan → Act (tools) → Observe → Decide → Repeat&lt;/strong&gt;.&lt;/li&gt;
+    &lt;li&gt;The biggest productivity gains come from &lt;strong&gt;determinism, not prompting&lt;/strong&gt;: a single verify command, quality gates, and enforcement via hooks.&lt;/li&gt;
+    &lt;li&gt;The “must-know” stack in 2026: &lt;strong&gt;AGENTS.md&lt;/strong&gt;, &lt;strong&gt;Skills&lt;/strong&gt;, &lt;strong&gt;MCP&lt;/strong&gt;, &lt;strong&gt;RAG&lt;/strong&gt;, &lt;strong&gt;LSP&lt;/strong&gt;, &lt;strong&gt;Hooks&lt;/strong&gt;, and &lt;strong&gt;Workflows&lt;/strong&gt;.&lt;/li&gt;
+    &lt;li&gt;My two most effective multipliers:
+      &lt;ul&gt;
+        &lt;li&gt;&lt;strong&gt;Contract-first + verification gates&lt;/strong&gt; (“Zero‑Gap API development”)&lt;/li&gt;
+        &lt;li&gt;&lt;strong&gt;Documentation hierarchy + Flow docs with Responsible Files&lt;/strong&gt; (documentation-driven development that scales)&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-agentic-development-feels-different-from-ai-coding-assistants&quot;&gt;Why agentic development feels different from “AI coding assistants”&lt;/h2&gt;
+
+&lt;p&gt;Autocomplete and chat are mostly &lt;strong&gt;suggestion engines&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Agentic development is when the model runs a structured loop with tools:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;it reads your repo conventions&lt;/li&gt;
+  &lt;li&gt;it edits multiple files&lt;/li&gt;
+  &lt;li&gt;it runs commands&lt;/li&gt;
+  &lt;li&gt;it interprets errors&lt;/li&gt;
+  &lt;li&gt;it iterates until the system is green&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That means your productivity is no longer limited by “how well can I prompt?”&lt;br /&gt;
+It’s limited by &lt;strong&gt;how well your repo communicates intent and enforces correctness&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;The modern skill is not “prompting.”&lt;br /&gt;
+It’s &lt;strong&gt;context engineering + verification engineering&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-mental-model-the-agent-loop&quot;&gt;The mental model: the agent loop&lt;/h2&gt;
+
+&lt;p&gt;An “agent” is just a loop with tool use:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Plan&lt;/strong&gt; (what files, what changes, what tests)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Act&lt;/strong&gt; (edit files, run commands, call tools)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Observe&lt;/strong&gt; (test output, logs, compiler errors, lint)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Decide&lt;/strong&gt; (fix, rollback, re-plan)&lt;/li&gt;
+  &lt;li&gt;Repeat until done&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Your job (as a senior engineer) is to make this loop:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;well-scoped&lt;/strong&gt; (small diffs, explicit “definition of done”)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;well-instrumented&lt;/strong&gt; (fast tests + lint + security checks)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;hard to cheat&lt;/strong&gt; (quality gates / hooks / CI)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;context-efficient&lt;/strong&gt; (agent sees the right context, not more context)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;glossary-plugins-skills-mcp-rag-lsp-hooks-workflows&quot;&gt;Glossary: plugins, skills, MCP, RAG, LSP, hooks, workflows&lt;/h2&gt;
+
+&lt;p&gt;Here’s the vocabulary, in a practical order:&lt;/p&gt;
+
+&lt;h3 id=&quot;agentsmd&quot;&gt;AGENTS.md&lt;/h3&gt;
+&lt;p&gt;A repo-local “operating manual” for coding agents.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;What it’s for&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Encode how &lt;em&gt;this repo&lt;/em&gt; works (commands, conventions, boundaries)&lt;/li&gt;
+  &lt;li&gt;Stop re-explaining the same rules every session&lt;/li&gt;
+  &lt;li&gt;Make agent behavior predictable across tasks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Think: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;README.md&lt;/code&gt; for agents, but stricter and more actionable.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;skills&quot;&gt;Skills&lt;/h3&gt;
+&lt;p&gt;A “Skill” is a packaged workflow (instructions + optional resources/scripts) that the agent can load on demand.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;What it’s for&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Turn your best senior workflows into reusable modules:
+    &lt;ul&gt;
+      &lt;li&gt;“Implement Rails endpoint from contract + request specs”&lt;/li&gt;
+      &lt;li&gt;“Safe refactor: characterization tests first”&lt;/li&gt;
+      &lt;li&gt;“Write flow doc + Responsible Files table”&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Reduce quality drift and context repetition&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If AGENTS.md is global repo policy, Skills are &lt;strong&gt;repeatable procedures&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;hooks&quot;&gt;Hooks&lt;/h3&gt;
+&lt;p&gt;Hooks are automation that runs at specific moments (after edits, before stopping, etc.).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;What it’s for&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Enforce quality without relying on “remember to do it”&lt;/li&gt;
+  &lt;li&gt;Auto-format after edits&lt;/li&gt;
+  &lt;li&gt;Block dangerous operations&lt;/li&gt;
+  &lt;li&gt;Require &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; passing before the agent can “finish”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Prompts are best-effort. Hooks are default behavior.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;workflows&quot;&gt;Workflows&lt;/h3&gt;
+&lt;p&gt;Workflows are your end-to-end process:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;feature → tests → verify → docs → PR&lt;/li&gt;
+  &lt;li&gt;bugfix → reproduction test → fix → verify → postmortem note&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Skills + hooks + CI turn workflows into a system.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;rag-retrieval-augmented-generation&quot;&gt;RAG (Retrieval-Augmented Generation)&lt;/h3&gt;
+&lt;p&gt;RAG is the pattern of retrieving relevant docs/files and injecting them as context for the model.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;What it’s for&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ground the agent in &lt;em&gt;your&lt;/em&gt; docs and code&lt;/li&gt;
+  &lt;li&gt;Reduce hallucinations&lt;/li&gt;
+  &lt;li&gt;Make “documentation-driven development” actually useful to the model&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In practice: RAG is how an agent “remembers” your system without you pasting the whole repo.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;lsp-language-server-protocol&quot;&gt;LSP (Language Server Protocol)&lt;/h3&gt;
+&lt;p&gt;LSP is what powers “go to definition,” “find references,” “rename symbol,” etc.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;What it’s for&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Semantic navigation beats grep for refactors and correctness&lt;/li&gt;
+  &lt;li&gt;Agents become safer when they can reliably answer:
+    &lt;ul&gt;
+      &lt;li&gt;“Where is this symbol used?”&lt;/li&gt;
+      &lt;li&gt;“What implements this interface?”&lt;/li&gt;
+      &lt;li&gt;“What breaks if I change this method signature?”&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;mcp-model-context-protocol&quot;&gt;MCP (Model Context Protocol)&lt;/h3&gt;
+&lt;p&gt;MCP is a standard way to connect an agent to tools and data sources (issue trackers, DB schema, docs, internal APIs).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;What it’s for&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Reduce copy/paste context&lt;/li&gt;
+  &lt;li&gt;Give structured, permissioned access to external systems&lt;/li&gt;
+  &lt;li&gt;Make tool integrations reusable across clients/vendors&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;MCP is most useful when your bottleneck is &lt;strong&gt;access to information/tools&lt;/strong&gt;, not coding speed.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-agentic-stack-in-one-picture&quot;&gt;The “agentic stack” in one picture&lt;/h2&gt;
+
+&lt;p&gt;A practical way to visualize the stack:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Workflow (what to do)
+  └─ Hooks (force it to happen)
+      └─ Tool/data access (MCP)
+          └─ Context feeding (RAG + LSP)
+              └─ Skills (repeatable procedures)
+                  └─ AGENTS.md (repo rules + commands + DoD)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you want a big productivity jump: build from the bottom up.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-senior-engineer-principle-determinism-beats-prompting&quot;&gt;The senior engineer principle: determinism beats prompting&lt;/h2&gt;
+
+&lt;p&gt;If something must happen every time:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;formatting&lt;/li&gt;
+  &lt;li&gt;tests&lt;/li&gt;
+  &lt;li&gt;lint&lt;/li&gt;
+  &lt;li&gt;security scan&lt;/li&gt;
+  &lt;li&gt;contract compliance check&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;…don’t “ask the model to remember.”&lt;/p&gt;
+
+&lt;p&gt;Make it &lt;strong&gt;one command&lt;/strong&gt; and/or enforce it with &lt;strong&gt;hooks&lt;/strong&gt; + CI.&lt;/p&gt;
+
+&lt;p&gt;This is the same reason “Zero‑Gap API Development” works: it’s a deterministic pipeline (contract → implement → verify → document), not vibes.&lt;br /&gt;
+And it’s the same reason documentation-driven development scales for large systems: it creates deterministic “where to look” maps.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;a-universal-framework-that-scales-requirements--implementation--documentation&quot;&gt;A universal framework that scales: Requirements → Implementation → Documentation&lt;/h2&gt;
+
+&lt;p&gt;This generalizes cleanly across Rails monoliths, Go services, and polyglot repos:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;┌──────────────────────────────────────────────┐
+│ Layer 1: Requirements / Contracts            │
+│ - Interfaces / OpenAPI / protobuf / specs    │
+│ - Single source of truth                     │
+└──────────────────────────────────────────────┘
+                     ↓
+┌──────────────────────────────────────────────┐
+│ Layer 2: Implementation + Verification       │
+│ - Code + tests + lint + security             │
+│ - One “judge” command: bin/verify            │
+└──────────────────────────────────────────────┘
+                     ↓
+┌──────────────────────────────────────────────┐
+│ Layer 3: Documentation / Memory              │
+│ - Flow docs (how it’s implemented)           │
+│ - PRDs (why it exists)                       │
+│ - Responsible Files tables                   │
+└──────────────────────────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Two key rules:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Docs are generated/updated only after verification passes&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Contracts are treated as the canonical truth&lt;/strong&gt; (or explicitly flagged when reality diverges)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;step-1-add-agentsmd-to-every-repo&quot;&gt;Step 1: Add AGENTS.md to every repo&lt;/h2&gt;
+
+&lt;p&gt;Put this at the repo root. Keep it short and operational.&lt;/p&gt;
+
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;# AGENTS.md — Project instructions for coding agents&lt;/span&gt;
+
+&lt;span class=&quot;gu&quot;&gt;## Prime directive&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Prefer small, verifiable changes.
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Never skip verification commands.
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; If unsure: add/adjust tests first to lock behavior.
+
+&lt;span class=&quot;gu&quot;&gt;## Commands (source of truth)&lt;/span&gt;
+&lt;span class=&quot;gu&quot;&gt;### Ruby / Rails&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Setup: bundle install
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Test:  bin/test
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Lint:  bin/lint
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Verify (must pass before PR): bin/verify
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Security: bin/security
+
+&lt;span class=&quot;gu&quot;&gt;### Go (if present)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Test:  make test
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Lint:  make lint
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Verify: make verify
+
+&lt;span class=&quot;gu&quot;&gt;### Node (if present)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Test:  pnpm test
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Lint:  pnpm lint
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Typecheck: pnpm typecheck
+
+&lt;span class=&quot;gu&quot;&gt;## Definition of Done&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; [ ] Implementation matches contract/specs
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; [ ] Tests added/updated and pass
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; [ ] Lint/static checks pass
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; [ ] Security checks pass
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; [ ] Docs updated (flow + PRD) if behavior changed
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; [ ] No unrelated refactors in same diff
+
+&lt;span class=&quot;gu&quot;&gt;## Safety boundaries&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Don’t touch secrets/credentials or production config.
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Ask before adding dependencies or changing CI.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This alone reduces agent thrash dramatically.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;step-2-create-one-judge-command-binverify&quot;&gt;Step 2: Create one “judge command” (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;)&lt;/h2&gt;
+
+&lt;p&gt;Agents converge faster when there’s exactly one command that says “reality is correct.”&lt;/p&gt;
+
+&lt;h3 id=&quot;rails-example&quot;&gt;Rails example&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-euo&lt;/span&gt; pipefail
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==&amp;gt; Lint&quot;&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rubocop
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==&amp;gt; Tests&quot;&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rspec
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==&amp;gt; Security (brakeman)&quot;&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;brakeman &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w2&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==&amp;gt; Dependency audit&quot;&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bundle audit check &lt;span class=&quot;nt&quot;&gt;--update&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;==&amp;gt; API docs generation (if used)&quot;&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails rswag:specs:swaggerize
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;✅ verify passed&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;go-example&quot;&gt;Go example&lt;/h3&gt;
+
+&lt;div class=&quot;language-makefile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nl&quot;&gt;verify&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;gofmt &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; .
+	&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;golangci-lint run
+	&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;go &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; ./...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The exact tools don’t matter.&lt;br /&gt;
+What matters is: &lt;strong&gt;one obvious place to run the truth.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;step-3-use-contract-first-development-especially-for-apis&quot;&gt;Step 3: Use contract-first development (especially for APIs)&lt;/h2&gt;
+
+&lt;p&gt;My most reliable pattern for AI-assisted Rails APIs is contract-first:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;treat an interface/spec as canonical truth&lt;/li&gt;
+  &lt;li&gt;implement strictly against it&lt;/li&gt;
+  &lt;li&gt;verify via gates&lt;/li&gt;
+  &lt;li&gt;then update docs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;safe-defaults-matter-required-fields-are-never-null&quot;&gt;Safe defaults matter (required fields are never null)&lt;/h3&gt;
+&lt;p&gt;In contract-first work, required fields should not come back as null “because DB is sparse.”&lt;/p&gt;
+
+&lt;p&gt;Use safe defaults by type:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Type&lt;/th&gt;
+      &lt;th&gt;Default&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;String&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&quot;&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Number&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0&lt;/code&gt; or minimum valid&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Boolean&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Array&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[]&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Object&lt;/td&gt;
+      &lt;td&gt;minimal valid object&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Timestamp&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Time.current.iso8601&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This removes a common “agent bug class”: missing fields / inconsistent shapes.&lt;/p&gt;
+
+&lt;h3 id=&quot;discrepancy-tagging-impl-vs-doc&quot;&gt;Discrepancy tagging: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[IMPL]&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[DOC]&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;When auditing contract compliance, classify gaps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[IMPL]&lt;/code&gt;&lt;/strong&gt; → code is wrong, fix it now, rerun verification&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[DOC]&lt;/code&gt;&lt;/strong&gt; → the doc/contract is wrong (DB/model reality differs), flag it, don’t silently change requirements&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This small habit prevents teams from corrupting the source of truth.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;step-4-documentation-driven-development-for-complex-systems&quot;&gt;Step 4: Documentation-driven development for complex systems&lt;/h2&gt;
+
+&lt;p&gt;When systems explode in complexity (MMORPG-scale, or any mature SaaS), your bottleneck becomes &lt;strong&gt;coherence&lt;/strong&gt;, not raw coding time.&lt;/p&gt;
+
+&lt;p&gt;The pattern that scales:&lt;/p&gt;
+
+&lt;h3 id=&quot;documentation-hierarchy&quot;&gt;Documentation hierarchy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;GDD / vision docs&lt;/strong&gt;: what the system is&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Feature docs&lt;/strong&gt;: what each subsystem must do&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Flow docs&lt;/strong&gt;: how it’s implemented (step-by-step + file ownership)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is the structure that makes large Rails monoliths maintainable, and also makes AI agents effective because they can retrieve the correct context instead of guessing.&lt;/p&gt;
+
+&lt;h3 id=&quot;flow-docs--responsible-files-tables&quot;&gt;Flow docs + Responsible Files tables&lt;/h3&gt;
+&lt;p&gt;Flow docs should include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;“Use case” steps that trace UI → controller → service → persistence → broadcast&lt;/li&gt;
+  &lt;li&gt;Key behaviors / invariants&lt;/li&gt;
+  &lt;li&gt;A “Responsible Files” table so anyone (human or agent) can jump to the right code immediately&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Example table:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Purpose&lt;/th&gt;
+      &lt;th&gt;File&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Combat service&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app/services/game/combat/turn_based_combat_service.rb&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Stimulus controller&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app/javascript/controllers/turn_combat_controller.js&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;View&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app/views/combat/_battle.html.erb&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Config&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/gameplay/combat_actions.yml&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This is the best “RAG corpus” you can build: docs that directly point to code.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;step-5-turn-your-best-practices-into-skills&quot;&gt;Step 5: Turn your best practices into Skills&lt;/h2&gt;
+
+&lt;p&gt;Here’s the trick: you already wrote the workflows in prose.&lt;/p&gt;
+
+&lt;p&gt;Now you package them so the agent can apply them repeatedly.&lt;/p&gt;
+
+&lt;h3 id=&quot;skill-ideas-that-map-to-real-work&quot;&gt;Skill ideas that map to real work&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails-zero-gap-endpoint&lt;/code&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;input: requirement doc (contract), expected behavior&lt;/li&gt;
+      &lt;li&gt;output: controller + serializer/blueprint + request specs + docs updates&lt;/li&gt;
+      &lt;li&gt;gate: must pass &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flow-doc-maintainer&lt;/code&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;update flow steps&lt;/li&gt;
+      &lt;li&gt;update Responsible Files table&lt;/li&gt;
+      &lt;li&gt;append version history (never overwrite)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;safe-refactor&lt;/code&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;add characterization tests first&lt;/li&gt;
+      &lt;li&gt;refactor&lt;/li&gt;
+      &lt;li&gt;rerun verify&lt;/li&gt;
+      &lt;li&gt;summarize risk and coverage&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;go-service-skeleton&lt;/code&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;standard layout (cmd/, internal/, pkg/)&lt;/li&gt;
+      &lt;li&gt;health, metrics, config, structured logging&lt;/li&gt;
+      &lt;li&gt;make verify/test/lint&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;skill-template-conceptual&quot;&gt;Skill template (conceptual)&lt;/h3&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;# SKILL.md&lt;/span&gt;
+name: rails-zero-gap-endpoint
+description: Implements a Rails API endpoint from a contract/spec with tests, verification, and doc updates.
+
+&lt;span class=&quot;gu&quot;&gt;## Steps&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;1.&lt;/span&gt; Read contract/spec in doc/requirements/&lt;span class=&quot;ge&quot;&gt;**&lt;/span&gt;.
+&lt;span class=&quot;p&quot;&gt;2.&lt;/span&gt; Identify response shapes and status codes.
+&lt;span class=&quot;p&quot;&gt;3.&lt;/span&gt; Implement with serializers/blueprints.
+&lt;span class=&quot;p&quot;&gt;4.&lt;/span&gt; Add request specs (success + error cases).
+&lt;span class=&quot;p&quot;&gt;5.&lt;/span&gt; Run bin/verify; fix until green.
+&lt;span class=&quot;p&quot;&gt;6.&lt;/span&gt; Update flow doc + PRD notes; append version history.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The point is not “more features.”&lt;br /&gt;
+The point is &lt;strong&gt;standardizing your best engineering behavior&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;step-6-add-hooks-so-quality-is-automatic&quot;&gt;Step 6: Add hooks so quality is automatic&lt;/h2&gt;
+
+&lt;p&gt;Once &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; exists, hooks become a superpower.&lt;/p&gt;
+
+&lt;p&gt;High ROI hooks:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Format after edits&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Block sensitive files&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Don’t stop until verify passes&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Auto-add a short change log entry for docs&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is how you get “ship faster” &lt;em&gt;and&lt;/em&gt; “ship safer” at the same time.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;when-to-use-rag-vs-lsp-vs-mcp&quot;&gt;When to use RAG vs LSP vs MCP&lt;/h2&gt;
+
+&lt;h3 id=&quot;use-rag-when-you-have-good-docs-but-agents-dont-see-them&quot;&gt;Use RAG when you have good docs but agents don’t see them&lt;/h3&gt;
+&lt;p&gt;If you already maintain:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;contracts/specs&lt;/li&gt;
+  &lt;li&gt;flow docs&lt;/li&gt;
+  &lt;li&gt;ADRs&lt;/li&gt;
+  &lt;li&gt;runbooks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;…RAG turns that into a searchable memory.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Best practice:&lt;/strong&gt; write docs in chunks that can be retrieved (short sections, clear headings, explicit file names).&lt;/p&gt;
+
+&lt;h3 id=&quot;use-lsp-when-correctness-depends-on-understanding-symbol-relationships&quot;&gt;Use LSP when correctness depends on understanding symbol relationships&lt;/h3&gt;
+&lt;p&gt;Refactors, renames, interface changes → you want semantic certainty.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-mcp-when-the-bottleneck-is-tooldata-access&quot;&gt;Use MCP when the bottleneck is tool/data access&lt;/h3&gt;
+&lt;p&gt;If your “context” lives outside the repo:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;DB schema details&lt;/li&gt;
+  &lt;li&gt;tickets/PRDs in trackers&lt;/li&gt;
+  &lt;li&gt;dashboards/logs&lt;/li&gt;
+  &lt;li&gt;internal service catalogs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;…MCP makes that safe and standardized.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;a-practical-daily-workflow-that-compounds-productivity&quot;&gt;A practical daily workflow that compounds productivity&lt;/h2&gt;
+
+&lt;h3 id=&quot;feature-workflow&quot;&gt;Feature workflow&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Define/confirm contract/spec (or acceptance criteria)&lt;/li&gt;
+  &lt;li&gt;Agent generates a plan: files + tests + risks&lt;/li&gt;
+  &lt;li&gt;Implement smallest vertical slice&lt;/li&gt;
+  &lt;li&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; until green&lt;/li&gt;
+  &lt;li&gt;Audit for gaps (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[IMPL]&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[DOC]&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Update flow doc + PRD notes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;bugfix-workflow&quot;&gt;Bugfix workflow&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Reproduce + write failing test&lt;/li&gt;
+  &lt;li&gt;Minimal fix&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Add a short note to flow doc/runbook if it’s a recurring class&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;refactor-workflow&quot;&gt;Refactor workflow&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add characterization tests (freeze behavior)&lt;/li&gt;
+  &lt;li&gt;Refactor&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Optional: second agent acts as a paranoid reviewer (coverage + edge cases)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;a-60-minute-starter-kit-checklist&quot;&gt;A 60-minute “starter kit” checklist&lt;/h2&gt;
+
+&lt;p&gt;If you want immediate impact, do this in your next repo:&lt;/p&gt;
+
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; (one truth command)&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/test&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/lint&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/security&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/format&lt;/code&gt;&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/doc/&lt;/code&gt; map in README (what doc is where)&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add 1 Skill for your most common task&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add 1–2 hooks to enforce formatting + verify&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;In CI: run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; (same as local)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is the shortest path to “significantly increase daily process.”&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;closing-the-real-multiplier-is-the-system&quot;&gt;Closing: the real multiplier is the system&lt;/h2&gt;
+
+&lt;p&gt;AI doesn’t make a team fast.&lt;br /&gt;
+&lt;strong&gt;A fast feedback loop makes a team fast.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Agentic development works when:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Truth is easy to check&lt;/strong&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Intent is easy to find&lt;/strong&gt; (contracts + flow docs + Responsible Files)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Quality is enforced&lt;/strong&gt; (hooks + CI)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Workflows are reusable&lt;/strong&gt; (Skills)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Once those exist, models become replaceable.&lt;br /&gt;
+Your process stays.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/blog/how-to-start-agentic-development</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/how-to-start-agentic-development</guid>
+        
+        <category>ai</category>
+        
+        <category>agentic-development</category>
+        
+        <category>software-engineering</category>
+        
+        <category>productivity</category>
+        
+        <category>rails</category>
+        
+        <category>golang</category>
+        
+        <category>mcp</category>
+        
+        <category>rag</category>
+        
+        <category>lsp</category>
+        
+        <category>codex</category>
+        
+        <category>claude-code</category>
+        
+        <category>documentation</category>
+        
+        <category>testing</category>
+        
+        
+        <category>engineering</category>
+        
+        <category>AI</category>
+        
+        <category>best-practices</category>
         
       </item>
     
@@ -7656,274 +8314,6 @@ With explicit contracts, repo-level laws, and non-negotiable verification, tools
         <category>rails</category>
         
         <category>AI</category>
-        
-      </item>
-    
-      <item>
-        <title>One Source of Truth: Consolidating Our Rails API Contribution Guide for Cursor IDE</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;We turned scattered conventions into a single &lt;strong&gt;PROJECT_CONTRIBUTION_GUIDE_v3.md&lt;/strong&gt; that your editor &lt;em&gt;and&lt;/em&gt; AI assistant can follow. This post explains the structure, the reasoning, and how to use it with Cursor to get consistent, high‑quality code on the first try.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;why-consolidateand-why-target-cursor&quot;&gt;Why consolidate—and why target Cursor?&lt;/h2&gt;
-
-&lt;p&gt;Keeping rules in several files (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rspec.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ruby.mdc&lt;/code&gt;, and a contribution guide) makes context brittle: people and AIs miss details, apply conflicting standards, or burn time reconciling guidance. By merging into a &lt;strong&gt;single, sectioned&lt;/strong&gt; guide, we make expectations &lt;strong&gt;discoverable, enforceable, and prompt‑friendly&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;LLM‑ready structure.&lt;/strong&gt; The guide uses clear categories and subcategories; Cursor can “see” and apply them reliably.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Less back‑and‑forth.&lt;/strong&gt; Coders and AI helpers won’t guess response formats or pagination rules.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;First‑class Rails defaults.&lt;/strong&gt; We start with Rails‑way + KISS, then add just enough structure for teams and CI.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;the-canonical-categories-and-what-they-contain&quot;&gt;The Canonical Categories (and what they contain)&lt;/h2&gt;
-
-&lt;p&gt;Below are the categories and representative points you’ll find in the consolidated guide. Each category is designed to be skim‑able for humans and parsable for AI assistants.&lt;/p&gt;
-
-&lt;h3 id=&quot;1-philosophy--principles&quot;&gt;1) Philosophy &amp;amp; Principles&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Rails‑way &amp;amp; KISS first.&lt;/strong&gt; Prefer conventions and built‑ins; avoid layers until complexity demands them.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Blueprinter is the single JSON source.&lt;/strong&gt; Controllers never hand‑craft JSON.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;DRY, selectively SOLID.&lt;/strong&gt; Extract when duplication harms clarity; avoid over‑engineering.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-code-style-ruby&quot;&gt;2) Code Style (Ruby)&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Every file starts with:
-    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Naming: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;snake_case&lt;/code&gt; for methods/variables/files, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CamelCase&lt;/code&gt; for classes/modules.&lt;/li&gt;
-  &lt;li&gt;Prefer early returns and small, intention‑revealing methods.&lt;/li&gt;
-  &lt;li&gt;Use UTC internally; serialize timestamps as ISO8601 strings.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;3-routing&quot;&gt;3) Routing&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;All endpoints are versioned: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/api/v1/&lt;/code&gt; (keeps room for future breaking changes).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;4-controllers&quot;&gt;4) Controllers&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Responses&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Lists:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data: [...], meta: { /* pagination &amp;amp; other meta */ } }&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Single item:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data: { ... } }&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Parameters &amp;amp; Authorization&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Strong parameters everywhere.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Pundit&lt;/strong&gt; for authorization (deny by default).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Search &amp;amp; Pagination&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Kaminari&lt;/strong&gt; for pagination, always include &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;meta&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Ransack&lt;/strong&gt; for search/filters (whitelist searchable attributes).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Attachments in &lt;em&gt;one&lt;/em&gt; request&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;If an endpoint requires attachments, the model declares associations and accepts nested attributes; the API accepts multipart form data in one round trip.
-    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EducationItem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:images&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GalleryImage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FileDocument&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;accepts_nested_attributes_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;allow_destroy: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:3000/api/v1/profiles/49/educations&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Authorization: Bearer &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$TOKEN&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Content-Type: multipart/form-data&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[item_type]=degree&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[title]=Bachelor of Science&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[degree]=BSc&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;education_item[field_of_study]=Computer Science&apos;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[currently_enrolled]=false&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[start_date]=2018-09-01&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[end_date]=2022-06-30&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[file_attributes][doc_type]=pdf&quot;&lt;/span&gt;     &lt;span class=&quot;nt&quot;&gt;-F&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;education_item[file_attributes][file]=@spec/fixtures/files/test.pdf;type=application/pdf&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Global exception handling&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Centralize error handling in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationController&lt;/code&gt; to return predictable JSON:
-    &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;error: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;full_messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_sentence&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;status: :unprocessable_content&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;5-models&quot;&gt;5) Models&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Validations &amp;amp; Enums&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Keep validations close to data.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Enums&lt;/strong&gt; are defined once (DRY) and surfaced verbatim in serializers/tests.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Associations &amp;amp; Attachments&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;has_many :images&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;has_many :files&lt;/code&gt; as shown above when the endpoint needs attachments.&lt;/li&gt;
-  &lt;li&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;accepts_nested_attributes_for&lt;/code&gt; to enable single‑request creates/updates.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Constraints&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Database constraints first:&lt;/strong&gt; NOT NULL, FKs, and unique indexes in migrations—don’t rely solely on model validations.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;6-serialization&quot;&gt;6) Serialization&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Blueprinter&lt;/strong&gt; owns the shape of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; (and error payloads, if you standardize them). Controllers just compose the envelope.&lt;/li&gt;
-  &lt;li&gt;Provide &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ApplicationBlueprint&lt;/code&gt; with a small &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timestamps&lt;/code&gt; helper to emit ISO8601 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;created_at/updated_at&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;7-search--pagination--sorting&quot;&gt;7) Search / Pagination / Sorting&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Kaminari&lt;/strong&gt; for limits &amp;amp; pages; add caps and include &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;meta&lt;/code&gt; in every list response.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Ransack&lt;/strong&gt; for filters; expose only allow‑listed fields.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Sorting&lt;/strong&gt;: allow‑list the columns/direction to prevent injection or invalid columns.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;8-security&quot;&gt;8) Security&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Devise (JWT) for API authentication.&lt;/li&gt;
-  &lt;li&gt;Pundit for authorization; default deny.&lt;/li&gt;
-  &lt;li&gt;Strong parameters throughout; no unpermitted mass‑assignment.&lt;/li&gt;
-  &lt;li&gt;Keep secrets in Rails Credentials; never commit them.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;9-performance--data&quot;&gt;9) Performance &amp;amp; Data&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Avoid N+1&lt;/strong&gt; using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;includes&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;preload&lt;/code&gt; when rendering associated data.&lt;/li&gt;
-  &lt;li&gt;Add indexes for foreign keys and high‑cardinality lookups.&lt;/li&gt;
-  &lt;li&gt;Consider simple caching (ETag/Last‑Modified) and minimal payloads.&lt;/li&gt;
-  &lt;li&gt;Light instrumentation via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;request_id&lt;/code&gt; tags and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActiveSupport::Notifications&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;10-testing-rspec&quot;&gt;10) Testing (RSpec)&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Request specs&lt;/strong&gt;, &lt;strong&gt;model specs&lt;/strong&gt;, &lt;strong&gt;policy specs&lt;/strong&gt;, and &lt;strong&gt;serializer&lt;/strong&gt; (Blueprinter) snapshots.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;FactoryBot + Faker&lt;/strong&gt; for data.&lt;/li&gt;
-  &lt;li&gt;Determinism: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;freeze_time&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;travel_to&lt;/code&gt; for ISO8601 assertions; stub external calls (WebMock/VCR).&lt;/li&gt;
-  &lt;li&gt;Force English locale in tests by default for predictable assertions; add targeted locale tests when needed.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;11-definition-of-done-dod&quot;&gt;11) Definition of Done (DoD)&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Rails‑way + KISS adhered to.&lt;/li&gt;
-  &lt;li&gt;Blueprinter for all JSON.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data, meta }&lt;/code&gt; for lists; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{ data }&lt;/code&gt; for single item.&lt;/li&gt;
-  &lt;li&gt;Pundit + Kaminari + Ransack in place as applicable.&lt;/li&gt;
-  &lt;li&gt;DB constraints, enums, no N+1.&lt;/li&gt;
-  &lt;li&gt;Tests for controllers (requests), models, policies, and serialization.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;how-to-attach-the-guide-to-your-cursor-prompt-exact-steps&quot;&gt;How to attach the Guide to your Cursor prompt (exact steps)&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Option A — Replace scattered rules with one file&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add the consolidated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PROJECT_CONTRIBUTION_GUIDE_v3.md&lt;/code&gt; to your repo.&lt;/li&gt;
-  &lt;li&gt;In Cursor, open your workspace settings and &lt;strong&gt;pin&lt;/strong&gt; this file (or paste it into your global “Rules” file).&lt;/li&gt;
-  &lt;li&gt;In Chat, reference it explicitly: “Follow the rules in PROJECT_CONTRIBUTION_GUIDE_v3.md. Respect Blueprinter envelopes and the ‘attachments in one request’ policy.”&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Option B — Keep rules separate but link to one source&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Keep &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rspec.mdc&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ruby.mdc&lt;/code&gt;, but add at the top of each: “This file defers to PROJECT_CONTRIBUTION_GUIDE_v3.md; if conflicts arise, the Guide wins.”&lt;/li&gt;
-  &lt;li&gt;Pin all files in Cursor; the Guide becomes the conflict resolver.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Prompt snippet to paste in Cursor (pin this):&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;You are assisting on a Rails API project. Follow PROJECT_CONTRIBUTION_GUIDE_v3.md strictly:
-- Rails-way + KISS; Blueprinter is the single JSON source.
-- List endpoints return { data, meta }; single returns { data }.
-- Use Pundit for authz, Kaminari for pagination (with meta), Ransack for filters.
-- For endpoints with attachments, one request with nested attributes is mandatory.
-- Add `# frozen_string_literal: true` at the top of every Ruby file.
-- Use UTC + ISO8601 timestamps.
-Return only the requested code + file paths; do not invent fields outside the schema.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;This pinned prompt reduces retries and keeps generated code aligned with our conventions.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;why-this-improves-efficiency&quot;&gt;Why this improves efficiency&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Fewer review cycles.&lt;/strong&gt; Response envelopes, pagination, and authz are consistent from the start.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Predictable AI output.&lt;/strong&gt; Cursor synthesizes code that already matches our structure (controllers, models, serializers).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Lower context cost.&lt;/strong&gt; One authoritative file means fewer tokens and less ambiguity.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Safer by default.&lt;/strong&gt; DB constraints + allow‑listed search/sorting reduce production risks.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Testable from day 1.&lt;/strong&gt; RSpec guidance ensures deterministic, CI‑friendly suites.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;quick-reference-copypaste&quot;&gt;Quick Reference (copy/paste)&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;List response pattern&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;paginate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Kaminari&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;data: &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Blueprint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;render_as_hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;meta: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pagination_meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Single response pattern&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;data: &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Blueprint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;render_as_hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;status: :created&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Global exception example&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;json: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;error: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;full_messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_sentence&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;status: :unprocessable_content&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Attachments in one request (model)&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# frozen_string_literal: true&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:images&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GalleryImage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;ss&quot;&gt;class_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FileDocument&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: :attachable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;dependent: :destroy&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;accepts_nested_attributes_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;allow_destroy: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;By unifying our standards and making them prompt‑aware, we get the best of both worlds: &lt;strong&gt;Rails defaults&lt;/strong&gt; that keep us fast, and &lt;strong&gt;clear rules&lt;/strong&gt; that keep humans and AI aligned. The result is higher‑quality code with far less friction.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 09 Sep 2025 09:00:00 +0000</pubDate>
-        <link>http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/consolidating-rails-api-guide-for-cursor-ide</guid>
-        
-        <category>Ruby on Rails</category>
-        
-        <category>API</category>
-        
-        <category>Blueprinter</category>
-        
-        <category>Pundit</category>
-        
-        <category>Kaminari</category>
-        
-        <category>Ransack</category>
-        
-        <category>Cursor</category>
-        
-        <category>RSpec</category>
-        
-        <category>Jekyll</category>
-        
-        
-        <category>engineering</category>
-        
-        <category>rails</category>
-        
-        <category>api</category>
-        
-        <category>cursor</category>
         
       </item>
     

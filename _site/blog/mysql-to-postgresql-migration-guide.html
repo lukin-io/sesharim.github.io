@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-VLFHH5CPGM');
   </script>
 
@@ -16,21 +18,38 @@
   
   <title>From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs | Software Engineering consultant</title>
   
-  <meta name="theme-color">
+  <meta name="theme-color" content="#006cac">
 
   <link rel="canonical" href="http://localhost:4000/blog/mysql-to-postgresql-migration-guide">
   <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
   <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+
   <meta name="description"
     content="  “The best time to write database-agnostic code is from day one. The second best time is before your migration.”">
   <meta name="keywords"
     content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
   <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs | Software Engineering consultant</title>
 <meta name="generator" content="Jekyll v4.4.1" />
@@ -53,48 +72,52 @@
 </head>
 
 
-  <body class="max-w-4xl mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 bg-[#c2c5aa]">
-    <header>
-      &nbsp;
-    </header>
-
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
     <main>
-      <article class="w-full">
-  <!-- Navigation -->
-  <nav class="mb-8">
-    <div class="flex items-center justify-between">
-      <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-        <span class="font-medium">All Posts</span>
-      </a>
-      <a href="/" class="no-underline text-[#333d29] hover:text-[#333d29] opacity-80 transition-colors flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 16 16">
-          <path d="M8 4.5l-4 3.5V12a1 1 0 0 0 1 1h2.5v-2.5h1V13H11a1 1 0 0 0 1-1V8l-4-3.5z" fill="currentColor"/>
-          <path d="M2 8l6-5 6 5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-        </svg>
-        <span class="text-sm">Home</span>
-      </a>
-    </div>
-  </nav>
+      <!-- Reading progress bar -->
+<div class="reading-progress" id="reading-progress"></div>
+
+<article class="post-article">
+  <!-- Back navigation -->
+  <a href="/blog" class="back-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 12h10"/>
+    </svg>
+    <span>Blog</span>
+  </a>
 
   <!-- Post header -->
-  <header class="mb-8 pb-8 border-b border-[#b6ad90]">
-    <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[#333d29] mb-4 leading-tight">
-      From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs
-    </h1>
-    <div class="flex items-center gap-4 text-[#333d29] opacity-80">
-      <time class="text-sm font-medium">December 3, 2025</time>
+  <header class="post-header">
+    <h1 class="post-title">From MySQL to PostgreSQL: A Practical Migration Guide for Rails APIs</h1>
+    <div class="post-meta">
+      <time datetime="2025-12-03T00:00:00+00:00">Dec 3, 2025</time>
       
-        <span class="text-sm">by Max Lukin</span>
+      
+      
+      <span>· 23 min read</span>
+      
+        <span>· Max Lukin</span>
+      
+      
+        <span class="post-tags"><a href="/search?q=rails" class="tag">rails</a><a href="/search?q=postgresql" class="tag">postgresql</a><a href="/search?q=mysql" class="tag">mysql</a><a href="/search?q=migration" class="tag">migration</a><a href="/search?q=database" class="tag">database</a><a href="/search?q=orm" class="tag">orm</a><a href="/search?q=active-record" class="tag">active-record</a><a href="/search?q=best-practices" class="tag">best-practices</a></span>
       
     </div>
   </header>
 
-  <!-- Post content -->
-  <div class="prose prose-lg max-w-none">
-    <blockquote>
+  <div class="post-body">
+    <!-- Table of Contents (generated by JS for posts with 4+ headings) -->
+    <aside class="toc-sidebar" id="toc-sidebar">
+      <nav class="toc" id="toc">
+        <div class="toc-title">Contents</div>
+        <ul class="toc-list" id="toc-list"></ul>
+      </nav>
+    </aside>
+
+    <!-- Post content -->
+    <div class="prose post-content" id="post-content">
+      <blockquote>
   <p><em>“The best time to write database-agnostic code is from day one. The second best time is before your migration.”</em></p>
 </blockquote>
 
@@ -1277,39 +1300,292 @@ rails runner <span class="s2">"Benchmark.measure { User.count }"</span>
 <p><em>This post documents our migration of the Wigiwork API from MySQL to PostgreSQL. The patterns described here enabled a migration with minimal code changes and zero regressions—proving that investment in database-agnostic code pays dividends when requirements evolve.</em></p>
 
 
+    </div>
   </div>
 
-  <!-- Post footer -->
-  <footer class="mt-12 pt-8 border-t border-[#b6ad90]">
-    <a href="/blog" class="no-underline text-[#656d4a] hover:text-[#333d29] transition-colors flex items-center gap-2 group inline-flex">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="group-hover:-translate-x-1 transition-transform">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      <span class="font-medium">Back to all posts</span>
-    </a>
-  </footer>
+  <!-- Post navigation (Previous/Next) -->
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+      
+      
+      
+
+  <nav class="post-navigation">
+    
+      <a href="/blog/zero-gap-api-development-with-ai" class="post-nav-link post-nav-prev">
+        <span class="post-nav-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Older
+        </span>
+        <span class="post-nav-title">Zero-Gap API Development: A Contract-First Framework for AI-Assisted...</span>
+      </a>
+    
+    
+      <a href="/blog/dry-rb-integration-rails-api" class="post-nav-link post-nav-next">
+        <span class="post-nav-label">
+          Newer
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
+        <span class="post-nav-title">From Rails Spaghetti to Structured Code: Integrating dry-rb...</span>
+      </a>
+    
+  </nav>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/>
+      <polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
 </article>
+
+<script>
+  // Show/hide back-to-top button based on scroll position
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+
+  // Reading progress bar
+  const progressBar = document.getElementById('reading-progress');
+  const article = document.querySelector('.post-article');
+
+  window.addEventListener('scroll', function() {
+    const articleTop = article.offsetTop;
+    const articleHeight = article.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scrolled = window.scrollY - articleTop + windowHeight * 0.3;
+    const progress = Math.min(Math.max(scrolled / articleHeight * 100, 0), 100);
+    progressBar.style.width = progress + '%';
+  });
+
+  // Generate Table of Contents
+  const postContent = document.getElementById('post-content');
+  const tocList = document.getElementById('toc-list');
+  const tocSidebar = document.getElementById('toc-sidebar');
+  const headings = postContent.querySelectorAll('h2, h3');
+
+  if (headings.length >= 4) {
+    tocSidebar.classList.add('visible');
+
+    headings.forEach((heading, index) => {
+      // Add ID to heading if not present
+      if (!heading.id) {
+        heading.id = 'heading-' + index;
+      }
+
+      const li = document.createElement('li');
+      li.className = 'toc-item toc-' + heading.tagName.toLowerCase();
+
+      const a = document.createElement('a');
+      a.href = '#' + heading.id;
+      a.textContent = heading.textContent;
+      a.className = 'toc-link';
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Highlight current section in TOC
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    const observerOptions = {
+      rootMargin: '-80px 0px -70% 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.toc-link[href="#' + entry.target.id + '"]');
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    headings.forEach(heading => observer.observe(heading));
+  }
+
+  // Add copy buttons and language labels to code blocks
+  document.querySelectorAll('.highlight, pre').forEach(element => {
+    // Skip if already wrapped or if this is a pre inside a highlight we'll process
+    if (element.closest('.code-block-wrapper')) return;
+    if (element.tagName === 'PRE' && element.closest('.highlight')) return;
+
+    // Determine what to wrap: the .highlight div or standalone pre
+    const highlightDiv = element.classList.contains('highlight') ? element : null;
+    const pre = highlightDiv ? highlightDiv.querySelector('pre') : element;
+    if (!pre) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+
+    // Wrap the highlight div if exists, otherwise wrap pre
+    const toWrap = highlightDiv || pre;
+    toWrap.parentNode.insertBefore(wrapper, toWrap);
+    wrapper.appendChild(toWrap);
+
+    // Detect language from class
+    const code = pre.querySelector('code');
+    let language = '';
+
+    // Method 1: Check code element class
+    if (code && code.className) {
+      const match = code.className.match(/language-(\w+)/);
+      if (match) language = match[1];
+    }
+
+    // Method 2: Check highlight div class (Rouge uses class like "highlight ruby")
+    if (!language && highlightDiv) {
+      const classes = highlightDiv.className.split(' ');
+      for (const cls of classes) {
+        if (cls !== 'highlight' && cls.length > 0 && !cls.startsWith('code')) {
+          language = cls;
+          break;
+        }
+      }
+    }
+
+    // Method 3: Try to detect from code patterns
+    if (!language) {
+      const text = pre.textContent.trim();
+      if (text.startsWith('#') && !text.startsWith('#!/')) {
+        const firstLine = text.split('\n')[0];
+        if (firstLine.match(/\.rb$/)) language = 'ruby';
+        else if (firstLine.match(/\.py$/)) language = 'python';
+        else if (firstLine.match(/\.yml$|\.yaml$/)) language = 'yaml';
+      } else if (text.startsWith('//')) {
+        language = 'javascript';
+      } else if (text.match(/^(RSpec|describe|it|context|let)\b/)) {
+        language = 'ruby';
+      } else if (text.match(/^(def |class |module |require )/)) {
+        language = 'ruby';
+      }
+    }
+
+    // Create header with language and copy button
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+
+    if (language) {
+      const langLabel = document.createElement('span');
+      langLabel.className = 'code-lang';
+      langLabel.textContent = language;
+      header.appendChild(langLabel);
+    }
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'code-copy-btn';
+    copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>';
+    copyBtn.onclick = async function() {
+      const text = pre.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Copied!</span>';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    };
+    header.appendChild(copyBtn);
+
+    // Insert header at the start of wrapper (before the highlight/pre)
+    wrapper.insertBefore(header, wrapper.firstChild);
+  });
+</script>
 
     </main>
 
-    <footer>
-      <div class="flex justify-center p-2 m-2">
-  <a href="https://lukin.io/cv.pdf" target="_blank" title="Download CV" class="no-underline flex items-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 20 20">
-      <g>
-        <!-- File outline -->
-        <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Down arrow for download -->
-        <path d="M10 7v6m0 0l-2.5-2.5M10 13l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- Download bar -->
-        <rect x="8" y="15" width="4" height="1.2" rx="0.6" fill="currentColor"/>
-      </g>
-    </svg>
-    <span class="font-medium text-[1.05em] text-current tracking-wide">Download CV</span>
-  </a>
+    <footer class="site-footer">
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
     </footer>
-  </body>
+  </div>
 
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
 </html>
