@@ -5,9 +5,357 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 17 Dec 2025 13:52:43 +0000</pubDate>
-    <lastBuildDate>Wed, 17 Dec 2025 13:52:43 +0000</lastBuildDate>
+    <pubDate>Mon, 05 Jan 2026 08:20:58 +0000</pubDate>
+    <lastBuildDate>Mon, 05 Jan 2026 08:20:58 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>Negotiating Discretionary Bonus Agreements: A Contract-First Playbook for Engineering Leaders</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Ambiguity is a defect. In code, we fix it. In compensation agreements, we should fix it too.&lt;/em&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; I’m not a lawyer and this is not legal advice. Always get qualified counsel for your jurisdiction.&lt;br /&gt;
+&lt;strong&gt;Privacy note:&lt;/strong&gt; This post is intentionally anonymized (no company names, no personal names, no identifying numbers).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
+
+&lt;p&gt;If a “bonus” is &lt;strong&gt;discretionary&lt;/strong&gt; &lt;em&gt;and&lt;/em&gt; gated by language like &lt;strong&gt;“satisfactory performance, as solely determined by the Company”&lt;/strong&gt;, you should treat it as &lt;strong&gt;optional&lt;/strong&gt;—even if everyone has good intentions.&lt;/p&gt;
+
+&lt;p&gt;The goal isn’t to “win” a fight. The goal is to remove &lt;strong&gt;unbounded discretion&lt;/strong&gt; and align incentives with reality.&lt;/p&gt;
+
+&lt;p&gt;What works:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Treat the agreement like an engineering spec: define terms, acceptance criteria, and failure modes.&lt;/li&gt;
+  &lt;li&gt;Separate &lt;strong&gt;your performance&lt;/strong&gt; from &lt;strong&gt;external outcomes&lt;/strong&gt; (fundraising, market conditions).&lt;/li&gt;
+  &lt;li&gt;Replace subjective clauses with &lt;strong&gt;objective triggers&lt;/strong&gt; (KPIs/OKRs + “good faith” standards).&lt;/li&gt;
+  &lt;li&gt;If legal edits take time, offer a pragmatic near-term path (base comp + work structure) without calling it a “fallback”.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;1-why-discretionary-bonus-agreements-break&quot;&gt;1) Why discretionary bonus agreements break&lt;/h2&gt;
+
+&lt;p&gt;Discretionary bonus agreements are common in startups because they preserve flexibility. That’s fine—until the agreement is written in a way that makes payment &lt;strong&gt;non-obligatory in practice&lt;/strong&gt;, even when the business outcome happens.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-stacking-veto-pattern-the-real-problem&quot;&gt;The stacking-veto pattern (the real problem)&lt;/h3&gt;
+
+&lt;p&gt;The most dangerous structure is not one clause—it’s a &lt;strong&gt;stack&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;funding event must close&lt;/li&gt;
+  &lt;li&gt;a certain threshold must be met (sometimes undefined)&lt;/li&gt;
+  &lt;li&gt;you must be employed through the payment date&lt;/li&gt;
+  &lt;li&gt;“satisfactory performance” (undefined)&lt;/li&gt;
+  &lt;li&gt;“good standing” (undefined)&lt;/li&gt;
+  &lt;li&gt;no “bad leaver” conditions (often broad)&lt;/li&gt;
+  &lt;li&gt;written approval by one person&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Any single veto = &lt;strong&gt;$0&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;If your agreement looks like this, it’s not a performance incentive. It’s a &lt;strong&gt;permission slip&lt;/strong&gt; the company can revoke.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;2-red-flags-to-look-for-before-you-sign&quot;&gt;2) Red flags to look for before you sign&lt;/h2&gt;
+
+&lt;p&gt;Here are clause patterns that deserve a second read (or a redline). Each may be acceptable in isolation; the risk is when it’s &lt;strong&gt;unbounded&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Pattern (anonymized)&lt;/th&gt;
+      &lt;th&gt;What it effectively does&lt;/th&gt;
+      &lt;th&gt;Why it’s risky&lt;/th&gt;
+      &lt;th&gt;Minimal improvement to ask for&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“Bonus is discretionary / not earned”&lt;/td&gt;
+      &lt;td&gt;Company can treat it as optional&lt;/td&gt;
+      &lt;td&gt;You can do everything right and still get $0&lt;/td&gt;
+      &lt;td&gt;Tie payout to objective triggers + good-faith standard&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“Satisfactory performance, as solely determined by Company”&lt;/td&gt;
+      &lt;td&gt;Subjective performance gate&lt;/td&gt;
+      &lt;td&gt;Becomes a post-hoc excuse&lt;/td&gt;
+      &lt;td&gt;KPIs/OKRs + “assessed in good faith”&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“CEO approval required”&lt;/td&gt;
+      &lt;td&gt;One-person veto&lt;/td&gt;
+      &lt;td&gt;No process, no accountability&lt;/td&gt;
+      &lt;td&gt;“Not unreasonably withheld” / “in good faith”&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“Must be employed through payment date”&lt;/td&gt;
+      &lt;td&gt;Timing-based forfeiture&lt;/td&gt;
+      &lt;td&gt;Payment delay becomes leverage&lt;/td&gt;
+      &lt;td&gt;Payment window or remove forfeiture-by-delay&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;“Bad leaver / harms interests” (vague)&lt;/td&gt;
+      &lt;td&gt;Broad forfeiture trigger&lt;/td&gt;
+      &lt;td&gt;Can be applied retroactively&lt;/td&gt;
+      &lt;td&gt;Limit to material misconduct / willful breach&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Tiers tied to funding size without definitions&lt;/td&gt;
+      &lt;td&gt;Ambiguous measurement&lt;/td&gt;
+      &lt;td&gt;Easy to engineer “misses”&lt;/td&gt;
+      &lt;td&gt;Define how size is calculated and evidenced&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;3-the-single-best-sentence-to-include&quot;&gt;3) The single best sentence to include&lt;/h2&gt;
+
+&lt;p&gt;This one sentence prevents a very common trap:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;“I want to explicitly separate individual performance from fundraising outcomes, which are ultimately driven by market conditions and investor decisions rather than execution alone.”&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It’s calm, factual, and it blocks “fundraising result = your performance” narratives later.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;4-contract-first-negotiation-engineer-mindset&quot;&gt;4) Contract-first negotiation (engineer mindset)&lt;/h2&gt;
+
+&lt;p&gt;Think of the agreement like an API:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Undefined terms&lt;/strong&gt; are undefined behavior.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;One-person discretion&lt;/strong&gt; is a non-deterministic dependency.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Stacked vetoes&lt;/strong&gt; are failure points.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Your goal isn’t to remove discretion. It’s to remove &lt;strong&gt;unbounded discretion&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;convert-fuzzy-language-into-verifiable-terms&quot;&gt;Convert fuzzy language into verifiable terms&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Problem language&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“satisfactory performance”&lt;/li&gt;
+  &lt;li&gt;“good standing”&lt;/li&gt;
+  &lt;li&gt;“as solely determined”&lt;/li&gt;
+  &lt;li&gt;“harms the Company’s interests”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Better language&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“assessed in good faith”&lt;/li&gt;
+  &lt;li&gt;“based on mutually agreed objectives (KPIs/OKRs) documented in writing”&lt;/li&gt;
+  &lt;li&gt;“approval not unreasonably withheld if conditions are met”&lt;/li&gt;
+  &lt;li&gt;“bad leaver limited to fraud, willful misconduct, or material intentional breach”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;5-what-to-ask-for-minimal-redlines-that-are-actually-reasonable&quot;&gt;5) What to ask for (minimal redlines that are actually reasonable)&lt;/h2&gt;
+
+&lt;p&gt;These are common “middle-ground” edits that don’t remove company control—they just add boundaries.&lt;/p&gt;
+
+&lt;h3 id=&quot;replace-unilateral-performance-wording&quot;&gt;Replace unilateral performance wording&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Replace&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“satisfactory performance, as solely determined by the Company”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;With&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“satisfactory performance, &lt;strong&gt;assessed in good faith based on mutually agreed objectives (KPIs/OKRs) documented in writing&lt;/strong&gt;”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;add-a-good-faith-approval-standard&quot;&gt;Add a good-faith approval standard&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Add&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“CEO approval &lt;strong&gt;shall not be unreasonably withheld&lt;/strong&gt; where the applicable conditions are met.”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;narrow-bad-leaver&quot;&gt;Narrow “Bad Leaver”&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Add&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“Bad Leaver applies only in cases of &lt;strong&gt;fraud, willful misconduct, or material intentional breach&lt;/strong&gt;.”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;6-if-legal-edits-take-time-offer-a-pragmatic-near-term-path-without-fallback-language&quot;&gt;6) If legal edits take time: offer a pragmatic near-term path (without “fallback” language)&lt;/h2&gt;
+
+&lt;p&gt;In practice, companies often resist rewriting legal language quickly.&lt;/p&gt;
+
+&lt;p&gt;If you need sustainability &lt;strong&gt;now&lt;/strong&gt;, give leadership an “execution health” option that is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;cheaper than a large bonus&lt;/li&gt;
+  &lt;li&gt;simple to approve&lt;/li&gt;
+  &lt;li&gt;immediate impact&lt;/li&gt;
+  &lt;li&gt;framed as operational, not emotional&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Examples:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;a base compensation adjustment to restore balance&lt;/li&gt;
+  &lt;li&gt;remote weekend support / reduced commute overhead&lt;/li&gt;
+  &lt;li&gt;clearer workload distribution expectations&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Avoid calling it a “fallback”. Call it a pragmatic near-term solution while longer-term alignment is addressed.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;7-a-ready-to-send-email-template-fully-anonymized&quot;&gt;7) A ready-to-send email template (fully anonymized)&lt;/h2&gt;
+
+&lt;p&gt;Below is a “hardcore, contract-first” template you can adapt. Replace placeholders like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Base]&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Prior]&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Funding]&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hi [Name],
+
+Thank you for sharing the Executive Bonus Agreement.
+
+I’m aligned with the intent, and I understand that fundraising outcomes depend on investors and market conditions, so I’m not expecting guarantees beyond what’s realistic for a startup.
+
+Before signing, I’d like to clarify several points to ensure expectations are objective and aligned upfront. The documents were reviewed with counsel, and the same items were flagged as important to address directly in the agreement.
+
+&lt;span class=&quot;gu&quot;&gt;## Context (why clarity matters)&lt;/span&gt;
+
+Over the past [X] months, I’ve made a substantial commitment to the company and accepted a meaningful compensation trade-off:
+&lt;span class=&quot;p&quot;&gt;
+-&lt;/span&gt; Joined at &lt;span class=&quot;gs&quot;&gt;**[Base]**&lt;/span&gt;, after previously earning &lt;span class=&quot;gs&quot;&gt;**[Prior]**&lt;/span&gt; (including bonuses).
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Sustained workload including nights/weekends to keep delivery unblocked across multiple teams.
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Material opportunity cost and reduced total compensation over an extended period.
+
+Given the sustained base-compensation reduction, the bonus functions as a component of total compensation rather than a discretionary perk, which is why clarity here is particularly important.
+
+&lt;span class=&quot;gu&quot;&gt;## Points requiring clarification&lt;/span&gt;
+
+1) &lt;span class=&quot;gs&quot;&gt;**Funding target and valuation basis**&lt;/span&gt;  
+The tiers are anchored to a high funding threshold, but the agreement does not clarify how feasibility is determined.  
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Is this benchmark based on third-party/independent valuation, investor guidance, or formal fundraising analysis?  
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Or is it based solely on internal judgment?
+
+Without an objective basis, it is possible for the market-supported outcome to fall into lower tiers or zero.
+
+I want to explicitly separate individual performance from fundraising outcomes, which are ultimately driven by market conditions and investor decisions rather than execution alone.
+
+2) &lt;span class=&quot;gs&quot;&gt;**“Satisfactory performance, as solely determined by the Company”**&lt;/span&gt;  
+In a bonus agreement tied to a material amount, this formulation is problematic. As written, performance is not measured against KPIs/OKRs and depends on a unilateral determination.
+
+Assessment based on mutually agreed objectives or good-faith evaluation would be more consistent with executive-level incentives.
+
+3) &lt;span class=&quot;gs&quot;&gt;**Bad Leaver / “harms the Company’s interests”**&lt;/span&gt;  
+I’d like to clarify how Bad Leaver is interpreted in situations driven by organizational or staffing decisions. If burnout or performance degradation results primarily from structural decisions, it would be concerning if such outcomes could be treated as unsatisfactory performance or “harm,” triggering forfeiture.
+
+&lt;span class=&quot;gu&quot;&gt;## Closing — pragmatic options for alignment&lt;/span&gt;
+
+What I’m asking for is not guarantees, but clear, objective, and balanced terms consistent with executive-level incentives.
+
+For me, alignment means that outcomes driven by market or organizational constraints are not later reinterpreted as individual performance failures.
+
+For me to proceed, these clarifications need to be reflected directly in the agreement text.
+
+If aligning on all bonus-related points takes more time, I see a pragmatic way to restore balance and keep execution healthy in the near term:
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Base compensation adjustment**&lt;/span&gt;: a meaningful increase to restore sustainability.
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Remote weekend support**&lt;/span&gt;: continue weekend support when needed, but remotely, to reduce non-productive overhead.
+
+Thank you for taking the time to review this.
+
+Best regards,  
+[Your Name]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;8-if-they-say-lets-discuss-on-a-call&quot;&gt;8) If they say “let’s discuss on a call”&lt;/h2&gt;
+
+&lt;p&gt;Agree to the call, but keep it structured:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;“Happy to discuss live. It would help me if we could first align on which of the outlined paths feels most viable, so I can come prepared and keep the conversation focused.”&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is calm, not escalatory, and it prevents the “improv negotiation” trap.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;9-interpreting-responses-a-quick-decision-matrix&quot;&gt;9) Interpreting responses (a quick decision matrix)&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Their response&lt;/th&gt;
+      &lt;th&gt;What it usually means&lt;/th&gt;
+      &lt;th&gt;What you should do&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;They accept objective clarifications&lt;/td&gt;
+      &lt;td&gt;They intend to pay and want alignment&lt;/td&gt;
+      &lt;td&gt;Proceed; verify wording precisely&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;They reject clarifications but offer base/structure improvements&lt;/td&gt;
+      &lt;td&gt;They want simplicity; bonus may remain discretionary&lt;/td&gt;
+      &lt;td&gt;Decide if “now fixes” are enough&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;They reject both clarifications and near-term fixes&lt;/td&gt;
+      &lt;td&gt;They want maximum discretion with minimal obligation&lt;/td&gt;
+      &lt;td&gt;You have your answer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;They stall (“later”, “after funding”, “on a call”) without writing&lt;/td&gt;
+      &lt;td&gt;They want time, not commitment&lt;/td&gt;
+      &lt;td&gt;Keep everything written and specific&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;closing-thought&quot;&gt;Closing thought&lt;/h2&gt;
+
+&lt;p&gt;Negotiating a discretionary bonus agreement isn’t about being difficult. It’s about doing what we already do as engineers:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;identify ambiguity,&lt;/li&gt;
+  &lt;li&gt;define acceptance criteria,&lt;/li&gt;
+  &lt;li&gt;reduce undefined behavior,&lt;/li&gt;
+  &lt;li&gt;and align incentives with reality.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you’re carrying executive-level responsibility, your agreement should have executive-level clarity.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/blog/negotiating-discretionary-bonus-agreements</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/negotiating-discretionary-bonus-agreements</guid>
+        
+        <category>career</category>
+        
+        <category>negotiation</category>
+        
+        <category>leadership</category>
+        
+        <category>contracts</category>
+        
+        <category>compensation</category>
+        
+        
+        <category>career</category>
+        
+        <category>leadership</category>
+        
+      </item>
     
       <item>
         <title>From 5-Minute Timeouts to Sub-3-Minute Builds: A Complete Guide to Rails RSpec CI Optimization</title>
@@ -7576,362 +7924,6 @@ Return only the requested code + file paths; do not invent fields outside the sc
         <category>api</category>
         
         <category>cursor</category>
-        
-      </item>
-    
-      <item>
-        <title>Containerizing Your Rails Development with Docker + Dev Containers</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;
-Containerizing your Rails dev environment with Docker (and VS Code Dev Containers) gives every engineer a fast, identical setup: &lt;strong&gt;Ruby + Bundler + MySQL + Redis&lt;/strong&gt; with one click. No more per‑machine MySQL installs, version drift, or “it works on my laptop.”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Repo paths used below&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/.devcontainer/Dockerfile&lt;/code&gt; – dev-only image&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/docker-compose.dev.yml&lt;/code&gt; – dev stack (app, MySQL, Redis)&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/config/database.yml&lt;/code&gt; – uses env vars (host, port, creds)&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/.env.example&lt;/code&gt; → copied to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; on first boot&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/setup&lt;/code&gt; – idempotent bootstrap (optional but recommended)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;why-containerize-local-development&quot;&gt;Why containerize local development?&lt;/h2&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Benefit&lt;/th&gt;
-      &lt;th&gt;Why it matters&lt;/th&gt;
-      &lt;th&gt;Trade‑off&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Instant onboarding&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;New devs open the repo and everything “just runs.”&lt;/td&gt;
-      &lt;td&gt;Slightly larger first build; Docker Desktop required.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Reproducible environments&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;Everyone shares the same Ruby, MySQL, Redis, OS libs.&lt;/td&gt;
-      &lt;td&gt;You maintain Dockerfiles/Compose.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Isolation&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;No conflicts with system MySQL/Redis or multiple projects.&lt;/td&gt;
-      &lt;td&gt;File I/O can be slower than native (especially on macOS).&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Parity with CI/Prod&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;Same images/services you ship are used in dev.&lt;/td&gt;
-      &lt;td&gt;Can tempt you to over‑optimize images early.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Easy cleanup&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker compose down -v&lt;/code&gt; wipes everything clean.&lt;/td&gt;
-      &lt;td&gt;You must understand volumes vs. containers.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;the-dev-stack&quot;&gt;The dev stack&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-dev-only-dockerfile--devcontainerdockerfile&quot;&gt;1) Dev-only Dockerfile — &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/.devcontainer/Dockerfile&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;This keeps dev gems, installs to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bundle&lt;/code&gt;, and doesn’t assume production secrets.&lt;/p&gt;
-
-&lt;div class=&quot;language-dockerfile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# .devcontainer/Dockerfile&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; ruby:3.4.4-slim&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; LANG=C.UTF-8 LC_ALL=C.UTF-8     BUNDLE_PATH=/usr/local/bundle BUNDLE_JOBS=4 BUNDLE_RETRY=3&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;apt-get update &lt;span class=&quot;nt&quot;&gt;-qq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-install-recommends&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;       ca-certificates curl bash tzdata libjemalloc2 libvips       default-mysql-client libmariadb3 build-essential git libpq-dev       libyaml-dev pkg-config default-libmysqlclient-dev     &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/lib/apt/lists/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /var/cache/apt/archives
-
-&lt;span class=&quot;c&quot;&gt;# Optional jemalloc preload&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/usr/lib/&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;uname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;-linux-gnu/libjemalloc.so.2&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/ld.so.preload &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /workspaces/app&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Install Bundler matching Gemfile.lock if present&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; Gemfile Gemfile.lock ./&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-eux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;BUNDLED WITH&quot;&lt;/span&gt; Gemfile.lock&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then     &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;awk&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;/BUNDLED WITH/{getline; gsub(/^ +/,&quot;&quot;); print}&apos;&lt;/span&gt; Gemfile.lock&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bundler &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$v&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;else     &lt;/span&gt;gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bundler &lt;span class=&quot;nt&quot;&gt;--no-document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   bundle config &lt;span class=&quot;nb&quot;&gt;unset &lt;/span&gt;without &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   bundle config &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;path &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$BUNDLE_PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   bundle &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--jobs&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BUNDLE_JOBS&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--retry&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;BUNDLE_RETRY&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# App code&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; . .&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Helpful default command for dev containers&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; bash -lc &apos;bundle exec rails db:prepare &amp;amp;&amp;amp; bundle exec rails s -b 0.0.0.0 -p 3000&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Why a dev‑only Dockerfile?&lt;/strong&gt;
-Your production Dockerfile often excludes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development/test&lt;/code&gt; gems, precompiles assets, and assumes secrets. The dev image should keep &lt;strong&gt;dev gems&lt;/strong&gt; (e.g., &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;debug&lt;/code&gt;) and run comfortably without prod secrets.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;2-docker-compose-for-dev--docker-composedevyml&quot;&gt;2) Docker Compose for dev — &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/docker-compose.dev.yml&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;It wires up the Rails app, MySQL 8, and Redis 7. It also waits for MySQL to be healthy before starting Rails.&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.dev.yml&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;.&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;dockerfile&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;.devcontainer/Dockerfile&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;.:/workspaces/app:cached&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bundle_cache:/usr/local/bundle&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;development&lt;/span&gt;
-
-      &lt;span class=&quot;c1&quot;&gt;# Match config/database.yml expectations&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_DB_HOST&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_DB_PORT&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3306&quot;&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_DB_USER&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;root&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_DB_PASS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;password&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_NAME&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;wigiwork_development&lt;/span&gt;
-
-      &lt;span class=&quot;na&quot;&gt;REDIS_URL&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis://redis:6379/0&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;APP_VERSION&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;devcontainer&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;RAILS_LOG_TO_STDOUT&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;${RAILS_PORT:-3000}:3000&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;service_healthy&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;redis&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;service_started&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;bash -lc &quot;&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;until mysqladmin ping -hmysql -P3306 -uroot -ppassword &amp;gt;/dev/null 2&amp;gt;&amp;amp;1; do&lt;/span&gt;
-          &lt;span class=&quot;s&quot;&gt;echo &apos;Waiting for MySQL...&apos;; sleep 1;&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;done;&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;bundle exec rails db:prepare &amp;amp;&amp;amp;&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;bundle exec rails s -b 0.0.0.0 -p 3000&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;env_file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;.env&lt;/span&gt;
-
-  &lt;span class=&quot;na&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql:8.4&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;password&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;MYSQL_DATABASE&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;wigiwork_development&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3307:3306&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# host:container for host access&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;healthcheck&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CMD&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;mysqladmin&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ping&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-h&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-uroot&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-ppassword&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5s&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5s&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;retries&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql_data:/var/lib/mysql&lt;/span&gt;
-
-  &lt;span class=&quot;na&quot;&gt;redis&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis:7&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;6380:6379&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis_data:/data&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;bundle_cache&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;mysql_data&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;redis_data&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Note on volumes:&lt;/strong&gt; the named volume &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle_cache&lt;/code&gt; persists Bundler gems across rebuilds. If the Gemfile changes groups (e.g., dev/test) or the cache gets stale, remove it:
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker volume rm $(docker volume ls -q | grep bundle)&lt;/code&gt; and rebuild.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;3-rails-db-config--configdatabaseyml&quot;&gt;3) Rails DB config — &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/config/database.yml&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;Use env vars and default the &lt;strong&gt;host to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql&lt;/code&gt;&lt;/strong&gt; (the Compose service name).&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/database.yml&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;&amp;amp;default&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql2&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;utf8mb4&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;collation&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;utf8mb4_0900_ai_ci&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;pool&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;RAILS_MAX_THREADS&quot;, 5) %&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;MYSQL_DB_USER&quot;, &quot;root&quot;) %&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;MYSQL_DB_PASS&quot;, &quot;password&quot;) %&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;MYSQL_DB_HOST&quot;, &quot;mysql&quot;) %&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;MYSQL_DB_PORT&quot;, &quot;3306&quot;) %&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;variables&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;sql_mode&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;STRICT_ALL_TABLES&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;time_precision&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;development&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*default&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;MYSQL_NAME&quot;, &quot;wigiwork_development&quot;) %&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*default&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;DB_DATABASE&quot;, &quot;wigiwork_test&quot;) %&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;If you run Rails &lt;strong&gt;from the host&lt;/strong&gt; against the containerized DB, use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;127.0.0.1:3307&lt;/code&gt; (not &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql:3306&lt;/code&gt;).
-Example: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DATABASE_URL=mysql2://root:password@127.0.0.1:3307/wigiwork_development&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;commands-youll-actually-use&quot;&gt;Commands you’ll actually use&lt;/h2&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Validate compose (what Dev Containers runs under the hood)&lt;/span&gt;
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml config
-
-&lt;span class=&quot;c&quot;&gt;# Build &amp;amp; start everything in detached mode&lt;/span&gt;
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--build&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Exec into the app container&lt;/span&gt;
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;app bash
-
-&lt;span class=&quot;c&quot;&gt;# Inside the container&lt;/span&gt;
-bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails db:prepare
-rails s &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; 0.0.0.0 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 3000
-
-&lt;span class=&quot;c&quot;&gt;# Start only MySQL (handy for host Rails or GUI tools)&lt;/span&gt;
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; mysql
-
-&lt;span class=&quot;c&quot;&gt;# Stop/start only the app&lt;/span&gt;
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml stop app
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml start app
-
-&lt;span class=&quot;c&quot;&gt;# View status and logs&lt;/span&gt;
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml ps
-docker compose &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; docker-compose.dev.yml logs &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; app
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Detached mode?&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-d&lt;/code&gt; means containers run in the &lt;strong&gt;background&lt;/strong&gt;; your terminal is free and logs aren’t attached. Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;logs -f&lt;/code&gt; to tail when you need.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;lessons-learned-from-real-debugging&quot;&gt;Lessons learned (from real debugging)&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Empty port envs → “invalid proto”&lt;/strong&gt;
-Always default your port mappings, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;${RAILS_PORT:-3000}:3000&quot;&lt;/code&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Environment syntax&lt;/strong&gt;
-In YAML map style use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;KEY: value&lt;/code&gt; (not &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;KEY=value&lt;/code&gt;). This avoided errors like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;could not find expected &apos;:&apos;&lt;/code&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Dev gems must be installed&lt;/strong&gt;
-Excluding &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development/test&lt;/code&gt; caused &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cannot load such file -- debug/prelude&lt;/code&gt;. Keep dev gems in your &lt;strong&gt;dev image&lt;/strong&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Dotenv 2.x vs 3.x API&lt;/strong&gt;
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dotenv.instrumenter=&lt;/code&gt; was removed in 3.x. Either pin &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv-rails&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~&amp;gt; 2.8&lt;/code&gt; or remove the old API usage.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Bundle cache volume can shadow image gems&lt;/strong&gt;
-If gems seem “missing” after a rebuild, delete the bundle volume and rebuild with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--no-cache&lt;/code&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Service discovery&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;Inside containers&lt;/strong&gt;: DB host is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql:3306&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;From host&lt;/strong&gt;: DB is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;127.0.0.1:3307&lt;/code&gt; (published port).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;MySQL readiness&lt;/strong&gt;
-Use healthchecks plus a small wait loop before starting Rails.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;troubleshooting-cookbook&quot;&gt;Troubleshooting cookbook&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;“invalid proto:” in compose&lt;/strong&gt;
-→ A port mapping used an empty env var. Add defaults: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;- &quot;${RAILS_PORT:-3000}:3000&quot;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cannot load such file -- debug/prelude&lt;/code&gt;&lt;/strong&gt;
-→ Dev gems weren’t installed. Don’t set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle config set without &apos;development test&apos;&lt;/code&gt; for dev images.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dotenv NoMethodError: instrumenter=&lt;/code&gt;&lt;/strong&gt;
-→ You’re on dotenv 3.x but using a 2.x method. Pin to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dotenv-rails ~&amp;gt; 2.8&lt;/code&gt; or remove that call.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Could not find … in locally installed gems&lt;/code&gt; after rebuild&lt;/strong&gt;
-→ Your bundle cache volume is stale. Remove it and rebuild:
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker volume rm &amp;lt;bundle_volume&amp;gt;; docker compose build --no-cache app&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Unknown MySQL server host &apos;mysql&apos;&lt;/code&gt; when running Rails on host&lt;/strong&gt;
-→ From the host, use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;127.0.0.1:3307&lt;/code&gt;, not &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql&lt;/code&gt;.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;pros--cons-recap&quot;&gt;Pros &amp;amp; cons recap&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Pros&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;✅ Zero‑setup onboarding; consistent environments&lt;/li&gt;
-  &lt;li&gt;✅ Isolation from host toolchains&lt;/li&gt;
-  &lt;li&gt;✅ CI/prod parity; easier “it fails only in prod” bugs&lt;/li&gt;
-  &lt;li&gt;✅ Fast resets (containers/volumes are disposable)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Cons&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;❌ Slight perf overhead vs native (I/O heavy workloads)&lt;/li&gt;
-  &lt;li&gt;❌ Extra YAML/Dockerfiles to maintain&lt;/li&gt;
-  &lt;li&gt;❌ Requires Docker Desktop &amp;amp; familiarity with containers&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;final-checklist&quot;&gt;Final checklist&lt;/h2&gt;
-
-&lt;ul class=&quot;task-list&quot;&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/.devcontainer/Dockerfile&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/docker-compose.dev.yml&lt;/code&gt;.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/database.yml&lt;/code&gt; defaults to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;host: mysql&lt;/code&gt;, reads envs.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env.example&lt;/code&gt; exists; copied to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.env&lt;/code&gt; on first boot (or via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/setup&lt;/code&gt;).&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;depends_on: condition: service_healthy&lt;/code&gt; for MySQL + wait loop.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle exec&lt;/code&gt; for Rails commands.&lt;/li&gt;
-  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;Optional named volume for gems; remove it if cache causes issues.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Happy shipping — and goodbye to “works on my machine.” 🚀&lt;/p&gt;
-</description>
-        <pubDate>Thu, 04 Sep 2025 09:00:00 +0000</pubDate>
-        <link>http://localhost:4000/blog/containerizing-rails-dev-with-docker</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/containerizing-rails-dev-with-docker</guid>
-        
-        <category>docker</category>
-        
-        <category>devcontainers</category>
-        
-        <category>rails</category>
-        
-        <category>mysql</category>
-        
-        <category>redis</category>
-        
-        <category>dotenv</category>
-        
-        <category>bundler</category>
-        
-        
-        <category>rails</category>
-        
-        <category>docker</category>
-        
-        <category>devcontainers</category>
         
       </item>
     
