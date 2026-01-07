@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict) | Software Engineering consultant</title>
+  
+  <meta name="theme-color" content="#006cac">
+
+  <link rel="canonical" href="http://localhost:4000/blog/from-zero-gap-to-zero-drift">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+
+  <meta name="description"
+    content="  TL;DR      Contract-first + verification gates eliminate gaps (missing fields, regressions). fileciteturn2file0    But LLMs still create rule drift (the...">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict) | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict)" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A practical upgrade to the Zero-Gap framework: how we reduced AI rule drift using a single entry-point prompt, Hard-Fail rules, evidence-based audits, negative examples, and bin/verify—with Frozen and Strict modes." />
+<meta property="og:description" content="A practical upgrade to the Zero-Gap framework: how we reduced AI rule drift using a single entry-point prompt, Hard-Fail rules, evidence-based audits, negative examples, and bin/verify—with Frozen and Strict modes." />
+<link rel="canonical" href="http://localhost:4000/blog/from-zero-gap-to-zero-drift" />
+<meta property="og:url" content="http://localhost:4000/blog/from-zero-gap-to-zero-drift" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-01-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2026-01-07T00:00:00+00:00","datePublished":"2026-01-07T00:00:00+00:00","description":"A practical upgrade to the Zero-Gap framework: how we reduced AI rule drift using a single entry-point prompt, Hard-Fail rules, evidence-based audits, negative examples, and bin/verify—with Frozen and Strict modes.","headline":"From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict)","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/from-zero-gap-to-zero-drift"},"url":"http://localhost:4000/blog/from-zero-gap-to-zero-drift"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
+    <main>
+      <!-- Reading progress bar -->
+<div class="reading-progress" id="reading-progress"></div>
+
+<article class="post-article">
+  <!-- Back navigation -->
+  <a href="/blog" class="back-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 12h10"/>
+    </svg>
+    <span>Blog</span>
+  </a>
+
+  <!-- Post header -->
+  <header class="post-header">
+    <h1 class="post-title">From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict)</h1>
+    <div class="post-meta">
+      <time datetime="2026-01-07T00:00:00+00:00">Jan 7, 2026</time>
+      
+      
+      
+      <span>· 5 min read</span>
+      
+        <span>· Max Lukin</span>
+      
+      
+        <span class="post-tags"><a href="/search?q=ai" class="tag">ai</a><a href="/search?q=software-engineering" class="tag">software-engineering</a><a href="/search?q=rails" class="tag">rails</a><a href="/search?q=api" class="tag">api</a><a href="/search?q=governance" class="tag">governance</a><a href="/search?q=prompts" class="tag">prompts</a><a href="/search?q=verification" class="tag">verification</a><a href="/search?q=contracts" class="tag">contracts</a></span>
+      
+    </div>
+  </header>
+
+  <div class="post-body">
+    <!-- Table of Contents (generated by JS for posts with 4+ headings) -->
+    <aside class="toc-sidebar" id="toc-sidebar">
+      <nav class="toc" id="toc">
+        <div class="toc-title">Contents</div>
+        <ul class="toc-list" id="toc-list"></ul>
+      </nav>
+    </aside>
+
+    <!-- Post content -->
+    <div class="prose post-content" id="post-content">
+      <blockquote>
+  <p><strong>TL;DR</strong></p>
+
+  <ul>
+    <li>Contract-first + verification gates eliminate <em>gaps</em> (missing fields, regressions). fileciteturn2file0</li>
+    <li>But LLMs still create <strong>rule drift</strong> (they quote rules, then violate them).</li>
+    <li>We fixed drift with <strong>guardrails</strong>, not more prose: <strong>Hard-Fail rule IDs</strong>, <strong>STOP gates</strong>, <strong>mandatory evidence audits</strong>, and <strong>negative examples</strong>.</li>
+    <li>Entry point stays tiny and stable; the enforcement lives in versioned docs.</li>
+    <li>We keep two profiles: <strong>Frozen (v1.0)</strong> for speed, <strong>Strict (v1.1)</strong> for enforcement.</li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<h2 id="why-this-follow-up-exists">Why this follow-up exists</h2>
+
+<p>In <strong>Zero-Gap API Development</strong>, the goal was “ship APIs with zero regressions” by turning implementation into a contract + verification problem: TypeScript interfaces as canonical truth, safe defaults, systematic verification gates, and discrepancy classification (<code class="language-plaintext highlighter-rouge">[IMPL]</code> vs <code class="language-plaintext highlighter-rouge">[DOC]</code>). fileciteturn2file0</p>
+
+<p>That framework works. The problem we hit next was different:</p>
+
+<blockquote>
+  <p><strong>AI doesn’t drift because rules are unclear. It drifts because rules have no consequences.</strong></p>
+</blockquote>
+
+<p>Even when an agent reads <code class="language-plaintext highlighter-rouge">AGENTS.md</code> and repeats rules back, it can still “helpfully” shortcut:</p>
+<ul>
+  <li>“Use Ransack for filtering/searching.” → agent writes custom <code class="language-plaintext highlighter-rouge">where(...)</code> anyway.</li>
+  <li>“Avoid DB-specific SQL.” → agent sneaks in <code class="language-plaintext highlighter-rouge">ILIKE</code>, <code class="language-plaintext highlighter-rouge">IFNULL</code>, <code class="language-plaintext highlighter-rouge">REGEXP</code>, etc.</li>
+  <li>“Controllers only wrap envelopes.” → agent hand-builds JSON in controller.</li>
+</ul>
+
+<p>So this session was about adding an enforcement layer on top of Zero-Gap.</p>
+
+<hr />
+
+<h2 id="the-goal-of-this-session">The goal of this session</h2>
+
+<p>We wanted a system where a reviewer can say:</p>
+
+<blockquote>
+  <p>“This violates <strong>two rules</strong>: HF-1 and HF-2”</p>
+</blockquote>
+
+<p>…<strong>and the agent itself is forced to detect and correct that before shipping code.</strong></p>
+
+<p>To do that, we restructured the workflow into a toolchain:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">PROMPT.md</code> → execution runtime (phases, STOP gates, verification receipts)</li>
+  <li><code class="language-plaintext highlighter-rouge">AGENTS.md</code> → <strong>hard authority</strong> (Hard-Fail rules, failure semantics)</li>
+  <li><code class="language-plaintext highlighter-rouge">GUIDE.md</code> → patterns &amp; examples (non-authority, includes anti-patterns)</li>
+  <li><code class="language-plaintext highlighter-rouge">bin/verify</code> → canonical verifier</li>
+</ul>
+
+<hr />
+
+<h2 id="the-single-entry-point-stable-forever">The single entry point (stable forever)</h2>
+
+<p>Instead of embedding giant prompts in README/issues, every task uses the same tiny entry point:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Task: WEB-485 – User Notifications
+
+Refs:
+- Requirements: doc/requirements/users/USER_NOTIFICATIONS.md
+- Flow: doc/flow/WEB-485_user_notifications.md
+- PRD: doc/prd/WEB-485_user_notifications_PRD.md
+
+Execute per PROMPT.md.
+</code></pre></div></div>
+
+<p><strong>Important property:</strong> the task block never changes.<br />
+Strictness evolves only inside <code class="language-plaintext highlighter-rouge">PROMPT.md</code>, <code class="language-plaintext highlighter-rouge">AGENTS.md</code>, and <code class="language-plaintext highlighter-rouge">GUIDE.md</code>.</p>
+
+<p>This prevents the most common drift source: copying outdated prompt blobs across tickets.</p>
+
+<hr />
+
+<h2 id="frozen-vs-strict-why-we-keep-both">Frozen vs Strict: why we keep both</h2>
+
+<p>We ended up with two prompt profiles:</p>
+
+<h3 id="frozen-v10">Frozen (v1.0)</h3>
+<ul>
+  <li>Optimized for: <strong>brevity</strong>, human readability, speed</li>
+  <li>Best for: trusted contributors, small refactors, quick spikes</li>
+  <li>Weakness: rules are descriptive (“MUST”), so AI can rationalize shortcuts</li>
+</ul>
+
+<h3 id="strict-v11">Strict (v1.1)</h3>
+<ul>
+  <li>Optimized for: <strong>compliance</strong>, auditability, “no surprises” AI execution</li>
+  <li>Best for: contract-sensitive endpoints, anything touching search/filtering/auth/pagination</li>
+  <li>Weakness: longer text (but it’s enforcement scaffolding, not noise)</li>
+</ul>
+
+<p>The key is: <strong>both share the same entry point.</strong> You swap the runtime, not the call site.</p>
+
+<hr />
+
+<h2 id="what-actually-stops-drift-the-4-mechanisms">What actually stops drift (the 4 mechanisms)</h2>
+
+<h3 id="1-hard-fail-rule-ids-hf-">1) Hard-Fail rule IDs (HF-*)</h3>
+<p>Instead of “Rule #5,” we introduced stable IDs:</p>
+
+<ul>
+  <li><strong>HF-1</strong> — Ransack-only search/filtering</li>
+  <li><strong>HF-2</strong> — DB-agnostic queries only (no raw SQL / DB-specific funcs)</li>
+  <li><strong>HF-3</strong> — Blueprinter-only JSON</li>
+  <li><strong>HF-4</strong> — snake_case only</li>
+  <li><strong>HF-5</strong> — Required fields never null (safe defaults)</li>
+</ul>
+
+<p><strong>Why IDs matter:</strong> they turn “standards” into enforceable references:</p>
+<ul>
+  <li>easy review comments (“HF-2 violation”)</li>
+  <li>easy self-audit checkboxes</li>
+  <li>easy future evolution (rename content, keep ID stable)</li>
+</ul>
+
+<h3 id="2-stop-gates-control-flow-not-suggestions">2) STOP gates (control flow, not suggestions)</h3>
+<p>Strict mode adds explicit control flow:</p>
+<ul>
+  <li>Phase 0–2: <strong>NO CODE</strong></li>
+  <li>Stop after planning</li>
+  <li>If any HF-* would be violated → <strong>STOP</strong> and report</li>
+</ul>
+
+<p>LLMs follow control flow better than prose.</p>
+
+<h3 id="3-mandatory-rule-compliance-audit-proof-not-vibes">3) Mandatory Rule Compliance Audit (proof, not vibes)</h3>
+<p>Before final output, the agent must produce:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RULE COMPLIANCE AUDIT
+HF-1: COMPLIANT — evidence: UsersController#index uses User.ransack(params[:q])
+HF-2: COMPLIANT — evidence: no raw SQL; only ActiveRecord/Arel
+...
+</code></pre></div></div>
+
+<p>This forces the agent to <em>prove</em> it complied.
+If it can’t produce evidence, it typically self-corrects before shipping.</p>
+
+<h3 id="4-negative-examples-anti-pattern-firewall">4) Negative examples (anti-pattern firewall)</h3>
+<p>Guides that only show “good” patterns still allow AI to invent “bad” ones.
+So we added explicit “DO NOT COPY” snippets:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># ❌ HF-1 violation (manual SQL filtering)</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"email ILIKE ?"</span><span class="p">,</span> <span class="s2">"%</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">]</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+
+<span class="c1"># ✅ Correct (Ransack owns filtering)</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">ransack</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:q</span><span class="p">]).</span><span class="nf">result</span>
+</code></pre></div></div>
+
+<p>LLMs imitate examples aggressively. Negative examples prevent “helpful improvisation.”</p>
+
+<hr />
+
+<h2 id="example-the-exact-drift-were-preventing">Example: the exact drift we’re preventing</h2>
+
+<h3 id="bad-hf-1--hf-2-violation">Bad (HF-1 + HF-2 violation)</h3>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># ❌ don't do this</span>
+<span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="s2">"email ILIKE ?"</span><span class="p">,</span> <span class="s2">"%</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">]</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="good-hf-1-compliant">Good (HF-1 compliant)</h3>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">search</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">ransack</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:q</span><span class="p">])</span>
+<span class="n">users</span>  <span class="o">=</span> <span class="n">search</span><span class="p">.</span><span class="nf">result</span><span class="p">.</span><span class="nf">page</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:page</span><span class="p">]).</span><span class="nf">per</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:per_page</span><span class="p">]</span> <span class="o">||</span> <span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In strict mode, if an agent proposes the bad version, it must output:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❌ RULE VIOLATION
+Rule: HF-1
+Location: app/controllers/...:12
+Reason: manual filtering used instead of Ransack
+Required Fix: replace with Model.ransack(params[:q]).result
+</code></pre></div></div>
+
+<p>No debate. Fix it or stop.</p>
+
+<hr />
+
+<h2 id="verification-one-command-one-receipt">Verification: one command, one receipt</h2>
+
+<p>Zero-Gap already required verification gates. fileciteturn2file0<br />
+The strict upgrade makes verification harder to “forget” by standardizing:</p>
+
+<ul>
+  <li>Preferred: <code class="language-plaintext highlighter-rouge">bin/verify</code></li>
+  <li>Legacy commands remain in docs as commented fallback</li>
+</ul>
+
+<p>And the final output requires a <strong>CHECKS</strong> section with exit codes.</p>
+
+<p>That turns “I think I ran tests” into a receipt.</p>
+
+<hr />
+
+<h2 id="operational-guidance-when-to-use-which-mode">Operational guidance: when to use which mode</h2>
+
+<p>Use <strong>Frozen (v1.0)</strong> when:</p>
+<ul>
+  <li>small refactor</li>
+  <li>low contract risk</li>
+  <li>you want short prompts and fast iteration</li>
+</ul>
+
+<p>Use <strong>Strict (v1.1)</strong> when:</p>
+<ul>
+  <li>building/upgrading endpoints</li>
+  <li>touching filtering/search/pagination/auth</li>
+  <li>upgrading versioned requirement docs</li>
+  <li>AI is doing most of the work</li>
+</ul>
+
+<p>If in doubt: default to <strong>Strict</strong>.</p>
+
+<hr />
+
+<h2 id="closing-zero-gap-is-the-architecture-zero-drift-is-governance">Closing: Zero-Gap is the architecture; Zero-Drift is governance</h2>
+
+<p>Zero-Gap prevents missing fields and regressions by making contracts and verification non-negotiable. fileciteturn2file0<br />
+Zero-Drift makes AI reliably follow your engineering rules by adding:</p>
+
+<ul>
+  <li>failure semantics</li>
+  <li>proof requirements</li>
+  <li>anti-pattern training</li>
+  <li>a stable entry point</li>
+  <li>a canonical verifier</li>
+</ul>
+
+<p>In practice, this reduces review churn dramatically:
+you spend less time catching “obvious violations” and more time on product decisions.</p>
+
+<hr />
+
+<h3 id="appendix-quick-mental-model">Appendix: quick mental model</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">REQUIREMENT_DOC</code> = spec</li>
+  <li><code class="language-plaintext highlighter-rouge">PROMPT.md</code> = runtime</li>
+  <li><code class="language-plaintext highlighter-rouge">AGENTS.md</code> = language law + compiler errors (HF-*)</li>
+  <li><code class="language-plaintext highlighter-rouge">GUIDE.md</code> = standard library + examples</li>
+  <li><code class="language-plaintext highlighter-rouge">bin/verify</code> = test runner</li>
+</ul>
+
+    </div>
+  </div>
+
+  <!-- Post navigation (Previous/Next) -->
+  
+  
+    
+      
+      
+      
+      
+      
+
+  <nav class="post-navigation">
+    
+      <a href="/blog/how-to-start-agentic-development" class="post-nav-link post-nav-prev">
+        <span class="post-nav-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Older
+        </span>
+        <span class="post-nav-title">How to Start with Agentic Development: What to...</span>
+      </a>
+    
+    
+      <span class="post-nav-spacer"></span>
+    
+  </nav>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/>
+      <polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
+</article>
+
+<script>
+  // Show/hide back-to-top button based on scroll position
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+
+  // Reading progress bar
+  const progressBar = document.getElementById('reading-progress');
+  const article = document.querySelector('.post-article');
+
+  window.addEventListener('scroll', function() {
+    const articleTop = article.offsetTop;
+    const articleHeight = article.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scrolled = window.scrollY - articleTop + windowHeight * 0.3;
+    const progress = Math.min(Math.max(scrolled / articleHeight * 100, 0), 100);
+    progressBar.style.width = progress + '%';
+  });
+
+  // Generate Table of Contents
+  const postContent = document.getElementById('post-content');
+  const tocList = document.getElementById('toc-list');
+  const tocSidebar = document.getElementById('toc-sidebar');
+  const headings = postContent.querySelectorAll('h2, h3');
+
+  if (headings.length >= 4) {
+    tocSidebar.classList.add('visible');
+
+    headings.forEach((heading, index) => {
+      // Add ID to heading if not present
+      if (!heading.id) {
+        heading.id = 'heading-' + index;
+      }
+
+      const li = document.createElement('li');
+      li.className = 'toc-item toc-' + heading.tagName.toLowerCase();
+
+      const a = document.createElement('a');
+      a.href = '#' + heading.id;
+      a.textContent = heading.textContent;
+      a.className = 'toc-link';
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Highlight current section in TOC
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    const observerOptions = {
+      rootMargin: '-80px 0px -70% 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.toc-link[href="#' + entry.target.id + '"]');
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    headings.forEach(heading => observer.observe(heading));
+  }
+
+  // Add copy buttons and language labels to code blocks
+  document.querySelectorAll('.highlight, pre').forEach(element => {
+    // Skip if already wrapped or if this is a pre inside a highlight we'll process
+    if (element.closest('.code-block-wrapper')) return;
+    if (element.tagName === 'PRE' && element.closest('.highlight')) return;
+
+    // Determine what to wrap: the .highlight div or standalone pre
+    const highlightDiv = element.classList.contains('highlight') ? element : null;
+    const pre = highlightDiv ? highlightDiv.querySelector('pre') : element;
+    if (!pre) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+
+    // Wrap the highlight div if exists, otherwise wrap pre
+    const toWrap = highlightDiv || pre;
+    toWrap.parentNode.insertBefore(wrapper, toWrap);
+    wrapper.appendChild(toWrap);
+
+    // Detect language from class
+    const code = pre.querySelector('code');
+    let language = '';
+
+    // Method 1: Check code element class
+    if (code && code.className) {
+      const match = code.className.match(/language-(\w+)/);
+      if (match) language = match[1];
+    }
+
+    // Method 2: Check highlight div class (Rouge uses class like "highlight ruby")
+    if (!language && highlightDiv) {
+      const classes = highlightDiv.className.split(' ');
+      for (const cls of classes) {
+        if (cls !== 'highlight' && cls.length > 0 && !cls.startsWith('code')) {
+          language = cls;
+          break;
+        }
+      }
+    }
+
+    // Method 3: Try to detect from code patterns
+    if (!language) {
+      const text = pre.textContent.trim();
+      if (text.startsWith('#') && !text.startsWith('#!/')) {
+        const firstLine = text.split('\n')[0];
+        if (firstLine.match(/\.rb$/)) language = 'ruby';
+        else if (firstLine.match(/\.py$/)) language = 'python';
+        else if (firstLine.match(/\.yml$|\.yaml$/)) language = 'yaml';
+      } else if (text.startsWith('//')) {
+        language = 'javascript';
+      } else if (text.match(/^(RSpec|describe|it|context|let)\b/)) {
+        language = 'ruby';
+      } else if (text.match(/^(def |class |module |require )/)) {
+        language = 'ruby';
+      }
+    }
+
+    // Create header with language and copy button
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+
+    if (language) {
+      const langLabel = document.createElement('span');
+      langLabel.className = 'code-lang';
+      langLabel.textContent = language;
+      header.appendChild(langLabel);
+    }
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'code-copy-btn';
+    copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>';
+    copyBtn.onclick = async function() {
+      const text = pre.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Copied!</span>';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    };
+    header.appendChild(copyBtn);
+
+    // Insert header at the start of wrapper (before the highlight/pre)
+    wrapper.insertBefore(header, wrapper.firstChild);
+  });
+</script>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+    </footer>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
+</html>

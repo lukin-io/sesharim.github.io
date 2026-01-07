@@ -5,355 +5,286 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 05 Jan 2026 08:21:39 +0000</pubDate>
-    <lastBuildDate>Mon, 05 Jan 2026 08:21:39 +0000</lastBuildDate>
+    <pubDate>Wed, 07 Jan 2026 11:42:23 +0000</pubDate>
+    <lastBuildDate>Wed, 07 Jan 2026 11:42:23 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
-        <title>Negotiating Discretionary Bonus Agreements: A Contract-First Playbook for Engineering Leaders</title>
+        <title>From Zero-Gap to Zero-Drift: Making AI Follow Rails Rules (Frozen vs Strict)</title>
         <description>&lt;blockquote&gt;
-  &lt;p&gt;&lt;em&gt;Ambiguity is a defect. In code, we fix it. In compensation agreements, we should fix it too.&lt;/em&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;&lt;/p&gt;
 
-  &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; I’m not a lawyer and this is not legal advice. Always get qualified counsel for your jurisdiction.&lt;br /&gt;
-&lt;strong&gt;Privacy note:&lt;/strong&gt; This post is intentionally anonymized (no company names, no personal names, no identifying numbers).&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Contract-first + verification gates eliminate &lt;em&gt;gaps&lt;/em&gt; (missing fields, regressions). fileciteturn2file0&lt;/li&gt;
+    &lt;li&gt;But LLMs still create &lt;strong&gt;rule drift&lt;/strong&gt; (they quote rules, then violate them).&lt;/li&gt;
+    &lt;li&gt;We fixed drift with &lt;strong&gt;guardrails&lt;/strong&gt;, not more prose: &lt;strong&gt;Hard-Fail rule IDs&lt;/strong&gt;, &lt;strong&gt;STOP gates&lt;/strong&gt;, &lt;strong&gt;mandatory evidence audits&lt;/strong&gt;, and &lt;strong&gt;negative examples&lt;/strong&gt;.&lt;/li&gt;
+    &lt;li&gt;Entry point stays tiny and stable; the enforcement lives in versioned docs.&lt;/li&gt;
+    &lt;li&gt;We keep two profiles: &lt;strong&gt;Frozen (v1.0)&lt;/strong&gt; for speed, &lt;strong&gt;Strict (v1.1)&lt;/strong&gt; for enforcement.&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
-
-&lt;p&gt;If a “bonus” is &lt;strong&gt;discretionary&lt;/strong&gt; &lt;em&gt;and&lt;/em&gt; gated by language like &lt;strong&gt;“satisfactory performance, as solely determined by the Company”&lt;/strong&gt;, you should treat it as &lt;strong&gt;optional&lt;/strong&gt;—even if everyone has good intentions.&lt;/p&gt;
-
-&lt;p&gt;The goal isn’t to “win” a fight. The goal is to remove &lt;strong&gt;unbounded discretion&lt;/strong&gt; and align incentives with reality.&lt;/p&gt;
-
-&lt;p&gt;What works:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Treat the agreement like an engineering spec: define terms, acceptance criteria, and failure modes.&lt;/li&gt;
-  &lt;li&gt;Separate &lt;strong&gt;your performance&lt;/strong&gt; from &lt;strong&gt;external outcomes&lt;/strong&gt; (fundraising, market conditions).&lt;/li&gt;
-  &lt;li&gt;Replace subjective clauses with &lt;strong&gt;objective triggers&lt;/strong&gt; (KPIs/OKRs + “good faith” standards).&lt;/li&gt;
-  &lt;li&gt;If legal edits take time, offer a pragmatic near-term path (base comp + work structure) without calling it a “fallback”.&lt;/li&gt;
-&lt;/ul&gt;
-
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;1-why-discretionary-bonus-agreements-break&quot;&gt;1) Why discretionary bonus agreements break&lt;/h2&gt;
+&lt;h2 id=&quot;why-this-follow-up-exists&quot;&gt;Why this follow-up exists&lt;/h2&gt;
 
-&lt;p&gt;Discretionary bonus agreements are common in startups because they preserve flexibility. That’s fine—until the agreement is written in a way that makes payment &lt;strong&gt;non-obligatory in practice&lt;/strong&gt;, even when the business outcome happens.&lt;/p&gt;
+&lt;p&gt;In &lt;strong&gt;Zero-Gap API Development&lt;/strong&gt;, the goal was “ship APIs with zero regressions” by turning implementation into a contract + verification problem: TypeScript interfaces as canonical truth, safe defaults, systematic verification gates, and discrepancy classification (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[IMPL]&lt;/code&gt; vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[DOC]&lt;/code&gt;). fileciteturn2file0&lt;/p&gt;
 
-&lt;h3 id=&quot;the-stacking-veto-pattern-the-real-problem&quot;&gt;The stacking-veto pattern (the real problem)&lt;/h3&gt;
-
-&lt;p&gt;The most dangerous structure is not one clause—it’s a &lt;strong&gt;stack&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;funding event must close&lt;/li&gt;
-  &lt;li&gt;a certain threshold must be met (sometimes undefined)&lt;/li&gt;
-  &lt;li&gt;you must be employed through the payment date&lt;/li&gt;
-  &lt;li&gt;“satisfactory performance” (undefined)&lt;/li&gt;
-  &lt;li&gt;“good standing” (undefined)&lt;/li&gt;
-  &lt;li&gt;no “bad leaver” conditions (often broad)&lt;/li&gt;
-  &lt;li&gt;written approval by one person&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Any single veto = &lt;strong&gt;$0&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;If your agreement looks like this, it’s not a performance incentive. It’s a &lt;strong&gt;permission slip&lt;/strong&gt; the company can revoke.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;2-red-flags-to-look-for-before-you-sign&quot;&gt;2) Red flags to look for before you sign&lt;/h2&gt;
-
-&lt;p&gt;Here are clause patterns that deserve a second read (or a redline). Each may be acceptable in isolation; the risk is when it’s &lt;strong&gt;unbounded&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Pattern (anonymized)&lt;/th&gt;
-      &lt;th&gt;What it effectively does&lt;/th&gt;
-      &lt;th&gt;Why it’s risky&lt;/th&gt;
-      &lt;th&gt;Minimal improvement to ask for&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;“Bonus is discretionary / not earned”&lt;/td&gt;
-      &lt;td&gt;Company can treat it as optional&lt;/td&gt;
-      &lt;td&gt;You can do everything right and still get $0&lt;/td&gt;
-      &lt;td&gt;Tie payout to objective triggers + good-faith standard&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;“Satisfactory performance, as solely determined by Company”&lt;/td&gt;
-      &lt;td&gt;Subjective performance gate&lt;/td&gt;
-      &lt;td&gt;Becomes a post-hoc excuse&lt;/td&gt;
-      &lt;td&gt;KPIs/OKRs + “assessed in good faith”&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;“CEO approval required”&lt;/td&gt;
-      &lt;td&gt;One-person veto&lt;/td&gt;
-      &lt;td&gt;No process, no accountability&lt;/td&gt;
-      &lt;td&gt;“Not unreasonably withheld” / “in good faith”&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;“Must be employed through payment date”&lt;/td&gt;
-      &lt;td&gt;Timing-based forfeiture&lt;/td&gt;
-      &lt;td&gt;Payment delay becomes leverage&lt;/td&gt;
-      &lt;td&gt;Payment window or remove forfeiture-by-delay&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;“Bad leaver / harms interests” (vague)&lt;/td&gt;
-      &lt;td&gt;Broad forfeiture trigger&lt;/td&gt;
-      &lt;td&gt;Can be applied retroactively&lt;/td&gt;
-      &lt;td&gt;Limit to material misconduct / willful breach&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Tiers tied to funding size without definitions&lt;/td&gt;
-      &lt;td&gt;Ambiguous measurement&lt;/td&gt;
-      &lt;td&gt;Easy to engineer “misses”&lt;/td&gt;
-      &lt;td&gt;Define how size is calculated and evidenced&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;3-the-single-best-sentence-to-include&quot;&gt;3) The single best sentence to include&lt;/h2&gt;
-
-&lt;p&gt;This one sentence prevents a very common trap:&lt;/p&gt;
+&lt;p&gt;That framework works. The problem we hit next was different:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;“I want to explicitly separate individual performance from fundraising outcomes, which are ultimately driven by market conditions and investor decisions rather than execution alone.”&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;AI doesn’t drift because rules are unclear. It drifts because rules have no consequences.&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;It’s calm, factual, and it blocks “fundraising result = your performance” narratives later.&lt;/p&gt;
+&lt;p&gt;Even when an agent reads &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt; and repeats rules back, it can still “helpfully” shortcut:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“Use Ransack for filtering/searching.” → agent writes custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;where(...)&lt;/code&gt; anyway.&lt;/li&gt;
+  &lt;li&gt;“Avoid DB-specific SQL.” → agent sneaks in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ILIKE&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;IFNULL&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REGEXP&lt;/code&gt;, etc.&lt;/li&gt;
+  &lt;li&gt;“Controllers only wrap envelopes.” → agent hand-builds JSON in controller.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So this session was about adding an enforcement layer on top of Zero-Gap.&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;4-contract-first-negotiation-engineer-mindset&quot;&gt;4) Contract-first negotiation (engineer mindset)&lt;/h2&gt;
+&lt;h2 id=&quot;the-goal-of-this-session&quot;&gt;The goal of this session&lt;/h2&gt;
 
-&lt;p&gt;Think of the agreement like an API:&lt;/p&gt;
+&lt;p&gt;We wanted a system where a reviewer can say:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“This violates &lt;strong&gt;two rules&lt;/strong&gt;: HF-1 and HF-2”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;…&lt;strong&gt;and the agent itself is forced to detect and correct that before shipping code.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;To do that, we restructured the workflow into a toolchain:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Undefined terms&lt;/strong&gt; are undefined behavior.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;One-person discretion&lt;/strong&gt; is a non-deterministic dependency.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Stacked vetoes&lt;/strong&gt; are failure points.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Your goal isn’t to remove discretion. It’s to remove &lt;strong&gt;unbounded discretion&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;convert-fuzzy-language-into-verifiable-terms&quot;&gt;Convert fuzzy language into verifiable terms&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Problem language&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;“satisfactory performance”&lt;/li&gt;
-  &lt;li&gt;“good standing”&lt;/li&gt;
-  &lt;li&gt;“as solely determined”&lt;/li&gt;
-  &lt;li&gt;“harms the Company’s interests”&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Better language&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;“assessed in good faith”&lt;/li&gt;
-  &lt;li&gt;“based on mutually agreed objectives (KPIs/OKRs) documented in writing”&lt;/li&gt;
-  &lt;li&gt;“approval not unreasonably withheld if conditions are met”&lt;/li&gt;
-  &lt;li&gt;“bad leaver limited to fraud, willful misconduct, or material intentional breach”&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PROMPT.md&lt;/code&gt; → execution runtime (phases, STOP gates, verification receipts)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt; → &lt;strong&gt;hard authority&lt;/strong&gt; (Hard-Fail rules, failure semantics)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GUIDE.md&lt;/code&gt; → patterns &amp;amp; examples (non-authority, includes anti-patterns)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; → canonical verifier&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;5-what-to-ask-for-minimal-redlines-that-are-actually-reasonable&quot;&gt;5) What to ask for (minimal redlines that are actually reasonable)&lt;/h2&gt;
+&lt;h2 id=&quot;the-single-entry-point-stable-forever&quot;&gt;The single entry point (stable forever)&lt;/h2&gt;
 
-&lt;p&gt;These are common “middle-ground” edits that don’t remove company control—they just add boundaries.&lt;/p&gt;
+&lt;p&gt;Instead of embedding giant prompts in README/issues, every task uses the same tiny entry point:&lt;/p&gt;
 
-&lt;h3 id=&quot;replace-unilateral-performance-wording&quot;&gt;Replace unilateral performance wording&lt;/h3&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Task: WEB-485 – User Notifications
 
-&lt;p&gt;&lt;strong&gt;Replace&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;“satisfactory performance, as solely determined by the Company”&lt;/li&gt;
-&lt;/ul&gt;
+Refs:
+- Requirements: doc/requirements/users/USER_NOTIFICATIONS.md
+- Flow: doc/flow/WEB-485_user_notifications.md
+- PRD: doc/prd/WEB-485_user_notifications_PRD.md
 
-&lt;p&gt;&lt;strong&gt;With&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;“satisfactory performance, &lt;strong&gt;assessed in good faith based on mutually agreed objectives (KPIs/OKRs) documented in writing&lt;/strong&gt;”&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;add-a-good-faith-approval-standard&quot;&gt;Add a good-faith approval standard&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Add&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;“CEO approval &lt;strong&gt;shall not be unreasonably withheld&lt;/strong&gt; where the applicable conditions are met.”&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;narrow-bad-leaver&quot;&gt;Narrow “Bad Leaver”&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Add&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;“Bad Leaver applies only in cases of &lt;strong&gt;fraud, willful misconduct, or material intentional breach&lt;/strong&gt;.”&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;6-if-legal-edits-take-time-offer-a-pragmatic-near-term-path-without-fallback-language&quot;&gt;6) If legal edits take time: offer a pragmatic near-term path (without “fallback” language)&lt;/h2&gt;
-
-&lt;p&gt;In practice, companies often resist rewriting legal language quickly.&lt;/p&gt;
-
-&lt;p&gt;If you need sustainability &lt;strong&gt;now&lt;/strong&gt;, give leadership an “execution health” option that is:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;cheaper than a large bonus&lt;/li&gt;
-  &lt;li&gt;simple to approve&lt;/li&gt;
-  &lt;li&gt;immediate impact&lt;/li&gt;
-  &lt;li&gt;framed as operational, not emotional&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Examples:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;a base compensation adjustment to restore balance&lt;/li&gt;
-  &lt;li&gt;remote weekend support / reduced commute overhead&lt;/li&gt;
-  &lt;li&gt;clearer workload distribution expectations&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Avoid calling it a “fallback”. Call it a pragmatic near-term solution while longer-term alignment is addressed.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;7-a-ready-to-send-email-template-fully-anonymized&quot;&gt;7) A ready-to-send email template (fully anonymized)&lt;/h2&gt;
-
-&lt;p&gt;Below is a “hardcore, contract-first” template you can adapt. Replace placeholders like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Base]&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Prior]&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Funding]&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Hi [Name],
-
-Thank you for sharing the Executive Bonus Agreement.
-
-I’m aligned with the intent, and I understand that fundraising outcomes depend on investors and market conditions, so I’m not expecting guarantees beyond what’s realistic for a startup.
-
-Before signing, I’d like to clarify several points to ensure expectations are objective and aligned upfront. The documents were reviewed with counsel, and the same items were flagged as important to address directly in the agreement.
-
-&lt;span class=&quot;gu&quot;&gt;## Context (why clarity matters)&lt;/span&gt;
-
-Over the past [X] months, I’ve made a substantial commitment to the company and accepted a meaningful compensation trade-off:
-&lt;span class=&quot;p&quot;&gt;
--&lt;/span&gt; Joined at &lt;span class=&quot;gs&quot;&gt;**[Base]**&lt;/span&gt;, after previously earning &lt;span class=&quot;gs&quot;&gt;**[Prior]**&lt;/span&gt; (including bonuses).
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Sustained workload including nights/weekends to keep delivery unblocked across multiple teams.
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Material opportunity cost and reduced total compensation over an extended period.
-
-Given the sustained base-compensation reduction, the bonus functions as a component of total compensation rather than a discretionary perk, which is why clarity here is particularly important.
-
-&lt;span class=&quot;gu&quot;&gt;## Points requiring clarification&lt;/span&gt;
-
-1) &lt;span class=&quot;gs&quot;&gt;**Funding target and valuation basis**&lt;/span&gt;  
-The tiers are anchored to a high funding threshold, but the agreement does not clarify how feasibility is determined.  
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Is this benchmark based on third-party/independent valuation, investor guidance, or formal fundraising analysis?  
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Or is it based solely on internal judgment?
-
-Without an objective basis, it is possible for the market-supported outcome to fall into lower tiers or zero.
-
-I want to explicitly separate individual performance from fundraising outcomes, which are ultimately driven by market conditions and investor decisions rather than execution alone.
-
-2) &lt;span class=&quot;gs&quot;&gt;**“Satisfactory performance, as solely determined by the Company”**&lt;/span&gt;  
-In a bonus agreement tied to a material amount, this formulation is problematic. As written, performance is not measured against KPIs/OKRs and depends on a unilateral determination.
-
-Assessment based on mutually agreed objectives or good-faith evaluation would be more consistent with executive-level incentives.
-
-3) &lt;span class=&quot;gs&quot;&gt;**Bad Leaver / “harms the Company’s interests”**&lt;/span&gt;  
-I’d like to clarify how Bad Leaver is interpreted in situations driven by organizational or staffing decisions. If burnout or performance degradation results primarily from structural decisions, it would be concerning if such outcomes could be treated as unsatisfactory performance or “harm,” triggering forfeiture.
-
-&lt;span class=&quot;gu&quot;&gt;## Closing — pragmatic options for alignment&lt;/span&gt;
-
-What I’m asking for is not guarantees, but clear, objective, and balanced terms consistent with executive-level incentives.
-
-For me, alignment means that outcomes driven by market or organizational constraints are not later reinterpreted as individual performance failures.
-
-For me to proceed, these clarifications need to be reflected directly in the agreement text.
-
-If aligning on all bonus-related points takes more time, I see a pragmatic way to restore balance and keep execution healthy in the near term:
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Base compensation adjustment**&lt;/span&gt;: a meaningful increase to restore sustainability.
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Remote weekend support**&lt;/span&gt;: continue weekend support when needed, but remotely, to reduce non-productive overhead.
-
-Thank you for taking the time to review this.
-
-Best regards,  
-[Your Name]
+Execute per PROMPT.md.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;Important property:&lt;/strong&gt; the task block never changes.&lt;br /&gt;
+Strictness evolves only inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PROMPT.md&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GUIDE.md&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;8-if-they-say-lets-discuss-on-a-call&quot;&gt;8) If they say “let’s discuss on a call”&lt;/h2&gt;
-
-&lt;p&gt;Agree to the call, but keep it structured:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;“Happy to discuss live. It would help me if we could first align on which of the outlined paths feels most viable, so I can come prepared and keep the conversation focused.”&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This is calm, not escalatory, and it prevents the “improv negotiation” trap.&lt;/p&gt;
+&lt;p&gt;This prevents the most common drift source: copying outdated prompt blobs across tickets.&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;9-interpreting-responses-a-quick-decision-matrix&quot;&gt;9) Interpreting responses (a quick decision matrix)&lt;/h2&gt;
+&lt;h2 id=&quot;frozen-vs-strict-why-we-keep-both&quot;&gt;Frozen vs Strict: why we keep both&lt;/h2&gt;
 
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Their response&lt;/th&gt;
-      &lt;th&gt;What it usually means&lt;/th&gt;
-      &lt;th&gt;What you should do&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;They accept objective clarifications&lt;/td&gt;
-      &lt;td&gt;They intend to pay and want alignment&lt;/td&gt;
-      &lt;td&gt;Proceed; verify wording precisely&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;They reject clarifications but offer base/structure improvements&lt;/td&gt;
-      &lt;td&gt;They want simplicity; bonus may remain discretionary&lt;/td&gt;
-      &lt;td&gt;Decide if “now fixes” are enough&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;They reject both clarifications and near-term fixes&lt;/td&gt;
-      &lt;td&gt;They want maximum discretion with minimal obligation&lt;/td&gt;
-      &lt;td&gt;You have your answer&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;They stall (“later”, “after funding”, “on a call”) without writing&lt;/td&gt;
-      &lt;td&gt;They want time, not commitment&lt;/td&gt;
-      &lt;td&gt;Keep everything written and specific&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;We ended up with two prompt profiles:&lt;/p&gt;
 
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;closing-thought&quot;&gt;Closing thought&lt;/h2&gt;
-
-&lt;p&gt;Negotiating a discretionary bonus agreement isn’t about being difficult. It’s about doing what we already do as engineers:&lt;/p&gt;
-
+&lt;h3 id=&quot;frozen-v10&quot;&gt;Frozen (v1.0)&lt;/h3&gt;
 &lt;ul&gt;
-  &lt;li&gt;identify ambiguity,&lt;/li&gt;
-  &lt;li&gt;define acceptance criteria,&lt;/li&gt;
-  &lt;li&gt;reduce undefined behavior,&lt;/li&gt;
-  &lt;li&gt;and align incentives with reality.&lt;/li&gt;
+  &lt;li&gt;Optimized for: &lt;strong&gt;brevity&lt;/strong&gt;, human readability, speed&lt;/li&gt;
+  &lt;li&gt;Best for: trusted contributors, small refactors, quick spikes&lt;/li&gt;
+  &lt;li&gt;Weakness: rules are descriptive (“MUST”), so AI can rationalize shortcuts&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;If you’re carrying executive-level responsibility, your agreement should have executive-level clarity.&lt;/p&gt;
+&lt;h3 id=&quot;strict-v11&quot;&gt;Strict (v1.1)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Optimized for: &lt;strong&gt;compliance&lt;/strong&gt;, auditability, “no surprises” AI execution&lt;/li&gt;
+  &lt;li&gt;Best for: contract-sensitive endpoints, anything touching search/filtering/auth/pagination&lt;/li&gt;
+  &lt;li&gt;Weakness: longer text (but it’s enforcement scaffolding, not noise)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The key is: &lt;strong&gt;both share the same entry point.&lt;/strong&gt; You swap the runtime, not the call site.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;what-actually-stops-drift-the-4-mechanisms&quot;&gt;What actually stops drift (the 4 mechanisms)&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-hard-fail-rule-ids-hf-&quot;&gt;1) Hard-Fail rule IDs (HF-*)&lt;/h3&gt;
+&lt;p&gt;Instead of “Rule #5,” we introduced stable IDs:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;HF-1&lt;/strong&gt; — Ransack-only search/filtering&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;HF-2&lt;/strong&gt; — DB-agnostic queries only (no raw SQL / DB-specific funcs)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;HF-3&lt;/strong&gt; — Blueprinter-only JSON&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;HF-4&lt;/strong&gt; — snake_case only&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;HF-5&lt;/strong&gt; — Required fields never null (safe defaults)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Why IDs matter:&lt;/strong&gt; they turn “standards” into enforceable references:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;easy review comments (“HF-2 violation”)&lt;/li&gt;
+  &lt;li&gt;easy self-audit checkboxes&lt;/li&gt;
+  &lt;li&gt;easy future evolution (rename content, keep ID stable)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-stop-gates-control-flow-not-suggestions&quot;&gt;2) STOP gates (control flow, not suggestions)&lt;/h3&gt;
+&lt;p&gt;Strict mode adds explicit control flow:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Phase 0–2: &lt;strong&gt;NO CODE&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Stop after planning&lt;/li&gt;
+  &lt;li&gt;If any HF-* would be violated → &lt;strong&gt;STOP&lt;/strong&gt; and report&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;LLMs follow control flow better than prose.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-mandatory-rule-compliance-audit-proof-not-vibes&quot;&gt;3) Mandatory Rule Compliance Audit (proof, not vibes)&lt;/h3&gt;
+&lt;p&gt;Before final output, the agent must produce:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RULE COMPLIANCE AUDIT
+HF-1: COMPLIANT — evidence: UsersController#index uses User.ransack(params[:q])
+HF-2: COMPLIANT — evidence: no raw SQL; only ActiveRecord/Arel
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This forces the agent to &lt;em&gt;prove&lt;/em&gt; it complied.
+If it can’t produce evidence, it typically self-corrects before shipping.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-negative-examples-anti-pattern-firewall&quot;&gt;4) Negative examples (anti-pattern firewall)&lt;/h3&gt;
+&lt;p&gt;Guides that only show “good” patterns still allow AI to invent “bad” ones.
+So we added explicit “DO NOT COPY” snippets:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# ❌ HF-1 violation (manual SQL filtering)&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;email ILIKE ?&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# ✅ Correct (Ransack owns filtering)&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ransack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;result&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;LLMs imitate examples aggressively. Negative examples prevent “helpful improvisation.”&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;example-the-exact-drift-were-preventing&quot;&gt;Example: the exact drift we’re preventing&lt;/h2&gt;
+
+&lt;h3 id=&quot;bad-hf-1--hf-2-violation&quot;&gt;Bad (HF-1 + HF-2 violation)&lt;/h3&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# ❌ don&apos;t do this&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;email ILIKE ?&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;%&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;%&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;good-hf-1-compliant&quot;&gt;Good (HF-1 compliant)&lt;/h3&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;search&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ransack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;per&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:per_page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In strict mode, if an agent proposes the bad version, it must output:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❌ RULE VIOLATION
+Rule: HF-1
+Location: app/controllers/...:12
+Reason: manual filtering used instead of Ransack
+Required Fix: replace with Model.ransack(params[:q]).result
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No debate. Fix it or stop.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;verification-one-command-one-receipt&quot;&gt;Verification: one command, one receipt&lt;/h2&gt;
+
+&lt;p&gt;Zero-Gap already required verification gates. fileciteturn2file0&lt;br /&gt;
+The strict upgrade makes verification harder to “forget” by standardizing:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Preferred: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Legacy commands remain in docs as commented fallback&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And the final output requires a &lt;strong&gt;CHECKS&lt;/strong&gt; section with exit codes.&lt;/p&gt;
+
+&lt;p&gt;That turns “I think I ran tests” into a receipt.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;operational-guidance-when-to-use-which-mode&quot;&gt;Operational guidance: when to use which mode&lt;/h2&gt;
+
+&lt;p&gt;Use &lt;strong&gt;Frozen (v1.0)&lt;/strong&gt; when:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;small refactor&lt;/li&gt;
+  &lt;li&gt;low contract risk&lt;/li&gt;
+  &lt;li&gt;you want short prompts and fast iteration&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Use &lt;strong&gt;Strict (v1.1)&lt;/strong&gt; when:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;building/upgrading endpoints&lt;/li&gt;
+  &lt;li&gt;touching filtering/search/pagination/auth&lt;/li&gt;
+  &lt;li&gt;upgrading versioned requirement docs&lt;/li&gt;
+  &lt;li&gt;AI is doing most of the work&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If in doubt: default to &lt;strong&gt;Strict&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;closing-zero-gap-is-the-architecture-zero-drift-is-governance&quot;&gt;Closing: Zero-Gap is the architecture; Zero-Drift is governance&lt;/h2&gt;
+
+&lt;p&gt;Zero-Gap prevents missing fields and regressions by making contracts and verification non-negotiable. fileciteturn2file0&lt;br /&gt;
+Zero-Drift makes AI reliably follow your engineering rules by adding:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;failure semantics&lt;/li&gt;
+  &lt;li&gt;proof requirements&lt;/li&gt;
+  &lt;li&gt;anti-pattern training&lt;/li&gt;
+  &lt;li&gt;a stable entry point&lt;/li&gt;
+  &lt;li&gt;a canonical verifier&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In practice, this reduces review churn dramatically:
+you spend less time catching “obvious violations” and more time on product decisions.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;appendix-quick-mental-model&quot;&gt;Appendix: quick mental model&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REQUIREMENT_DOC&lt;/code&gt; = spec&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PROMPT.md&lt;/code&gt; = runtime&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt; = language law + compiler errors (HF-*)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GUIDE.md&lt;/code&gt; = standard library + examples&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; = test runner&lt;/li&gt;
+&lt;/ul&gt;
 </description>
-        <pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/blog/negotiating-discretionary-bonus-agreements</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/negotiating-discretionary-bonus-agreements</guid>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/blog/from-zero-gap-to-zero-drift</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/from-zero-gap-to-zero-drift</guid>
         
-        <category>career</category>
+        <category>ai</category>
         
-        <category>negotiation</category>
+        <category>software-engineering</category>
         
-        <category>leadership</category>
+        <category>rails</category>
+        
+        <category>api</category>
+        
+        <category>governance</category>
+        
+        <category>prompts</category>
+        
+        <category>verification</category>
         
         <category>contracts</category>
         
-        <category>compensation</category>
         
+        <category>engineering</category>
         
-        <category>career</category>
+        <category>rails</category>
         
-        <category>leadership</category>
+        <category>AI</category>
+        
+        <category>best-practices</category>
         
       </item>
     
