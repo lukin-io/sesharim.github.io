@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- View Transitions API -->
+  <meta name="view-transition" content="same-origin">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VLFHH5CPGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-VLFHH5CPGM');
+  </script>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System | Software Engineering consultant</title>
+  
+  <meta name="theme-color" content="#006cac">
+
+  <link rel="canonical" href="http://localhost:4000/blog/enterprise-seed-system-rails">
+  <link rel="alternate" type="application/rss+xml" title="Software Engineering consultant" href="http://localhost:4000/feed.xml" />
+  <link rel="shortcut icon" type="image/png" href="http://localhost:4000/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+
+  <meta name="description"
+    content="  “Good seed data is the difference between a demo that impresses and a demo that embarrasses.”">
+  <meta name="keywords"
+    content="Software Engineering consultant, programming consultant, Ruby web development, agile Ruby development, Ruby on Rails web design, RoR consulting, Ruby on Rails service, RoR consultant, Ruby on Rails NYC, Ruby on Rails expertise, web agency, ios application development, mobile, api, frontend, backend, development, software engineer partner, sf developer, sf ruby on rails, berling ruby consultant, london consultant">
+  <meta name="author" content="Max Lukin">
+
+  <!-- Theme initialization - prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System | Software Engineering consultant</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System" />
+<meta name="author" content="Max Lukin" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation." />
+<meta property="og:description" content="A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation." />
+<link rel="canonical" href="http://localhost:4000/blog/enterprise-seed-system-rails" />
+<meta property="og:url" content="http://localhost:4000/blog/enterprise-seed-system-rails" />
+<meta property="og:site_name" content="Software Engineering consultant" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-01-24T00:00:00+05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2026-01-24T00:00:00+05:00","datePublished":"2026-01-24T00:00:00+05:00","description":"A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation.","headline":"From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/enterprise-seed-system-rails"},"url":"http://localhost:4000/blog/enterprise-seed-system-rails"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+  <!-- Main content wrapper -->
+  <div class="main-wrapper centered">
+    <main>
+      <!-- Reading progress bar -->
+<div class="reading-progress" id="reading-progress"></div>
+
+<article class="post-article">
+  <!-- Back navigation -->
+  <a href="/blog" class="back-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 12h10"/>
+    </svg>
+    <span>Blog</span>
+  </a>
+
+  <!-- Post header -->
+  <header class="post-header">
+    <h1 class="post-title">From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System</h1>
+    <div class="post-meta">
+      <time datetime="2026-01-24T00:00:00+05:00">Jan 24, 2026</time>
+      
+      
+      
+      <span>· 26 min read</span>
+      
+        <span>· Max Lukin</span>
+      
+      
+        <span class="post-tags"><a href="/search?q=rails" class="tag">rails</a><a href="/search?q=database" class="tag">database</a><a href="/search?q=seeding" class="tag">seeding</a><a href="/search?q=testing" class="tag">testing</a><a href="/search?q=refactoring" class="tag">refactoring</a><a href="/search?q=architecture" class="tag">architecture</a><a href="/search?q=performance" class="tag">performance</a><a href="/search?q=qa" class="tag">qa</a><a href="/search?q=ai-training" class="tag">ai-training</a></span>
+      
+    </div>
+  </header>
+
+  <div class="post-body">
+    <!-- Table of Contents (generated by JS for posts with 4+ headings) -->
+    <aside class="toc-sidebar" id="toc-sidebar">
+      <nav class="toc" id="toc">
+        <div class="toc-title">Contents</div>
+        <ul class="toc-list" id="toc-list"></ul>
+      </nav>
+    </aside>
+
+    <!-- Post content -->
+    <div class="prose post-content" id="post-content">
+      <blockquote>
+  <p><em>“Good seed data is the difference between a demo that impresses and a demo that embarrasses.”</em></p>
+</blockquote>
+
+<p>Every growing Rails application faces the same challenge: how do you populate your database with realistic data for development, demos, testing, and stakeholder presentations? Simple <code class="language-plaintext highlighter-rouge">db/seeds.rb</code> files work for small projects, but as your application scales, so do your seeding requirements.</p>
+
+<p>This post documents how we transformed a 3,600-line monolithic seed file into an enterprise-ready data generation system that creates 100,000+ full candidate profiles with all associations—serving AI training, QA stress testing, and frontend performance validation.</p>
+
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li><a href="#1-the-problem-why-seed-data-matters">The Problem: Why Seed Data Matters</a></li>
+  <li><a href="#2-before-the-monolithic-nightmare">Before: The Monolithic Nightmare</a></li>
+  <li><a href="#3-the-refactoring-journey">The Refactoring Journey</a></li>
+  <li><a href="#4-feature-1-modular-step-architecture">Feature 1: Modular Step Architecture</a></li>
+  <li><a href="#5-feature-2-context-object-for-state-management">Feature 2: Context Object for State Management</a></li>
+  <li><a href="#6-feature-3-conditional-execution-via-env-flags">Feature 3: Conditional Execution via ENV Flags</a></li>
+  <li><a href="#7-feature-4-progress-reporting-with-timing">Feature 4: Progress Reporting with Timing</a></li>
+  <li><a href="#8-feature-5-post-seed-data-validation">Feature 5: Post-Seed Data Validation</a></li>
+  <li><a href="#9-feature-6-100k-full-profile-scaling">Feature 6: 100k+ Full Profile Scaling</a></li>
+  <li><a href="#10-benefits-and-use-cases">Benefits and Use Cases</a></li>
+  <li><a href="#11-testing-the-seed-system">Testing the Seed System</a></li>
+  <li><a href="#12-three-bonus-ideas-worth-implementing">Three Bonus Ideas Worth Implementing</a></li>
+  <li><a href="#13-conclusion">Conclusion</a></li>
+</ol>
+
+<hr />
+
+<h2 id="1-the-problem-why-seed-data-matters">1. The Problem: Why Seed Data Matters</h2>
+
+<h3 id="11-who-uses-seed-data">1.1 Who Uses Seed Data?</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stakeholder</th>
+      <th>What They Need</th>
+      <th>Why It Matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Frontend Developers</strong></td>
+      <td>Realistic UI data</td>
+      <td>Test pagination, search, empty states</td>
+    </tr>
+    <tr>
+      <td><strong>Backend Developers</strong></td>
+      <td>Consistent test fixtures</td>
+      <td>Debug API responses locally</td>
+    </tr>
+    <tr>
+      <td><strong>QA Team</strong></td>
+      <td>Volume for stress testing</td>
+      <td>Find N+1 queries, memory leaks</td>
+    </tr>
+    <tr>
+      <td><strong>AI/ML Team</strong></td>
+      <td>Training data at scale</td>
+      <td>Validate models with realistic distributions</td>
+    </tr>
+    <tr>
+      <td><strong>Product Managers</strong></td>
+      <td>Demo-ready environments</td>
+      <td>Impress stakeholders, test features</td>
+    </tr>
+    <tr>
+      <td><strong>CEO/Leadership</strong></td>
+      <td>Production-like demos</td>
+      <td>Investor presentations, board meetings</td>
+    </tr>
+    <tr>
+      <td><strong>New Engineers</strong></td>
+      <td>Quick environment setup</td>
+      <td>Onboard in minutes, not hours</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="12-the-reality-check">1.2 The Reality Check</h3>
+
+<p>Most Rails projects start with something like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds.rb</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@example.com'</span><span class="p">,</span> <span class="ss">password: </span><span class="s1">'password'</span><span class="p">)</span>
+<span class="no">Company</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Test Company'</span><span class="p">)</span>
+<span class="c1"># ... done</span>
+</code></pre></div></div>
+
+<p>Then requirements grow:</p>
+<ul>
+  <li>“We need 50 users with different roles”</li>
+  <li>“Profiles need skills, work experiences, education”</li>
+  <li>“QA needs 100,000 profiles for load testing”</li>
+  <li>“AI team needs realistic job title distributions”</li>
+  <li>“CEO wants the demo to look like a real platform”</li>
+</ul>
+
+<p>Before you know it, your seed file is 3,600 lines of spaghetti.</p>
+
+<h3 id="13-our-starting-point">1.3 Our Starting Point</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Seed file size</td>
+      <td>3,610 lines</td>
+    </tr>
+    <tr>
+      <td>Total methods</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <td>Instance variables</td>
+      <td>8 (shared state)</td>
+    </tr>
+    <tr>
+      <td>Dependencies</td>
+      <td>Complex, undocumented</td>
+    </tr>
+    <tr>
+      <td>Test coverage</td>
+      <td>0%</td>
+    </tr>
+    <tr>
+      <td>Documentation</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Pain points:</strong></p>
+<ul>
+  <li>❌ Changes broke unrelated features</li>
+  <li>❌ No way to run individual steps</li>
+  <li>❌ No progress indication</li>
+  <li>❌ No validation of seeded data</li>
+  <li>❌ Impossible to scale to 100k records</li>
+  <li>❌ New engineers couldn’t understand the flow</li>
+</ul>
+
+<hr />
+
+<h2 id="2-before-the-monolithic-nightmare">2. Before: The Monolithic Nightmare</h2>
+
+<h3 id="21-the-original-structure">2.1 The Original Structure</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/steps.rb - 3,610 lines!</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Steps</span>
+    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+      <span class="k">def</span> <span class="nf">run</span>
+        <span class="n">seed_predefined_avatar_assets</span>
+        <span class="n">seed_company</span>
+        <span class="n">seed_job_titles</span>
+        <span class="n">seed_admin_users</span>
+        <span class="c1"># ... 32 more method calls</span>
+        <span class="n">print_summary</span>
+      <span class="k">end</span>
+
+      <span class="kp">private</span>
+
+      <span class="k">def</span> <span class="nf">seed_company</span>
+        <span class="vi">@company</span> <span class="o">=</span> <span class="no">Company</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Bluegeko'</span><span class="p">)</span>
+        <span class="vi">@company</span><span class="p">.</span><span class="nf">assign_attributes</span><span class="p">(</span>
+          <span class="c1"># ... 50 lines of attributes</span>
+        <span class="p">)</span>
+        <span class="vi">@company</span><span class="p">.</span><span class="nf">save!</span>
+        
+        <span class="c1"># ... 200 more lines for demo companies</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">seed_admin_users</span>
+        <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@bluegeko.com'</span><span class="p">)</span>
+        <span class="c1"># ... 300 lines</span>
+      <span class="k">end</span>
+
+      <span class="c1"># ... 56 more methods</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="22-the-problems">2.2 The Problems</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Single 3,600-line file</strong></td>
+      <td>IDE struggles, git conflicts</td>
+    </tr>
+    <tr>
+      <td><strong>Implicit dependencies</strong></td>
+      <td>Can’t run steps individually</td>
+    </tr>
+    <tr>
+      <td><strong>Instance variable soup</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">@company</code> used 28 times across methods</td>
+    </tr>
+    <tr>
+      <td><strong>No progress feedback</strong></td>
+      <td>“Is it stuck or working?”</td>
+    </tr>
+    <tr>
+      <td><strong>No validation</strong></td>
+      <td>Broken seeds discovered in production demos</td>
+    </tr>
+    <tr>
+      <td><strong>No scalability</strong></td>
+      <td>Creating 100k records = 100k individual inserts</td>
+    </tr>
+    <tr>
+      <td><strong>Zero documentation</strong></td>
+      <td>New engineers lost for days</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="23-instance-variable-reference-count">2.3 Instance Variable Reference Count</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>References</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@company</code></td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@admin_user</code></td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@candidate_demo_user</code></td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@access_request_user</code></td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@standard_user</code></td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@full_data_candidate_users</code></td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@demo_job_posts</code></td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">@admin_profile</code></td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These shared variables made refactoring terrifying—change one method, break five others.</p>
+
+<hr />
+
+<h2 id="3-the-refactoring-journey">3. The Refactoring Journey</h2>
+
+<h3 id="31-implementation-priority-matrix">3.1 Implementation Priority Matrix</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Feature</th>
+      <th>Effort</th>
+      <th>Priority</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Modular step architecture</td>
+      <td>High</td>
+      <td>Critical</td>
+      <td>✅ Done</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Conditional ENV flags</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>✅ Done</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Context object</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>✅ Done</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Progress + timing</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>✅ Done</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Data validation</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>✅ Done</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>100k batch processing</td>
+      <td>High</td>
+      <td>Very High</td>
+      <td>✅ Done</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Parallel execution</td>
+      <td>Medium-High</td>
+      <td>Medium</td>
+      <td>⏳ Future</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="32-final-architecture">3.2 Final Architecture</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db/seeds/
+├── seeds.rb                    # Entry point (29 lines)
+├── support.rb                  # Helpers (387 lines)
+├── reference_data.rb           # Lookup tables (889 lines)
+├── steps.rb                    # Orchestrator (217 lines)
+├── context.rb                  # State management (233 lines)
+├── timing.rb                   # Progress tracking (186 lines)
+├── validation.rb               # Data integrity (331 lines)
+├── batch_profiles.rb           # 100k scaling (825 lines)
+├── README.md                   # Documentation (1,797 lines)
+├── SEEDS_REFACTORING.md        # Implementation notes (643 lines)
+└── steps/                      # 37 individual step files
+    ├── 01_predefined_avatar_assets.rb
+    ├── 02_company.rb
+    ├── ...
+    └── 37_batch_profiles.rb
+</code></pre></div></div>
+
+<p><strong>Result: 3,610 lines → 37 focused files averaging 80 lines each</strong></p>
+
+<hr />
+
+<h2 id="4-feature-1-modular-step-architecture">4. Feature 1: Modular Step Architecture</h2>
+
+<h3 id="41-the-approach-singleton-class-reopening">4.1 The Approach: Singleton Class Reopening</h3>
+
+<p>Instead of a massive refactor, we used Ruby’s ability to reopen classes:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/steps/02_company.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Steps</span>
+    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+      <span class="kp">private</span>
+
+      <span class="k">def</span> <span class="nf">seed_company</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="nf">company</span> <span class="o">=</span> <span class="no">Company</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Bluegeko"</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="nf">company</span><span class="p">.</span><span class="nf">assign_attributes</span><span class="p">(</span><span class="n">company_attributes</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="nf">company</span><span class="p">.</span><span class="nf">save!</span>
+
+        <span class="n">log_seed</span> <span class="s2">"Company upserted: </span><span class="si">#{</span><span class="n">ctx</span><span class="p">.</span><span class="nf">company</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">seed_demo_companies</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">company_attributes</span>
+        <span class="p">{</span>
+          <span class="ss">industry: </span><span class="s2">"Technology"</span><span class="p">,</span>
+          <span class="ss">website_url: </span><span class="s2">"https://bluegeko.com"</span><span class="p">,</span>
+          <span class="c1"># ... attributes</span>
+        <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="42-orchestrator-pattern">4.2 Orchestrator Pattern</h3>
+
+<p>The main <code class="language-plaintext highlighter-rouge">steps.rb</code> became a thin orchestrator:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/steps.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Steps</span>
+    <span class="no">OPTIONAL_STEPS</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="ss">seed_reports: </span><span class="s2">"SKIP_SEED_REPORTS"</span><span class="p">,</span>
+      <span class="ss">seed_full_data_candidates: </span><span class="s2">"SEED_FULL_CANDIDATES"</span><span class="p">,</span>
+      <span class="ss">seed_batch_profiles: </span><span class="s2">"CREATE_BATCH_PROFILES"</span>
+    <span class="p">}.</span><span class="nf">freeze</span>
+
+    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+      <span class="k">def</span> <span class="nf">run</span>
+        <span class="n">initialize_context</span>
+        <span class="no">Seeds</span><span class="o">::</span><span class="no">Support</span><span class="o">::</span><span class="no">Timing</span><span class="p">.</span><span class="nf">start_run</span><span class="p">(</span><span class="n">all_steps</span><span class="p">.</span><span class="nf">size</span><span class="p">)</span>
+
+        <span class="c1"># Execute steps in order</span>
+        <span class="n">run_step</span> <span class="ss">:seed_predefined_avatar_assets</span>
+        <span class="n">run_step</span> <span class="ss">:seed_company</span>
+        <span class="n">run_step</span> <span class="ss">:seed_job_titles</span>
+        <span class="c1"># ... 34 more steps</span>
+        <span class="n">run_step</span> <span class="ss">:seed_batch_profiles</span>
+
+        <span class="c1"># Validate and summarize</span>
+        <span class="n">validate_seed_data</span>
+        <span class="n">print_summary</span>
+        <span class="no">Seeds</span><span class="o">::</span><span class="no">Support</span><span class="o">::</span><span class="no">Timing</span><span class="p">.</span><span class="nf">print_summary</span>
+
+        <span class="n">ctx</span>
+      <span class="k">end</span>
+
+      <span class="kp">private</span>
+
+      <span class="k">def</span> <span class="nf">run_step</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">if</span> <span class="n">skip_step?</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+
+        <span class="no">Seeds</span><span class="o">::</span><span class="no">Support</span><span class="o">::</span><span class="no">Timing</span><span class="p">.</span><span class="nf">track_step</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span> <span class="k">do</span>
+          <span class="nb">send</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">skip_step?</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+        <span class="n">env_var</span> <span class="o">=</span> <span class="no">OPTIONAL_STEPS</span><span class="p">[</span><span class="n">step_name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">env_var</span>
+
+        <span class="k">if</span> <span class="n">env_var</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"SKIP_"</span><span class="p">)</span>
+          <span class="no">ENV</span><span class="p">[</span><span class="n">env_var</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"true"</span>
+        <span class="k">else</span>
+          <span class="no">ENV</span><span class="p">[</span><span class="n">env_var</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"true"</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="43-benefits-of-modular-architecture">4.3 Benefits of Modular Architecture</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Before</th>
+      <th>After</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>File size</strong></td>
+      <td>3,610 lines</td>
+      <td>~80 lines avg</td>
+    </tr>
+    <tr>
+      <td><strong>Git conflicts</strong></td>
+      <td>Constant</td>
+      <td>Rare</td>
+    </tr>
+    <tr>
+      <td><strong>IDE navigation</strong></td>
+      <td>Painful</td>
+      <td>Instant</td>
+    </tr>
+    <tr>
+      <td><strong>Step isolation</strong></td>
+      <td>Impossible</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td><strong>Testing</strong></td>
+      <td>Untestable</td>
+      <td>Per-step specs</td>
+    </tr>
+    <tr>
+      <td><strong>Onboarding</strong></td>
+      <td>Days</td>
+      <td>Hours</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="5-feature-2-context-object-for-state-management">5. Feature 2: Context Object for State Management</h2>
+
+<h3 id="51-the-problem-instance-variable-chaos">5.1 The Problem: Instance Variable Chaos</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: 95 instance variable references across 37 steps</span>
+<span class="k">def</span> <span class="nf">seed_admin_users</span>
+  <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">seed_job_posts</span>
+  <span class="n">job</span> <span class="o">=</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">company: </span><span class="vi">@company</span><span class="p">)</span>  <span class="c1"># Where is @company set?</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Issues:</strong></p>
+<ul>
+  <li>No IDE autocomplete</li>
+  <li>No documentation of what’s available</li>
+  <li>No validation that required data exists</li>
+  <li>Testing requires complex setup</li>
+</ul>
+
+<h3 id="52-the-solution-explicit-context-object">5.2 The Solution: Explicit Context Object</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/context.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Support</span>
+    <span class="k">class</span> <span class="nc">Context</span>
+      <span class="c1"># Core entities</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:company</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:admin_user</span><span class="p">,</span> <span class="ss">:standard_user</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:candidate_demo_user</span><span class="p">,</span> <span class="ss">:access_request_user</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:admin_profile</span><span class="p">,</span> <span class="ss">:full_data_candidate_users</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:demo_job_posts</span>
+
+      <span class="c1"># Client roles</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:client_owner</span><span class="p">,</span> <span class="ss">:client_manager</span>
+
+      <span class="c1"># Batch processing</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:batch_profile_result</span>
+
+      <span class="k">def</span> <span class="nf">initialize</span>
+        <span class="vi">@full_data_candidate_users</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="vi">@demo_job_posts</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="k">end</span>
+
+      <span class="c1"># Convenience methods</span>
+      <span class="k">def</span> <span class="nf">company?</span>
+        <span class="o">!</span><span class="vi">@company</span><span class="p">.</span><span class="nf">nil?</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">batch_profiles?</span>
+        <span class="vi">@batch_profile_result</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">success?</span> <span class="o">==</span> <span class="kp">true</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">batch_profile_count</span>
+        <span class="vi">@batch_profile_result</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">profiles_created</span> <span class="o">||</span> <span class="mi">0</span>
+      <span class="k">end</span>
+
+      <span class="c1"># Dependency validation</span>
+      <span class="k">def</span> <span class="nf">require!</span><span class="p">(</span><span class="o">*</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="n">missing</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">.</span><span class="nf">select</span> <span class="p">{</span> <span class="o">|</span><span class="kp">attr</span><span class="o">|</span> <span class="nb">send</span><span class="p">(</span><span class="kp">attr</span><span class="p">).</span><span class="nf">nil?</span> <span class="p">}</span>
+        <span class="k">raise</span> <span class="s2">"Missing required context: </span><span class="si">#{</span><span class="n">missing</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">missing</span><span class="p">.</span><span class="nf">any?</span>
+      <span class="k">end</span>
+
+      <span class="c1"># Debugging helper</span>
+      <span class="k">def</span> <span class="nf">summary</span>
+        <span class="p">{</span>
+          <span class="ss">company: </span><span class="vi">@company</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span>
+          <span class="ss">admin_user: </span><span class="vi">@admin_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+          <span class="ss">full_data_candidates: </span><span class="vi">@full_data_candidate_users</span><span class="p">.</span><span class="nf">size</span><span class="p">,</span>
+          <span class="ss">batch_profiles: </span><span class="n">batch_profile_count</span>
+        <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="53-usage-in-steps">5.3 Usage in Steps</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Access via ctx helper</span>
+<span class="k">def</span> <span class="nf">seed_job_posts</span>
+  <span class="n">ctx</span><span class="p">.</span><span class="nf">require!</span><span class="p">(</span><span class="ss">:company</span><span class="p">,</span> <span class="ss">:admin_user</span><span class="p">)</span>  <span class="c1"># Fail fast if deps missing</span>
+
+  <span class="n">job</span> <span class="o">=</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
+    <span class="ss">company: </span><span class="n">ctx</span><span class="p">.</span><span class="nf">company</span><span class="p">,</span>
+    <span class="ss">user: </span><span class="n">ctx</span><span class="p">.</span><span class="nf">admin_user</span><span class="p">,</span>
+    <span class="ss">title: </span><span class="s2">"Senior Engineer"</span>
+  <span class="p">)</span>
+  <span class="n">ctx</span><span class="p">.</span><span class="nf">demo_job_posts</span> <span class="o">&lt;&lt;</span> <span class="n">job</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="54-why-context-object-matters">5.4 Why Context Object Matters</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Instance Variables</th>
+      <th>Context Object</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Discovery</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">grep @</code> across files</td>
+      <td><code class="language-plaintext highlighter-rouge">ctx.</code> autocomplete</td>
+    </tr>
+    <tr>
+      <td><strong>Documentation</strong></td>
+      <td>None</td>
+      <td><code class="language-plaintext highlighter-rouge">attr_accessor</code> list</td>
+    </tr>
+    <tr>
+      <td><strong>Validation</strong></td>
+      <td>Runtime errors</td>
+      <td><code class="language-plaintext highlighter-rouge">ctx.require!</code></td>
+    </tr>
+    <tr>
+      <td><strong>Testing</strong></td>
+      <td>Mock everything</td>
+      <td>Inject test context</td>
+    </tr>
+    <tr>
+      <td><strong>Debugging</strong></td>
+      <td>puts everywhere</td>
+      <td><code class="language-plaintext highlighter-rouge">ctx.summary</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="6-feature-3-conditional-execution-via-env-flags">6. Feature 3: Conditional Execution via ENV Flags</h2>
+
+<h3 id="61-use-cases">6.1 Use Cases</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use Case</th>
+      <th>ENV Flag</th>
+      <th>Behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Skip slow reports</td>
+      <td><code class="language-plaintext highlighter-rouge">SKIP_SEED_REPORTS=true</code></td>
+      <td>Reports step skipped</td>
+    </tr>
+    <tr>
+      <td>Create 40 full candidates</td>
+      <td><code class="language-plaintext highlighter-rouge">SEED_FULL_CANDIDATES=true</code></td>
+      <td>Rich candidate data</td>
+    </tr>
+    <tr>
+      <td>Create 100k profiles</td>
+      <td><code class="language-plaintext highlighter-rouge">CREATE_BATCH_PROFILES=true</code></td>
+      <td>Batch processing enabled</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="62-implementation">6.2 Implementation</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/steps.rb</span>
+<span class="no">OPTIONAL_STEPS</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1"># Skip steps (default: run)</span>
+  <span class="ss">seed_reports: </span><span class="s2">"SKIP_SEED_REPORTS"</span><span class="p">,</span>
+
+  <span class="c1"># Enable steps (default: skip)</span>
+  <span class="ss">seed_full_data_candidates: </span><span class="s2">"SEED_FULL_CANDIDATES"</span><span class="p">,</span>
+  <span class="ss">seed_full_data_candidates_job_board: </span><span class="s2">"SEED_FULL_CANDIDATES"</span><span class="p">,</span>
+  <span class="ss">seed_batch_profiles: </span><span class="s2">"CREATE_BATCH_PROFILES"</span>
+<span class="p">}.</span><span class="nf">freeze</span>
+
+<span class="k">def</span> <span class="nf">skip_step?</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+  <span class="n">env_var</span> <span class="o">=</span> <span class="no">OPTIONAL_STEPS</span><span class="p">[</span><span class="n">step_name</span><span class="p">]</span>
+  <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="n">env_var</span>
+
+  <span class="k">if</span> <span class="n">env_var</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"SKIP_"</span><span class="p">)</span>
+    <span class="no">ENV</span><span class="p">[</span><span class="n">env_var</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"true"</span>  <span class="c1"># Skip if true</span>
+  <span class="k">else</span>
+    <span class="no">ENV</span><span class="p">[</span><span class="n">env_var</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"true"</span>  <span class="c1"># Skip unless true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="63-usage-examples">6.3 Usage Examples</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Standard development seed (fast)</span>
+rails db:seed
+
+<span class="c"># Full candidates for feature testing</span>
+<span class="nv">SEED_FULL_CANDIDATES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+
+<span class="c"># 100k profiles for QA stress testing</span>
+<span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+
+<span class="c"># Skip reports for faster iteration</span>
+<span class="nv">SKIP_SEED_REPORTS</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+
+<span class="c"># Combined flags</span>
+<span class="nv">SEED_FULL_CANDIDATES</span><span class="o">=</span><span class="nb">true </span><span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+</code></pre></div></div>
+
+<h3 id="64-benefits">6.4 Benefits</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Without Flags</th>
+      <th>With Flags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Daily development</td>
+      <td>~5 min (full seed)</td>
+      <td>~30 sec (minimal)</td>
+    </tr>
+    <tr>
+      <td>Feature testing</td>
+      <td>Edit code</td>
+      <td>Set ENV var</td>
+    </tr>
+    <tr>
+      <td>QA stress test</td>
+      <td>Impossible</td>
+      <td>One command</td>
+    </tr>
+    <tr>
+      <td>CI pipeline</td>
+      <td>Full seed always</td>
+      <td>Skip reports</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="7-feature-4-progress-reporting-with-timing">7. Feature 4: Progress Reporting with Timing</h2>
+
+<h3 id="71-the-problem-silent-seeds">7.1 The Problem: Silent Seeds</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>rails db:seed
+<span class="c"># ... silence for 30 seconds ...</span>
+<span class="c"># ... more silence ...</span>
+<span class="c"># Is it working? Is it stuck?</span>
+</code></pre></div></div>
+
+<h3 id="72-the-solution-real-time-progress">7.2 The Solution: Real-Time Progress</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/timing.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Support</span>
+    <span class="k">module</span> <span class="nn">Timing</span>
+      <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+        <span class="k">def</span> <span class="nf">start_run</span><span class="p">(</span><span class="n">total_steps</span><span class="p">)</span>
+          <span class="vi">@total_steps</span> <span class="o">=</span> <span class="n">total_steps</span>
+          <span class="vi">@current_step</span> <span class="o">=</span> <span class="mi">0</span>
+          <span class="vi">@step_timings</span> <span class="o">=</span> <span class="p">{}</span>
+          <span class="vi">@run_started_at</span> <span class="o">=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span>
+        <span class="k">end</span>
+
+        <span class="k">def</span> <span class="nf">track_step</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+          <span class="vi">@current_step</span> <span class="o">+=</span> <span class="mi">1</span>
+          <span class="n">started</span> <span class="o">=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span>
+
+          <span class="n">print_progress</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span> <span class="k">unless</span> <span class="n">quiet?</span>
+
+          <span class="k">yield</span>
+
+          <span class="n">duration</span> <span class="o">=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="o">-</span> <span class="n">started</span>
+          <span class="vi">@step_timings</span><span class="p">[</span><span class="n">step_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">duration</span>
+        <span class="k">end</span>
+
+        <span class="k">def</span> <span class="nf">print_progress</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+          <span class="nb">puts</span> <span class="nb">format</span><span class="p">(</span>
+            <span class="s2">"[%2d/%2d] %-40s"</span><span class="p">,</span>
+            <span class="vi">@current_step</span><span class="p">,</span> <span class="vi">@total_steps</span><span class="p">,</span>
+            <span class="n">step_name</span><span class="p">.</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">gsub</span><span class="p">(</span><span class="sr">/^seed_/</span><span class="p">,</span> <span class="s2">""</span><span class="p">).</span><span class="nf">humanize</span>
+          <span class="p">)</span>
+        <span class="k">end</span>
+
+        <span class="k">def</span> <span class="nf">print_summary</span>
+          <span class="nb">puts</span> <span class="s2">"</span><span class="se">\n</span><span class="si">#{</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">60</span><span class="si">}</span><span class="s2">"</span>
+          <span class="nb">puts</span> <span class="s2">"SEED TIMING SUMMARY"</span>
+          <span class="nb">puts</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span>
+
+          <span class="vi">@step_timings</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="o">-</span><span class="n">v</span> <span class="p">}.</span><span class="nf">first</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">step</span><span class="p">,</span> <span class="n">duration</span><span class="o">|</span>
+            <span class="nb">puts</span> <span class="nb">format</span><span class="p">(</span><span class="s2">"  %-40s %6.2fs"</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+          <span class="k">end</span>
+
+          <span class="nb">puts</span> <span class="s2">"-"</span> <span class="o">*</span> <span class="mi">60</span>
+          <span class="nb">puts</span> <span class="nb">format</span><span class="p">(</span><span class="s2">"  %-40s %6.2fs"</span><span class="p">,</span> <span class="s2">"TOTAL"</span><span class="p">,</span> <span class="n">total_duration</span><span class="p">)</span>
+          <span class="nb">puts</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="73-output-example">7.3 Output Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ 1/37] Predefined avatar assets              
+[ 2/37] Company                               
+[ 3/37] Job titles                            
+[ 4/37] Admin users                           
+...
+[35/37] Summary                               
+[36/37] Demo recommendation                   
+
+============================================================
+SEED TIMING SUMMARY
+============================================================
+  seed_full_data_candidates                     12.34s
+  seed_random_profiles                           8.21s
+  seed_homepage_profiles                         4.56s
+  seed_job_posts                                 3.12s
+  ...
+------------------------------------------------------------
+  TOTAL                                         45.67s
+============================================================
+</code></pre></div></div>
+
+<h3 id="74-benefits">7.4 Benefits</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Silent Seeds</th>
+      <th>Progress + Timing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Feedback</strong></td>
+      <td>None</td>
+      <td>Real-time progress</td>
+    </tr>
+    <tr>
+      <td><strong>Debugging</strong></td>
+      <td>Which step failed?</td>
+      <td>Clear step names</td>
+    </tr>
+    <tr>
+      <td><strong>Optimization</strong></td>
+      <td>Guess which is slow</td>
+      <td>Timing breakdown</td>
+    </tr>
+    <tr>
+      <td><strong>CI logs</strong></td>
+      <td>Useless</td>
+      <td>Actionable</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="8-feature-5-post-seed-data-validation">8. Feature 5: Post-Seed Data Validation</h2>
+
+<h3 id="81-the-problem-silent-failures">8.1 The Problem: Silent Failures</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Seeds "complete" but data is broken</span>
+<span class="k">def</span> <span class="nf">seed_admin_users</span>
+  <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@bluegeko.com'</span><span class="p">)</span>
+  <span class="vi">@admin_user</span><span class="p">.</span><span class="nf">save</span>  <span class="c1"># No bang! Silent failure</span>
+<span class="k">end</span>
+
+<span class="c1"># Later, in production demo...</span>
+<span class="c1"># "Why is there no admin user?!"</span>
+</code></pre></div></div>
+
+<h3 id="82-the-solution-validation-module">8.2 The Solution: Validation Module</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/validation.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Support</span>
+    <span class="k">module</span> <span class="nn">Validation</span>
+      <span class="no">CHECKS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># Integrity checks (errors)</span>
+        <span class="ss">orphaned_profiles: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:user</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">users: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
+        <span class="ss">candidates_without_profiles: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">candidate</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:profile</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">profiles: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
+        <span class="ss">orphaned_job_posts: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:company</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">companies: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
+
+        <span class="c1"># Minimum data checks (errors)</span>
+        <span class="ss">minimum_users: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="p">},</span>
+        <span class="ss">minimum_profiles: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="p">},</span>
+        <span class="ss">minimum_companies: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Company</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="p">},</span>
+        <span class="ss">minimum_job_posts: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="p">},</span>
+
+        <span class="c1"># Quality checks (warnings)</span>
+        <span class="ss">profiles_with_skills: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:skills</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">},</span>
+        <span class="ss">profiles_with_work_experience: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:work_experiences</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">},</span>
+        <span class="ss">users_with_login_methods: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:login_methods</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">}</span>
+      <span class="p">}.</span><span class="nf">freeze</span>
+
+      <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+        <span class="k">def</span> <span class="nf">run</span>
+          <span class="k">return</span> <span class="n">skip_result</span> <span class="k">if</span> <span class="n">skip?</span>
+
+          <span class="n">result</span> <span class="o">=</span> <span class="no">ValidationResult</span><span class="p">.</span><span class="nf">new</span>
+          <span class="n">run_integrity_checks</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+          <span class="n">run_minimum_checks</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+          <span class="n">run_quality_checks</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">unless</span> <span class="n">strict?</span>
+
+          <span class="n">print_results</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+          <span class="n">result</span>
+        <span class="k">end</span>
+
+        <span class="kp">private</span>
+
+        <span class="k">def</span> <span class="nf">run_integrity_checks</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+          <span class="sx">%i[orphaned_profiles candidates_without_profiles orphaned_job_posts]</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">check</span><span class="o">|</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="no">CHECKS</span><span class="p">[</span><span class="n">check</span><span class="p">].</span><span class="nf">call</span><span class="p">.</span><span class="nf">count</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span>
+              <span class="n">result</span><span class="p">.</span><span class="nf">add_error</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="s2">"Found </span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">check</span><span class="p">.</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">humanize</span><span class="p">.</span><span class="nf">downcase</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">else</span>
+              <span class="n">result</span><span class="p">.</span><span class="nf">add_passed</span><span class="p">(</span><span class="n">check</span><span class="p">)</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="83-validation-output">8.3 Validation Output</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>============================================================
+POST-SEED VALIDATION
+============================================================
+Integrity Checks:
+  ✓ No orphaned profiles
+  ✓ No candidates without profiles
+  ✓ No orphaned job posts
+
+Minimum Data Checks:
+  ✓ Users: 47 (minimum: 5)
+  ✓ Profiles: 42 (minimum: 3)
+  ✓ Companies: 5 (minimum: 1)
+  ✓ Job Posts: 25 (minimum: 5)
+
+Quality Checks:
+  ✓ Profiles with skills: 38
+  ✓ Profiles with work experience: 35
+  ⚠ Users with login methods: 0 (warning)
+
+------------------------------------------------------------
+Result: PASSED (14 checks, 1 warning)
+============================================================
+</code></pre></div></div>
+
+<h3 id="84-env-controls">8.4 ENV Controls</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Skip validation (CI speed)</span>
+<span class="nv">SKIP_SEED_VALIDATION</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+
+<span class="c"># Strict mode (fail on warnings)</span>
+<span class="nv">SEED_VALIDATION_STRICT</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="9-feature-6-100k-full-profile-scaling">9. Feature 6: 100k+ Full Profile Scaling</h2>
+
+<h3 id="91-the-challenge">9.1 The Challenge</h3>
+
+<p>Our AI team needed 100,000 realistic candidate profiles for model training. QA needed the same for stress testing. Creating records one-by-one would take hours.</p>
+
+<p><strong>Requirements:</strong></p>
+<ul>
+  <li>Full profiles with ALL associations</li>
+  <li>Category-appropriate job titles</li>
+  <li>Skills, work experiences, education</li>
+  <li>Portfolio, contact info, avatars</li>
+  <li>Realistic data distributions</li>
+  <li>Conditional execution (don’t run in daily dev)</li>
+</ul>
+
+<h3 id="92-what-gets-created">9.2 What Gets Created</h3>
+
+<p>Each batch profile is a <strong>complete candidate</strong> with:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Association</th>
+      <th>Per Profile</th>
+      <th>Total (100k)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>User + Login Security</td>
+      <td>1</td>
+      <td>100,000</td>
+    </tr>
+    <tr>
+      <td>Profile</td>
+      <td>1</td>
+      <td>100,000</td>
+    </tr>
+    <tr>
+      <td>Skills</td>
+      <td>3-6</td>
+      <td>~450,000</td>
+    </tr>
+    <tr>
+      <td>Work Experiences</td>
+      <td>2-4</td>
+      <td>~300,000</td>
+    </tr>
+    <tr>
+      <td>Education Items</td>
+      <td>1-2</td>
+      <td>~150,000</td>
+    </tr>
+    <tr>
+      <td>Languages</td>
+      <td>1-3</td>
+      <td>~200,000</td>
+    </tr>
+    <tr>
+      <td>Contact Infos</td>
+      <td>2-4</td>
+      <td>~300,000</td>
+    </tr>
+    <tr>
+      <td>Portfolio + Links</td>
+      <td>3-9</td>
+      <td>~600,000</td>
+    </tr>
+    <tr>
+      <td>Location Setting</td>
+      <td>1</td>
+      <td>100,000</td>
+    </tr>
+    <tr>
+      <td>Salary Expectation</td>
+      <td>1</td>
+      <td>100,000</td>
+    </tr>
+    <tr>
+      <td>Avatar Session + Images</td>
+      <td>4-5</td>
+      <td>~450,000</td>
+    </tr>
+    <tr>
+      <td><strong>Total Records</strong></td>
+      <td>~20-30</td>
+      <td><strong>~2,500,000+</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="93-category-specific-data">9.3 Category-Specific Data</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">CATEGORY_OCCUPATIONS</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"technology"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s2">"Software Engineer"</span><span class="p">,</span> <span class="s2">"Senior Software Engineer"</span><span class="p">,</span> <span class="s2">"Staff Software Engineer"</span><span class="p">,</span>
+    <span class="s2">"DevOps Engineer"</span><span class="p">,</span> <span class="s2">"Data Scientist"</span><span class="p">,</span> <span class="s2">"Machine Learning Engineer"</span><span class="p">,</span>
+    <span class="s2">"Mobile Developer"</span><span class="p">,</span> <span class="s2">"Cloud Architect"</span><span class="p">,</span> <span class="s2">"Security Engineer"</span>
+  <span class="p">],</span>
+  <span class="s2">"design"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s2">"UX Designer"</span><span class="p">,</span> <span class="s2">"Product Designer"</span><span class="p">,</span> <span class="s2">"Creative Director"</span><span class="p">,</span>
+    <span class="s2">"Interaction Designer"</span><span class="p">,</span> <span class="s2">"Design Systems Lead"</span>
+  <span class="p">],</span>
+  <span class="s2">"business"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s2">"Project Manager"</span><span class="p">,</span> <span class="s2">"Product Manager"</span><span class="p">,</span> <span class="s2">"Business Analyst"</span><span class="p">,</span>
+    <span class="s2">"Strategy Consultant"</span><span class="p">,</span> <span class="s2">"Operations Manager"</span>
+  <span class="p">],</span>
+  <span class="c1"># ... 9 categories total</span>
+<span class="p">}.</span><span class="nf">freeze</span>
+
+<span class="no">CATEGORY_SKILLS</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"technology"</span> <span class="o">=&gt;</span> <span class="sx">%w[Ruby Python JavaScript TypeScript Docker Kubernetes AWS]</span><span class="p">,</span>
+  <span class="s2">"design"</span> <span class="o">=&gt;</span> <span class="sx">%w[Figma Sketch Photoshop Wireframing UserResearch]</span><span class="p">,</span>
+  <span class="s2">"business"</span> <span class="o">=&gt;</span> <span class="sx">%w[Excel Salesforce Tableau Leadership Strategy]</span><span class="p">,</span>
+  <span class="c1"># ...</span>
+<span class="p">}.</span><span class="nf">freeze</span>
+</code></pre></div></div>
+
+<h3 id="94-implementation-highlights">9.4 Implementation Highlights</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/batch_profiles.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Support</span>
+    <span class="k">module</span> <span class="nn">BatchProfiles</span>
+      <span class="no">DEFAULT_COUNT</span> <span class="o">=</span> <span class="mi">100_000</span>
+      <span class="no">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">500</span>
+
+      <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="ss">count: </span><span class="n">target_count</span><span class="p">,</span> <span class="ss">on_progress: </span><span class="kp">nil</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="no">BatchResult</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">target_count: </span><span class="n">count</span><span class="p">)</span>
+
+        <span class="n">count</span><span class="p">.</span><span class="nf">times</span><span class="p">.</span><span class="nf">each_slice</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">indices</span><span class="o">|</span>
+          <span class="n">chunk_result</span> <span class="o">=</span> <span class="n">process_chunk</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+          <span class="n">result</span><span class="p">.</span><span class="nf">record_chunk</span><span class="p">(</span><span class="n">chunk_result</span><span class="p">)</span>
+          <span class="n">on_progress</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">end</span>
+
+        <span class="n">result</span><span class="p">.</span><span class="nf">finish!</span>
+        <span class="n">result</span>
+      <span class="k">end</span>
+
+      <span class="kp">private</span>
+
+      <span class="k">def</span> <span class="nf">process_chunk</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">indices</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span>
+          <span class="c1"># Select random category</span>
+          <span class="n">category</span> <span class="o">=</span> <span class="n">categories</span><span class="p">.</span><span class="nf">sample</span>
+
+          <span class="c1"># Create user (ActiveRecord for Devise)</span>
+          <span class="n">user</span> <span class="o">=</span> <span class="n">create_batch_user</span><span class="p">(</span><span class="ss">index: </span><span class="n">index</span><span class="p">)</span>
+
+          <span class="c1"># Create profile with category-appropriate job title</span>
+          <span class="n">profile</span> <span class="o">=</span> <span class="n">create_batch_profile</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">,</span> <span class="ss">category: </span><span class="n">category</span><span class="p">)</span>
+
+          <span class="c1"># Create ALL associations</span>
+          <span class="n">create_skills</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">category</span><span class="p">.</span><span class="nf">slug</span><span class="p">)</span>
+          <span class="n">create_work_experiences</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">category</span><span class="p">.</span><span class="nf">slug</span><span class="p">)</span>
+          <span class="n">create_education_items</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_languages</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_contact_infos</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_portfolio</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_location_setting</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_salary_expectation</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_avatar_data</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="95-usage">9.5 Usage</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create 100,000 full profiles (default)</span>
+<span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+
+<span class="c"># Create 10,000 for smaller tests</span>
+<span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span><span class="nv">BATCH_PROFILE_COUNT</span><span class="o">=</span>10000 rails db:seed
+
+<span class="c"># With verbose progress</span>
+<span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span><span class="nv">BATCH_VERBOSE</span><span class="o">=</span><span class="nb">true </span>rails db:seed
+</code></pre></div></div>
+
+<h3 id="96-output">9.6 Output</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>======================================================================
+[BATCH] Starting FULL candidate profile creation
+======================================================================
+  Target count:     100,000
+  Chunk size:       500
+  Associations:     Skills, Work Exp, Education, Languages, Contacts, etc.
+======================================================================
+
+  [=======&gt;--------------------]  25.0% | Chunk 50/200 | 25000 profiles | 625,000 assoc
+
+======================================================================
+[BATCH] Full candidate profile creation complete!
+======================================================================
+  Users created:        100,000
+  Profiles created:     100,000
+  Associations created: 2,543,721
+  Total duration:       3h 12m
+  Rate:                 8.7 profiles/second
+======================================================================
+</code></pre></div></div>
+
+<h3 id="97-performance-characteristics">9.7 Performance Characteristics</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Count</th>
+      <th>Time</th>
+      <th>Records Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1,000</td>
+      <td>~2-3 min</td>
+      <td>~25,000</td>
+    </tr>
+    <tr>
+      <td>10,000</td>
+      <td>~20-30 min</td>
+      <td>~250,000</td>
+    </tr>
+    <tr>
+      <td>100,000</td>
+      <td>~3-5 hours</td>
+      <td>~2,500,000</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="10-benefits-and-use-cases">10. Benefits and Use Cases</h2>
+
+<h3 id="101-use-case-matrix">10.1 Use Case Matrix</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stakeholder</th>
+      <th>Command</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Daily Dev</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">rails db:seed</code></td>
+      <td>~30s, minimal data</td>
+    </tr>
+    <tr>
+      <td><strong>Feature Testing</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">SEED_FULL_CANDIDATES=true rails db:seed</code></td>
+      <td>~2 min, 40 rich profiles</td>
+    </tr>
+    <tr>
+      <td><strong>QA Stress Test</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">CREATE_BATCH_PROFILES=true rails db:seed</code></td>
+      <td>~3h, 100k profiles</td>
+    </tr>
+    <tr>
+      <td><strong>AI Training</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">CREATE_BATCH_PROFILES=true BATCH_PROFILE_COUNT=500000 rails db:seed</code></td>
+      <td>~15h, 500k profiles</td>
+    </tr>
+    <tr>
+      <td><strong>CEO Demo</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">rails db:seed</code></td>
+      <td>Production-like feel</td>
+    </tr>
+    <tr>
+      <td><strong>New Engineer</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">rails db:seed</code></td>
+      <td>Working environment in 30s</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="102-before-vs-after-comparison">10.2 Before vs After Comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Before</th>
+      <th>After</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>File organization</strong></td>
+      <td>1 file, 3,610 lines</td>
+      <td>37 files, ~80 lines each</td>
+    </tr>
+    <tr>
+      <td><strong>Test coverage</strong></td>
+      <td>0%</td>
+      <td>400+ specs</td>
+    </tr>
+    <tr>
+      <td><strong>Documentation</strong></td>
+      <td>None</td>
+      <td>1,797-line README</td>
+    </tr>
+    <tr>
+      <td><strong>Progress feedback</strong></td>
+      <td>Silent</td>
+      <td>Real-time with timing</td>
+    </tr>
+    <tr>
+      <td><strong>Data validation</strong></td>
+      <td>None</td>
+      <td>14 automated checks</td>
+    </tr>
+    <tr>
+      <td><strong>Scalability</strong></td>
+      <td>~100 profiles</td>
+      <td>100,000+ profiles</td>
+    </tr>
+    <tr>
+      <td><strong>Conditional execution</strong></td>
+      <td>Edit code</td>
+      <td>ENV flags</td>
+    </tr>
+    <tr>
+      <td><strong>Onboarding time</strong></td>
+      <td>Days</td>
+      <td>Hours</td>
+    </tr>
+    <tr>
+      <td><strong>Git conflicts</strong></td>
+      <td>Daily</td>
+      <td>Rare</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="103-roi">10.3 ROI</h3>
+
+<p><strong>Time saved per week:</strong></p>
+<ul>
+  <li>5 engineers × 10 min/day waiting for seeds = 4+ hours</li>
+  <li>2 QA engineers × 1 hour/week debugging broken seeds = 2 hours</li>
+  <li>1 demo preparation × 2 hours = 2 hours</li>
+</ul>
+
+<p><strong>Total: ~8 hours/week = 1 FTE day</strong></p>
+
+<hr />
+
+<h2 id="11-testing-the-seed-system">11. Testing the Seed System</h2>
+
+<h3 id="111-test-structure">11.1 Test Structure</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spec/seeds/
+├── support/
+│   ├── helpers_spec.rb           # Unit tests for helpers
+│   ├── context_spec.rb           # Context object tests
+│   ├── timing_spec.rb            # Timing module tests
+│   ├── validation_spec.rb        # Validation tests
+│   └── batch_profiles_spec.rb    # Batch processing tests
+├── reference_data_spec.rb        # Reference data tests
+├── integration_spec.rb           # Full seed run tests
+└── steps/
+    ├── shared_examples.rb        # Reusable step examples
+    ├── company_spec.rb           # Step-specific tests
+    └── ...
+</code></pre></div></div>
+
+<h3 id="112-shared-examples-for-steps">11.2 Shared Examples for Steps</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/seeds/steps/shared_examples.rb</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">shared_examples</span> <span class="s2">"a seed step that creates records"</span> <span class="k">do</span> <span class="o">|</span><span class="n">model_class</span><span class="p">,</span> <span class="n">expected_count</span><span class="ss">:|</span>
+  <span class="n">it</span> <span class="s2">"creates </span><span class="si">#{</span><span class="n">expected_count</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">model_class</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">pluralize</span><span class="si">}</span><span class="s2">"</span> <span class="k">do</span>
+    <span class="n">expect</span> <span class="p">{</span> <span class="n">run_step</span> <span class="p">}.</span><span class="nf">to</span> <span class="n">change</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="ss">:count</span><span class="p">).</span><span class="nf">by</span><span class="p">(</span><span class="n">expected_count</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">shared_examples</span> <span class="s2">"a seed step that is idempotent"</span> <span class="k">do</span>
+  <span class="n">it</span> <span class="s2">"does not create duplicates on second run"</span> <span class="k">do</span>
+    <span class="n">run_step</span>
+    <span class="n">expect</span> <span class="p">{</span> <span class="n">run_step</span> <span class="p">}.</span><span class="nf">not_to</span> <span class="n">change</span><span class="p">(</span><span class="n">described_model</span><span class="p">,</span> <span class="ss">:count</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="113-test-coverage">11.3 Test Coverage</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Specs</th>
+      <th>Coverage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Helpers</td>
+      <td>45</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Context</td>
+      <td>32</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Timing</td>
+      <td>28</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Validation</td>
+      <td>31</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Batch Profiles</td>
+      <td>49</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Reference Data</td>
+      <td>89</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Individual Steps</td>
+      <td>126</td>
+      <td>Key paths</td>
+    </tr>
+    <tr>
+      <td><strong>Total</strong></td>
+      <td><strong>400+</strong></td>
+      <td>High</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="12-three-bonus-ideas-worth-implementing">12. Three Bonus Ideas Worth Implementing</h2>
+
+<h3 id="121-idea-1-seed-data-snapshots">12.1 Idea 1: Seed Data Snapshots</h3>
+
+<p><strong>Problem:</strong> Recreating 100k profiles takes 3 hours every time.</p>
+
+<p><strong>Solution:</strong> Database snapshots for instant restore.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Potential implementation</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Snapshots</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="sb">`pg_dump wigiwork_development &gt; snapshots/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sb">.sql`</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+      <span class="sb">`psql wigiwork_development &lt; snapshots/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sb">.sql`</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Usage</span>
+<span class="c1"># After 3-hour batch: SEED_SNAPSHOT=save rails db:seed</span>
+<span class="c1"># Next time: SEED_SNAPSHOT=restore:batch_100k rails db:seed (~30 sec)</span>
+</code></pre></div></div>
+
+<p><strong>Benefit:</strong> 3 hours → 30 seconds for QA environments.</p>
+
+<h3 id="122-idea-2-faker-seed-consistency">12.2 Idea 2: Faker Seed Consistency</h3>
+
+<p><strong>Problem:</strong> Random data changes every seed run, breaking visual regression tests.</p>
+
+<p><strong>Solution:</strong> Seed Faker’s random generator.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/support.rb</span>
+<span class="k">def</span> <span class="nf">with_consistent_faker</span>
+  <span class="n">original_seed</span> <span class="o">=</span> <span class="no">Faker</span><span class="o">::</span><span class="no">Config</span><span class="p">.</span><span class="nf">random</span>
+  <span class="no">Faker</span><span class="o">::</span><span class="no">Config</span><span class="p">.</span><span class="nf">random</span> <span class="o">=</span> <span class="no">Random</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+  <span class="k">yield</span>
+<span class="k">ensure</span>
+  <span class="no">Faker</span><span class="o">::</span><span class="no">Config</span><span class="p">.</span><span class="nf">random</span> <span class="o">=</span> <span class="n">original_seed</span>
+<span class="k">end</span>
+
+<span class="c1"># Usage</span>
+<span class="n">with_consistent_faker</span> <span class="k">do</span>
+  <span class="n">seed_profiles</span>  <span class="c1"># Same names, emails, etc. every time</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Benefit:</strong> Consistent screenshots for visual regression testing.</p>
+
+<h3 id="123-idea-3-seed-data-metrics-dashboard">12.3 Idea 3: Seed Data Metrics Dashboard</h3>
+
+<p><strong>Problem:</strong> No visibility into what’s seeded without running queries.</p>
+
+<p><strong>Solution:</strong> Post-seed metrics report.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/metrics.rb</span>
+<span class="k">module</span> <span class="nn">Seeds</span>
+  <span class="k">module</span> <span class="nn">Metrics</span>
+    <span class="k">def</span> <span class="nf">report</span>
+      <span class="p">{</span>
+        <span class="ss">users: </span><span class="p">{</span>
+          <span class="ss">total: </span><span class="no">User</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">by_role: </span><span class="no">User</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="ss">:role</span><span class="p">).</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">with_profiles: </span><span class="no">User</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:profile</span><span class="p">).</span><span class="nf">count</span>
+        <span class="p">},</span>
+        <span class="ss">profiles: </span><span class="p">{</span>
+          <span class="ss">total: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">with_skills: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:skills</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">avg_skills: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:skills</span><span class="p">).</span><span class="nf">group</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">count</span><span class="p">.</span><span class="nf">values</span><span class="p">.</span><span class="nf">sum</span><span class="p">.</span><span class="nf">to_f</span> <span class="o">/</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">by_category: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:category</span><span class="p">).</span><span class="nf">group</span><span class="p">(</span><span class="s2">"categories.slug"</span><span class="p">).</span><span class="nf">count</span>
+        <span class="p">},</span>
+        <span class="ss">companies: </span><span class="p">{</span>
+          <span class="ss">total: </span><span class="no">Company</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">with_jobs: </span><span class="no">Company</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:job_posts</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Users</span><span class="pi">:</span>
+  <span class="na">total</span><span class="pi">:</span> <span class="s">100,047</span>
+  <span class="na">by_role</span><span class="pi">:</span> <span class="pi">{</span> <span class="nv">admin</span><span class="pi">:</span> <span class="nv">2</span><span class="pi">,</span> <span class="nv">candidate</span><span class="pi">:</span> <span class="nv">100</span><span class="pi">,</span><span class="nv">040</span><span class="pi">,</span> <span class="nv">client</span><span class="pi">:</span> <span class="nv">5</span> <span class="pi">}</span>
+  <span class="na">with_profiles</span><span class="pi">:</span> <span class="s">100,042</span>
+
+<span class="na">Profiles</span><span class="pi">:</span>
+  <span class="na">total</span><span class="pi">:</span> <span class="s">100,042</span>
+  <span class="na">with_skills</span><span class="pi">:</span> <span class="s">99,800</span>
+  <span class="na">avg_skills</span><span class="pi">:</span> <span class="m">4.2</span>
+  <span class="na">by_category</span><span class="pi">:</span> <span class="pi">{</span> <span class="nv">technology</span><span class="pi">:</span> <span class="nv">45</span><span class="pi">,</span><span class="nv">000</span><span class="pi">,</span> <span class="nv">design</span><span class="pi">:</span> <span class="nv">15</span><span class="pi">,</span><span class="nv">000</span><span class="pi">,</span> <span class="nv">...</span> <span class="pi">}</span>
+
+<span class="na">Companies</span><span class="pi">:</span>
+  <span class="na">total</span><span class="pi">:</span> <span class="m">5</span>
+  <span class="na">with_jobs</span><span class="pi">:</span> <span class="m">3</span>
+</code></pre></div></div>
+
+<p><strong>Benefit:</strong> Instant insight into seed data quality and distribution.</p>
+
+<hr />
+
+<h2 id="13-conclusion">13. Conclusion</h2>
+
+<h3 id="131-what-we-achieved">13.1 What We Achieved</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Before</th>
+      <th>After</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lines in main file</td>
+      <td>3,610</td>
+      <td>217</td>
+    </tr>
+    <tr>
+      <td>Number of files</td>
+      <td>1</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <td>Test coverage</td>
+      <td>0%</td>
+      <td>400+ specs</td>
+    </tr>
+    <tr>
+      <td>Documentation</td>
+      <td>0 lines</td>
+      <td>1,797 lines</td>
+    </tr>
+    <tr>
+      <td>Max profiles</td>
+      <td>~100</td>
+      <td>100,000+</td>
+    </tr>
+    <tr>
+      <td>Progress feedback</td>
+      <td>None</td>
+      <td>Real-time</td>
+    </tr>
+    <tr>
+      <td>Data validation</td>
+      <td>None</td>
+      <td>14 checks</td>
+    </tr>
+    <tr>
+      <td>Conditional execution</td>
+      <td>None</td>
+      <td>5 ENV flags</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="132-key-takeaways">13.2 Key Takeaways</h3>
+
+<ol>
+  <li><strong>Modular beats monolithic</strong> — Split large files into focused modules</li>
+  <li><strong>Explicit state beats implicit</strong> — Context objects over instance variables</li>
+  <li><strong>Conditional execution is essential</strong> — ENV flags for different scenarios</li>
+  <li><strong>Visibility prevents pain</strong> — Progress reporting and timing</li>
+  <li><strong>Validation catches bugs</strong> — Automated checks before they reach demos</li>
+  <li><strong>Scale when needed</strong> — Batch processing for volume requirements</li>
+  <li><strong>Document everything</strong> — Future you (and new engineers) will thank you</li>
+</ol>
+
+<h3 id="133-the-real-win">13.3 The Real Win</h3>
+
+<p>The technical improvements are measurable, but the real win is <strong>confidence</strong>:</p>
+
+<ul>
+  <li>Confident that seeds work (validation)</li>
+  <li>Confident about progress (timing)</li>
+  <li>Confident in isolation (modular files)</li>
+  <li>Confident at scale (batch processing)</li>
+  <li>Confident for demos (realistic data)</li>
+  <li>Confident for new engineers (documentation)</li>
+</ul>
+
+<p><strong>Invest in your seed system. It’s the foundation everything else is built on.</strong></p>
+
+<hr />
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><strong>Rails Guides on Seeds</strong>: <a href="https://guides.rubyonrails.org/active_record_migrations.html#migrations-and-seed-data">guides.rubyonrails.org/active_record_migrations.html#migrations-and-seed-data</a></li>
+  <li><strong>Faker Gem</strong>: <a href="https://github.com/faker-ruby/faker">github.com/faker-ruby/faker</a></li>
+  <li><strong>FactoryBot</strong>: <a href="https://github.com/thoughtbot/factory_bot">github.com/thoughtbot/factory_bot</a></li>
+  <li><strong>Database Cleaner</strong>: <a href="https://github.com/DatabaseCleaner/database_cleaner">github.com/DatabaseCleaner/database_cleaner</a></li>
+  <li><strong>Our Seed System Documentation</strong>: See <code class="language-plaintext highlighter-rouge">db/seeds/README.md</code> in your codebase</li>
+</ul>
+
+<hr />
+
+<p><em>This post documents the transformation of the Wigiwork seed system from a 3,600-line monolith to an enterprise-grade data generation platform. The patterns described here—modular architecture, context objects, conditional execution, progress tracking, validation, and batch processing—are applicable to any Rails application that has outgrown simple seeds.</em></p>
+
+    </div>
+  </div>
+
+  <!-- Post navigation (Previous/Next) -->
+  
+  
+    
+      
+      
+      
+      
+      
+
+  <nav class="post-navigation">
+    
+      <a href="/blog/from-zero-gap-to-zero-drift" class="post-nav-link post-nav-prev">
+        <span class="post-nav-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Older
+        </span>
+        <span class="post-nav-title">From Zero-Gap to Zero-Drift: Making AI Follow Rails...</span>
+      </a>
+    
+    
+      <span class="post-nav-spacer"></span>
+    
+  </nav>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/>
+      <polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
+</article>
+
+<script>
+  // Show/hide back-to-top button based on scroll position
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+
+  // Reading progress bar
+  const progressBar = document.getElementById('reading-progress');
+  const article = document.querySelector('.post-article');
+
+  window.addEventListener('scroll', function() {
+    const articleTop = article.offsetTop;
+    const articleHeight = article.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scrolled = window.scrollY - articleTop + windowHeight * 0.3;
+    const progress = Math.min(Math.max(scrolled / articleHeight * 100, 0), 100);
+    progressBar.style.width = progress + '%';
+  });
+
+  // Generate Table of Contents
+  const postContent = document.getElementById('post-content');
+  const tocList = document.getElementById('toc-list');
+  const tocSidebar = document.getElementById('toc-sidebar');
+  const headings = postContent.querySelectorAll('h2, h3');
+
+  if (headings.length >= 4) {
+    tocSidebar.classList.add('visible');
+
+    headings.forEach((heading, index) => {
+      // Add ID to heading if not present
+      if (!heading.id) {
+        heading.id = 'heading-' + index;
+      }
+
+      const li = document.createElement('li');
+      li.className = 'toc-item toc-' + heading.tagName.toLowerCase();
+
+      const a = document.createElement('a');
+      a.href = '#' + heading.id;
+      a.textContent = heading.textContent;
+      a.className = 'toc-link';
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Highlight current section in TOC
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    const observerOptions = {
+      rootMargin: '-80px 0px -70% 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.toc-link[href="#' + entry.target.id + '"]');
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    headings.forEach(heading => observer.observe(heading));
+  }
+
+  // Add copy buttons and language labels to code blocks
+  document.querySelectorAll('.highlight, pre').forEach(element => {
+    // Skip if already wrapped or if this is a pre inside a highlight we'll process
+    if (element.closest('.code-block-wrapper')) return;
+    if (element.tagName === 'PRE' && element.closest('.highlight')) return;
+
+    // Determine what to wrap: the .highlight div or standalone pre
+    const highlightDiv = element.classList.contains('highlight') ? element : null;
+    const pre = highlightDiv ? highlightDiv.querySelector('pre') : element;
+    if (!pre) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+
+    // Wrap the highlight div if exists, otherwise wrap pre
+    const toWrap = highlightDiv || pre;
+    toWrap.parentNode.insertBefore(wrapper, toWrap);
+    wrapper.appendChild(toWrap);
+
+    // Detect language from class
+    const code = pre.querySelector('code');
+    let language = '';
+
+    // Method 1: Check code element class
+    if (code && code.className) {
+      const match = code.className.match(/language-(\w+)/);
+      if (match) language = match[1];
+    }
+
+    // Method 2: Check highlight div class (Rouge uses class like "highlight ruby")
+    if (!language && highlightDiv) {
+      const classes = highlightDiv.className.split(' ');
+      for (const cls of classes) {
+        if (cls !== 'highlight' && cls.length > 0 && !cls.startsWith('code')) {
+          language = cls;
+          break;
+        }
+      }
+    }
+
+    // Method 3: Try to detect from code patterns
+    if (!language) {
+      const text = pre.textContent.trim();
+      if (text.startsWith('#') && !text.startsWith('#!/')) {
+        const firstLine = text.split('\n')[0];
+        if (firstLine.match(/\.rb$/)) language = 'ruby';
+        else if (firstLine.match(/\.py$/)) language = 'python';
+        else if (firstLine.match(/\.yml$|\.yaml$/)) language = 'yaml';
+      } else if (text.startsWith('//')) {
+        language = 'javascript';
+      } else if (text.match(/^(RSpec|describe|it|context|let)\b/)) {
+        language = 'ruby';
+      } else if (text.match(/^(def |class |module |require )/)) {
+        language = 'ruby';
+      }
+    }
+
+    // Create header with language and copy button
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+
+    if (language) {
+      const langLabel = document.createElement('span');
+      langLabel.className = 'code-lang';
+      langLabel.textContent = language;
+      header.appendChild(langLabel);
+    }
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'code-copy-btn';
+    copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>';
+    copyBtn.onclick = async function() {
+      const text = pre.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Copied!</span>';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    };
+    header.appendChild(copyBtn);
+
+    // Insert header at the start of wrapper (before the highlight/pre)
+    wrapper.insertBefore(header, wrapper.firstChild);
+  });
+</script>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+  <div class="footer-links">
+    <a href="/feed.xml" title="RSS Feed" class="footer-icon-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
+    <span class="footer-divider">·</span>
+    <button id="theme-btn" onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle theme (press T)" aria-label="Toggle theme" aria-live="polite">
+      <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+      </svg>
+      <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z"/>
+        <path d="M6.343 17.657l-1.414 1.414"/>
+        <path d="M6.343 6.343l-1.414 -1.414"/>
+        <path d="M17.657 6.343l1.414 -1.414"/>
+        <path d="M17.657 17.657l1.414 1.414"/>
+        <path d="M4 12h-2"/>
+        <path d="M12 4v-2"/>
+        <path d="M20 12h2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+    </footer>
+  </div>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      // Use View Transitions API if available
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      } else {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    }
+
+    // Keyboard shortcut: press 't' to toggle theme
+    document.addEventListener('keydown', function(e) {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+      }
+      if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
+</html>
