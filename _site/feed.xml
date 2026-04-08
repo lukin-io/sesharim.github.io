@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Apr 2026 00:14:45 +0300</pubDate>
-    <lastBuildDate>Wed, 08 Apr 2026 00:14:45 +0300</lastBuildDate>
+    <pubDate>Wed, 08 Apr 2026 12:26:43 +0300</pubDate>
+    <lastBuildDate>Wed, 08 Apr 2026 12:26:43 +0300</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -38,55 +38,47 @@
       &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;40%+&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;Solo PR volume vs average engineer in that group&lt;/td&gt;
+      &lt;td&gt;Solo PR vs avg engineer&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;4.4x+&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;Fast validation loop&lt;/td&gt;
+      &lt;td&gt;Validation loop&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~39s&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;Test signal&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;7,445 examples / 0 failures&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Tests&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;7,445 / 0 failures&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;Contract audit&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;6/6 checks passed&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;6/6 checks&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;Tooling cost&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;$200/month vs $4,000+/month&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;$200 vs $4,000+/month&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;Tooling delta over 11 months&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;$41,800+ saved&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Engineering cost avoided&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;$10.5k–12k/month&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;Onboarding outcome&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~1 hour to start shipping high-priority work&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Yearly savings (eng + QA)&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;$115k–132k/year&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Onboarding&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~1 hour to ship&lt;/strong&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;I shipped &lt;strong&gt;400+ backend PRs solo&lt;/strong&gt; while a wider &lt;strong&gt;11-engineer&lt;/strong&gt; group across frontend, AI/LLM, mobile, and DevOps shipped &lt;strong&gt;1,000+ PRs&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;That does &lt;strong&gt;not&lt;/strong&gt; mean one person outproduced all 11 combined on raw count. The honest raw PR math is this: I delivered &lt;strong&gt;40%+&lt;/strong&gt; of that group’s visible PR volume, and &lt;strong&gt;4.4x+&lt;/strong&gt; the PR volume of the average engineer in that comparison.&lt;/p&gt;
-
-&lt;p&gt;The reason I still call this a &lt;strong&gt;5x force multiplier&lt;/strong&gt; is that PR count is only the visible layer. Under it I was also carrying &lt;strong&gt;API design, DB ownership, migrations, seeds, CD/pipeline work, release safety, security, tests, verification, and new feature architecture&lt;/strong&gt;. I also built the operating system that made this repeatable: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/contract_audit&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;That operating system reduced onboarding from what is usually measured in &lt;strong&gt;weeks or months&lt;/strong&gt; to about &lt;strong&gt;an hour&lt;/strong&gt;, let a newly joined engineer start high-priority work immediately, and made even frontend engineers want to pick up tasks inside the same system.&lt;/p&gt;
-
-&lt;p&gt;This post is the business result of the ideas I described earlier in:&lt;/p&gt;
-
+&lt;p&gt;I effectively replaced:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/2025-11-27-building-browser-mmorpg-with-rails-and-ai&quot;&gt;Building a Browser-Based MMORPG with Ruby on Rails&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2025-12-02-zero-gap-api-development-with-ai&quot;&gt;Zero-Gap API Development&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2026-01-07-from-zero-gap-to-zero-drift&quot;&gt;From Zero-Gap to Zero-Drift&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Senior backend engineer (~$6.5k–8k/month)&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;QA automation engineer (~$4k/month)&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Those posts explained the pieces. This one is about what happened when I ran those ideas in production, every day, for months.&lt;/p&gt;
-
-&lt;hr /&gt;
+&lt;p&gt;By encoding both roles into a deterministic system (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENTS.md&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/contract_audit&lt;/code&gt;).&lt;/p&gt;
 
 &lt;h2 id=&quot;1-the-honest-math-behind-the-5x-claim&quot;&gt;1. The honest math behind the “5x” claim&lt;/h2&gt;
 
@@ -254,17 +246,17 @@ That is not paperwork. That is the translation layer that lets backend, frontend
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;llm_gateway&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Service_1&lt;/code&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;91&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;21,927&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fraudify&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Service_2&lt;/code&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;88&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;106,788&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;notify&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Service_3&lt;/code&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;96&lt;/td&gt;
       &lt;td style=&quot;text-align: right&quot;&gt;62,227&lt;/td&gt;
     &lt;/tr&gt;

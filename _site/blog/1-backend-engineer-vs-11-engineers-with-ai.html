@@ -144,55 +144,47 @@
       <td style="text-align: right"><strong>40%+</strong></td>
     </tr>
     <tr>
-      <td>Solo PR volume vs average engineer in that group</td>
+      <td>Solo PR vs avg engineer</td>
       <td style="text-align: right"><strong>4.4x+</strong></td>
     </tr>
     <tr>
-      <td>Fast validation loop</td>
+      <td>Validation loop</td>
       <td style="text-align: right"><strong>~39s</strong></td>
     </tr>
     <tr>
-      <td>Test signal</td>
-      <td style="text-align: right"><strong>7,445 examples / 0 failures</strong></td>
+      <td>Tests</td>
+      <td style="text-align: right"><strong>7,445 / 0 failures</strong></td>
     </tr>
     <tr>
       <td>Contract audit</td>
-      <td style="text-align: right"><strong>6/6 checks passed</strong></td>
+      <td style="text-align: right"><strong>6/6 checks</strong></td>
     </tr>
     <tr>
       <td>Tooling cost</td>
-      <td style="text-align: right"><strong>$200/month vs $4,000+/month</strong></td>
+      <td style="text-align: right"><strong>$200 vs $4,000+/month</strong></td>
     </tr>
     <tr>
-      <td>Tooling delta over 11 months</td>
-      <td style="text-align: right"><strong>$41,800+ saved</strong></td>
+      <td>Engineering cost avoided</td>
+      <td style="text-align: right"><strong>$10.5k–12k/month</strong></td>
     </tr>
     <tr>
-      <td>Onboarding outcome</td>
-      <td style="text-align: right"><strong>~1 hour to start shipping high-priority work</strong></td>
+      <td>Yearly savings (eng + QA)</td>
+      <td style="text-align: right"><strong>$115k–132k/year</strong></td>
+    </tr>
+    <tr>
+      <td>Onboarding</td>
+      <td style="text-align: right"><strong>~1 hour to ship</strong></td>
     </tr>
   </tbody>
 </table>
 
-<p>I shipped <strong>400+ backend PRs solo</strong> while a wider <strong>11-engineer</strong> group across frontend, AI/LLM, mobile, and DevOps shipped <strong>1,000+ PRs</strong>.</p>
-
-<p>That does <strong>not</strong> mean one person outproduced all 11 combined on raw count. The honest raw PR math is this: I delivered <strong>40%+</strong> of that group’s visible PR volume, and <strong>4.4x+</strong> the PR volume of the average engineer in that comparison.</p>
-
-<p>The reason I still call this a <strong>5x force multiplier</strong> is that PR count is only the visible layer. Under it I was also carrying <strong>API design, DB ownership, migrations, seeds, CD/pipeline work, release safety, security, tests, verification, and new feature architecture</strong>. I also built the operating system that made this repeatable: <code class="language-plaintext highlighter-rouge">AGENTS.md</code>, <code class="language-plaintext highlighter-rouge">bin/verify</code>, and <code class="language-plaintext highlighter-rouge">bin/contract_audit</code>.</p>
-
-<p>That operating system reduced onboarding from what is usually measured in <strong>weeks or months</strong> to about <strong>an hour</strong>, let a newly joined engineer start high-priority work immediately, and made even frontend engineers want to pick up tasks inside the same system.</p>
-
-<p>This post is the business result of the ideas I described earlier in:</p>
-
+<p>I effectively replaced:</p>
 <ul>
-  <li><a href="/2025-11-27-building-browser-mmorpg-with-rails-and-ai">Building a Browser-Based MMORPG with Ruby on Rails</a></li>
-  <li><a href="/2025-12-02-zero-gap-api-development-with-ai">Zero-Gap API Development</a></li>
-  <li><a href="/2026-01-07-from-zero-gap-to-zero-drift">From Zero-Gap to Zero-Drift</a></li>
+  <li><strong>Senior backend engineer (~$6.5k–8k/month)</strong></li>
+  <li><strong>QA automation engineer (~$4k/month)</strong></li>
 </ul>
 
-<p>Those posts explained the pieces. This one is about what happened when I ran those ideas in production, every day, for months.</p>
-
-<hr />
+<p>By encoding both roles into a deterministic system (<code class="language-plaintext highlighter-rouge">AGENTS.md</code>, <code class="language-plaintext highlighter-rouge">bin/verify</code>, <code class="language-plaintext highlighter-rouge">bin/contract_audit</code>).</p>
 
 <h2 id="1-the-honest-math-behind-the-5x-claim">1. The honest math behind the “5x” claim</h2>
 
@@ -360,17 +352,17 @@ That is not paperwork. That is the translation layer that lets backend, frontend
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">llm_gateway</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Service_1</code></td>
       <td style="text-align: right">91</td>
       <td style="text-align: right">21,927</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">fraudify</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Service_2</code></td>
       <td style="text-align: right">88</td>
       <td style="text-align: right">106,788</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">notify</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Service_3</code></td>
       <td style="text-align: right">96</td>
       <td style="text-align: right">62,227</td>
     </tr>

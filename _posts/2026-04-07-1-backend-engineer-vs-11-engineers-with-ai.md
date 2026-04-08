@@ -17,31 +17,22 @@ description: "How one principal backend engineer shipped 400+ PRs, built a zero-
 | Solo backend output | **400+ PRs** |
 | Wider comparison group | **11 engineers / 1,000+ PRs** |
 | Solo share of visible PR volume | **40%+** |
-| Solo PR volume vs average engineer in that group | **4.4x+** |
-| Fast validation loop | **~39s** |
-| Test signal | **7,445 examples / 0 failures** |
-| Contract audit | **6/6 checks passed** |
-| Tooling cost | **$200/month vs $4,000+/month** |
-| Tooling delta over 11 months | **$41,800+ saved** |
-| Onboarding outcome | **~1 hour to start shipping high-priority work** |
+| Solo PR vs avg engineer | **4.4x+** |
+| Validation loop | **~39s** |
+| Tests | **7,445 / 0 failures** |
+| Contract audit | **6/6 checks** |
+| Tooling cost | **$200 vs $4,000+/month** |
+| Engineering cost avoided | **$10.5k–12k/month** |
+| Yearly savings (eng + QA) | **$115k–132k/year** |
+| Onboarding | **~1 hour to ship** |
 
-I shipped **400+ backend PRs solo** while a wider **11-engineer** group across frontend, AI/LLM, mobile, and DevOps shipped **1,000+ PRs**.
+I effectively replaced:
+- **Senior backend engineer (~$6.5k–8k/month)**
+- **QA automation engineer (~$4k/month)**
 
-That does **not** mean one person outproduced all 11 combined on raw count. The honest raw PR math is this: I delivered **40%+** of that group's visible PR volume, and **4.4x+** the PR volume of the average engineer in that comparison.
+By encoding both roles into a deterministic system (`AGENTS.md`, `bin/verify`, `bin/contract_audit`).
 
-The reason I still call this a **5x force multiplier** is that PR count is only the visible layer. Under it I was also carrying **API design, DB ownership, migrations, seeds, CD/pipeline work, release safety, security, tests, verification, and new feature architecture**. I also built the operating system that made this repeatable: `AGENTS.md`, `bin/verify`, and `bin/contract_audit`.
 
-That operating system reduced onboarding from what is usually measured in **weeks or months** to about **an hour**, let a newly joined engineer start high-priority work immediately, and made even frontend engineers want to pick up tasks inside the same system.
-
-This post is the business result of the ideas I described earlier in:
-
-- [Building a Browser-Based MMORPG with Ruby on Rails](/2025-11-27-building-browser-mmorpg-with-rails-and-ai)
-- [Zero-Gap API Development](/2025-12-02-zero-gap-api-development-with-ai)
-- [From Zero-Gap to Zero-Drift](/2026-01-07-from-zero-gap-to-zero-drift)
-
-Those posts explained the pieces. This one is about what happened when I ran those ideas in production, every day, for months.
-
----
 
 ## 1. The honest math behind the “5x” claim
 
@@ -116,9 +107,9 @@ There are also specialized platform modules under that same umbrella:
 
 | Module | Files | Lines |
 | --- | ---: | ---: |
-| `llm_gateway` | 91 | 21,927 |
-| `fraudify` | 88 | 106,788 |
-| `notify` | 96 | 62,227 |
+| `Service_1` | 91 | 21,927 |
+| `Service_2` | 88 | 106,788 |
+| `Service_3` | 96 | 62,227 |
 
 That is why I do not describe the result as “AI helped me code faster.”
 
