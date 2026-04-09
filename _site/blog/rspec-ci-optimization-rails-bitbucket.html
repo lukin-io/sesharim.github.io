@@ -358,7 +358,7 @@ find spec <span class="nt">-name</span> <span class="s2">"*_spec.rb"</span> <spa
     <span class="na">postgres</span><span class="pi">:</span>
       <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:16</span>
       <span class="na">variables</span><span class="pi">:</span>
-        <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">wigiwork_test</span>
+        <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">testapp_test</span>
         <span class="na">POSTGRES_USER</span><span class="pi">:</span> <span class="s">postgres</span>
         <span class="na">POSTGRES_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
 
@@ -532,7 +532,7 @@ bundle <span class="nb">exec </span>parallel_rspec spec/ <span class="nt">-n</sp
 <span class="c"># Run with specific pattern</span>
 bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">-n</span> auto
 
-<span class="c"># Profile parallel execution</span>
+<span class="c"># Avatar parallel execution</span>
 <span class="nv">PROFILE</span><span class="o">=</span>1 bundle <span class="nb">exec </span>parallel_rspec spec/
 </code></pre></div></div>
 
@@ -547,15 +547,15 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Every response block creates its own fixtures</span>
 <span class="n">path</span> <span class="s1">'/api/v1/projects'</span> <span class="k">do</span>
   <span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
-    <span class="n">let!</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>     <span class="c1"># Created immediately</span>
-    <span class="n">let!</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># Created immediately</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">}</span>     <span class="c1"># Created immediately</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># Created immediately</span>
     <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># Created immediately</span>
     <span class="n">run_test!</span>
   <span class="k">end</span>
 
   <span class="n">response</span> <span class="s1">'422'</span><span class="p">,</span> <span class="s1">'validation error'</span> <span class="k">do</span>
-    <span class="n">let!</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>     <span class="c1"># DUPLICATE creation!</span>
-    <span class="n">let!</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># DUPLICATE creation!</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">}</span>     <span class="c1"># DUPLICATE creation!</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># DUPLICATE creation!</span>
     <span class="n">run_test!</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -575,20 +575,20 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># After: Lazy evaluation with explicit eager loading only when needed</span>
 <span class="n">path</span> <span class="s1">'/api/v1/projects'</span> <span class="k">do</span>
   <span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
-    <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
-    <span class="n">let</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">,</span> <span class="ss">player: </span><span class="n">player</span><span class="p">)</span> <span class="p">}</span>
     <span class="c1"># Project must exist before request - keep as let!</span>
-    <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:project</span><span class="p">,</span> <span class="ss">profile: </span><span class="n">profile</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:project</span><span class="p">,</span> <span class="ss">avatar: </span><span class="n">avatar</span><span class="p">)</span> <span class="p">}</span>
 
-    <span class="n">let</span><span class="p">(</span><span class="ss">:Authorization</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"Bearer </span><span class="si">#{</span><span class="n">jwt_for</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>  <span class="c1"># References user → triggers creation</span>
-    <span class="n">let</span><span class="p">(</span><span class="ss">:profile_id</span><span class="p">)</span> <span class="p">{</span> <span class="n">profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>  <span class="c1"># References profile → triggers creation</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:Authorization</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"Bearer </span><span class="si">#{</span><span class="n">jwt_for</span><span class="p">(</span><span class="n">player</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>  <span class="c1"># References player → triggers creation</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:avatar_id</span><span class="p">)</span> <span class="p">{</span> <span class="n">avatar</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>  <span class="c1"># References avatar → triggers creation</span>
 
     <span class="n">run_test!</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p><strong>The key insight:</strong> <code class="language-plaintext highlighter-rouge">let</code> is lazy—it only creates records when first accessed. If <code class="language-plaintext highlighter-rouge">Authorization</code> references <code class="language-plaintext highlighter-rouge">user</code>, and <code class="language-plaintext highlighter-rouge">profile_id</code> references <code class="language-plaintext highlighter-rouge">profile</code>, the chain triggers automatically.</p>
+<p><strong>The key insight:</strong> <code class="language-plaintext highlighter-rouge">let</code> is lazy—it only creates records when first accessed. If <code class="language-plaintext highlighter-rouge">Authorization</code> references <code class="language-plaintext highlighter-rouge">player</code>, and <code class="language-plaintext highlighter-rouge">avatar_id</code> references <code class="language-plaintext highlighter-rouge">avatar</code>, the chain triggers automatically.</p>
 
 <p><strong>Use <code class="language-plaintext highlighter-rouge">let!</code> only when:</strong></p>
 <ol>
@@ -601,17 +601,17 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: 26 let! calls</span>
 <span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
-  <span class="n">let!</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
-  <span class="n">let!</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
-  <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="no">Project</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">,</span> <span class="ss">player: </span><span class="n">player</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="no">Project</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">avatar: </span><span class="n">avatar</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">}</span>
   <span class="c1"># ...</span>
 <span class="k">end</span>
 
 <span class="c1"># After: 5 let! calls (only for records that must pre-exist)</span>
 <span class="n">response</span> <span class="s1">'200'</span><span class="p">,</span> <span class="s1">'successful'</span> <span class="k">do</span>
-  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
-  <span class="n">let</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
-  <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="no">Project</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span>    <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">,</span> <span class="ss">player: </span><span class="n">player</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let!</span><span class="p">(</span><span class="ss">:project</span><span class="p">)</span> <span class="p">{</span> <span class="no">Project</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">avatar: </span><span class="n">avatar</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">}</span>
   <span class="c1"># ...</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -623,18 +623,18 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 <p>For repeated patterns, use shared contexts:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/support/shared_examples/company_authenticated_context.rb</span>
-<span class="no">RSpec</span><span class="p">.</span><span class="nf">shared_context</span> <span class="s1">'authenticated company user'</span> <span class="k">do</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">shared_context</span> <span class="s1">'authenticated company player'</span> <span class="k">do</span>
   <span class="n">let</span><span class="p">(</span><span class="ss">:company</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:company</span><span class="p">)</span> <span class="p">}</span>
-  <span class="n">let</span><span class="p">(</span><span class="ss">:company_owner</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">,</span> <span class="ss">:client</span><span class="p">,</span> <span class="ss">company: </span><span class="n">company</span><span class="p">,</span> <span class="ss">company_role: :owner</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:company_owner</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">,</span> <span class="ss">:client</span><span class="p">,</span> <span class="ss">company: </span><span class="n">company</span><span class="p">,</span> <span class="ss">company_role: :owner</span><span class="p">)</span> <span class="p">}</span>
   <span class="n">let</span><span class="p">(</span><span class="ss">:Authorization</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"Bearer </span><span class="si">#{</span><span class="n">jwt_for</span><span class="p">(</span><span class="n">company_owner</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
   <span class="n">let</span><span class="p">(</span><span class="ss">:company_id</span><span class="p">)</span> <span class="p">{</span> <span class="n">company</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
 <span class="k">end</span>
 
 <span class="c1"># Usage in specs</span>
 <span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s1">'Companies API'</span> <span class="k">do</span>
-  <span class="n">include_context</span> <span class="s1">'authenticated company user'</span>
+  <span class="n">include_context</span> <span class="s1">'authenticated company player'</span>
 
-  <span class="n">path</span> <span class="s1">'/api/v1/companies/{company_id}/profile'</span> <span class="k">do</span>
+  <span class="n">path</span> <span class="s1">'/api/v1/companies/{company_id}/avatar'</span> <span class="k">do</span>
     <span class="c1"># company, company_owner, Authorization, company_id all available</span>
     <span class="c1"># Created lazily when first accessed</span>
   <span class="k">end</span>
@@ -832,12 +832,12 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spec/support/test_prof.rb</span>
 <span class="k">if</span> <span class="k">defined?</span><span class="p">(</span><span class="no">TestProf</span><span class="p">)</span>
-  <span class="c1"># FactoryProf: Profile factory usage</span>
+  <span class="c1"># FactoryProf: Avatar factory usage</span>
   <span class="no">TestProf</span><span class="o">::</span><span class="no">FactoryProf</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
     <span class="n">config</span><span class="p">.</span><span class="nf">mode</span> <span class="o">=</span> <span class="ss">:flamegraph</span> <span class="k">if</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"FPROF_FLAMEGRAPH"</span><span class="p">]</span>
   <span class="k">end</span>
 
-  <span class="c1"># EventProf: Profile SQL queries and factory creates</span>
+  <span class="c1"># EventProf: Avatar SQL queries and factory creates</span>
   <span class="no">TestProf</span><span class="o">::</span><span class="no">EventProf</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
     <span class="n">config</span><span class="p">.</span><span class="nf">per_example</span> <span class="o">=</span> <span class="kp">true</span> <span class="k">if</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"EVENT_PROF_EXAMPLES"</span><span class="p">]</span>
   <span class="k">end</span>
@@ -871,19 +871,19 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 
 <h3 id="73-profiling-commands">7.3 Profiling Commands</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Profile slow examples (show top 10)</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Avatar slow examples (show top 10)</span>
 <span class="nv">PROFILE</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
 
-<span class="c"># Profile factory usage (find N+1 factories)</span>
+<span class="c"># Avatar factory usage (find N+1 factories)</span>
 <span class="nv">FPROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
 
-<span class="c"># Profile factory usage with flamegraph</span>
+<span class="c"># Avatar factory usage with flamegraph</span>
 <span class="nv">FPROF</span><span class="o">=</span>1 <span class="nv">FPROF_FLAMEGRAPH</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
 
-<span class="c"># Profile SQL queries</span>
+<span class="c"># Avatar SQL queries</span>
 <span class="nv">EVENT_PROF</span><span class="o">=</span>sql.active_record bundle <span class="nb">exec </span>rspec
 
-<span class="c"># Profile factory create events</span>
+<span class="c"># Avatar factory create events</span>
 <span class="nv">EVENT_PROF</span><span class="o">=</span>factory.create bundle <span class="nb">exec </span>rspec
 
 <span class="c"># Native factory profiling</span>
@@ -893,13 +893,13 @@ bundle <span class="nb">exec </span>parallel_rspec spec/models <span class="nt">
 <span class="nv">PROFILE</span><span class="o">=</span>1 <span class="nv">FACTORY_PROF</span><span class="o">=</span>1 bundle <span class="nb">exec </span>rspec
 </code></pre></div></div>
 
-<h3 id="74-sample-factory-profile-output">7.4 Sample Factory Profile Output</h3>
+<h3 id="74-sample-factory-avatar-output">7.4 Sample Factory Avatar Output</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>=== FactoryBot Profiling Report ===
 Factory                                      Count       Time (ms)
 -------------------------------------------------------------------
-user                                           156         1234.56
-profile                                        142          987.65
+player                                           156         1234.56
+avatar                                        142          987.65
 company                                         89          654.32
 attachment                                      85          432.10
 job_post                                        45          321.00
@@ -924,19 +924,19 @@ TOTAL                                          892         5432.10
 <span class="nb">require</span> <span class="s1">'test_prof/recipes/rspec/let_it_be'</span>
 
 <span class="c1"># Usage in specs</span>
-<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ProfileBlueprint</span> <span class="k">do</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">AvatarBlueprint</span> <span class="k">do</span>
   <span class="c1"># Created once for ALL examples in this describe block</span>
-  <span class="n">let_it_be</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
-  <span class="n">let_it_be</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">,</span> <span class="ss">user: </span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let_it_be</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:player</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let_it_be</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span> <span class="p">{</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">,</span> <span class="ss">player: </span><span class="n">player</span><span class="p">)</span> <span class="p">}</span>
 
   <span class="n">it</span> <span class="s2">"serializes id"</span> <span class="k">do</span>
-    <span class="c1"># user and profile are reused, not recreated</span>
-    <span class="n">expect</span><span class="p">(</span><span class="n">described_class</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">profile</span><span class="p">)).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+    <span class="c1"># player and avatar are reused, not recreated</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">described_class</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">avatar</span><span class="p">)).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">id: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
   <span class="k">end</span>
 
   <span class="n">it</span> <span class="s2">"serializes username"</span> <span class="k">do</span>
-    <span class="c1"># Same user and profile from above</span>
-    <span class="n">expect</span><span class="p">(</span><span class="n">described_class</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">profile</span><span class="p">)).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">username: </span><span class="n">profile</span><span class="p">.</span><span class="nf">username</span><span class="p">)</span>
+    <span class="c1"># Same player and avatar from above</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">described_class</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="n">avatar</span><span class="p">)).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="ss">username: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">username</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -962,8 +962,8 @@ TOTAL                                          892         5432.10
   <span class="c1"># Persist example status for --only-failures</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">example_status_persistence_file_path</span> <span class="o">=</span> <span class="s2">"spec/examples.txt"</span>
 
-  <span class="c1"># Profile slow examples (enable via PROFILE=1)</span>
-  <span class="n">config</span><span class="p">.</span><span class="nf">profile_examples</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"PROFILE"</span><span class="p">]</span> <span class="p">?</span> <span class="mi">10</span> <span class="p">:</span> <span class="kp">false</span>
+  <span class="c1"># Avatar slow examples (enable via PROFILE=1)</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">avatar_examples</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s2">"PROFILE"</span><span class="p">]</span> <span class="p">?</span> <span class="mi">10</span> <span class="p">:</span> <span class="kp">false</span>
 
   <span class="c1"># Random order to surface order dependencies</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">order</span> <span class="o">=</span> <span class="ss">:random</span>
@@ -983,9 +983,9 @@ TOTAL                                          892         5432.10
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">profile_examples</code></td>
+      <td><code class="language-plaintext highlighter-rouge">avatar_examples</code></td>
       <td>Conditional</td>
-      <td>Only profile when explicitly requested</td>
+      <td>Only avatar when explicitly requested</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">order</code></td>
@@ -1206,7 +1206,7 @@ Total wall time: ~3:00 (limited by slowest parallel step)
 <h2 id="key-takeaways">Key Takeaways</h2>
 
 <ol>
-  <li><strong>Profile before optimizing</strong> — Measure, don’t guess</li>
+  <li><strong>Avatar before optimizing</strong> — Measure, don’t guess</li>
   <li><strong>Parallelize at multiple levels</strong> — Pipeline steps + test processes</li>
   <li><strong>Lazy evaluation is your friend</strong> — <code class="language-plaintext highlighter-rouge">let</code> over <code class="language-plaintext highlighter-rouge">let!</code></li>
   <li><strong>Eliminate I/O</strong> — In-memory beats disk every time</li>
@@ -1246,7 +1246,7 @@ Total wall time: ~3:00 (limited by slowest parallel step)
 
 <hr />
 
-<p><em>This post documents the optimization of the Wigiwork API test suite from timeout failures to sub-3-minute builds. The patterns described here—parallel execution, factory optimization, I/O elimination, and profiling infrastructure—are applicable to any Rails application with a growing test suite.</em></p>
+<p><em>This post documents the optimization of the TestApp API test suite from timeout failures to sub-3-minute builds. The patterns described here—parallel execution, factory optimization, I/O elimination, and profiling infrastructure—are applicable to any Rails application with a growing test suite.</em></p>
 
 
     </div>

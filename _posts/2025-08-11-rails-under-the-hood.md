@@ -118,7 +118,7 @@ If youâ€™re comfortable writing Rails apps but want to *really* understand whatâ
 
 **Quick Health Commands:**
 - Middleware: `bin/rails middleware`
-- Routes: `bin/rails routes -g profiles`
+- Routes: `bin/rails routes -g avatars`
 - DB pool: `bin/rails r 'p ActiveRecord::Base.connection_pool.stat'`
 - Eager load check: `bin/rails zeitwerk:check`
 

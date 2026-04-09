@@ -206,22 +206,22 @@
 
 <p>When database data is sparse, required fields still must satisfy the contract:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/blueprints/profile_card_blueprint.rb</span>
-<span class="k">class</span> <span class="nc">ProfileCardBlueprint</span> <span class="o">&lt;</span> <span class="no">Blueprinter</span><span class="o">::</span><span class="no">Base</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/blueprints/avatar_card_blueprint.rb</span>
+<span class="k">class</span> <span class="nc">AvatarCardBlueprint</span> <span class="o">&lt;</span> <span class="no">Blueprinter</span><span class="o">::</span><span class="no">Base</span>
   <span class="n">identifier</span> <span class="ss">:id</span>
 
-  <span class="n">field</span> <span class="ss">:username</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="o">|</span>
-    <span class="n">profile</span><span class="p">.</span><span class="nf">username</span><span class="p">.</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">""</span>  <span class="c1"># String → empty string</span>
+  <span class="n">field</span> <span class="ss">:username</span> <span class="k">do</span> <span class="o">|</span><span class="n">avatar</span><span class="o">|</span>
+    <span class="n">avatar</span><span class="p">.</span><span class="nf">username</span><span class="p">.</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">""</span>  <span class="c1"># String -&gt; empty string</span>
   <span class="k">end</span>
 
-  <span class="n">field</span> <span class="ss">:skills</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="o">|</span>
-    <span class="n">profile</span><span class="p">.</span><span class="nf">skills</span><span class="p">.</span><span class="nf">presence</span> <span class="o">||</span> <span class="p">[]</span>    <span class="c1"># Array → empty array</span>
+  <span class="n">field</span> <span class="ss">:abilities</span> <span class="k">do</span> <span class="o">|</span><span class="n">avatar</span><span class="o">|</span>
+    <span class="n">avatar</span><span class="p">.</span><span class="nf">abilities</span><span class="p">.</span><span class="nf">presence</span> <span class="o">||</span> <span class="p">[]</span>    <span class="c1"># Array -&gt; empty array</span>
   <span class="k">end</span>
 
-  <span class="n">field</span> <span class="ss">:availability</span> <span class="k">do</span> <span class="o">|</span><span class="n">profile</span><span class="o">|</span>
+  <span class="n">field</span> <span class="ss">:availability</span> <span class="k">do</span> <span class="o">|</span><span class="n">avatar</span><span class="o">|</span>
     <span class="p">{</span>
-      <span class="ss">status: </span><span class="n">profile</span><span class="p">.</span><span class="nf">availability_status</span> <span class="o">||</span> <span class="s2">"na"</span><span class="p">,</span>  <span class="c1"># Enum → default value</span>
-      <span class="ss">updated_at: </span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="nf">availability_updated_at</span> <span class="o">||</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">).</span><span class="nf">iso8601</span>
+      <span class="ss">status: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">availability_status</span> <span class="o">||</span> <span class="s2">"na"</span><span class="p">,</span>  <span class="c1"># Enum -&gt; default value</span>
+      <span class="ss">updated_at: </span><span class="p">(</span><span class="n">avatar</span><span class="p">.</span><span class="nf">availability_updated_at</span> <span class="o">||</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">).</span><span class="nf">iso8601</span>
     <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -337,8 +337,8 @@ bundle <span class="nb">exec </span>rails rswag:specs:swaggerize
 
 <p><strong>Type A: Implementation Issues</strong> — Your code doesn’t match REQUIREMENT_DOC</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[IMPL] GET /profiles/:id - [EXPECTED: returns avatar_url] vs [ACTUAL: field missing from Blueprint]
-[IMPL] POST /users - [EXPECTED: 422 for invalid email] vs [ACTUAL: returns 400]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[IMPL] GET /avatars/:id - [EXPECTED: returns banner_url] vs [ACTUAL: field missing from Blueprint]
+[IMPL] POST /players - [EXPECTED: 422 for invalid email] vs [ACTUAL: returns 400]
 </code></pre></div></div>
 
 <p>→ <strong>Fix ALL before proceeding.</strong> Re-run verification after fixes.</p>
@@ -682,7 +682,6 @@ Final documentation (AFTER verification):
 <p>AI amplifies whatever process you give it. Give it contracts, gates, and verification—and it becomes the best pair programmer you’ve ever had.</p>
 
 <p><strong>The framework is the force multiplier. Experience is choosing to use it.</strong></p>
-
 
     </div>
   </div>

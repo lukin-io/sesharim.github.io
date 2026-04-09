@@ -89,7 +89,7 @@ services:
       MYSQL_DB_PORT: "3306"
       MYSQL_DB_USER: root
       MYSQL_DB_PASS: password
-      MYSQL_NAME: wigiwork_development
+      MYSQL_NAME: testapp_development
 
       REDIS_URL: redis://redis:6379/0
       APP_VERSION: devcontainer
@@ -116,7 +116,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wigiwork_development
+      MYSQL_DATABASE: testapp_development
     ports:
       - "3307:3306" # host:container for host access
     healthcheck:
@@ -166,15 +166,15 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("MYSQL_NAME", "wigiwork_development") %>
+  database: <%= ENV.fetch("MYSQL_NAME", "testapp_development") %>
 
 test:
   <<: *default
-  database: <%= ENV.fetch("DB_DATABASE", "wigiwork_test") %>
+  database: <%= ENV.fetch("DB_DATABASE", "testapp_test") %>
 ```
 
 > If you run Rails **from the host** against the containerized DB, use `127.0.0.1:3307` (not `mysql:3306`).
-> Example: `DATABASE_URL=mysql2://root:password@127.0.0.1:3307/wigiwork_development`
+> Example: `DATABASE_URL=mysql2://root:password@127.0.0.1:3307/testapp_development`
 
 ---
 

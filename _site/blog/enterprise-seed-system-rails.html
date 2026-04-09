@@ -56,8 +56,8 @@
 <meta property="og:title" content="From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System" />
 <meta name="author" content="Max Lukin" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation." />
-<meta property="og:description" content="A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation." />
+<meta name="description" content="A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate avatars with abilities, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation." />
+<meta property="og:description" content="A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate avatars with abilities, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation." />
 <link rel="canonical" href="http://localhost:4000/blog/enterprise-seed-system-rails" />
 <meta property="og:url" content="http://localhost:4000/blog/enterprise-seed-system-rails" />
 <meta property="og:site_name" content="Software Engineering consultant" />
@@ -66,7 +66,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2026-01-24T00:00:00+02:00","datePublished":"2026-01-24T00:00:00+02:00","description":"A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation.","headline":"From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/enterprise-seed-system-rails"},"url":"http://localhost:4000/blog/enterprise-seed-system-rails"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Max Lukin"},"dateModified":"2026-01-24T00:00:00+02:00","datePublished":"2026-01-24T00:00:00+02:00","description":"A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate avatars with abilities, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation.","headline":"From Monolithic Seeds to Enterprise-Ready Data Generation: Building a Scalable Rails Seed System","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/enterprise-seed-system-rails"},"url":"http://localhost:4000/blog/enterprise-seed-system-rails"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -123,7 +123,7 @@
 
 <p>Every growing Rails application faces the same challenge: how do you populate your database with realistic data for development, demos, testing, and stakeholder presentations? Simple <code class="language-plaintext highlighter-rouge">db/seeds.rb</code> files work for small projects, but as your application scales, so do your seeding requirements.</p>
 
-<p>This post documents how we transformed a 3,600-line monolithic seed file into an enterprise-ready data generation system that creates 100,000+ full candidate profiles with all associations—serving AI training, QA stress testing, and frontend performance validation.</p>
+<p>This post documents how we transformed a 3,600-line monolithic seed file into an enterprise-ready data generation system that creates 100,000+ full candidate avatars with all associations—serving AI training, QA stress testing, and frontend performance validation.</p>
 
 <hr />
 
@@ -138,7 +138,7 @@
   <li><a href="#6-feature-3-conditional-execution-via-env-flags">Feature 3: Conditional Execution via ENV Flags</a></li>
   <li><a href="#7-feature-4-progress-reporting-with-timing">Feature 4: Progress Reporting with Timing</a></li>
   <li><a href="#8-feature-5-post-seed-data-validation">Feature 5: Post-Seed Data Validation</a></li>
-  <li><a href="#9-feature-6-100k-full-profile-scaling">Feature 6: 100k+ Full Profile Scaling</a></li>
+  <li><a href="#9-feature-6-100k-full-avatar-scaling">Feature 6: 100k+ Full Avatar Scaling</a></li>
   <li><a href="#10-benefits-and-use-cases">Benefits and Use Cases</a></li>
   <li><a href="#11-testing-the-seed-system">Testing the Seed System</a></li>
   <li><a href="#12-three-bonus-ideas-worth-implementing">Three Bonus Ideas Worth Implementing</a></li>
@@ -203,16 +203,16 @@
 <p>Most Rails projects start with something like this:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds.rb</span>
-<span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@example.com'</span><span class="p">,</span> <span class="ss">password: </span><span class="s1">'password'</span><span class="p">)</span>
+<span class="no">Player</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@example.com'</span><span class="p">,</span> <span class="ss">password: </span><span class="s1">'password'</span><span class="p">)</span>
 <span class="no">Company</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Test Company'</span><span class="p">)</span>
 <span class="c1"># ... done</span>
 </code></pre></div></div>
 
 <p>Then requirements grow:</p>
 <ul>
-  <li>“We need 50 users with different roles”</li>
-  <li>“Profiles need skills, work experiences, education”</li>
-  <li>“QA needs 100,000 profiles for load testing”</li>
+  <li>“We need 50 players with different roles”</li>
+  <li>“Avatars need abilities, work experiences, education”</li>
+  <li>“QA needs 100,000 avatars for load testing”</li>
   <li>“AI team needs realistic job title distributions”</li>
   <li>“CEO wants the demo to look like a real platform”</li>
 </ul>
@@ -298,7 +298,7 @@
       <span class="k">end</span>
 
       <span class="k">def</span> <span class="nf">seed_admin_users</span>
-        <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@bluegeko.com'</span><span class="p">)</span>
+        <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@bluegeko.com'</span><span class="p">)</span>
         <span class="c1"># ... 300 lines</span>
       <span class="k">end</span>
 
@@ -388,7 +388,7 @@
       <td>5</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">@admin_profile</code></td>
+      <td><code class="language-plaintext highlighter-rouge">@admin_avatar</code></td>
       <td>2</td>
     </tr>
   </tbody>
@@ -475,14 +475,14 @@
 ├── context.rb                  # State management (233 lines)
 ├── timing.rb                   # Progress tracking (186 lines)
 ├── validation.rb               # Data integrity (331 lines)
-├── batch_profiles.rb           # 100k scaling (825 lines)
+├── batch_avatars.rb           # 100k scaling (825 lines)
 ├── README.md                   # Documentation (1,797 lines)
 ├── SEEDS_REFACTORING.md        # Implementation notes (643 lines)
 └── steps/                      # 37 individual step files
     ├── 01_predefined_avatar_assets.rb
     ├── 02_company.rb
     ├── ...
-    └── 37_batch_profiles.rb
+    └── 37_batch_avatars.rb
 </code></pre></div></div>
 
 <p><strong>Result: 3,610 lines → 37 focused files averaging 80 lines each</strong></p>
@@ -532,7 +532,7 @@
     <span class="no">OPTIONAL_STEPS</span> <span class="o">=</span> <span class="p">{</span>
       <span class="ss">seed_reports: </span><span class="s2">"SKIP_SEED_REPORTS"</span><span class="p">,</span>
       <span class="ss">seed_full_data_candidates: </span><span class="s2">"SEED_FULL_CANDIDATES"</span><span class="p">,</span>
-      <span class="ss">seed_batch_profiles: </span><span class="s2">"CREATE_BATCH_PROFILES"</span>
+      <span class="ss">seed_batch_avatars: </span><span class="s2">"CREATE_BATCH_PROFILES"</span>
     <span class="p">}.</span><span class="nf">freeze</span>
 
     <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
@@ -545,7 +545,7 @@
         <span class="n">run_step</span> <span class="ss">:seed_company</span>
         <span class="n">run_step</span> <span class="ss">:seed_job_titles</span>
         <span class="c1"># ... 34 more steps</span>
-        <span class="n">run_step</span> <span class="ss">:seed_batch_profiles</span>
+        <span class="n">run_step</span> <span class="ss">:seed_batch_avatars</span>
 
         <span class="c1"># Validate and summarize</span>
         <span class="n">validate_seed_data</span>
@@ -632,7 +632,7 @@
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: 95 instance variable references across 37 steps</span>
 <span class="k">def</span> <span class="nf">seed_admin_users</span>
-  <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+  <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="k">def</span> <span class="nf">seed_job_posts</span>
@@ -658,14 +658,14 @@
       <span class="nb">attr_accessor</span> <span class="ss">:company</span>
       <span class="nb">attr_accessor</span> <span class="ss">:admin_user</span><span class="p">,</span> <span class="ss">:standard_user</span>
       <span class="nb">attr_accessor</span> <span class="ss">:candidate_demo_user</span><span class="p">,</span> <span class="ss">:access_request_user</span>
-      <span class="nb">attr_accessor</span> <span class="ss">:admin_profile</span><span class="p">,</span> <span class="ss">:full_data_candidate_users</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:admin_avatar</span><span class="p">,</span> <span class="ss">:full_data_candidate_users</span>
       <span class="nb">attr_accessor</span> <span class="ss">:demo_job_posts</span>
 
       <span class="c1"># Client roles</span>
       <span class="nb">attr_accessor</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:client_owner</span><span class="p">,</span> <span class="ss">:client_manager</span>
 
       <span class="c1"># Batch processing</span>
-      <span class="nb">attr_accessor</span> <span class="ss">:batch_profile_result</span>
+      <span class="nb">attr_accessor</span> <span class="ss">:batch_avatar_result</span>
 
       <span class="k">def</span> <span class="nf">initialize</span>
         <span class="vi">@full_data_candidate_users</span> <span class="o">=</span> <span class="p">[]</span>
@@ -677,12 +677,12 @@
         <span class="o">!</span><span class="vi">@company</span><span class="p">.</span><span class="nf">nil?</span>
       <span class="k">end</span>
 
-      <span class="k">def</span> <span class="nf">batch_profiles?</span>
-        <span class="vi">@batch_profile_result</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">success?</span> <span class="o">==</span> <span class="kp">true</span>
+      <span class="k">def</span> <span class="nf">batch_avatars?</span>
+        <span class="vi">@batch_avatar_result</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">success?</span> <span class="o">==</span> <span class="kp">true</span>
       <span class="k">end</span>
 
-      <span class="k">def</span> <span class="nf">batch_profile_count</span>
-        <span class="vi">@batch_profile_result</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">profiles_created</span> <span class="o">||</span> <span class="mi">0</span>
+      <span class="k">def</span> <span class="nf">batch_avatar_count</span>
+        <span class="vi">@batch_avatar_result</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">avatars_created</span> <span class="o">||</span> <span class="mi">0</span>
       <span class="k">end</span>
 
       <span class="c1"># Dependency validation</span>
@@ -697,7 +697,7 @@
           <span class="ss">company: </span><span class="vi">@company</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span>
           <span class="ss">admin_user: </span><span class="vi">@admin_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
           <span class="ss">full_data_candidates: </span><span class="vi">@full_data_candidate_users</span><span class="p">.</span><span class="nf">size</span><span class="p">,</span>
-          <span class="ss">batch_profiles: </span><span class="n">batch_profile_count</span>
+          <span class="ss">batch_avatars: </span><span class="n">batch_avatar_count</span>
         <span class="p">}</span>
       <span class="k">end</span>
     <span class="k">end</span>
@@ -713,7 +713,7 @@
 
   <span class="n">job</span> <span class="o">=</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
     <span class="ss">company: </span><span class="n">ctx</span><span class="p">.</span><span class="nf">company</span><span class="p">,</span>
-    <span class="ss">user: </span><span class="n">ctx</span><span class="p">.</span><span class="nf">admin_user</span><span class="p">,</span>
+    <span class="ss">player: </span><span class="n">ctx</span><span class="p">.</span><span class="nf">admin_user</span><span class="p">,</span>
     <span class="ss">title: </span><span class="s2">"Senior Engineer"</span>
   <span class="p">)</span>
   <span class="n">ctx</span><span class="p">.</span><span class="nf">demo_job_posts</span> <span class="o">&lt;&lt;</span> <span class="n">job</span>
@@ -785,7 +785,7 @@
       <td>Rich candidate data</td>
     </tr>
     <tr>
-      <td>Create 100k profiles</td>
+      <td>Create 100k avatars</td>
       <td><code class="language-plaintext highlighter-rouge">CREATE_BATCH_PROFILES=true</code></td>
       <td>Batch processing enabled</td>
     </tr>
@@ -802,7 +802,7 @@
   <span class="c1"># Enable steps (default: skip)</span>
   <span class="ss">seed_full_data_candidates: </span><span class="s2">"SEED_FULL_CANDIDATES"</span><span class="p">,</span>
   <span class="ss">seed_full_data_candidates_job_board: </span><span class="s2">"SEED_FULL_CANDIDATES"</span><span class="p">,</span>
-  <span class="ss">seed_batch_profiles: </span><span class="s2">"CREATE_BATCH_PROFILES"</span>
+  <span class="ss">seed_batch_avatars: </span><span class="s2">"CREATE_BATCH_PROFILES"</span>
 <span class="p">}.</span><span class="nf">freeze</span>
 
 <span class="k">def</span> <span class="nf">skip_step?</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
@@ -825,7 +825,7 @@ rails db:seed
 <span class="c"># Full candidates for feature testing</span>
 <span class="nv">SEED_FULL_CANDIDATES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
 
-<span class="c"># 100k profiles for QA stress testing</span>
+<span class="c"># 100k avatars for QA stress testing</span>
 <span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
 
 <span class="c"># Skip reports for faster iteration</span>
@@ -939,7 +939,7 @@ rails db:seed
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ 1/37] Predefined avatar assets              
 [ 2/37] Company                               
 [ 3/37] Job titles                            
-[ 4/37] Admin users                           
+[ 4/37] Admin players                           
 ...
 [35/37] Summary                               
 [36/37] Demo recommendation                   
@@ -948,8 +948,8 @@ rails db:seed
 SEED TIMING SUMMARY
 ============================================================
   seed_full_data_candidates                     12.34s
-  seed_random_profiles                           8.21s
-  seed_homepage_profiles                         4.56s
+  seed_random_avatars                           8.21s
+  seed_homepage_avatars                         4.56s
   seed_job_posts                                 3.12s
   ...
 ------------------------------------------------------------
@@ -999,12 +999,12 @@ SEED TIMING SUMMARY
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Seeds "complete" but data is broken</span>
 <span class="k">def</span> <span class="nf">seed_admin_users</span>
-  <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@bluegeko.com'</span><span class="p">)</span>
+  <span class="vi">@admin_user</span> <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">find_or_initialize_by</span><span class="p">(</span><span class="ss">email: </span><span class="s1">'admin@bluegeko.com'</span><span class="p">)</span>
   <span class="vi">@admin_user</span><span class="p">.</span><span class="nf">save</span>  <span class="c1"># No bang! Silent failure</span>
 <span class="k">end</span>
 
 <span class="c1"># Later, in production demo...</span>
-<span class="c1"># "Why is there no admin user?!"</span>
+<span class="c1"># "Why is there no admin player?!"</span>
 </code></pre></div></div>
 
 <h3 id="82-the-solution-validation-module">8.2 The Solution: Validation Module</h3>
@@ -1015,20 +1015,20 @@ SEED TIMING SUMMARY
     <span class="k">module</span> <span class="nn">Validation</span>
       <span class="no">CHECKS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="c1"># Integrity checks (errors)</span>
-        <span class="ss">orphaned_profiles: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:user</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">users: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
-        <span class="ss">candidates_without_profiles: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">candidate</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:profile</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">profiles: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
+        <span class="ss">orphaned_avatars: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:player</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">players: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
+        <span class="ss">candidates_without_avatars: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Player</span><span class="p">.</span><span class="nf">candidate</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">avatars: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
         <span class="ss">orphaned_job_posts: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">left_joins</span><span class="p">(</span><span class="ss">:company</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">companies: </span><span class="p">{</span> <span class="ss">id: </span><span class="kp">nil</span> <span class="p">})</span> <span class="p">},</span>
 
         <span class="c1"># Minimum data checks (errors)</span>
-        <span class="ss">minimum_users: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="p">},</span>
-        <span class="ss">minimum_profiles: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="p">},</span>
+        <span class="ss">minimum_users: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Player</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="p">},</span>
+        <span class="ss">minimum_avatars: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="p">},</span>
         <span class="ss">minimum_companies: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Company</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="p">},</span>
         <span class="ss">minimum_job_posts: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">JobPost</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;=</span> <span class="mi">5</span> <span class="p">},</span>
 
         <span class="c1"># Quality checks (warnings)</span>
-        <span class="ss">profiles_with_skills: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:skills</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">},</span>
-        <span class="ss">profiles_with_work_experience: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:work_experiences</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">},</span>
-        <span class="ss">users_with_login_methods: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:login_methods</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">}</span>
+        <span class="ss">avatars_with_abilities: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:abilities</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">},</span>
+        <span class="ss">avatars_with_work_experience: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:raid_logs</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">},</span>
+        <span class="ss">users_with_access_keys: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Player</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:access_keys</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">}</span>
       <span class="p">}.</span><span class="nf">freeze</span>
 
       <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
@@ -1047,7 +1047,7 @@ SEED TIMING SUMMARY
         <span class="kp">private</span>
 
         <span class="k">def</span> <span class="nf">run_integrity_checks</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-          <span class="sx">%i[orphaned_profiles candidates_without_profiles orphaned_job_posts]</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">check</span><span class="o">|</span>
+          <span class="sx">%i[orphaned_avatars candidates_without_avatars orphaned_job_posts]</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">check</span><span class="o">|</span>
             <span class="n">count</span> <span class="o">=</span> <span class="no">CHECKS</span><span class="p">[</span><span class="n">check</span><span class="p">].</span><span class="nf">call</span><span class="p">.</span><span class="nf">count</span>
             <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span>
               <span class="n">result</span><span class="p">.</span><span class="nf">add_error</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="s2">"Found </span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">check</span><span class="p">.</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">humanize</span><span class="p">.</span><span class="nf">downcase</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -1068,20 +1068,20 @@ SEED TIMING SUMMARY
 POST-SEED VALIDATION
 ============================================================
 Integrity Checks:
-  ✓ No orphaned profiles
-  ✓ No candidates without profiles
+  ✓ No orphaned avatars
+  ✓ No candidates without avatars
   ✓ No orphaned job posts
 
 Minimum Data Checks:
-  ✓ Users: 47 (minimum: 5)
-  ✓ Profiles: 42 (minimum: 3)
+  ✓ Players: 47 (minimum: 5)
+  ✓ Avatars: 42 (minimum: 3)
   ✓ Companies: 5 (minimum: 1)
   ✓ Job Posts: 25 (minimum: 5)
 
 Quality Checks:
-  ✓ Profiles with skills: 38
-  ✓ Profiles with work experience: 35
-  ⚠ Users with login methods: 0 (warning)
+  ✓ Avatars with abilities: 38
+  ✓ Avatars with work experience: 35
+  ⚠ Players with login methods: 0 (warning)
 
 ------------------------------------------------------------
 Result: PASSED (14 checks, 1 warning)
@@ -1099,15 +1099,15 @@ Result: PASSED (14 checks, 1 warning)
 
 <hr />
 
-<h2 id="9-feature-6-100k-full-profile-scaling">9. Feature 6: 100k+ Full Profile Scaling</h2>
+<h2 id="9-feature-6-100k-full-avatar-scaling">9. Feature 6: 100k+ Full Avatar Scaling</h2>
 
 <h3 id="91-the-challenge">9.1 The Challenge</h3>
 
-<p>Our AI team needed 100,000 realistic candidate profiles for model training. QA needed the same for stress testing. Creating records one-by-one would take hours.</p>
+<p>Our AI team needed 100,000 realistic candidate avatars for model training. QA needed the same for stress testing. Creating records one-by-one would take hours.</p>
 
 <p><strong>Requirements:</strong></p>
 <ul>
-  <li>Full profiles with ALL associations</li>
+  <li>Full avatars with ALL associations</li>
   <li>Category-appropriate job titles</li>
   <li>Skills, work experiences, education</li>
   <li>Portfolio, contact info, avatars</li>
@@ -1117,24 +1117,24 @@ Result: PASSED (14 checks, 1 warning)
 
 <h3 id="92-what-gets-created">9.2 What Gets Created</h3>
 
-<p>Each batch profile is a <strong>complete candidate</strong> with:</p>
+<p>Each batch avatar is a <strong>complete candidate</strong> with:</p>
 
 <table>
   <thead>
     <tr>
       <th>Association</th>
-      <th>Per Profile</th>
+      <th>Per Avatar</th>
       <th>Total (100k)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>User + Login Security</td>
+      <td>Player + Login Security</td>
       <td>1</td>
       <td>100,000</td>
     </tr>
     <tr>
-      <td>Profile</td>
+      <td>Avatar</td>
       <td>1</td>
       <td>100,000</td>
     </tr>
@@ -1220,10 +1220,10 @@ Result: PASSED (14 checks, 1 warning)
 
 <h3 id="94-implementation-highlights">9.4 Implementation Highlights</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/batch_profiles.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># db/seeds/batch_avatars.rb</span>
 <span class="k">module</span> <span class="nn">Seeds</span>
   <span class="k">module</span> <span class="nn">Support</span>
-    <span class="k">module</span> <span class="nn">BatchProfiles</span>
+    <span class="k">module</span> <span class="nn">BatchAvatars</span>
       <span class="no">DEFAULT_COUNT</span> <span class="o">=</span> <span class="mi">100_000</span>
       <span class="no">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">500</span>
 
@@ -1247,22 +1247,22 @@ Result: PASSED (14 checks, 1 warning)
           <span class="c1"># Select random category</span>
           <span class="n">category</span> <span class="o">=</span> <span class="n">categories</span><span class="p">.</span><span class="nf">sample</span>
 
-          <span class="c1"># Create user (ActiveRecord for Devise)</span>
-          <span class="n">user</span> <span class="o">=</span> <span class="n">create_batch_user</span><span class="p">(</span><span class="ss">index: </span><span class="n">index</span><span class="p">)</span>
+          <span class="c1"># Create player (ActiveRecord for Devise)</span>
+          <span class="n">player</span> <span class="o">=</span> <span class="n">create_batch_user</span><span class="p">(</span><span class="ss">index: </span><span class="n">index</span><span class="p">)</span>
 
-          <span class="c1"># Create profile with category-appropriate job title</span>
-          <span class="n">profile</span> <span class="o">=</span> <span class="n">create_batch_profile</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">,</span> <span class="ss">category: </span><span class="n">category</span><span class="p">)</span>
+          <span class="c1"># Create avatar with category-appropriate job title</span>
+          <span class="n">avatar</span> <span class="o">=</span> <span class="n">create_batch_avatar</span><span class="p">(</span><span class="ss">player: </span><span class="n">player</span><span class="p">,</span> <span class="ss">category: </span><span class="n">category</span><span class="p">)</span>
 
           <span class="c1"># Create ALL associations</span>
-          <span class="n">create_skills</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">category</span><span class="p">.</span><span class="nf">slug</span><span class="p">)</span>
-          <span class="n">create_work_experiences</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">category</span><span class="p">.</span><span class="nf">slug</span><span class="p">)</span>
-          <span class="n">create_education_items</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-          <span class="n">create_languages</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-          <span class="n">create_contact_infos</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-          <span class="n">create_portfolio</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-          <span class="n">create_location_setting</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-          <span class="n">create_salary_expectation</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
-          <span class="n">create_avatar_data</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+          <span class="n">create_abilities</span><span class="p">(</span><span class="n">avatar</span><span class="p">,</span> <span class="n">category</span><span class="p">.</span><span class="nf">slug</span><span class="p">)</span>
+          <span class="n">create_raid_logs</span><span class="p">(</span><span class="n">avatar</span><span class="p">,</span> <span class="n">category</span><span class="p">.</span><span class="nf">slug</span><span class="p">)</span>
+          <span class="n">create_training_logs</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
+          <span class="n">create_dialects</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
+          <span class="n">create_beacons</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
+          <span class="n">create_portfolio</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
+          <span class="n">create_map_rule</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
+          <span class="n">create_bounty_rule</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
+          <span class="n">create_avatar_data</span><span class="p">(</span><span class="n">avatar</span><span class="p">)</span>
         <span class="k">end</span>
       <span class="k">end</span>
     <span class="k">end</span>
@@ -1272,7 +1272,7 @@ Result: PASSED (14 checks, 1 warning)
 
 <h3 id="95-usage">9.5 Usage</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create 100,000 full profiles (default)</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create 100,000 full avatars (default)</span>
 <span class="nv">CREATE_BATCH_PROFILES</span><span class="o">=</span><span class="nb">true </span>rails db:seed
 
 <span class="c"># Create 10,000 for smaller tests</span>
@@ -1285,23 +1285,23 @@ Result: PASSED (14 checks, 1 warning)
 <h3 id="96-output">9.6 Output</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>======================================================================
-[BATCH] Starting FULL candidate profile creation
+[BATCH] Starting FULL candidate avatar creation
 ======================================================================
   Target count:     100,000
   Chunk size:       500
   Associations:     Skills, Work Exp, Education, Languages, Contacts, etc.
 ======================================================================
 
-  [=======&gt;--------------------]  25.0% | Chunk 50/200 | 25000 profiles | 625,000 assoc
+  [=======&gt;--------------------]  25.0% | Chunk 50/200 | 25000 avatars | 625,000 assoc
 
 ======================================================================
-[BATCH] Full candidate profile creation complete!
+[BATCH] Full candidate avatar creation complete!
 ======================================================================
-  Users created:        100,000
-  Profiles created:     100,000
+  Players created:        100,000
+  Avatars created:     100,000
   Associations created: 2,543,721
   Total duration:       3h 12m
-  Rate:                 8.7 profiles/second
+  Rate:                 8.7 avatars/second
 ======================================================================
 </code></pre></div></div>
 
@@ -1357,17 +1357,17 @@ Result: PASSED (14 checks, 1 warning)
     <tr>
       <td><strong>Feature Testing</strong></td>
       <td><code class="language-plaintext highlighter-rouge">SEED_FULL_CANDIDATES=true rails db:seed</code></td>
-      <td>~2 min, 40 rich profiles</td>
+      <td>~2 min, 40 rich avatars</td>
     </tr>
     <tr>
       <td><strong>QA Stress Test</strong></td>
       <td><code class="language-plaintext highlighter-rouge">CREATE_BATCH_PROFILES=true rails db:seed</code></td>
-      <td>~3h, 100k profiles</td>
+      <td>~3h, 100k avatars</td>
     </tr>
     <tr>
       <td><strong>AI Training</strong></td>
       <td><code class="language-plaintext highlighter-rouge">CREATE_BATCH_PROFILES=true BATCH_PROFILE_COUNT=500000 rails db:seed</code></td>
-      <td>~15h, 500k profiles</td>
+      <td>~15h, 500k avatars</td>
     </tr>
     <tr>
       <td><strong>CEO Demo</strong></td>
@@ -1420,8 +1420,8 @@ Result: PASSED (14 checks, 1 warning)
     </tr>
     <tr>
       <td><strong>Scalability</strong></td>
-      <td>~100 profiles</td>
-      <td>100,000+ profiles</td>
+      <td>~100 avatars</td>
+      <td>100,000+ avatars</td>
     </tr>
     <tr>
       <td><strong>Conditional execution</strong></td>
@@ -1464,7 +1464,7 @@ Result: PASSED (14 checks, 1 warning)
 │   ├── context_spec.rb           # Context object tests
 │   ├── timing_spec.rb            # Timing module tests
 │   ├── validation_spec.rb        # Validation tests
-│   └── batch_profiles_spec.rb    # Batch processing tests
+│   └── batch_avatars_spec.rb    # Batch processing tests
 ├── reference_data_spec.rb        # Reference data tests
 ├── integration_spec.rb           # Full seed run tests
 └── steps/
@@ -1522,7 +1522,7 @@ Result: PASSED (14 checks, 1 warning)
       <td>100%</td>
     </tr>
     <tr>
-      <td>Batch Profiles</td>
+      <td>Batch Avatars</td>
       <td>49</td>
       <td>100%</td>
     </tr>
@@ -1550,7 +1550,7 @@ Result: PASSED (14 checks, 1 warning)
 
 <h3 id="121-idea-1-seed-data-snapshots">12.1 Idea 1: Seed Data Snapshots</h3>
 
-<p><strong>Problem:</strong> Recreating 100k profiles takes 3 hours every time.</p>
+<p><strong>Problem:</strong> Recreating 100k avatars takes 3 hours every time.</p>
 
 <p><strong>Solution:</strong> Database snapshots for instant restore.</p>
 
@@ -1558,11 +1558,11 @@ Result: PASSED (14 checks, 1 warning)
 <span class="k">module</span> <span class="nn">Seeds</span>
   <span class="k">module</span> <span class="nn">Snapshots</span>
     <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-      <span class="sb">`pg_dump wigiwork_development &gt; snapshots/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sb">.sql`</span>
+      <span class="sb">`pg_dump testapp_development &gt; snapshots/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sb">.sql`</span>
     <span class="k">end</span>
 
     <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-      <span class="sb">`psql wigiwork_development &lt; snapshots/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sb">.sql`</span>
+      <span class="sb">`psql testapp_development &lt; snapshots/</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sb">.sql`</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -1591,7 +1591,7 @@ Result: PASSED (14 checks, 1 warning)
 
 <span class="c1"># Usage</span>
 <span class="n">with_consistent_faker</span> <span class="k">do</span>
-  <span class="n">seed_profiles</span>  <span class="c1"># Same names, emails, etc. every time</span>
+  <span class="n">seed_avatars</span>  <span class="c1"># Same names, emails, etc. every time</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -1608,16 +1608,16 @@ Result: PASSED (14 checks, 1 warning)
   <span class="k">module</span> <span class="nn">Metrics</span>
     <span class="k">def</span> <span class="nf">report</span>
       <span class="p">{</span>
-        <span class="ss">users: </span><span class="p">{</span>
-          <span class="ss">total: </span><span class="no">User</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
-          <span class="ss">by_role: </span><span class="no">User</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="ss">:role</span><span class="p">).</span><span class="nf">count</span><span class="p">,</span>
-          <span class="ss">with_profiles: </span><span class="no">User</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:profile</span><span class="p">).</span><span class="nf">count</span>
+        <span class="ss">players: </span><span class="p">{</span>
+          <span class="ss">total: </span><span class="no">Player</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">by_role: </span><span class="no">Player</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="ss">:role</span><span class="p">).</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">with_avatars: </span><span class="no">Player</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">).</span><span class="nf">count</span>
         <span class="p">},</span>
-        <span class="ss">profiles: </span><span class="p">{</span>
-          <span class="ss">total: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
-          <span class="ss">with_skills: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:skills</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
-          <span class="ss">avg_skills: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:skills</span><span class="p">).</span><span class="nf">group</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">count</span><span class="p">.</span><span class="nf">values</span><span class="p">.</span><span class="nf">sum</span><span class="p">.</span><span class="nf">to_f</span> <span class="o">/</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
-          <span class="ss">by_category: </span><span class="no">Profile</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:category</span><span class="p">).</span><span class="nf">group</span><span class="p">(</span><span class="s2">"categories.slug"</span><span class="p">).</span><span class="nf">count</span>
+        <span class="ss">avatars: </span><span class="p">{</span>
+          <span class="ss">total: </span><span class="no">Avatar</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">with_abilities: </span><span class="no">Avatar</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:abilities</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">avg_abilities: </span><span class="no">Avatar</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:abilities</span><span class="p">).</span><span class="nf">group</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">count</span><span class="p">.</span><span class="nf">values</span><span class="p">.</span><span class="nf">sum</span><span class="p">.</span><span class="nf">to_f</span> <span class="o">/</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
+          <span class="ss">by_category: </span><span class="no">Avatar</span><span class="p">.</span><span class="nf">joins</span><span class="p">(</span><span class="ss">:category</span><span class="p">).</span><span class="nf">group</span><span class="p">(</span><span class="s2">"categories.slug"</span><span class="p">).</span><span class="nf">count</span>
         <span class="p">},</span>
         <span class="ss">companies: </span><span class="p">{</span>
           <span class="ss">total: </span><span class="no">Company</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span>
@@ -1631,15 +1631,15 @@ Result: PASSED (14 checks, 1 warning)
 
 <p><strong>Output:</strong></p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Users</span><span class="pi">:</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Players</span><span class="pi">:</span>
   <span class="na">total</span><span class="pi">:</span> <span class="s">100,047</span>
   <span class="na">by_role</span><span class="pi">:</span> <span class="pi">{</span> <span class="nv">admin</span><span class="pi">:</span> <span class="nv">2</span><span class="pi">,</span> <span class="nv">candidate</span><span class="pi">:</span> <span class="nv">100</span><span class="pi">,</span><span class="nv">040</span><span class="pi">,</span> <span class="nv">client</span><span class="pi">:</span> <span class="nv">5</span> <span class="pi">}</span>
-  <span class="na">with_profiles</span><span class="pi">:</span> <span class="s">100,042</span>
+  <span class="na">with_avatars</span><span class="pi">:</span> <span class="s">100,042</span>
 
-<span class="na">Profiles</span><span class="pi">:</span>
+<span class="na">Avatars</span><span class="pi">:</span>
   <span class="na">total</span><span class="pi">:</span> <span class="s">100,042</span>
-  <span class="na">with_skills</span><span class="pi">:</span> <span class="s">99,800</span>
-  <span class="na">avg_skills</span><span class="pi">:</span> <span class="m">4.2</span>
+  <span class="na">with_abilities</span><span class="pi">:</span> <span class="s">99,800</span>
+  <span class="na">avg_abilities</span><span class="pi">:</span> <span class="m">4.2</span>
   <span class="na">by_category</span><span class="pi">:</span> <span class="pi">{</span> <span class="nv">technology</span><span class="pi">:</span> <span class="nv">45</span><span class="pi">,</span><span class="nv">000</span><span class="pi">,</span> <span class="nv">design</span><span class="pi">:</span> <span class="nv">15</span><span class="pi">,</span><span class="nv">000</span><span class="pi">,</span> <span class="nv">...</span> <span class="pi">}</span>
 
 <span class="na">Companies</span><span class="pi">:</span>
@@ -1685,7 +1685,7 @@ Result: PASSED (14 checks, 1 warning)
       <td>1,797 lines</td>
     </tr>
     <tr>
-      <td>Max profiles</td>
+      <td>Max avatars</td>
       <td>~100</td>
       <td>100,000+</td>
     </tr>
@@ -1748,7 +1748,7 @@ Result: PASSED (14 checks, 1 warning)
 
 <hr />
 
-<p><em>This post documents the transformation of the Wigiwork seed system from a 3,600-line monolith to an enterprise-grade data generation platform. The patterns described here—modular architecture, context objects, conditional execution, progress tracking, validation, and batch processing—are applicable to any Rails application that has outgrown simple seeds.</em></p>
+<p><em>This post documents the transformation of the TestApp seed system from a 3,600-line monolith to an enterprise-grade data generation platform. The patterns described here—modular architecture, context objects, conditional execution, progress tracking, validation, and batch processing—are applicable to any Rails application that has outgrown simple seeds.</em></p>
 
     </div>
   </div>

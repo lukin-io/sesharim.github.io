@@ -51,9 +51,9 @@ Rails conventions are excellent for getting started quickly. But as applications
 | Scattered constants | One-off values | Configuration needs structure |
 | Inline side effects | Simple actions | Need audit trail or event-driven architecture |
 
-### 1.2 Real Example: Profile Actions Payload
+### 1.2 Real Example: Avatar Actions Payload
 
-We needed to serialize client-specific profile data. Here's what the original code looked like:
+We needed to serialize client-specific avatar data. Here's what the original code looked like:
 
 ```ruby
 # Original: 70+ lines of manual validation and coercion
@@ -66,7 +66,7 @@ def build_actions_payload(options)
   result[:access_status] = ACCESS_STATUS_VALUES.include?(status) ? status : "none"
 
   # Manual boolean coercion
-  result[:profile_viewed] = actions[:profile_viewed] == true
+  result[:avatar_viewed] = actions[:avatar_viewed] == true
   result[:is_saved] = actions[:is_saved] == true
 
   # Manual conditional inclusion
@@ -147,7 +147,7 @@ gem "dry-events", "~> 1.0"
 
 ```ruby
 # Before: Constants scattered, validation repeated
-class ProfileBlueprint < ApplicationBlueprint
+class AvatarBlueprint < ApplicationBlueprint
   ACCESS_STATUS_VALUES = %w[none requested approved denied removed shared].freeze
   THUMB_STATUS_VALUES = %w[liked disliked].freeze
   ACCESS_END_REASON_VALUES = %w[expired declined blocked removed].freeze
@@ -190,8 +190,8 @@ module Types
     end
   end
 
-  # Profile Actions enums - SINGLE SOURCE OF TRUTH
-  module Profiles
+  # Avatar Actions enums - SINGLE SOURCE OF TRUTH
+  module Avatars
     ACCESS_STATUS_VALUES = %w[none requested approved denied removed shared].freeze
     AccessStatus = Types::String.enum(*ACCESS_STATUS_VALUES).fallback("none")
 
@@ -215,9 +215,9 @@ end
 
 ```ruby
 # Enum validation is automatic
-Types::Profiles::AccessStatus["approved"]  # => "approved"
-Types::Profiles::AccessStatus["invalid"]   # => "none" (fallback)
-Types::Profiles::AccessStatus[nil]         # => "none" (fallback)
+Types::Avatars::AccessStatus["approved"]  # => "approved"
+Types::Avatars::AccessStatus["invalid"]   # => "none" (fallback)
+Types::Avatars::AccessStatus[nil]         # => "none" (fallback)
 
 # Boolean coercion with fallback
 Types::SafeBool[true]   # => true
@@ -240,7 +240,7 @@ Types::ISO8601String[nil]                    # => nil
 def build_actions
   actions = {}
   actions[:access_status] = compute_access_status
-  actions[:profile_viewed] = compute_profile_viewed
+  actions[:avatar_viewed] = compute_avatar_viewed
   actions[:is_saved] = compute_is_saved
   # No guarantee of structure
   # Caller must know what keys exist
@@ -258,25 +258,25 @@ end
 ### 4.2 The Solution: Typed Immutable Struct
 
 ```ruby
-# app/structs/profiles/actions.rb
+# app/structs/avatars/actions.rb
 require "dry/struct"
 
-module Profiles
+module Avatars
   class Actions < Dry::Struct
     # Allow string keys from input hash
     transform_keys(&:to_sym)
 
     # Required fields with defaults (always present in payload)
-    attribute? :access_status, Types::Profiles::AccessStatus.default("none".freeze)
-    attribute? :profile_viewed, Types::SafeBool.default(false)
+    attribute? :access_status, Types::Avatars::AccessStatus.default("none".freeze)
+    attribute? :avatar_viewed, Types::SafeBool.default(false)
     attribute? :is_saved, Types::SafeBool.default(false)
 
     # Optional fields (only in payload when present)
     attribute? :note, Types::OptionalString
-    attribute? :thumb_status, Types::Profiles::ThumbStatus
+    attribute? :thumb_status, Types::Avatars::ThumbStatus
     attribute? :applied_at, Types::ISO8601String
     attribute? :access_expired, Types::Bool.optional
-    attribute? :access_end_reason, Types::Profiles::AccessEndReason
+    attribute? :access_end_reason, Types::Avatars::AccessEndReason
     attribute? :chat_id, Types::OptionalInteger
     attribute? :is_shared, Types::Bool.optional
 
@@ -284,7 +284,7 @@ module Profiles
     def to_payload
       payload = {
         access_status: access_status,
-        profile_viewed: profile_viewed,
+        avatar_viewed: avatar_viewed,
         is_saved: is_saved
       }
 
@@ -313,7 +313,7 @@ def build_actions_payload(options)
   result = {}
   status = actions[:access_status].to_s
   result[:access_status] = ACCESS_STATUS_VALUES.include?(status) ? status : "none"
-  result[:profile_viewed] = actions[:profile_viewed] == true
+  result[:avatar_viewed] = actions[:avatar_viewed] == true
   # ... 60 more lines of manual processing
 end
 ```
@@ -321,15 +321,15 @@ end
 **After (struct instantiation):**
 ```ruby
 # Service creates struct
-actions = Profiles::Actions.new(
+actions = Avatars::Actions.new(
   access_status: compute_access_status,
-  profile_viewed: compute_profile_viewed,
+  avatar_viewed: compute_avatar_viewed,
   is_saved: compute_is_saved,
   chat_id: find_chat_room&.id
 )
 
 # Blueprint just calls to_payload
-field :actions do |_profile, options|
+field :actions do |_avatar, options|
   options.dig(:context, :actions).to_payload
 end
 ```
@@ -356,10 +356,10 @@ end
 ```ruby
 # Before: Conditional soup
 def call
-  return nil unless profile.present?
+  return nil unless avatar.present?
   return nil unless client_user.present?
   return nil unless client_user.client?
-  return nil unless profile_user.present?
+  return nil unless avatar_user.present?
 
   # Happy path finally...
   build_actions
@@ -378,10 +378,10 @@ end
 ### 5.2 The Solution: Result Monad
 
 ```ruby
-# app/services/profiles/actions_builder.rb
+# app/services/avatars/actions_builder.rb
 require "dry/monads"
 
-module Profiles
+module Avatars
   class ActionsBuilder
     include Dry::Monads[:result]
 
@@ -394,24 +394,24 @@ module Profiles
     private
 
     def valid_context?
-      profile.present? &&
+      avatar.present? &&
         client_user.present? &&
         client_user.client? &&
-        profile_user.present?
+        avatar_user.present?
     end
 
     def default_actions_struct
-      Profiles::Actions.new(
+      Avatars::Actions.new(
         access_status: "none",
-        profile_viewed: false,
+        avatar_viewed: false,
         is_saved: false
       )
     end
 
     def build_actions_struct
-      Profiles::Actions.new(
+      Avatars::Actions.new(
         access_status: compute_access_status,
-        profile_viewed: compute_profile_viewed,
+        avatar_viewed: compute_avatar_viewed,
         # ... other fields
       )
     end
@@ -422,17 +422,17 @@ end
 ### 5.3 Controller Integration
 
 ```ruby
-# app/controllers/api/v1/profiles_controller.rb
+# app/controllers/api/v1/game_controller.rb
 def show
-  flags = visibility_flags.get(@profile)
+  flags = visibility_flags.get(@avatar)
   context = { visibility_flags: flags, host: request.base_url }
 
   if current_user&.client?
-    result = actions_builder.call(profile: @profile, client_user: current_user)
+    result = actions_builder.call(avatar: @avatar, client_user: current_user)
     context[:actions] = result.value! if result.success?
   end
 
-  render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+  render json: { data: AvatarBlueprint.render_as_hash(@avatar, context: context) }
 end
 ```
 
@@ -440,7 +440,7 @@ end
 
 ```ruby
 # For more complex flows, pattern match on Result
-result = ActionsBuilder.call(profile: @profile, client_user: current_user)
+result = ActionsBuilder.call(avatar: @avatar, client_user: current_user)
 
 case result
 in Success(actions)
@@ -463,9 +463,9 @@ class ProcessOrder
 
   def call(order_params)
     order = yield validate_order(order_params)
-    user = yield find_user(order.user_id)
-    payment = yield charge_payment(user, order.total)
-    yield send_confirmation(user, order, payment)
+    player = yield find_user(order.player_id)
+    payment = yield charge_payment(player, order.total)
+    yield send_confirmation(player, order, payment)
 
     Success(order)
   end
@@ -476,7 +476,7 @@ class ProcessOrder
     # Returns Success(order) or Failure([:validation, errors])
   end
 
-  def charge_payment(user, amount)
+  def charge_payment(player, amount)
     # Returns Success(payment) or Failure([:payment_failed, reason])
   end
 end
@@ -520,15 +520,15 @@ end
 ### 6.2 The Solution: Validation Contracts
 
 ```ruby
-# app/contracts/profiles/actions_contract.rb
+# app/contracts/avatars/actions_contract.rb
 require "dry/validation"
 
-module Profiles
+module Avatars
   class ActionsContract < Dry::Validation::Contract
     # Schema definition - coerces and validates structure
     params do
       optional(:access_status).filled(:string)
-      optional(:profile_viewed).filled(:bool)
+      optional(:avatar_viewed).filled(:bool)
       optional(:is_saved).filled(:bool)
       optional(:note).maybe(:string)
       optional(:thumb_status).maybe(:string)
@@ -540,15 +540,15 @@ module Profiles
     # Enum validation rules
     rule(:access_status) do
       next if value.nil?
-      unless Types::Profiles::ACCESS_STATUS_VALUES.include?(value)
-        key.failure("must be one of: #{Types::Profiles::ACCESS_STATUS_VALUES.join(', ')}")
+      unless Types::Avatars::ACCESS_STATUS_VALUES.include?(value)
+        key.failure("must be one of: #{Types::Avatars::ACCESS_STATUS_VALUES.join(', ')}")
       end
     end
 
     rule(:thumb_status) do
       next if value.nil?
-      unless Types::Profiles::THUMB_STATUS_VALUES.include?(value)
-        key.failure("must be one of: #{Types::Profiles::THUMB_STATUS_VALUES.join(', ')}")
+      unless Types::Avatars::THUMB_STATUS_VALUES.include?(value)
+        key.failure("must be one of: #{Types::Avatars::THUMB_STATUS_VALUES.join(', ')}")
       end
     end
 
@@ -565,12 +565,12 @@ end
 ### 6.3 Using Contracts
 
 ```ruby
-contract = Profiles::ActionsContract.new
+contract = Avatars::ActionsContract.new
 result = contract.call(params.to_unsafe_h)
 
 if result.success?
   # Validated and coerced data
-  actions = Profiles::Actions.new(result.to_h)
+  actions = Avatars::Actions.new(result.to_h)
 else
   # Structured errors
   render json: { errors: result.errors.to_h }, status: :unprocessable_entity
@@ -598,19 +598,19 @@ end
 
 ```ruby
 # Before: Tight coupling to class names
-class ProfilesController < ApplicationController
+class GameController < ApplicationController
   def show
-    flags = Visibility::ProfileVisibilityFlags.get(@profile)
-    result = Profiles::ActionsBuilder.call(profile: @profile, client_user: current_user)
+    flags = Visibility::AvatarVisibilityFlags.get(@avatar)
+    result = Avatars::ActionsBuilder.call(avatar: @avatar, client_user: current_user)
     # ...
   end
 end
 
 # Testing requires stubbing constants
-RSpec.describe ProfilesController do
+RSpec.describe GameController do
   before do
-    allow(Visibility::ProfileVisibilityFlags).to receive(:get).and_return({})
-    allow(Profiles::ActionsBuilder).to receive(:call).and_return(Success({}))
+    allow(Visibility::AvatarVisibilityFlags).to receive(:get).and_return({})
+    allow(Avatars::ActionsBuilder).to receive(:call).and_return(Success({}))
   end
 end
 ```
@@ -632,8 +632,8 @@ class AppContainer
   extend Dry::Container::Mixin
 
   # Register services
-  register(:actions_builder) { Profiles::ActionsBuilder }
-  register(:visibility_flags) { Visibility::ProfileVisibilityFlags }
+  register(:actions_builder) { Avatars::ActionsBuilder }
+  register(:visibility_flags) { Visibility::AvatarVisibilityFlags }
 
   # Future additions
   # register(:email_service) { EmailService.new }
@@ -661,12 +661,12 @@ end
 ### 7.3 Controller with Injection
 
 ```ruby
-# app/controllers/api/v1/profiles_controller.rb
-class ProfilesController < ApplicationController
+# app/controllers/api/v1/game_controller.rb
+class GameController < ApplicationController
   include Deps  # Inject all registered dependencies
 
   def show
-    flags = visibility_flags.get(@profile)           # Use injected service
+    flags = visibility_flags.get(@avatar)           # Use injected service
     result = actions_builder.call(...)               # Use injected builder
     # ...
   end
@@ -677,7 +677,7 @@ end
 
 ```ruby
 # Spec: Easy stubbing via dependency override
-RSpec.describe ProfilesController do
+RSpec.describe GameController do
   let(:mock_builder) { double("ActionsBuilder") }
   let(:mock_flags) { double("VisibilityFlags") }
 
@@ -691,7 +691,7 @@ RSpec.describe ProfilesController do
     expect(mock_flags).to receive(:get).and_return({})
     expect(mock_builder).to receive(:call).and_return(Success(default_actions))
 
-    get :show, params: { id: profile.id }
+    get :show, params: { id: avatar.id }
   end
 end
 ```
@@ -714,7 +714,7 @@ end
 ```ruby
 # Before: Manual success/failure checks
 def show
-  result = actions_builder.call(profile: @profile, client_user: current_user)
+  result = actions_builder.call(avatar: @avatar, client_user: current_user)
 
   if result.success?
     context[:actions] = result.value!
@@ -774,12 +774,12 @@ end
 ### 8.3 Controller with Pattern Matching
 
 ```ruby
-# app/controllers/api/v1/profiles_controller.rb
-class ProfilesController < ApplicationController
+# app/controllers/api/v1/game_controller.rb
+class GameController < ApplicationController
   include ResultMatchable  # Add pattern matching
 
   def show
-    result = actions_builder.call(profile: @profile, client_user: current_user)
+    result = actions_builder.call(avatar: @avatar, client_user: current_user)
 
     # Simple extraction
     context[:actions] = unwrap_result(result)
@@ -792,7 +792,7 @@ class ProfilesController < ApplicationController
       m.failure { |error| Rails.logger.warn("Actions failed: #{error}") }
     end
 
-    render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+    render json: { data: AvatarBlueprint.render_as_hash(@avatar, context: context) }
   end
 end
 ```
@@ -843,7 +843,7 @@ end
 
 ```ruby
 # Before: Constants scattered across files
-class ProfileBlueprint < ApplicationBlueprint
+class AvatarBlueprint < ApplicationBlueprint
   ACCESS_STATUS_VALUES = %w[none requested approved denied removed shared].freeze
   CACHE_TTL = 5.minutes
 end
@@ -852,7 +852,7 @@ class AccessRequest < ApplicationRecord
   EXPIRY_DAYS = 30
 end
 
-class ProfilesController < ApplicationController
+class GameController < ApplicationController
   MAX_PER_PAGE = 100
 end
 ```
@@ -867,17 +867,17 @@ end
 ### 9.2 The Solution: Centralized Configuration
 
 ```ruby
-# app/config/profile_config.rb
+# app/config/avatar_config.rb
 require "dry/configurable"
 
-class ProfileConfig
+class AvatarConfig
   extend Dry::Configurable
 
   # Actions settings
   setting :actions do
     setting :cache_ttl, default: 5.minutes
     setting :default_access_status, default: "none"
-    setting :default_profile_viewed, default: false
+    setting :default_avatar_viewed, default: false
     setting :default_is_saved, default: false
 
     setting :access_status_values, default: %w[none requested approved denied removed shared].freeze
@@ -908,7 +908,7 @@ class ProfileConfig
 
   # Event publishing settings
   setting :events do
-    setting :publish_profile_views, default: true
+    setting :publish_avatar_views, default: true
     setting :publish_access_events, default: true
   end
 end
@@ -918,17 +918,17 @@ end
 
 ```ruby
 # Access nested settings with dot notation
-ProfileConfig.config.actions.cache_ttl           # => 5.minutes
-ProfileConfig.config.actions.status_mapping      # => {"pending" => "requested", ...}
-ProfileConfig.config.visibility.default_mode     # => "visible"
-ProfileConfig.config.access.request_expiry_days  # => 30
+AvatarConfig.config.actions.cache_ttl           # => 5.minutes
+AvatarConfig.config.actions.status_mapping      # => {"pending" => "requested", ...}
+AvatarConfig.config.visibility.default_mode     # => "visible"
+AvatarConfig.config.access.request_expiry_days  # => 30
 
 # Use in service objects
 class ActionsBuilder
   def default_actions_struct
-    Profiles::Actions.new(
+    Avatars::Actions.new(
       access_status: config.default_access_status,
-      profile_viewed: config.default_profile_viewed,
+      avatar_viewed: config.default_avatar_viewed,
       is_saved: config.default_is_saved
     )
   end
@@ -936,7 +936,7 @@ class ActionsBuilder
   private
 
   def config
-    ProfileConfig.config.actions
+    AvatarConfig.config.actions
   end
 end
 ```
@@ -947,15 +947,15 @@ end
 RSpec.describe ActionsBuilder do
   # Override config for test
   before do
-    allow(ProfileConfig.config.actions).to receive(:cache_ttl).and_return(0)
+    allow(AvatarConfig.config.actions).to receive(:cache_ttl).and_return(0)
   end
 
   # Or use configure block
   around do |example|
-    original = ProfileConfig.config.actions.cache_ttl
-    ProfileConfig.configure { |c| c.actions.cache_ttl = 0 }
+    original = AvatarConfig.config.actions.cache_ttl
+    AvatarConfig.configure { |c| c.actions.cache_ttl = 0 }
     example.run
-    ProfileConfig.configure { |c| c.actions.cache_ttl = original }
+    AvatarConfig.configure { |c| c.actions.cache_ttl = original }
   end
 end
 ```
@@ -964,14 +964,14 @@ end
 
 **Before:**
 ```ruby
-# Hunt through 10 files to find all profile-related constants
+# Hunt through 10 files to find all avatar-related constants
 grep -r "CACHE_TTL\|EXPIRY_DAYS\|MAX_" app/
 ```
 
 **After:**
 ```ruby
 # One file, organized by domain
-ProfileConfig.config  # => nested configuration tree
+AvatarConfig.config  # => nested configuration tree
 ```
 
 ### 9.6 Benefits
@@ -993,19 +993,19 @@ ProfileConfig.config  # => nested configuration tree
 ```ruby
 # Before: Manual parameter handling
 class ActionsBuilder
-  def initialize(profile:, client_user:)
-    @profile = profile
+  def initialize(avatar:, client_user:)
+    @avatar = avatar
     @client_user = client_user
-    @profile_user = profile&.user
+    @avatar_user = avatar&.player
   end
 
-  def self.call(profile:, client_user:)
-    new(profile: profile, client_user: client_user).call
+  def self.call(avatar:, client_user:)
+    new(avatar: avatar, client_user: client_user).call
   end
 
   private
 
-  attr_reader :profile, :client_user, :profile_user
+  attr_reader :avatar, :client_user, :avatar_user
 end
 ```
 
@@ -1019,22 +1019,22 @@ end
 ### 10.2 The Solution: Declarative Parameters
 
 ```ruby
-# app/services/profiles/actions_builder.rb
+# app/services/avatars/actions_builder.rb
 require "dry/initializer"
 
-module Profiles
+module Avatars
   class ActionsBuilder
     extend Dry::Initializer
 
     # Required parameters
-    param :profile
+    param :avatar
     param :client_user
 
     # Derived option with default
-    option :profile_user, default: proc { profile&.user }
+    option :avatar_user, default: proc { avatar&.player }
 
-    def self.call(profile:, client_user:)
-      new(profile, client_user).call
+    def self.call(avatar:, client_user:)
+      new(avatar, client_user).call
     end
 
     def call
@@ -1046,7 +1046,7 @@ module Profiles
     private
 
     def valid_context?
-      profile.present? && client_user.present? && client_user.client?
+      avatar.present? && client_user.present? && client_user.client?
     end
   end
 end
@@ -1091,19 +1091,19 @@ processor.priority  # => "high"
 **Before (19 lines):**
 ```ruby
 class ActionsBuilder
-  def initialize(profile:, client_user:)
-    @profile = profile
+  def initialize(avatar:, client_user:)
+    @avatar = avatar
     @client_user = client_user
-    @profile_user = profile&.user
+    @avatar_user = avatar&.player
   end
 
-  def self.call(profile:, client_user:)
-    new(profile: profile, client_user: client_user).call
+  def self.call(avatar:, client_user:)
+    new(avatar: avatar, client_user: client_user).call
   end
 
   private
 
-  attr_reader :profile, :client_user, :profile_user
+  attr_reader :avatar, :client_user, :avatar_user
 
   def call
     # ...
@@ -1116,12 +1116,12 @@ end
 class ActionsBuilder
   extend Dry::Initializer
 
-  param :profile
+  param :avatar
   param :client_user
-  option :profile_user, default: proc { profile&.user }
+  option :avatar_user, default: proc { avatar&.player }
 
-  def self.call(profile:, client_user:)
-    new(profile, client_user).call
+  def self.call(avatar:, client_user:)
+    new(avatar, client_user).call
   end
 
   def call
@@ -1148,30 +1148,30 @@ end
 
 ```ruby
 # Before: Side effects mixed with business logic
-class ProfilesController < ApplicationController
+class GameController < ApplicationController
   def show
-    @profile = Profile.find(params[:id])
+    @avatar = Avatar.find(params[:id])
 
     # Business logic
-    context = build_context(@profile)
+    context = build_context(@avatar)
 
     # Side effect #1: Analytics
-    Analytics.track("profile_viewed", {
-      profile_id: @profile.id,
+    Analytics.track("avatar_viewed", {
+      avatar_id: @avatar.id,
       viewer_id: current_user&.id
     })
 
     # Side effect #2: Logging
     AuditLog.create!(
-      action: "profile_view",
-      resource: @profile,
-      user: current_user
+      action: "avatar_view",
+      resource: @avatar,
+      player: current_user
     )
 
     # Side effect #3: Cache warming
-    ProfileCacheWarmer.perform_async(@profile.id) if should_warm_cache?
+    AvatarCacheWarmer.perform_async(@avatar.id) if should_warm_cache?
 
-    render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+    render json: { data: AvatarBlueprint.render_as_hash(@avatar, context: context) }
   end
 end
 ```
@@ -1192,9 +1192,9 @@ require "dry/events"
 class EventPublisher
   include Dry::Events::Publisher[:app]
 
-  # Profile events
-  register_event("profile.viewed")
-  register_event("profile.actions_computed")
+  # Avatar events
+  register_event("avatar.viewed")
+  register_event("avatar.actions_computed")
 
   # Access request events
   register_event("access.requested")
@@ -1226,8 +1226,8 @@ class EventPublisher
     private
 
     def should_publish?(event_name)
-      return false unless ProfileConfig.config.events.publish_profile_views if event_name.start_with?("profile.")
-      return false unless ProfileConfig.config.events.publish_access_events if event_name.start_with?("access.")
+      return false unless AvatarConfig.config.events.publish_avatar_views if event_name.start_with?("avatar.")
+      return false unless AvatarConfig.config.events.publish_access_events if event_name.start_with?("access.")
       true
     end
   end
@@ -1237,32 +1237,32 @@ end
 ### 11.3 Publishing Events
 
 ```ruby
-# app/controllers/api/v1/profiles_controller.rb
-class ProfilesController < ApplicationController
+# app/controllers/api/v1/game_controller.rb
+class GameController < ApplicationController
   def show
-    @profile = Profile.find(params[:id])
-    context = build_context(@profile)
+    @avatar = Avatar.find(params[:id])
+    context = build_context(@avatar)
 
     # Publish event - side effects handled by subscribers
-    EventPublisher.publish("profile.viewed", {
-      profile_id: @profile.id,
+    EventPublisher.publish("avatar.viewed", {
+      avatar_id: @avatar.id,
       viewer_id: current_user&.id,
       viewer_role: current_user&.role
     })
 
-    render json: { data: ProfileBlueprint.render_as_hash(@profile, context: context) }
+    render json: { data: AvatarBlueprint.render_as_hash(@avatar, context: context) }
   end
 end
 
-# app/services/profiles/actions_builder.rb
+# app/services/avatars/actions_builder.rb
 class ActionsBuilder
   def call
     actions = build_actions_struct
 
     # Publish event with computed data
-    EventPublisher.publish("profile.actions_computed", {
-      profile_id: profile.id,
-      client_user_id: client_user.id,
+    EventPublisher.publish("avatar.actions_computed", {
+      avatar_id: avatar.id,
+      client_player_id: client_user.id,
       access_status: actions.access_status,
       has_chat: actions.chat_id.present?
     })
@@ -1278,18 +1278,18 @@ end
 # config/initializers/event_subscribers.rb
 
 # Block-based subscriber
-EventPublisher.subscribe("profile.viewed") do |event|
-  Analytics.track("profile_view", event.payload)
+EventPublisher.subscribe("avatar.viewed") do |event|
+  Analytics.track("avatar_view", event.payload)
 end
 
 # Object-based subscriber
 class AuditListener
-  def on_profile_viewed(event)
+  def on_avatar_viewed(event)
     AuditLog.create!(
-      action: "profile_view",
-      resource_type: "Profile",
-      resource_id: event.payload[:profile_id],
-      user_id: event.payload[:viewer_id],
+      action: "avatar_view",
+      resource_type: "Avatar",
+      resource_id: event.payload[:avatar_id],
+      player_id: event.payload[:viewer_id],
       occurred_at: event.payload[:published_at]
     )
   end
@@ -1307,15 +1307,15 @@ EventPublisher.subscribe(AuditListener.new)
 
 # Conditional subscriber
 class CacheWarmerListener
-  def on_profile_viewed(event)
-    return unless should_warm_cache?(event.payload[:profile_id])
+  def on_avatar_viewed(event)
+    return unless should_warm_cache?(event.payload[:avatar_id])
 
-    ProfileCacheWarmer.perform_async(event.payload[:profile_id])
+    AvatarCacheWarmer.perform_async(event.payload[:avatar_id])
   end
 
   private
 
-  def should_warm_cache?(profile_id)
+  def should_warm_cache?(avatar_id)
     # Logic to determine if cache should be warmed
   end
 end
@@ -1328,57 +1328,57 @@ EventPublisher.subscribe(CacheWarmerListener.new)
 **Before (controller with inline side effects):**
 ```ruby
 def show
-  @profile = Profile.find(params[:id])
+  @avatar = Avatar.find(params[:id])
 
   # Side effect #1
-  Analytics.track("profile_viewed", { profile_id: @profile.id })
+  Analytics.track("avatar_viewed", { avatar_id: @avatar.id })
 
   # Side effect #2
-  AuditLog.create!(action: "profile_view", resource: @profile)
+  AuditLog.create!(action: "avatar_view", resource: @avatar)
 
   # Side effect #3
-  ProfileCacheWarmer.perform_async(@profile.id)
+  AvatarCacheWarmer.perform_async(@avatar.id)
 
-  render json: { data: ProfileBlueprint.render_as_hash(@profile) }
+  render json: { data: AvatarBlueprint.render_as_hash(@avatar) }
 end
 ```
 
 **After (clean controller, events handle side effects):**
 ```ruby
 def show
-  @profile = Profile.find(params[:id])
+  @avatar = Avatar.find(params[:id])
 
-  EventPublisher.publish("profile.viewed", {
-    profile_id: @profile.id,
+  EventPublisher.publish("avatar.viewed", {
+    avatar_id: @avatar.id,
     viewer_id: current_user&.id
   })
 
-  render json: { data: ProfileBlueprint.render_as_hash(@profile) }
+  render json: { data: AvatarBlueprint.render_as_hash(@avatar) }
 end
 ```
 
 ### 11.6 Testing Events
 
 ```ruby
-RSpec.describe ProfilesController do
+RSpec.describe GameController do
   describe "GET #show" do
-    it "publishes profile.viewed event" do
+    it "publishes avatar.viewed event" do
       expect(EventPublisher).to receive(:publish).with(
-        "profile.viewed",
-        hash_including(profile_id: profile.id, viewer_id: user.id)
+        "avatar.viewed",
+        hash_including(avatar_id: avatar.id, viewer_id: player.id)
       )
 
-      get :show, params: { id: profile.id }
+      get :show, params: { id: avatar.id }
     end
   end
 end
 
 RSpec.describe AuditListener do
-  describe "#on_profile_viewed" do
-    let(:event) { double(payload: { profile_id: 1, viewer_id: 2, published_at: Time.current }) }
+  describe "#on_avatar_viewed" do
+    let(:event) { double(payload: { avatar_id: 1, viewer_id: 2, published_at: Time.current }) }
 
     it "creates audit log entry" do
-      expect { subject.on_profile_viewed(event) }.to change(AuditLog, :count).by(1)
+      expect { subject.on_avatar_viewed(event) }.to change(AuditLog, :count).by(1)
     end
   end
 end
@@ -1401,7 +1401,7 @@ end
 
 ### 12.1 dry-transaction: Multi-Step Business Operations
 
-Perfect for complex workflows like order processing or user registration:
+Perfect for complex workflows like order processing or player registration:
 
 ```ruby
 # app/transactions/create_order.rb
@@ -1461,7 +1461,7 @@ end
 
 # Provide effects at call site
 result = Dry::Effects.handler.with(
-  current_user: user,
+  current_user: player,
   resolve: { payment_gateway: StripeGateway.new }
 ) { ProcessPayment.new.call(100) }
 ```
@@ -1494,20 +1494,20 @@ result = Dry::Effects.handler.with(
 result[:access_status] = ACCESS_STATUS_VALUES.include?(status) ? status : "none"
 
 # After: The type IS the documentation
-attribute :access_status, Types::Profiles::AccessStatus  # Enum is explicit
+attribute :access_status, Types::Avatars::AccessStatus  # Enum is explicit
 ```
 
 **2. Testability**
 ```ruby
 # Before: Test through controller/blueprint
 it "returns correct access_status" do
-  get "/profiles/1", headers: auth_headers
+  get "/avatars/1", headers: auth_headers
   expect(response.body).to include('"access_status":"approved"')
 end
 
 # After: Unit test the struct directly
 it "coerces invalid status to none" do
-  actions = Profiles::Actions.new(access_status: "invalid")
+  actions = Avatars::Actions.new(access_status: "invalid")
   expect(actions.access_status).to eq("none")
 end
 ```
@@ -1515,11 +1515,11 @@ end
 **3. Composability**
 ```ruby
 # Combine types to build complex structures
-CompanyProfile = Types::Hash.schema(
+CompanyAvatar = Types::Hash.schema(
   name: Types::String,
   employees: Types::Array.of(EmployeeStruct),
   settings: Types::Hash.schema(
-    visibility: Types::Profiles::VisibilityMode,
+    visibility: Types::Avatars::VisibilityMode,
     features: Types::Array.of(Types::String)
   )
 )
@@ -1540,13 +1540,13 @@ AuditLog.create!(...)
 CacheWarmer.perform_async(...)
 
 # After: Single event, multiple handlers
-EventPublisher.publish("profile.viewed", { ... })
+EventPublisher.publish("avatar.viewed", { ... })
 ```
 
 **6. Centralized Configuration**
 ```ruby
 # Before: grep -r "CACHE_TTL" app/
-# After: ProfileConfig.config.actions.cache_ttl
+# After: AvatarConfig.config.actions.cache_ttl
 ```
 
 ### 13.2 Tradeoffs
@@ -1653,5 +1653,5 @@ dry-rb doesn't replace Rails conventions—it **complements them** where they fa
 
 ---
 
-*This post documents our integration of 11 dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.*
+*This post documents our integration of 11 dry-rb gems into the TestApp API. The patterns described here reduced our Avatar Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.*
 

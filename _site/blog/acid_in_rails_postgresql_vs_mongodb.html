@@ -164,12 +164,12 @@ data is safe.</li>
 <p>Example in Rails:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
-  <span class="n">user</span><span class="p">.</span><span class="nf">save!</span>
-  <span class="n">profile</span><span class="p">.</span><span class="nf">save!</span>
+  <span class="n">player</span><span class="p">.</span><span class="nf">save!</span>
+  <span class="n">avatar</span><span class="p">.</span><span class="nf">save!</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>If <code class="language-plaintext highlighter-rouge">profile.save!</code> fails, <code class="language-plaintext highlighter-rouge">user.save!</code> rolls back automatically.</p>
+<p>If <code class="language-plaintext highlighter-rouge">avatar.save!</code> fails, <code class="language-plaintext highlighter-rouge">player.save!</code> rolls back automatically.</p>
 
 <hr />
 
@@ -193,15 +193,15 @@ before being persisted.</li>
 
 <p>Rails (with Mongoid) example:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">User</span><span class="p">.</span><span class="nf">with_session</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Player</span><span class="p">.</span><span class="nf">with_session</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
   <span class="n">session</span><span class="p">.</span><span class="nf">start_transaction</span>
-  <span class="n">user</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
-  <span class="n">profile</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">bio: </span><span class="s2">"Hello"</span><span class="p">)</span> <span class="c1"># multi-doc transaction</span>
+  <span class="n">player</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
+  <span class="n">avatar</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">bio: </span><span class="s2">"Hello"</span><span class="p">)</span> <span class="c1"># multi-doc transaction</span>
   <span class="n">session</span><span class="p">.</span><span class="nf">commit_transaction</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Without a transaction, only <code class="language-plaintext highlighter-rouge">user.update!</code> might persist, breaking
+<p>Without a transaction, only <code class="language-plaintext highlighter-rouge">player.update!</code> might persist, breaking
 atomicity.</p>
 
 <hr />
@@ -212,7 +212,7 @@ atomicity.</p>
 corrupt data integrity</strong>:</p>
 
 <ul>
-  <li>✅ <strong>Creating related records</strong> (e.g., <code class="language-plaintext highlighter-rouge">User</code> + <code class="language-plaintext highlighter-rouge">Profile</code>).\</li>
+  <li>✅ <strong>Creating related records</strong> (e.g., <code class="language-plaintext highlighter-rouge">Player</code> + <code class="language-plaintext highlighter-rouge">Avatar</code>).\</li>
   <li>✅ <strong>Money transfers / payments</strong> (must debit &amp; credit atomically).\</li>
   <li>✅ <strong>Bulk inserts / updates</strong> where all must succeed together.\</li>
   <li>✅ <strong>Inventory changes</strong> (e.g., decrementing stock and creating an
@@ -236,19 +236,19 @@ wrap in <code class="language-plaintext highlighter-rouge">after_commit</code> h
 
 <h3 id="postgresql-examples">PostgreSQL Examples</h3>
 
-<h4 id="-bad-user--profile-creation-partial-writes-possible">❌ Bad: User + Profile creation (partial writes possible)</h4>
+<h4 id="-bad-player--avatar-creation-partial-writes-possible">❌ Bad: Player + Avatar creation (partial writes possible)</h4>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create</span>
-  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">])</span>
-  <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">,</span> <span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">])</span> <span class="c1"># may fail later</span>
+  <span class="n">player</span> <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">])</span>
+  <span class="n">avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">player: </span><span class="n">player</span><span class="p">,</span> <span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">])</span> <span class="c1"># may fail later</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <h4 id="-fixed-use-transaction">✅ Fixed: Use transaction</h4>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
-  <span class="n">user</span>    <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">])</span>
-  <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">,</span> <span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">])</span>
+  <span class="n">player</span>    <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">])</span>
+  <span class="n">avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">player: </span><span class="n">player</span><span class="p">,</span> <span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">])</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -283,7 +283,7 @@ wrap in <code class="language-plaintext highlighter-rouge">after_commit</code> h
 
 <h4 id="-best-practice-emailslogging-with-after_commit">✅ Best practice: Emails/logging with <code class="language-plaintext highlighter-rouge">after_commit</code></h4>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Player</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
   <span class="n">after_commit</span> <span class="ss">:enqueue_welcome_email</span><span class="p">,</span> <span class="ss">on: :create</span>
 
   <span class="kp">private</span>
@@ -299,8 +299,8 @@ wrap in <code class="language-plaintext highlighter-rouge">after_commit</code> h
 
 <h4 id="-bad-multi-document-creation-without-transaction">❌ Bad: Multi-document creation without transaction</h4>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user</span>    <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">email</span><span class="p">)</span>
-<span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player</span>    <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">email</span><span class="p">)</span>
+<span class="n">avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">player_id: </span><span class="n">player</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h4 id="-fixed-wrap-in-transaction">✅ Fixed: Wrap in transaction</h4>
@@ -308,8 +308,8 @@ wrap in <code class="language-plaintext highlighter-rouge">after_commit</code> h
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Mongoid</span><span class="o">::</span><span class="no">Clients</span><span class="p">.</span><span class="nf">default</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">write: </span><span class="p">{</span> <span class="ss">w: :majority</span> <span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="o">|</span>
   <span class="n">session</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">start_session</span>
   <span class="n">session</span><span class="p">.</span><span class="nf">with_transaction</span> <span class="k">do</span>
-    <span class="n">user</span>    <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">email</span><span class="p">)</span>
-    <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">create!</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">)</span>
+    <span class="n">player</span>    <span class="o">=</span> <span class="no">Player</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">create!</span><span class="p">(</span><span class="ss">email: </span><span class="n">email</span><span class="p">)</span>
+    <span class="n">avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">session: </span><span class="n">session</span><span class="p">).</span><span class="nf">create!</span><span class="p">(</span><span class="ss">player_id: </span><span class="n">player</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -355,7 +355,7 @@ wrap in <code class="language-plaintext highlighter-rouge">after_commit</code> h
 <span class="no">Payments</span><span class="o">::</span><span class="no">TransferFunds</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">from_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">to_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">amount_cents: </span><span class="mi">500</span><span class="p">)</span>
 
 <span class="c1"># MongoDB</span>
-<span class="no">Users</span><span class="o">::</span><span class="no">CreateWithProfileMongo</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">email: </span><span class="s2">"a@b.com"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
+<span class="no">Players</span><span class="o">::</span><span class="no">CreateWithAvatarMongo</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">email: </span><span class="s2">"a@b.com"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
 <span class="no">Inventory</span><span class="o">::</span><span class="no">ReserveItemMongo</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">product_id: </span><span class="no">BSON</span><span class="o">::</span><span class="no">ObjectId</span><span class="p">(</span><span class="s2">"..."</span><span class="p">))</span>
 </code></pre></div></div>
 
@@ -363,7 +363,7 @@ wrap in <code class="language-plaintext highlighter-rouge">after_commit</code> h
 
 <h2 id="7-what-must-be-atomic-vsnot">7. What Must Be Atomic vs. Not</h2>
 
-<p><strong>Atomic:</strong> - User + Profile creation - Money transfers -
+<p><strong>Atomic:</strong> - Player + Avatar creation - Money transfers -
 Inventory/quotas - State transitions</p>
 
 <p><strong>Not atomic:</strong> - Emails - Logging - Background jobs - Cache</p>

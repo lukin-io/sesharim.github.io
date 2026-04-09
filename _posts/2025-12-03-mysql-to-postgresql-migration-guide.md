@@ -10,7 +10,7 @@ description: "A comprehensive guide to migrating your Rails application from MyS
 
 > _"The best time to write database-agnostic code is from day one. The second best time is before your migration."_
 
-When we started building the Wigiwork API, we chose MySQL for its familiarity and ease of setup. As our requirements grew—AI vector embeddings, geospatial queries, graph routing—we realized PostgreSQL wasn't just an alternative, it was a necessity.
+When we started building the TestApp API, we chose MySQL for its familiarity and ease of setup. As our requirements grew—AI vector embeddings, geospatial queries, graph routing—we realized PostgreSQL wasn't just an alternative, it was a necessity.
 
 This post documents our migration journey and shares the patterns that made it nearly painless.
 
@@ -95,7 +95,7 @@ Our `AGENTS.md` (development guidelines) includes this rule:
 
 ```ruby
 # Good: Works on any database
-User.where(status: :active)
+Player.where(status: :active)
     .where("created_at > ?", 1.week.ago)
     .order(created_at: :desc)
     .limit(10)
@@ -138,7 +138,7 @@ order(Arel.sql("CASE WHEN status = 'urgent' THEN 0 ELSE 1 END"))
 
 ```ruby
 # Good: Fetch timestamps, format in Ruby
-def self.date_buckets_for(user, field:)
+def self.date_buckets_for(player, field:)
   pluck(field)
     .filter_map { |timestamp| timestamp&.strftime("%Y-%m") }
     .uniq
@@ -214,22 +214,22 @@ The only code change required was in `access_request.rb`:
 
 ```ruby
 # Before: MySQL-specific
-def self.date_buckets_for(user, field:)
+def self.date_buckets_for(player, field:)
   column = field.to_s
   qcol = connection.quote_column_name(column)
   month_sql = "DATE_FORMAT(#{qcol}, '%Y-%m')"  # ❌ MySQL-only
 
-  for_user(user)
+  for_user(player)
     .group(Arel.sql(month_sql))
     .pluck(Arel.sql(month_sql))
 end
 
 # After: Database-agnostic Ruby
-def self.date_buckets_for(user, field:)
+def self.date_buckets_for(player, field:)
   column = field.to_s
   return [] unless DATE_BUCKET_FIELDS.include?(column)
 
-  for_user(user)
+  for_user(player)
     .where.not(column => nil)
     .order(column => :desc)
     .limit(500)
@@ -277,11 +277,11 @@ default: &default
 
 development:
   <<: *default
-  database: wigiwork_development
+  database: testapp_development
 
 test:
   <<: *default
-  database: wigiwork_test
+  database: testapp_test
 
 production:
   <<: *default
@@ -296,7 +296,7 @@ services:
     image: postgres:16
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: wigiwork_development
+      POSTGRES_DB: testapp_development
     ports:
       - "5433:5432"
     healthcheck:
@@ -336,11 +336,11 @@ t.jsonb :metadata, default: {}
 **JSONB Query Examples:**
 
 ```ruby
-# Find profiles with specific skill in JSONB array
-Profile.where("skills @> ?", ['ruby'].to_json)
+# Find avatars with specific skill in JSONB array
+Avatar.where("abilities @> ?", ['ruby'].to_json)
 
-# Find users with specific setting
-User.where("settings -> 'notifications' ->> 'email' = ?", 'true')
+# Find players with specific setting
+Player.where("settings -> 'notifications' ->> 'email' = ?", 'true')
 
 # Check if key exists
 Product.where("metadata ? 'featured'")
@@ -431,25 +431,25 @@ PostgreSQL
 
 ```sql
 -- PostgreSQL: Strict by default
-INSERT INTO users (email) VALUES ('not-an-email');
+INSERT INTO players (email) VALUES ('not-an-email');
 -- ERROR: violates check constraint
 
 -- MySQL: Often silently truncates or converts
-INSERT INTO users (name) VALUES ('this string is way too long for the column');
+INSERT INTO players (name) VALUES ('this string is way too long for the column');
 -- Silently truncated (depending on sql_mode)
 ```
 
 **3. Superior Indexing**
 
 ```ruby
-# Partial index: Only index active users
-add_index :users, :email, where: "status = 'active'"
+# Partial index: Only index active players
+add_index :players, :email, where: "status = 'active'"
 
 # Expression index: Index lowercased emails
-add_index :users, "LOWER(email)"
+add_index :players, "LOWER(email)"
 
 # GIN index on JSONB for fast JSON queries
-add_index :profiles, :skills, using: :gin
+add_index :avatars, :abilities, using: :gin
 ```
 
 **4. Native Array Support**
@@ -459,8 +459,8 @@ add_index :profiles, :skills, using: :gin
 t.string :tags, array: true, default: []
 
 # Query arrays
-Profile.where("'ruby' = ANY(tags)")
-Profile.where("tags @> ARRAY[?]", ['ruby', 'rails'])
+Avatar.where("'ruby' = ANY(tags)")
+Avatar.where("tags @> ARRAY[?]", ['ruby', 'rails'])
 ```
 
 ---
@@ -480,17 +480,17 @@ class EnablePgvector < ActiveRecord::Migration[8.0]
 end
 
 # Add vector column
-class AddEmbeddingToProfiles < ActiveRecord::Migration[8.0]
+class AddEmbeddingToAvatars < ActiveRecord::Migration[8.0]
   def change
-    add_column :profiles, :embedding, :vector, limit: 1536  # OpenAI dimension
-    add_index :profiles, :embedding, using: :ivfflat, opclass: :vector_cosine_ops
+    add_column :avatars, :embedding, :vector, limit: 1536  # OpenAI dimension
+    add_index :avatars, :embedding, using: :ivfflat, opclass: :vector_cosine_ops
   end
 end
 ```
 
 ```ruby
-# app/models/profile.rb
-class Profile < ApplicationRecord
+# app/models/avatar.rb
+class Avatar < ApplicationRecord
   def self.similar_to(embedding, limit: 10)
     where.not(embedding: nil)
       .order(Arel.sql("embedding <=> '#{embedding}'"))
@@ -499,7 +499,7 @@ class Profile < ApplicationRecord
 end
 
 # Usage
-similar_profiles = Profile.similar_to(openai_embedding, limit: 5)
+similar_avatars = Avatar.similar_to(openai_embedding, limit: 5)
 ```
 
 ### 5.2 PostGIS: Geospatial Queries
@@ -566,20 +566,20 @@ Article.where("searchable @@ plainto_tsquery('english', ?)", query)
 PostgreSQL schemas are **namespaces within a single database**. Think of them as folders for your tables:
 
 ```
-database: wigiwork_production
+database: testapp_production
 ├── public (default schema)
-│   ├── users
-│   ├── profiles
+│   ├── players
+│   ├── avatars
 │   └── companies
 ├── analytics
 │   ├── events
 │   ├── page_views
 │   └── conversions
 ├── audit
-│   ├── user_actions
+│   ├── player_actions
 │   └── api_requests
 └── cache
-    ├── cached_profiles
+    ├── cached_avatars
     └── cached_searches
 ```
 
@@ -594,7 +594,7 @@ class AnalyticsEvent < ApplicationRecord
 end
 
 class AuditLog < ApplicationRecord
-  self.table_name = 'audit.user_actions'
+  self.table_name = 'audit.player_actions'
 end
 ```
 
@@ -613,17 +613,17 @@ REVOKE ALL ON SCHEMA public FROM analytics_role;
 
 ```bash
 # Backup only the audit schema
-pg_dump -n audit wigiwork_production > audit_backup.sql
+pg_dump -n audit testapp_production > audit_backup.sql
 
 # Backup everything except cache
-pg_dump -N cache wigiwork_production > production_backup.sql
+pg_dump -N cache testapp_production > production_backup.sql
 ```
 
 **4. Schema-Level Maintenance**
 
 ```sql
 -- Truncate all cache tables without affecting production
-TRUNCATE TABLE cache.cached_profiles, cache.cached_searches;
+TRUNCATE TABLE cache.cached_avatars, cache.cached_searches;
 
 -- Drop and recreate analytics schema
 DROP SCHEMA analytics CASCADE;
@@ -660,10 +660,10 @@ module Analytics
   end
 end
 
-# app/models/audit/user_action.rb
+# app/models/audit/player_action.rb
 module Audit
   class UserAction < ApplicationRecord
-    self.table_name = 'audit.user_actions'
+    self.table_name = 'audit.player_actions'
   end
 end
 ```
@@ -672,8 +672,8 @@ end
 
 ```ruby
 # Join across schemas
-User.joins("JOIN audit.user_actions ON audit.user_actions.user_id = users.id")
-    .where("audit.user_actions.action = ?", "login")
+Player.joins("JOIN audit.player_actions ON audit.player_actions.player_id = players.id")
+    .where("audit.player_actions.action = ?", "login")
 ```
 
 ### 6.4 Schemas vs. Multiple Databases
@@ -777,18 +777,18 @@ pgloader migrate.load
 ```ruby
 # Export from MySQL
 namespace :export do
-  task users: :environment do
-    File.open('users.json', 'w') do |f|
-      User.find_each { |u| f.puts u.to_json }
+  task players: :environment do
+    File.open('players.json', 'w') do |f|
+      Player.find_each { |u| f.puts u.to_json }
     end
   end
 end
 
 # Import to PostgreSQL
 namespace :import do
-  task users: :environment do
-    File.readlines('users.json').each do |line|
-      User.create!(JSON.parse(line))
+  task players: :environment do
+    File.readlines('players.json').each do |line|
+      Player.create!(JSON.parse(line))
     end
   end
 end
@@ -802,7 +802,7 @@ MySQL uses `AUTO_INCREMENT`, PostgreSQL uses `SERIAL` or `IDENTITY`. Rails handl
 
 ```sql
 -- Fix sequence if IDs are out of sync
-SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM players));
 ```
 
 **2. Boolean Handling**
@@ -821,10 +821,10 @@ PostgreSQL string comparisons are case-sensitive by default:
 
 ```ruby
 # MySQL: case-insensitive by default
-User.where(email: 'Test@Example.com')  # Finds test@example.com
+Player.where(email: 'Test@Example.com')  # Finds test@example.com
 
 # PostgreSQL: case-sensitive
-User.where("LOWER(email) = LOWER(?)", 'Test@Example.com')
+Player.where("LOWER(email) = LOWER(?)", 'Test@Example.com')
 # Or use citext extension for case-insensitive columns
 ```
 
@@ -834,14 +834,14 @@ PostgreSQL requires all non-aggregated columns in GROUP BY:
 
 ```ruby
 # MySQL: Allows this (picks arbitrary value)
-select("users.*, COUNT(orders.id)")
+select("players.*, COUNT(orders.id)")
   .joins(:orders)
-  .group("users.id")
+  .group("players.id")
 
 # PostgreSQL: Must include all selected columns
-select("users.id, users.email, COUNT(orders.id)")
+select("players.id, players.email, COUNT(orders.id)")
   .joins(:orders)
-  .group("users.id, users.email")
+  .group("players.id, players.email")
 ```
 
 ### 7.4 Post-Migration Checklist
@@ -866,7 +866,7 @@ bundle exec brakeman -q -w2
 bundle exec rails rswag:specs:swaggerize
 
 # 7. Performance baseline
-rails runner "Benchmark.measure { User.count }"
+rails runner "Benchmark.measure { Player.count }"
 ```
 
 ### 7.5 Lessons We Learned
@@ -897,7 +897,7 @@ PostgreSQL's query planner is different. Some queries may need new indexes:
 ```ruby
 # Add explain logging in development
 ActiveRecord::Base.logger = Logger.new(STDOUT)
-User.where(status: :active).explain
+Player.where(status: :active).explain
 ```
 
 **5. Document your extensions**
@@ -965,5 +965,5 @@ The best database is the one that grows with your needs. PostgreSQL does exactly
 
 ---
 
-*This post documents our migration of the Wigiwork API from MySQL to PostgreSQL. The patterns described here enabled a migration with minimal code changes and zero regressions—proving that investment in database-agnostic code pays dividends when requirements evolve.*
+*This post documents our migration of the TestApp API from MySQL to PostgreSQL. The patterns described here enabled a migration with minimal code changes and zero regressions—proving that investment in database-agnostic code pays dividends when requirements evolve.*
 

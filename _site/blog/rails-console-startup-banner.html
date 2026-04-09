@@ -118,7 +118,7 @@
     <!-- Post content -->
     <div class="prose post-content" id="post-content">
       <blockquote>
-  <p>Quick win for everyday Rails work: print a small, colorized stats banner <strong>every time</strong> you open <code class="language-plaintext highlighter-rouge">rails console</code> — users, companies, profiles, attachments, etc. It’s zero‑maintenance and runs only in the console.</p>
+  <p>Quick win for everyday Rails work: print a small, colorized stats banner <strong>every time</strong> you open <code class="language-plaintext highlighter-rouge">rails console</code> — players, companies, avatars, attachments, etc. It’s zero‑maintenance and runs only in the console.</p>
 </blockquote>
 
 <h2 id="tldr--roadmap">TL;DR / Roadmap</h2>
@@ -137,7 +137,7 @@
 <hr />
 
 <h2 id="why-this-exists">Why this exists</h2>
-<p>When I open the console, I want context fast: <em>how many users are in the DB? which environment am I in? what database am I connected to?</em>
+<p>When I open the console, I want context fast: <em>how many players are in the DB? which environment am I in? what database am I connected to?</em>
 A tiny banner answers those in ~1ms of code you’ll forget about.</p>
 
 <hr />
@@ -154,9 +154,9 @@ A tiny banner answers those in ~1ms of code you’ll forget about.</p>
       <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span>
 
       <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"Users"</span>          <span class="o">=&gt;</span> <span class="no">User</span><span class="p">,</span>
+        <span class="s2">"Players"</span>          <span class="o">=&gt;</span> <span class="no">Player</span><span class="p">,</span>
         <span class="s2">"Companies"</span>      <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Company</span><span class="p">)</span> <span class="p">?</span> <span class="no">Company</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
-        <span class="s2">"Profiles"</span>       <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Profile</span><span class="p">)</span> <span class="p">?</span> <span class="no">Profile</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
+        <span class="s2">"Avatars"</span>       <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Avatar</span><span class="p">)</span> <span class="p">?</span> <span class="no">Avatar</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
         <span class="s2">"Resumes"</span>        <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Resume</span><span class="p">)</span> <span class="p">?</span> <span class="no">Resume</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
         <span class="s2">"Attachments"</span>    <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Attachment</span><span class="p">)</span> <span class="p">?</span> <span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Attachment</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
         <span class="s2">"AccessRequests"</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">AccessRequest</span><span class="p">)</span> <span class="p">?</span> <span class="no">AccessRequest</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
@@ -197,9 +197,9 @@ A tiny banner answers those in ~1ms of code you’ll forget about.</p>
     <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span>
 
     <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="s2">"Users"</span>          <span class="o">=&gt;</span> <span class="no">User</span><span class="p">,</span>
+      <span class="s2">"Players"</span>          <span class="o">=&gt;</span> <span class="no">Player</span><span class="p">,</span>
       <span class="s2">"Companies"</span>      <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Company</span><span class="p">)</span> <span class="p">?</span> <span class="no">Company</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
-      <span class="s2">"Profiles"</span>       <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Profile</span><span class="p">)</span> <span class="p">?</span> <span class="no">Profile</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
+      <span class="s2">"Avatars"</span>       <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Avatar</span><span class="p">)</span> <span class="p">?</span> <span class="no">Avatar</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
       <span class="s2">"Resumes"</span>        <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">Resume</span><span class="p">)</span> <span class="p">?</span> <span class="no">Resume</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
       <span class="s2">"Attachments"</span>    <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Attachment</span><span class="p">)</span> <span class="p">?</span> <span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Attachment</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">),</span>
       <span class="s2">"AccessRequests"</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="k">defined?</span><span class="p">(</span><span class="no">AccessRequest</span><span class="p">)</span> <span class="p">?</span> <span class="no">AccessRequest</span> <span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
@@ -247,19 +247,19 @@ A tiny banner answers those in ~1ms of code you’ll forget about.</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails c
 
 --- Application Stats ---
-  User Count (19.0ms)  SELECT COUNT(*) FROM `users` /*application='WigiworkBack'*/
-Total Users         : 53
-  Company Count (3.2ms)  SELECT COUNT(*) FROM `companies` /*application='WigiworkBack'*/
+  Player Count (19.0ms)  SELECT COUNT(*) FROM `players` /*application='TestApp'*/
+Total Players         : 53
+  Company Count (3.2ms)  SELECT COUNT(*) FROM `companies` /*application='TestApp'*/
 Total Companies     : 2
-  Profile Count (0.3ms)  SELECT COUNT(*) FROM `profiles` /*application='WigiworkBack'*/
-Total Profiles      : 52
-  Resume Count (0.2ms)  SELECT COUNT(*) FROM `resumes` /*application='WigiworkBack'*/
+  Avatar Count (0.3ms)  SELECT COUNT(*) FROM `avatars` /*application='TestApp'*/
+Total Avatars      : 52
+  Resume Count (0.2ms)  SELECT COUNT(*) FROM `chronicles` /*application='TestApp'*/
 Total Resumes       : 37
-  ActiveStorage::Attachment Count (0.3ms)  SELECT COUNT(*) FROM `active_storage_attachments` /*application='WigiworkBack'*/
+  ActiveStorage::Attachment Count (0.3ms)  SELECT COUNT(*) FROM `active_storage_attachments` /*application='TestApp'*/
 Total Attachments   : 0
-  AccessRequest Count (0.2ms)  SELECT COUNT(*) FROM `access_requests` /*application='WigiworkBack'*/
+  AccessRequest Count (0.2ms)  SELECT COUNT(*) FROM `access_requests` /*application='TestApp'*/
 Total AccessRequests: 4
-Environment: development | DB: wigiwork_development
+Environment: development | DB: testapp_development
 ---------------------------
 
 Loading development environment (Rails 8.0.2)
@@ -373,7 +373,7 @@ rails c
           </svg>
           Older
         </span>
-        <span class="post-nav-title">Optimizing a Complex Rails Profile Endpoint — my...</span>
+        <span class="post-nav-title">Optimizing a Complex Rails Avatar Endpoint — my...</span>
       </a>
     
     

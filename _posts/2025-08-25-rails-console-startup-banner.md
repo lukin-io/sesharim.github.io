@@ -8,7 +8,7 @@ categories: rails performance api optimization blueprinter ransack caching
 excerpt: A tiny Rails console banner that show app stats every time you run rails c
 ---
 
-> Quick win for everyday Rails work: print a small, colorized stats banner **every time** you open `rails console` — users, companies, profiles, attachments, etc. It’s zero‑maintenance and runs only in the console.
+> Quick win for everyday Rails work: print a small, colorized stats banner **every time** you open `rails console` — players, companies, avatars, attachments, etc. It’s zero‑maintenance and runs only in the console.
 
 ## TL;DR / Roadmap
 1. **Pick one approach**:
@@ -21,7 +21,7 @@ excerpt: A tiny Rails console banner that show app stats every time you run rail
 ---
 
 ## Why this exists
-When I open the console, I want context fast: *how many users are in the DB? which environment am I in? what database am I connected to?*
+When I open the console, I want context fast: *how many players are in the DB? which environment am I in? what database am I connected to?*
 A tiny banner answers those in ~1ms of code you’ll forget about.
 
 ---
@@ -39,9 +39,9 @@ if defined?(Rails::Console)
       ActiveRecord::Base.connection
 
       models = {
-        "Users"          => User,
+        "Players"          => Player,
         "Companies"      => (defined?(Company) ? Company : nil),
-        "Profiles"       => (defined?(Profile) ? Profile : nil),
+        "Avatars"       => (defined?(Avatar) ? Avatar : nil),
         "Resumes"        => (defined?(Resume) ? Resume : nil),
         "Attachments"    => (defined?(ActiveStorage::Attachment) ? ActiveStorage::Attachment : nil),
         "AccessRequests" => (defined?(AccessRequest) ? AccessRequest : nil)
@@ -83,9 +83,9 @@ module ConsoleBanner
     ActiveRecord::Base.connection
 
     models = {
-      "Users"          => User,
+      "Players"          => Player,
       "Companies"      => (defined?(Company) ? Company : nil),
-      "Profiles"       => (defined?(Profile) ? Profile : nil),
+      "Avatars"       => (defined?(Avatar) ? Avatar : nil),
       "Resumes"        => (defined?(Resume) ? Resume : nil),
       "Attachments"    => (defined?(ActiveStorage::Attachment) ? ActiveStorage::Attachment : nil),
       "AccessRequests" => (defined?(AccessRequest) ? AccessRequest : nil)
@@ -135,19 +135,19 @@ end
 rails c
 
 --- Application Stats ---
-  User Count (19.0ms)  SELECT COUNT(*) FROM `users` /*application='WigiworkBack'*/
-Total Users         : 53
-  Company Count (3.2ms)  SELECT COUNT(*) FROM `companies` /*application='WigiworkBack'*/
+  Player Count (19.0ms)  SELECT COUNT(*) FROM `players` /*application='TestApp'*/
+Total Players         : 53
+  Company Count (3.2ms)  SELECT COUNT(*) FROM `companies` /*application='TestApp'*/
 Total Companies     : 2
-  Profile Count (0.3ms)  SELECT COUNT(*) FROM `profiles` /*application='WigiworkBack'*/
-Total Profiles      : 52
-  Resume Count (0.2ms)  SELECT COUNT(*) FROM `resumes` /*application='WigiworkBack'*/
+  Avatar Count (0.3ms)  SELECT COUNT(*) FROM `avatars` /*application='TestApp'*/
+Total Avatars      : 52
+  Resume Count (0.2ms)  SELECT COUNT(*) FROM `chronicles` /*application='TestApp'*/
 Total Resumes       : 37
-  ActiveStorage::Attachment Count (0.3ms)  SELECT COUNT(*) FROM `active_storage_attachments` /*application='WigiworkBack'*/
+  ActiveStorage::Attachment Count (0.3ms)  SELECT COUNT(*) FROM `active_storage_attachments` /*application='TestApp'*/
 Total Attachments   : 0
-  AccessRequest Count (0.2ms)  SELECT COUNT(*) FROM `access_requests` /*application='WigiworkBack'*/
+  AccessRequest Count (0.2ms)  SELECT COUNT(*) FROM `access_requests` /*application='TestApp'*/
 Total AccessRequests: 4
-Environment: development | DB: wigiwork_development
+Environment: development | DB: testapp_development
 ---------------------------
 
 Loading development environment (Rails 8.0.2)

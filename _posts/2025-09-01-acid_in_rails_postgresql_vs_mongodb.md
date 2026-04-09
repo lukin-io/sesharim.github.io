@@ -53,12 +53,12 @@ Example in Rails:
 
 ``` ruby
 ActiveRecord::Base.transaction do
-  user.save!
-  profile.save!
+  player.save!
+  avatar.save!
 end
 ```
 
-If `profile.save!` fails, `user.save!` rolls back automatically.
+If `avatar.save!` fails, `player.save!` rolls back automatically.
 
 ------------------------------------------------------------------------
 
@@ -81,15 +81,15 @@ MongoDB is **not fully ACID** in the same sense as PostgreSQL:
 Rails (with Mongoid) example:
 
 ``` ruby
-User.with_session do |session|
+Player.with_session do |session|
   session.start_transaction
-  user.update!(name: "Max")
-  profile.update!(bio: "Hello") # multi-doc transaction
+  player.update!(name: "Max")
+  avatar.update!(bio: "Hello") # multi-doc transaction
   session.commit_transaction
 end
 ```
 
-Without a transaction, only `user.update!` might persist, breaking
+Without a transaction, only `player.update!` might persist, breaking
 atomicity.
 
 ------------------------------------------------------------------------
@@ -99,7 +99,7 @@ atomicity.
 Atomicity should be applied to operations where **partial success would
 corrupt data integrity**:
 
--   ✅ **Creating related records** (e.g., `User` + `Profile`).\
+-   ✅ **Creating related records** (e.g., `Player` + `Avatar`).\
 -   ✅ **Money transfers / payments** (must debit & credit atomically).\
 -   ✅ **Bulk inserts / updates** where all must succeed together.\
 -   ✅ **Inventory changes** (e.g., decrementing stock and creating an
@@ -120,12 +120,12 @@ What doesn't need to be atomic:
 
 ### PostgreSQL Examples
 
-#### ❌ Bad: User + Profile creation (partial writes possible)
+#### ❌ Bad: Player + Avatar creation (partial writes possible)
 
 ``` ruby
 def create
-  user = User.create!(email: params[:email])
-  profile = Profile.create!(user: user, name: params[:name]) # may fail later
+  player = Player.create!(email: params[:email])
+  avatar = Avatar.create!(player: player, name: params[:name]) # may fail later
 end
 ```
 
@@ -133,8 +133,8 @@ end
 
 ``` ruby
 ActiveRecord::Base.transaction do
-  user    = User.create!(email: params[:email])
-  profile = Profile.create!(user: user, name: params[:name])
+  player    = Player.create!(email: params[:email])
+  avatar = Avatar.create!(player: player, name: params[:name])
 end
 ```
 
@@ -172,7 +172,7 @@ end
 #### ✅ Best practice: Emails/logging with `after_commit`
 
 ``` ruby
-class User < ApplicationRecord
+class Player < ApplicationRecord
   after_commit :enqueue_welcome_email, on: :create
 
   private
@@ -189,8 +189,8 @@ end
 #### ❌ Bad: Multi-document creation without transaction
 
 ``` ruby
-user    = User.create!(email: email)
-profile = Profile.create!(user_id: user.id, name: name)
+player    = Player.create!(email: email)
+avatar = Avatar.create!(player_id: player.id, name: name)
 ```
 
 #### ✅ Fixed: Wrap in transaction
@@ -199,8 +199,8 @@ profile = Profile.create!(user_id: user.id, name: name)
 Mongoid::Clients.default.with(write: { w: :majority }) do |client|
   session = client.start_session
   session.with_transaction do
-    user    = User.with(session: session).create!(email: email)
-    profile = Profile.with(session: session).create!(user_id: user.id, name: name)
+    player    = Player.with(session: session).create!(email: email)
+    avatar = Avatar.with(session: session).create!(player_id: player.id, name: name)
   end
 end
 ```
@@ -250,7 +250,7 @@ end
 Payments::TransferFunds.call(from_id: 1, to_id: 2, amount_cents: 500)
 
 # MongoDB
-Users::CreateWithProfileMongo.call(email: "a@b.com", name: "Max")
+Players::CreateWithAvatarMongo.call(email: "a@b.com", name: "Max")
 Inventory::ReserveItemMongo.call(product_id: BSON::ObjectId("..."))
 ```
 
@@ -258,7 +258,7 @@ Inventory::ReserveItemMongo.call(product_id: BSON::ObjectId("..."))
 
 ## 7. What Must Be Atomic vs. Not
 
-**Atomic:** - User + Profile creation - Money transfers -
+**Atomic:** - Player + Avatar creation - Money transfers -
 Inventory/quotas - State transitions
 
 **Not atomic:** - Emails - Logging - Background jobs - Cache

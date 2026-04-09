@@ -54,12 +54,12 @@ end
 ## 1) Stabilize Timestamps in Model Specs
 
 ```ruby
-RSpec.describe Profile, type: :model do
+RSpec.describe Avatar, type: :model do
   it "sets deterministic timestamps" do
     freeze_time do
-      profile = Profile.create!(name: "Max")
-      expect(profile.created_at).to eq(Time.current)
-      expect(profile.updated_at).to eq(Time.current)
+      avatar = Avatar.create!(name: "Max")
+      expect(avatar.created_at).to eq(Time.current)
+      expect(avatar.updated_at).to eq(Time.current)
     end
   end
 end
@@ -93,19 +93,19 @@ end
 ## 3) Cache Keys & Expirations
 
 ```ruby
-RSpec.describe Profiles::CachedFinder do
+RSpec.describe Avatars::CachedFinder do
   it "caches and expires as expected" do
-    profile = create(:profile)
+    avatar = create(:avatar)
 
     freeze_time do
-      expect { described_class.call(profile.id) }
-        .to change { Rails.cache.exist?("profile:#{profile.id}:#{profile.updated_at.to_i}") }
+      expect { described_class.call(avatar.id) }
+        .to change { Rails.cache.exist?("avatar:#{avatar.id}:#{avatar.updated_at.to_i}") }
         .from(false).to(true)
     end
 
     travel 1.hour
     expect(
-      Rails.cache.exist?("profile:#{profile.id}:#{profile.updated_at.to_i}")
+      Rails.cache.exist?("avatar:#{avatar.id}:#{avatar.updated_at.to_i}")
     ).to be(false)
   ensure
     travel_back

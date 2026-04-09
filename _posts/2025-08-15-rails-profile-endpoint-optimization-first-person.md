@@ -1,14 +1,14 @@
 ---
 layout: post
 author: Max Lukin
-title: Optimizing a Complex Rails Profile Endpoint — my step‑by‑step notes
+title: Optimizing a Complex Rails Avatar Endpoint — my step‑by‑step notes
 date: 2025-08-15 09:00:00
 tags: [rails-8, rack, healthcheck, devops, reliability]
 categories: rails performance api optimization blueprinter ransack caching
-excerpt: Optimizing a Complex Rails Profile Endpoint
+excerpt: Optimizing a Complex Rails Avatar Endpoint
 ---
 
-I had an API endpoint that returned a **Profile** and a lot of nested associations. It worked, but the shape of the data made it easy to trigger N+1s or force a single **monster JOIN** that Postgres struggled to optimize.
+I had an API endpoint that returned a **Avatar** and a lot of nested associations. It worked, but the shape of the data made it easy to trigger N+1s or force a single **monster JOIN** that Postgres struggled to optimize.
 
 This write‑up is my engineering log: what I started with, why it was slow, and the exact changes I shipped. It includes **every example from the session**, starting at **1)**, along with the full SQL log and the original preload code. All snippets are explicitly file‑scoped so they’re copy‑pasteable into a Rails 7/8 codebase.
 
@@ -18,108 +18,108 @@ This write‑up is my engineering log: what I started with, why it was slow, and
 
 **Endpoint:**
 
-- `GET /api/v1/profiles/:id` (show)
-- `GET /api/v1/profiles` (index with Ransack filters + pagination)
+- `GET /api/v1/avatars/:id` (show)
+- `GET /api/v1/avatars` (index with Ransack filters + pagination)
 
 **Real SQL log I started from (show):**
 
 ```text
-Started GET "/api/v1/profiles/1" for ::1 at 2025-08-11 14:59:59 +0000
-Processing by Api::V1::ProfilesController#show as */*
+Started GET "/api/v1/avatars/1" for ::1 at 2025-08-11 14:59:59 +0000
+Processing by Api::V1::GameController#show as */*
   Parameters: {"id" => "1"}
-  User Load (15.4ms)  SELECT `users`.* FROM `users` WHERE `users`.`id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  Profile Load (0.2ms)  SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:143:in 'Api::V1::ProfilesController#set_profile'
-  AwardItem Load (0.3ms)  SELECT `award_items`.* FROM `award_items` WHERE `award_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  CertificationItem Load (0.3ms)  SELECT `certification_items`.* FROM `certification_items` WHERE `certification_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  ContactInfo Load (0.2ms)  SELECT `contact_infos`.* FROM `contact_infos` WHERE `contact_infos`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  ContentBlock Load (0.2ms)  SELECT `content_blocks`.* FROM `content_blocks` WHERE `content_blocks`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  EducationItem Load (0.2ms)  SELECT `education_items`.* FROM `education_items` WHERE `education_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  FileDocument Load (0.8ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'FileDocument' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'Profile' /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  HighlightLink Load (0.3ms)  SELECT `highlight_links`.* FROM `highlight_links` WHERE `highlight_links`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  GalleryImage Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'GalleryImage' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'Profile' /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  Language Load (0.2ms)  SELECT `languages`.* FROM `languages` WHERE `languages`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  LicenseItem Load (0.2ms)  SELECT `license_items`.* FROM `license_items` WHERE `license_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  LocationSetting Load (0.2ms)  SELECT `location_settings`.* FROM `location_settings` WHERE `location_settings`.`profile_id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  PortfolioLink Load (0.3ms)  SELECT `portfolio_links`.* FROM `portfolio_links` WHERE `portfolio_links`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  ProjectItem Load (0.2ms)  SELECT `project_items`.* FROM `project_items` WHERE `project_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  FileDocument Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'FileDocument' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'ProjectItem' /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  GalleryImage Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'GalleryImage' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'ProjectItem' /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  Resume Load (0.2ms)  SELECT `resumes`.* FROM `resumes` WHERE `resumes`.`profile_id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  FileDocument Load (0.2ms)  SELECT `attachments`.* FROM `attachments` WHERE `attachments`.`type` = 'FileDocument' AND `attachments`.`attachable_id` = 1 AND `attachments`.`attachable_type` = 'Resume' /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  SalaryExpectation Load (0.3ms)  SELECT `salary_expectations`.* FROM `salary_expectations` WHERE `salary_expectations`.`profile_id` = 1 LIMIT 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  SecurityClearanceItem Load (0.2ms)  SELECT `security_clearance_items`.* FROM `security_clearance_items` WHERE `security_clearance_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  SkillReview Load (0.2ms)  SELECT `skill_reviews`.* FROM `skill_reviews` WHERE `skill_reviews`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  Skill Load (0.2ms)  SELECT `skills`.* FROM `skills` WHERE `skills`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  VolunteerWorkItem Load (0.2ms)  SELECT `volunteer_work_items`.* FROM `volunteer_work_items` WHERE `volunteer_work_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  WorkExperience Load (0.2ms)  SELECT `work_experiences`.* FROM `work_experiences` WHERE `work_experiences`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  WorkReference Load (0.2ms)  SELECT `work_references`.* FROM `work_references` WHERE `work_references`.`work_experience_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
-  WorkingKnowledgeItem Load (0.2ms)  SELECT `working_knowledge_items`.* FROM `working_knowledge_items` WHERE `working_knowledge_items`.`profile_id` = 1 /*action='show',application='WigiworkBack',controller='profiles'*/
-  ↳ app/controllers/api/v1/profiles_controller.rb:109:in 'Api::V1::ProfilesController#show'
+  Player Load (15.4ms)  SELECT `players`.* FROM `game_table` WHERE `players`.`id` = 1 LIMIT 1 /*action='show',application='TestApp',controller='game'*/
+  Avatar Load (0.2ms)  SELECT `avatars`.* FROM `game_table` WHERE `avatars`.`id` = 1 LIMIT 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:143:in 'Api::V1::GameController#set_avatar'
+  Armory Load (0.3ms)  SELECT `armory`.* FROM `game_table` WHERE `armory`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Rune Load (0.3ms)  SELECT `runes`.* FROM `game_table` WHERE `runes`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Beacon Load (0.2ms)  SELECT `beacons`.* FROM `game_table` WHERE `beacons`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  LoreNode Load (0.2ms)  SELECT `lore_nodes`.* FROM `game_table` WHERE `lore_nodes`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  TrainingLog Load (0.2ms)  SELECT `training_logs`.* FROM `game_table` WHERE `training_logs`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  LoadoutDoc Load (0.8ms)  SELECT `asset_cache`.* FROM `game_table` WHERE `asset_cache`.`asset_kind` = 'LoadoutDoc' AND `asset_cache`.`owner_id` = 1 AND `asset_cache`.`owner_kind` = 'Avatar' /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  QuestHook Load (0.3ms)  SELECT `quest_hooks`.* FROM `game_table` WHERE `quest_hooks`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  TrophyBanner Load (0.2ms)  SELECT `asset_cache`.* FROM `game_table` WHERE `asset_cache`.`asset_kind` = 'TrophyBanner' AND `asset_cache`.`owner_id` = 1 AND `asset_cache`.`owner_kind` = 'Avatar' /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Dialect Load (0.2ms)  SELECT `dialects`.* FROM `game_table` WHERE `dialects`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Permit Load (0.2ms)  SELECT `permits`.* FROM `game_table` WHERE `permits`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  MapRule Load (0.2ms)  SELECT `map_rules`.* FROM `game_table` WHERE `map_rules`.`avatar_id` = 1 LIMIT 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  GuildLink Load (0.3ms)  SELECT `guild_links`.* FROM `game_table` WHERE `guild_links`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Mission Load (0.2ms)  SELECT `missions`.* FROM `game_table` WHERE `missions`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  LoadoutDoc Load (0.2ms)  SELECT `asset_cache`.* FROM `game_table` WHERE `asset_cache`.`asset_kind` = 'LoadoutDoc' AND `asset_cache`.`owner_id` = 1 AND `asset_cache`.`owner_kind` = 'Mission' /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  TrophyBanner Load (0.2ms)  SELECT `asset_cache`.* FROM `game_table` WHERE `asset_cache`.`asset_kind` = 'TrophyBanner' AND `asset_cache`.`owner_id` = 1 AND `asset_cache`.`owner_kind` = 'Mission' /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Chronicle Load (0.2ms)  SELECT `chronicles`.* FROM `game_table` WHERE `chronicles`.`avatar_id` = 1 LIMIT 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  LoadoutDoc Load (0.2ms)  SELECT `asset_cache`.* FROM `game_table` WHERE `asset_cache`.`asset_kind` = 'LoadoutDoc' AND `asset_cache`.`owner_id` = 1 AND `asset_cache`.`owner_kind` = 'Chronicle' /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  BountyRule Load (0.3ms)  SELECT `bounty_rules`.* FROM `game_table` WHERE `bounty_rules`.`avatar_id` = 1 LIMIT 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  ClearanceRune Load (0.2ms)  SELECT `clearance_runes`.* FROM `game_table` WHERE `clearance_runes`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  AbilityReview Load (0.2ms)  SELECT `ability_reviews`.* FROM `game_table` WHERE `ability_reviews`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  Ability Load (0.2ms)  SELECT `abilities`.* FROM `game_table` WHERE `abilities`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  SideQuest Load (0.2ms)  SELECT `side_quests`.* FROM `game_table` WHERE `side_quests`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  RaidLog Load (0.2ms)  SELECT `raid_logs`.* FROM `game_table` WHERE `raid_logs`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  WitnessNote Load (0.2ms)  SELECT `witness_notes`.* FROM `game_table` WHERE `witness_notes`.`raid_log_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
+  FieldNote Load (0.2ms)  SELECT `field_notes`.* FROM `game_table` WHERE `field_notes`.`avatar_id` = 1 /*action='show',application='TestApp',controller='game'*/
+  ↳ app/controllers/api/v1/game_controller.rb:109:in 'Api::V1::GameController#show'
 Completed 200 OK in 46ms (Views: 0.3ms | ActiveRecord: 22.0ms (27 queries, 0 cached) | GC: 1.4ms)
 ```
 
 **Original preload block (index) I wanted to replace:**
 
 ```ruby
-# app/controllers/api/v1/profiles_controller.rb (index; BEFORE)
-@profiles = Profile.preload(
-  :user,
-  :contact_infos,
-  :skills,
-  :work_experiences,
-  :portfolio_links,
-  :languages,
-  :content_blocks,
-  :skill_reviews,
-  :education_items,
-  :working_knowledge_items,
-  :certification_items,
-  :award_items,
-  :project_items,
-  :highlight_links,
-  :security_clearance_items,
-  :license_items,
-  :images,
-  :files,
-  :location_setting,
-  :salary_expectation,
+# app/controllers/api/v1/game_controller.rb (index; BEFORE)
+@avatars = Avatar.preload(
+  :player,
+  :beacons,
+  :abilities,
+  :raid_logs,
+  :guild_links,
+  :dialects,
+  :lore_nodes,
+  :ability_reviews,
+  :training_logs,
+  :field_notes,
+  :runes,
+  :armory,
+  :missions,
+  :quest_hooks,
+  :clearance_runes,
+  :permits,
+  :trophy_banners,
+  :loadout_docs,
+  :map_rule,
+  :bounty_rule,
   # Nested associations for models that have their own associations
-  { certification_items: [:files] },
-  { resume: [:files] },
-  { work_experiences: :work_references },
-  { education_items: [:images, :files] },
-  { license_items: [:images, :files, :license_links] },
-  { project_items: [:images, :files] },
-  { volunteer_work_items: [:images, :files] },
-  { award_items: [:files] },
-  # { security_clearance_items: [:images, :files] },
-  # { certification_items: [:images, :files] },
-  # { working_knowledge_items: [:images, :files] }
+  { runes: [:loadout_docs] },
+  { chronicle: [:loadout_docs] },
+  { raid_logs: :witness_notes },
+  { training_logs: [:trophy_banners, :loadout_docs] },
+  { permits: [:trophy_banners, :loadout_docs, :permit_links] },
+  { missions: [:trophy_banners, :loadout_docs] },
+  { side_quests: [:trophy_banners, :loadout_docs] },
+  { armory: [:loadout_docs] },
+  # { clearance_runes: [:trophy_banners, :loadout_docs] },
+  # { runes: [:trophy_banners, :loadout_docs] },
+  # { field_notes: [:trophy_banners, :loadout_docs] }
 )
 .ransack(ransack_params)
 .result(distinct: true)
@@ -141,13 +141,13 @@ I added a small concern to parse and **whitelist** expansions and sparse fieldse
 module IncludeParams
   # Whitelist to avoid arbitrary preload trees
   ALLOWED_INCLUDES = %w[
-    user contact_infos skills work_experiences.work_references portfolio_links
-    languages content_blocks skill_reviews education_items.images education_items.files
-    working_knowledge_items certification_items.files award_items.files
-    project_items.images project_items.files highlight_links security_clearance_items
-    license_items.images license_items.files license_items.license_links
-    images files resume.files location_setting salary_expectation volunteer_work_items.images
-    volunteer_work_items.files
+    player beacons abilities raid_logs.witness_notes guild_links
+    dialects lore_nodes ability_reviews training_logs.trophy_banners training_logs.loadout_docs
+    field_notes runes.loadout_docs armory.loadout_docs
+    missions.trophy_banners missions.loadout_docs quest_hooks clearance_runes
+    permits.trophy_banners permits.loadout_docs permits.permit_links
+    trophy_banners loadout_docs chronicle.loadout_docs map_rule bounty_rule side_quests.trophy_banners
+    side_quests.loadout_docs
   ].freeze
 
   def parsed_includes
@@ -155,7 +155,7 @@ module IncludeParams
     raw & ALLOWED_INCLUDES
   end
 
-  # JSON:API-style sparse fieldsets, e.g. fields[profiles]=id,username,role
+  # JSON:API-style sparse fieldsets, e.g. fields[avatars]=id,username,role
   def parsed_fields
     fields = params.fetch(:fields, {}).to_h.transform_values { |v| v.split(',').map(&:strip) }
     fields.transform_keys!(&:to_s)
@@ -165,8 +165,8 @@ end
 
 **How I call it:**
 
-- `GET /api/v1/profiles/1` → **compact** default payload.
-- `GET /api/v1/profiles/1?include=project_items.images,education_items.files` → only those heavy bits are expanded.
+- `GET /api/v1/avatars/1` → **compact** default payload.
+- `GET /api/v1/avatars/1?include=missions.trophy_banners,training_logs.loadout_docs` → only those heavy bits are expanded.
 
 ---
 
@@ -174,55 +174,55 @@ end
 
 I mapped `include` tokens to a preload tree, and I only `JOIN` on associations that Ransack actually filters or sorts on.
 
-**File:** `app/controllers/api/v1/profiles_controller.rb`
+**File:** `app/controllers/api/v1/game_controller.rb`
 
 ```ruby
-class Api::V1::ProfilesController < ApplicationController
+class Api::V1::GameController < ApplicationController
   include IncludeParams
 
   # Map requested include tokens to a preload tree
   PRELOAD_MAP = {
-    'user' => :user,
-    'contact_infos' => :contact_infos,
-    'skills' => :skills,
-    'work_experiences' => { work_experiences: :work_references },
-    'portfolio_links' => :portfolio_links,
-    'languages' => :languages,
-    'content_blocks' => :content_blocks,
-    'skill_reviews' => :skill_reviews,
-    'education_items.images' => { education_items: :images },
-    'education_items.files'  => { education_items: :files },
-    'working_knowledge_items' => :working_knowledge_items,
-    'certification_items.files' => { certification_items: :files },
-    'award_items.files' => { award_items: :files },
-    'project_items.images' => { project_items: :images },
-    'project_items.files'  => { project_items: :files },
-    'highlight_links' => :highlight_links,
-    'security_clearance_items' => :security_clearance_items,
-    'license_items.images' => { license_items: :images },
-    'license_items.files'  => { license_items: :files },
-    'license_items.license_links' => { license_items: :license_links },
-    'images' => :images,
-    'files'  => :files,
-    'resume.files' => { resume: :files },
-    'location_setting' => :location_setting,
-    'salary_expectation' => :salary_expectation,
-    'volunteer_work_items.images' => { volunteer_work_items: :images },
-    'volunteer_work_items.files'  => { volunteer_work_items: :files }
+    'player' => :player,
+    'beacons' => :beacons,
+    'abilities' => :abilities,
+    'raid_logs' => { raid_logs: :witness_notes },
+    'guild_links' => :guild_links,
+    'dialects' => :dialects,
+    'lore_nodes' => :lore_nodes,
+    'ability_reviews' => :ability_reviews,
+    'training_logs.trophy_banners' => { training_logs: :trophy_banners },
+    'training_logs.loadout_docs'  => { training_logs: :loadout_docs },
+    'field_notes' => :field_notes,
+    'runes.loadout_docs' => { runes: :loadout_docs },
+    'armory.loadout_docs' => { armory: :loadout_docs },
+    'missions.trophy_banners' => { missions: :trophy_banners },
+    'missions.loadout_docs'  => { missions: :loadout_docs },
+    'quest_hooks' => :quest_hooks,
+    'clearance_runes' => :clearance_runes,
+    'permits.trophy_banners' => { permits: :trophy_banners },
+    'permits.loadout_docs'  => { permits: :loadout_docs },
+    'permits.permit_links' => { permits: :permit_links },
+    'trophy_banners' => :trophy_banners,
+    'loadout_docs'  => :loadout_docs,
+    'chronicle.loadout_docs' => { chronicle: :loadout_docs },
+    'map_rule' => :map_rule,
+    'bounty_rule' => :bounty_rule,
+    'side_quests.trophy_banners' => { side_quests: :trophy_banners },
+    'side_quests.loadout_docs'  => { side_quests: :loadout_docs }
   }.freeze
 
-  # GET /api/v1/profiles
+  # GET /api/v1/avatars
   def index
     includes = parsed_includes
     fields   = parsed_fields
-    scope    = Profile.all
+    scope    = Avatar.all
 
     # JOINs strictly for Ransack filters/sorts.
-    if params.dig(:q)&.keys&.any? { |k| k.start_with?('user_') }
-      scope = scope.joins(:user)
+    if params.dig(:q)&.keys&.any? { |k| k.start_with?('player_') }
+      scope = scope.joins(:player)
     end
-    if params.dig(:q)&.keys&.any? { |k| k.start_with?('location_setting_') }
-      scope = scope.joins(:location_setting)
+    if params.dig(:q)&.keys&.any? { |k| k.start_with?('map_rule_') }
+      scope = scope.joins(:map_rule)
     end
 
     scope = scope.preload(preload_tree(includes)) if includes.any?
@@ -230,33 +230,33 @@ class Api::V1::ProfilesController < ApplicationController
     records = scope.ransack(ransack_params).result(distinct: true)
                    .page(params[:page]).per(params[:limit])
 
-    render json: ProfileBlueprint.render(records,
+    render json: AvatarBlueprint.render(records,
       view: view_for(includes),
-      fields: fields['profiles'])
+      fields: fields['avatars'])
   end
 
-  # GET /api/v1/profiles/:id
+  # GET /api/v1/avatars/:id
   def show
     includes = parsed_includes
     fields   = parsed_fields
 
-    scope = Profile.preload(preload_tree(includes))
-    @profile = scope.find(params[:id])
+    scope = Avatar.preload(preload_tree(includes))
+    @avatar = scope.find(params[:id])
 
     # Strong HTTP caching: ETag + Last-Modified across key associations
     last_mod = [
-      @profile.updated_at,
-      @profile.skills.maximum(:updated_at),
-      @profile.work_experiences.maximum(:updated_at)
+      @avatar.updated_at,
+      @avatar.abilities.maximum(:updated_at),
+      @avatar.raid_logs.maximum(:updated_at)
     ].compact.max
 
-    fresh_when etag: [@profile.cache_key_with_version, includes.sort],
+    fresh_when etag: [@avatar.cache_key_with_version, includes.sort],
                last_modified: last_mod,
                public: true
 
-    render json: ProfileBlueprint.render(@profile,
+    render json: AvatarBlueprint.render(@avatar,
       view: view_for(includes),
-      fields: fields['profiles'])
+      fields: fields['avatars'])
   end
 
   private
@@ -266,7 +266,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def view_for(includes)
-    if includes.any? { |i| i.start_with?('project_items') || i.start_with?('education_items') }
+    if includes.any? { |i| i.start_with?('missions') || i.start_with?('training_logs') }
       :extended
     elsif includes.any?
       :standard
@@ -287,49 +287,49 @@ end
 
 The default is **compact**; heavier trees are behind `:standard` and `:extended`. Heavy leaf nodes cache by `cache_key_with_version`.
 
-**File:** `app/blueprints/profile_blueprint.rb`
+**File:** `app/blueprints/avatar_blueprint.rb`
 
 ```ruby
-class ProfileBlueprint < Blueprinter::Base
+class AvatarBlueprint < Blueprinter::Base
   identifier :id
 
   view :compact do
     fields :username, :role, :location, :experience_years
-    association :user, blueprint: UserBlueprint, view: :tiny
+    association :player, blueprint: PlayerBlueprint, view: :tiny
   end
 
   view :standard do
     include_view :compact
-    association :skills, blueprint: SkillBlueprint
-    association :languages, blueprint: LanguageBlueprint
+    association :abilities, blueprint: AbilityBlueprint
+    association :dialects, blueprint: DialectBlueprint
   end
 
   view :extended do
     include_view :standard
-    association :work_experiences, blueprint: WorkExperienceBlueprint, view: :with_refs
-    association :education_items, blueprint: EducationItemBlueprint, view: :with_assets
-    association :project_items, blueprint: ProjectItemBlueprint, view: :with_assets do |profile, options|
+    association :raid_logs, blueprint: RaidLogBlueprint, view: :with_refs
+    association :training_logs, blueprint: TrainingLogBlueprint, view: :with_assets
+    association :missions, blueprint: MissionBlueprint, view: :with_assets do |avatar, options|
       max = options[:locals]&.fetch(:max_children, 25)
-      profile.project_items.limit(max)
+      avatar.missions.limit(max)
     end
-    association :license_items, blueprint: LicenseItemBlueprint, view: :with_assets
-    association :resume, blueprint: ResumeBlueprint, view: :with_files
+    association :permits, blueprint: PermitBlueprint, view: :with_assets
+    association :chronicle, blueprint: ChronicleBlueprint, view: :with_loadout_docs
   end
 end
 ```
 
-**File:** `app/blueprints/project_item_blueprint.rb`
+**File:** `app/blueprints/mission_blueprint.rb`
 
 ```ruby
-class ProjectItemBlueprint < Blueprinter::Base
+class MissionBlueprint < Blueprinter::Base
   identifier :id
   fields :title, :summary, :started_on, :finished_on
 
-  association :images, blueprint: AttachmentBlueprint
-  association :files,  blueprint: AttachmentBlueprint
+  association :trophy_banners, blueprint: AttachmentBlueprint
+  association :loadout_docs,  blueprint: AttachmentBlueprint
 
   # Per-record cache
-  cache ->(obj, _opts) { "bp:project_item:#{obj.cache_key_with_version}" }
+  cache ->(obj, _opts) { "bp:mission:#{obj.cache_key_with_version}" }
 end
 ```
 
@@ -340,11 +340,11 @@ end
 This is the pattern I keep handy when the index endpoint starts accreting conditions:
 
 ```ruby
-scope = Profile.all
+scope = Avatar.all
 
 joins_needed = []
-joins_needed << :user if params.dig(:q)&.keys&.any? { |k| k.start_with?('user_') }
-joins_needed << :location_setting if params.dig(:q)&.keys&.any? { |k| k.start_with?('location_setting_') }
+joins_needed << :player if params.dig(:q)&.keys&.any? { |k| k.start_with?('player_') }
+joins_needed << :map_rule if params.dig(:q)&.keys&.any? { |k| k.start_with?('map_rule_') }
 scope = scope.joins(*joins_needed) if joins_needed.any?
 
 scope = scope.preload(preload_tree(parsed_includes))
@@ -367,18 +367,18 @@ config.active_record.global_executor_concurrency = 4 # tune per env
 **Usage (example):**
 
 ```ruby
-@profile = Profile.preload(preload_tree(parsed_includes)).load_async.find(params[:id])
+@avatar = Avatar.preload(preload_tree(parsed_includes)).load_async.find(params[:id])
 ```
 
 ---
 
 ## 7) Cap / paginate heavy nested collections
 
-I pass a `locals` cap to Blueprinter and enforce it in the association (see `ProfileBlueprint` above).
+I pass a `locals` cap to Blueprinter and enforce it in the association (see `AvatarBlueprint` above).
 
 ```ruby
-# app/controllers/api/v1/profiles_controller.rb (show)
-render json: ProfileBlueprint.render(@profile, view: :extended, locals: { max_children: 25 })
+# app/controllers/api/v1/game_controller.rb (show)
+render json: AvatarBlueprint.render(@avatar, view: :extended, locals: { max_children: 25 })
 ```
 
 ---
@@ -392,43 +392,43 @@ Sometimes I just want IDs first, details later.
 ```json
 {
   "id": 1,
-  "project_item_ids": [3,5,8,13]
+  "mission_ids": [3,5,8,13]
 }
 ```
 
 **Then fetch details in bulk:**
 
 ```
-GET /api/v1/project_items?ids=3,5,8,13
+GET /api/v1/missions?ids=3,5,8,13
 ```
 
 **Or expose a focused associations endpoint:**
 
-**File:** `app/controllers/api/v1/profile_associations_controller.rb`
+**File:** `app/controllers/api/v1/game_associations_controller.rb`
 
 ```ruby
-class Api::V1::ProfileAssociationsController < ApplicationController
+class Api::V1::GameAssociationsController < ApplicationController
   include IncludeParams
 
   def show
-    profile = Profile.find(params[:id])
+    avatar = Avatar.find(params[:id])
     includes = parsed_includes
     raise ActionController::BadRequest, "include= required" if includes.blank?
 
     # Preload requested bits only
-    Profile.where(id: profile.id).preload(preload_tree(includes)).load
+    Avatar.where(id: avatar.id).preload(preload_tree(includes)).load
 
     render json: {
-      id: profile.id,
+      id: avatar.id,
       include: includes,
-      data: ProfileBlueprint.render(profile, view: :extended, fields: params.dig(:fields, 'profiles'))
+      data: AvatarBlueprint.render(avatar, view: :extended, fields: params.dig(:fields, 'avatars'))
     }
   end
 
   private
 
   def preload_tree(includes)
-    includes.map { |key| Api::V1::ProfilesController::PRELOAD_MAP.fetch(key) }
+    includes.map { |key| Api::V1::GameController::PRELOAD_MAP.fetch(key) }
   end
 end
 ```
@@ -436,21 +436,21 @@ end
 Usage:
 
 ```
-GET /api/v1/profiles/1/associations?include=project_items,education_items
+GET /api/v1/avatars/1/associations?include=missions,training_logs
 ```
 
 ---
 
 ## 9) Model‑level tweaks that prevent surprise queries
 
-**File:** `app/models/profile.rb`
+**File:** `app/models/avatar.rb`
 
 ```ruby
-class Profile < ApplicationRecord
-  has_many :skills, inverse_of: :profile, dependent: :destroy
-  has_many :project_items, inverse_of: :profile, dependent: :destroy
+class Avatar < ApplicationRecord
+  has_many :abilities, inverse_of: :avatar, dependent: :destroy
+  has_many :missions, inverse_of: :avatar, dependent: :destroy
   # If you use counters a lot:
-  # has_many :work_experiences, inverse_of: :profile, dependent: :destroy, counter_cache: true
+  # has_many :raid_logs, inverse_of: :avatar, dependent: :destroy, counter_cache: true
 end
 ```
 
@@ -459,9 +459,9 @@ I also use `touch: false` on high‑churn relations so I don’t constantly inva
 To keep Ransack from auto‑joining unexpected stuff, I whitelist:
 
 ```ruby
-# app/models/profile.rb
+# app/models/avatar.rb
 def self.ransackable_associations(_ = nil)
-  %w[user location_setting]
+  %w[player map_rule]
 end
 
 def self.ransackable_attributes(_ = nil)
@@ -473,17 +473,17 @@ end
 
 ## 10) Guardrails: I enforce a “query budget” in tests
 
-**File:** `spec/requests/api/v1/profiles_spec.rb`
+**File:** `spec/requests/api/v1/avatars_spec.rb`
 
 ```ruby
 it 'stays under 12 queries for compact show' do
   expect {
-    get "/api/v1/profiles/#{profile.id}"
+    get "/api/v1/avatars/#{avatar.id}"
   }.to make_database_queries(count: <= 12) # adapt matcher/threshold
 end
 ```
 
-I also log `payload_size` (bytes) and render time so regressions show up in metrics, not in user reports.
+I also log `payload_size` (bytes) and render time so regressions show up in metrics, not in player reports.
 
 ---
 
@@ -492,31 +492,31 @@ I also log `payload_size` (bytes) and render time so regressions show up in metr
 **Index (lean default):**
 
 ```
-GET /api/v1/profiles?page=1&limit=20
+GET /api/v1/avatars?page=1&limit=20
 ```
 
-**Index + filter on user + expand a bit:**
+**Index + filter on player + expand a bit:**
 
 ```
-GET /api/v1/profiles?include=skills,languages&q[user_email_cont]=max@
+GET /api/v1/avatars?include=abilities,dialects&q[player_email_cont]=max@
 ```
 
 **Show minimal (fastest):**
 
 ```
-GET /api/v1/profiles/1
+GET /api/v1/avatars/1
 ```
 
 **Show with heavy expansions:**
 
 ```
-GET /api/v1/profiles/1?include=project_items.images,education_items.files,license_items.files
+GET /api/v1/avatars/1?include=missions.trophy_banners,training_logs.loadout_docs,permits.loadout_docs
 ```
 
 **Fetch only associations later:**
 
 ```
-GET /api/v1/profiles/1/associations?include=project_items,education_items
+GET /api/v1/avatars/1/associations?include=missions,training_logs
 ```
 
 ---
@@ -524,35 +524,35 @@ GET /api/v1/profiles/1/associations?include=project_items,education_items
 ## 12) Appendix — the full “before” preload list (for posterity)
 
 ```ruby
-Profile.preload(
-  :user,
-  :contact_infos,
-  :skills,
-  :work_experiences,
-  :portfolio_links,
-  :languages,
-  :content_blocks,
-  :skill_reviews,
-  :education_items,
-  :working_knowledge_items,
-  :certification_items,
-  :award_items,
-  :project_items,
-  :highlight_links,
-  :security_clearance_items,
-  :license_items,
-  :images,
-  :files,
-  :location_setting,
-  :salary_expectation,
-  { certification_items: [:files] },
-  { resume: [:files] },
-  { work_experiences: :work_references },
-  { education_items: [:images, :files] },
-  { license_items: [:images, :files, :license_links] },
-  { project_items: [:images, :files] },
-  { volunteer_work_items: [:images, :files] },
-  { award_items: [:files] }
+Avatar.preload(
+  :player,
+  :beacons,
+  :abilities,
+  :raid_logs,
+  :guild_links,
+  :dialects,
+  :lore_nodes,
+  :ability_reviews,
+  :training_logs,
+  :field_notes,
+  :runes,
+  :armory,
+  :missions,
+  :quest_hooks,
+  :clearance_runes,
+  :permits,
+  :trophy_banners,
+  :loadout_docs,
+  :map_rule,
+  :bounty_rule,
+  { runes: [:loadout_docs] },
+  { chronicle: [:loadout_docs] },
+  { raid_logs: :witness_notes },
+  { training_logs: [:trophy_banners, :loadout_docs] },
+  { permits: [:trophy_banners, :loadout_docs, :permit_links] },
+  { missions: [:trophy_banners, :loadout_docs] },
+  { side_quests: [:trophy_banners, :loadout_docs] },
+  { armory: [:loadout_docs] }
 )
 ```
 
@@ -568,4 +568,4 @@ Profile.preload(
 - I cap/paginate heavy children or fetch them via dedicated endpoints.
 - Guardrails (query budget, Ransack whitelists, payload logging) keep it fast.
 
-If you drop this post into a Jekyll site, name it `_posts/2025-08-15-rails-profile-endpoint-optimization.md`.
+If you drop this post into a Jekyll site, name it `_posts/2025-08-15-rails-avatar-endpoint-optimization.md`.

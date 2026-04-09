@@ -164,12 +164,12 @@
 
 <h2 id="1-stabilize-timestamps-in-model-specs">1) Stabilize Timestamps in Model Specs</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Profile</span><span class="p">,</span> <span class="ss">type: :model</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Avatar</span><span class="p">,</span> <span class="ss">type: :model</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"sets deterministic timestamps"</span> <span class="k">do</span>
     <span class="n">freeze_time</span> <span class="k">do</span>
-      <span class="n">profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
-      <span class="n">expect</span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="nf">created_at</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">)</span>
-      <span class="n">expect</span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">)</span>
+      <span class="n">avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Max"</span><span class="p">)</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">avatar</span><span class="p">.</span><span class="nf">created_at</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">)</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">avatar</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -201,19 +201,19 @@
 
 <h2 id="3-cache-keys--expirations">3) Cache Keys &amp; Expirations</h2>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">CachedFinder</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">CachedFinder</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s2">"caches and expires as expected"</span> <span class="k">do</span>
-    <span class="n">profile</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:profile</span><span class="p">)</span>
+    <span class="n">avatar</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:avatar</span><span class="p">)</span>
 
     <span class="n">freeze_time</span> <span class="k">do</span>
-      <span class="n">expect</span> <span class="p">{</span> <span class="n">described_class</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span> <span class="p">}</span>
-        <span class="p">.</span><span class="nf">to</span> <span class="n">change</span> <span class="p">{</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="s2">"profile:</span><span class="si">#{</span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">profile</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">.</span><span class="nf">to_i</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="p">}</span>
+      <span class="n">expect</span> <span class="p">{</span> <span class="n">described_class</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">.</span><span class="nf">to</span> <span class="n">change</span> <span class="p">{</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="s2">"avatar:</span><span class="si">#{</span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">avatar</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">.</span><span class="nf">to_i</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="p">}</span>
         <span class="p">.</span><span class="nf">from</span><span class="p">(</span><span class="kp">false</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
     <span class="k">end</span>
 
     <span class="n">travel</span> <span class="mi">1</span><span class="p">.</span><span class="nf">hour</span>
     <span class="n">expect</span><span class="p">(</span>
-      <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="s2">"profile:</span><span class="si">#{</span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">profile</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">.</span><span class="nf">to_i</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="s2">"avatar:</span><span class="si">#{</span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">avatar</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">.</span><span class="nf">to_i</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="p">).</span><span class="nf">to</span> <span class="n">be</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
   <span class="k">ensure</span>
     <span class="n">travel_back</span>

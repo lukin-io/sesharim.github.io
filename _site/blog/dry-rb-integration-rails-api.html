@@ -201,9 +201,9 @@
   </tbody>
 </table>
 
-<h3 id="12-real-example-profile-actions-payload">1.2 Real Example: Profile Actions Payload</h3>
+<h3 id="12-real-example-avatar-actions-payload">1.2 Real Example: Avatar Actions Payload</h3>
 
-<p>We needed to serialize client-specific profile data. Here’s what the original code looked like:</p>
+<p>We needed to serialize client-specific avatar data. Here’s what the original code looked like:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Original: 70+ lines of manual validation and coercion</span>
 <span class="k">def</span> <span class="nf">build_actions_payload</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
@@ -215,7 +215,7 @@
   <span class="n">result</span><span class="p">[</span><span class="ss">:access_status</span><span class="p">]</span> <span class="o">=</span> <span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="p">?</span> <span class="n">status</span> <span class="p">:</span> <span class="s2">"none"</span>
 
   <span class="c1"># Manual boolean coercion</span>
-  <span class="n">result</span><span class="p">[</span><span class="ss">:profile_viewed</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="ss">:profile_viewed</span><span class="p">]</span> <span class="o">==</span> <span class="kp">true</span>
+  <span class="n">result</span><span class="p">[</span><span class="ss">:avatar_viewed</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="ss">:avatar_viewed</span><span class="p">]</span> <span class="o">==</span> <span class="kp">true</span>
   <span class="n">result</span><span class="p">[</span><span class="ss">:is_saved</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="ss">:is_saved</span><span class="p">]</span> <span class="o">==</span> <span class="kp">true</span>
 
   <span class="c1"># Manual conditional inclusion</span>
@@ -349,7 +349,7 @@
 <h3 id="31-the-problem-scattered-constants-and-manual-checks">3.1 The Problem: Scattered Constants and Manual Checks</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Constants scattered, validation repeated</span>
-<span class="k">class</span> <span class="nc">ProfileBlueprint</span> <span class="o">&lt;</span> <span class="no">ApplicationBlueprint</span>
+<span class="k">class</span> <span class="nc">AvatarBlueprint</span> <span class="o">&lt;</span> <span class="no">ApplicationBlueprint</span>
   <span class="no">ACCESS_STATUS_VALUES</span> <span class="o">=</span> <span class="sx">%w[none requested approved denied removed shared]</span><span class="p">.</span><span class="nf">freeze</span>
   <span class="no">THUMB_STATUS_VALUES</span> <span class="o">=</span> <span class="sx">%w[liked disliked]</span><span class="p">.</span><span class="nf">freeze</span>
   <span class="no">ACCESS_END_REASON_VALUES</span> <span class="o">=</span> <span class="sx">%w[expired declined blocked removed]</span><span class="p">.</span><span class="nf">freeze</span>
@@ -393,8 +393,8 @@
     <span class="k">end</span>
   <span class="k">end</span>
 
-  <span class="c1"># Profile Actions enums - SINGLE SOURCE OF TRUTH</span>
-  <span class="k">module</span> <span class="nn">Profiles</span>
+  <span class="c1"># Avatar Actions enums - SINGLE SOURCE OF TRUTH</span>
+  <span class="k">module</span> <span class="nn">Avatars</span>
     <span class="no">ACCESS_STATUS_VALUES</span> <span class="o">=</span> <span class="sx">%w[none requested approved denied removed shared]</span><span class="p">.</span><span class="nf">freeze</span>
     <span class="no">AccessStatus</span> <span class="o">=</span> <span class="no">Types</span><span class="o">::</span><span class="no">String</span><span class="p">.</span><span class="nf">enum</span><span class="p">(</span><span class="o">*</span><span class="no">ACCESS_STATUS_VALUES</span><span class="p">).</span><span class="nf">fallback</span><span class="p">(</span><span class="s2">"none"</span><span class="p">)</span>
 
@@ -419,9 +419,9 @@
 <h3 id="33-usage-examples">3.3 Usage Examples</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Enum validation is automatic</span>
-<span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">[</span><span class="s2">"approved"</span><span class="p">]</span>  <span class="c1"># =&gt; "approved"</span>
-<span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">[</span><span class="s2">"invalid"</span><span class="p">]</span>   <span class="c1"># =&gt; "none" (fallback)</span>
-<span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">[</span><span class="kp">nil</span><span class="p">]</span>         <span class="c1"># =&gt; "none" (fallback)</span>
+<span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">[</span><span class="s2">"approved"</span><span class="p">]</span>  <span class="c1"># =&gt; "approved"</span>
+<span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">[</span><span class="s2">"invalid"</span><span class="p">]</span>   <span class="c1"># =&gt; "none" (fallback)</span>
+<span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">[</span><span class="kp">nil</span><span class="p">]</span>         <span class="c1"># =&gt; "none" (fallback)</span>
 
 <span class="c1"># Boolean coercion with fallback</span>
 <span class="no">Types</span><span class="o">::</span><span class="no">SafeBool</span><span class="p">[</span><span class="kp">true</span><span class="p">]</span>   <span class="c1"># =&gt; true</span>
@@ -443,7 +443,7 @@
 <span class="k">def</span> <span class="nf">build_actions</span>
   <span class="n">actions</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="n">actions</span><span class="p">[</span><span class="ss">:access_status</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_access_status</span>
-  <span class="n">actions</span><span class="p">[</span><span class="ss">:profile_viewed</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_profile_viewed</span>
+  <span class="n">actions</span><span class="p">[</span><span class="ss">:avatar_viewed</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_avatar_viewed</span>
   <span class="n">actions</span><span class="p">[</span><span class="ss">:is_saved</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_is_saved</span>
   <span class="c1"># No guarantee of structure</span>
   <span class="c1"># Caller must know what keys exist</span>
@@ -462,25 +462,25 @@
 
 <h3 id="42-the-solution-typed-immutable-struct">4.2 The Solution: Typed Immutable Struct</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/structs/profiles/actions.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/structs/avatars/actions.rb</span>
 <span class="nb">require</span> <span class="s2">"dry/struct"</span>
 
-<span class="k">module</span> <span class="nn">Profiles</span>
+<span class="k">module</span> <span class="nn">Avatars</span>
   <span class="k">class</span> <span class="nc">Actions</span> <span class="o">&lt;</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Struct</span>
     <span class="c1"># Allow string keys from input hash</span>
     <span class="n">transform_keys</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_sym</span><span class="p">)</span>
 
     <span class="c1"># Required fields with defaults (always present in payload)</span>
-    <span class="n">attribute?</span> <span class="ss">:access_status</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">.</span><span class="nf">default</span><span class="p">(</span><span class="s2">"none"</span><span class="p">.</span><span class="nf">freeze</span><span class="p">)</span>
-    <span class="n">attribute?</span> <span class="ss">:profile_viewed</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">SafeBool</span><span class="p">.</span><span class="nf">default</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+    <span class="n">attribute?</span> <span class="ss">:access_status</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">AccessStatus</span><span class="p">.</span><span class="nf">default</span><span class="p">(</span><span class="s2">"none"</span><span class="p">.</span><span class="nf">freeze</span><span class="p">)</span>
+    <span class="n">attribute?</span> <span class="ss">:avatar_viewed</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">SafeBool</span><span class="p">.</span><span class="nf">default</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
     <span class="n">attribute?</span> <span class="ss">:is_saved</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">SafeBool</span><span class="p">.</span><span class="nf">default</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
 
     <span class="c1"># Optional fields (only in payload when present)</span>
     <span class="n">attribute?</span> <span class="ss">:note</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">OptionalString</span>
-    <span class="n">attribute?</span> <span class="ss">:thumb_status</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">ThumbStatus</span>
+    <span class="n">attribute?</span> <span class="ss">:thumb_status</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">ThumbStatus</span>
     <span class="n">attribute?</span> <span class="ss">:applied_at</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">ISO8601String</span>
     <span class="n">attribute?</span> <span class="ss">:access_expired</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Bool</span><span class="p">.</span><span class="nf">optional</span>
-    <span class="n">attribute?</span> <span class="ss">:access_end_reason</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">AccessEndReason</span>
+    <span class="n">attribute?</span> <span class="ss">:access_end_reason</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">AccessEndReason</span>
     <span class="n">attribute?</span> <span class="ss">:chat_id</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">OptionalInteger</span>
     <span class="n">attribute?</span> <span class="ss">:is_shared</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Bool</span><span class="p">.</span><span class="nf">optional</span>
 
@@ -488,7 +488,7 @@
     <span class="k">def</span> <span class="nf">to_payload</span>
       <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
         <span class="ss">access_status: </span><span class="n">access_status</span><span class="p">,</span>
-        <span class="ss">profile_viewed: </span><span class="n">profile_viewed</span><span class="p">,</span>
+        <span class="ss">avatar_viewed: </span><span class="n">avatar_viewed</span><span class="p">,</span>
         <span class="ss">is_saved: </span><span class="n">is_saved</span>
       <span class="p">}</span>
 
@@ -516,22 +516,22 @@
   <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="n">status</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="ss">:access_status</span><span class="p">].</span><span class="nf">to_s</span>
   <span class="n">result</span><span class="p">[</span><span class="ss">:access_status</span><span class="p">]</span> <span class="o">=</span> <span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="p">?</span> <span class="n">status</span> <span class="p">:</span> <span class="s2">"none"</span>
-  <span class="n">result</span><span class="p">[</span><span class="ss">:profile_viewed</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="ss">:profile_viewed</span><span class="p">]</span> <span class="o">==</span> <span class="kp">true</span>
+  <span class="n">result</span><span class="p">[</span><span class="ss">:avatar_viewed</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="ss">:avatar_viewed</span><span class="p">]</span> <span class="o">==</span> <span class="kp">true</span>
   <span class="c1"># ... 60 more lines of manual processing</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <p><strong>After (struct instantiation):</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Service creates struct</span>
-<span class="n">actions</span> <span class="o">=</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+<span class="n">actions</span> <span class="o">=</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
   <span class="ss">access_status: </span><span class="n">compute_access_status</span><span class="p">,</span>
-  <span class="ss">profile_viewed: </span><span class="n">compute_profile_viewed</span><span class="p">,</span>
+  <span class="ss">avatar_viewed: </span><span class="n">compute_avatar_viewed</span><span class="p">,</span>
   <span class="ss">is_saved: </span><span class="n">compute_is_saved</span><span class="p">,</span>
   <span class="ss">chat_id: </span><span class="n">find_chat_room</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span>
 <span class="p">)</span>
 
 <span class="c1"># Blueprint just calls to_payload</span>
-<span class="n">field</span> <span class="ss">:actions</span> <span class="k">do</span> <span class="o">|</span><span class="n">_profile</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
+<span class="n">field</span> <span class="ss">:actions</span> <span class="k">do</span> <span class="o">|</span><span class="n">_avatar</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
   <span class="n">options</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:context</span><span class="p">,</span> <span class="ss">:actions</span><span class="p">).</span><span class="nf">to_payload</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -590,10 +590,10 @@
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Conditional soup</span>
 <span class="k">def</span> <span class="nf">call</span>
-  <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">profile</span><span class="p">.</span><span class="nf">present?</span>
+  <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">avatar</span><span class="p">.</span><span class="nf">present?</span>
   <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">present?</span>
   <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">client?</span>
-  <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">profile_user</span><span class="p">.</span><span class="nf">present?</span>
+  <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">avatar_user</span><span class="p">.</span><span class="nf">present?</span>
 
   <span class="c1"># Happy path finally...</span>
   <span class="n">build_actions</span>
@@ -613,10 +613,10 @@
 
 <h3 id="52-the-solution-result-monad">5.2 The Solution: Result Monad</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/profiles/actions_builder.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/avatars/actions_builder.rb</span>
 <span class="nb">require</span> <span class="s2">"dry/monads"</span>
 
-<span class="k">module</span> <span class="nn">Profiles</span>
+<span class="k">module</span> <span class="nn">Avatars</span>
   <span class="k">class</span> <span class="nc">ActionsBuilder</span>
     <span class="kp">include</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Monads</span><span class="p">[</span><span class="ss">:result</span><span class="p">]</span>
 
@@ -629,24 +629,24 @@
     <span class="kp">private</span>
 
     <span class="k">def</span> <span class="nf">valid_context?</span>
-      <span class="n">profile</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span>
+      <span class="n">avatar</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span>
         <span class="n">client_user</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span>
         <span class="n">client_user</span><span class="p">.</span><span class="nf">client?</span> <span class="o">&amp;&amp;</span>
-        <span class="n">profile_user</span><span class="p">.</span><span class="nf">present?</span>
+        <span class="n">avatar_user</span><span class="p">.</span><span class="nf">present?</span>
     <span class="k">end</span>
 
     <span class="k">def</span> <span class="nf">default_actions_struct</span>
-      <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+      <span class="no">Avatars</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
         <span class="ss">access_status: </span><span class="s2">"none"</span><span class="p">,</span>
-        <span class="ss">profile_viewed: </span><span class="kp">false</span><span class="p">,</span>
+        <span class="ss">avatar_viewed: </span><span class="kp">false</span><span class="p">,</span>
         <span class="ss">is_saved: </span><span class="kp">false</span>
       <span class="p">)</span>
     <span class="k">end</span>
 
     <span class="k">def</span> <span class="nf">build_actions_struct</span>
-      <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+      <span class="no">Avatars</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
         <span class="ss">access_status: </span><span class="n">compute_access_status</span><span class="p">,</span>
-        <span class="ss">profile_viewed: </span><span class="n">compute_profile_viewed</span><span class="p">,</span>
+        <span class="ss">avatar_viewed: </span><span class="n">compute_avatar_viewed</span><span class="p">,</span>
         <span class="c1"># ... other fields</span>
       <span class="p">)</span>
     <span class="k">end</span>
@@ -656,24 +656,24 @@
 
 <h3 id="53-controller-integration">5.3 Controller Integration</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/game_controller.rb</span>
 <span class="k">def</span> <span class="nf">show</span>
-  <span class="n">flags</span> <span class="o">=</span> <span class="n">visibility_flags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>
+  <span class="n">flags</span> <span class="o">=</span> <span class="n">visibility_flags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span>
   <span class="n">context</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">visibility_flags: </span><span class="n">flags</span><span class="p">,</span> <span class="ss">host: </span><span class="n">request</span><span class="p">.</span><span class="nf">base_url</span> <span class="p">}</span>
 
   <span class="k">if</span> <span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">client?</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">avatar: </span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
     <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="nf">value!</span> <span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="nf">success?</span>
   <span class="k">end</span>
 
-  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">AvatarBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <h3 id="54-pattern-matching-with-results">5.4 Pattern Matching with Results</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># For more complex flows, pattern match on Result</span>
-<span class="n">result</span> <span class="o">=</span> <span class="no">ActionsBuilder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="no">ActionsBuilder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">avatar: </span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
 
 <span class="k">case</span> <span class="n">result</span>
 <span class="k">in</span> <span class="no">Success</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
@@ -695,9 +695,9 @@
 
   <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">order_params</span><span class="p">)</span>
     <span class="n">order</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">validate_order</span><span class="p">(</span><span class="n">order_params</span><span class="p">)</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">find_user</span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="nf">user_id</span><span class="p">)</span>
-    <span class="n">payment</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">charge_payment</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">order</span><span class="p">.</span><span class="nf">total</span><span class="p">)</span>
-    <span class="k">yield</span> <span class="n">send_confirmation</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">payment</span><span class="p">)</span>
+    <span class="n">player</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">find_user</span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="nf">player_id</span><span class="p">)</span>
+    <span class="n">payment</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">charge_payment</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">order</span><span class="p">.</span><span class="nf">total</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">send_confirmation</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">payment</span><span class="p">)</span>
 
     <span class="no">Success</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
   <span class="k">end</span>
@@ -708,7 +708,7 @@
     <span class="c1"># Returns Success(order) or Failure([:validation, errors])</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">charge_payment</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">charge_payment</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
     <span class="c1"># Returns Success(payment) or Failure([:payment_failed, reason])</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -752,15 +752,15 @@
 
 <h3 id="62-the-solution-validation-contracts">6.2 The Solution: Validation Contracts</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/contracts/profiles/actions_contract.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/contracts/avatars/actions_contract.rb</span>
 <span class="nb">require</span> <span class="s2">"dry/validation"</span>
 
-<span class="k">module</span> <span class="nn">Profiles</span>
+<span class="k">module</span> <span class="nn">Avatars</span>
   <span class="k">class</span> <span class="nc">ActionsContract</span> <span class="o">&lt;</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Validation</span><span class="o">::</span><span class="no">Contract</span>
     <span class="c1"># Schema definition - coerces and validates structure</span>
     <span class="n">params</span> <span class="k">do</span>
       <span class="n">optional</span><span class="p">(</span><span class="ss">:access_status</span><span class="p">).</span><span class="nf">filled</span><span class="p">(</span><span class="ss">:string</span><span class="p">)</span>
-      <span class="n">optional</span><span class="p">(</span><span class="ss">:profile_viewed</span><span class="p">).</span><span class="nf">filled</span><span class="p">(</span><span class="ss">:bool</span><span class="p">)</span>
+      <span class="n">optional</span><span class="p">(</span><span class="ss">:avatar_viewed</span><span class="p">).</span><span class="nf">filled</span><span class="p">(</span><span class="ss">:bool</span><span class="p">)</span>
       <span class="n">optional</span><span class="p">(</span><span class="ss">:is_saved</span><span class="p">).</span><span class="nf">filled</span><span class="p">(</span><span class="ss">:bool</span><span class="p">)</span>
       <span class="n">optional</span><span class="p">(</span><span class="ss">:note</span><span class="p">).</span><span class="nf">maybe</span><span class="p">(</span><span class="ss">:string</span><span class="p">)</span>
       <span class="n">optional</span><span class="p">(</span><span class="ss">:thumb_status</span><span class="p">).</span><span class="nf">maybe</span><span class="p">(</span><span class="ss">:string</span><span class="p">)</span>
@@ -772,15 +772,15 @@
     <span class="c1"># Enum validation rules</span>
     <span class="n">rule</span><span class="p">(</span><span class="ss">:access_status</span><span class="p">)</span> <span class="k">do</span>
       <span class="k">next</span> <span class="k">if</span> <span class="n">value</span><span class="p">.</span><span class="nf">nil?</span>
-      <span class="k">unless</span> <span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">key</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="s2">"must be one of: </span><span class="si">#{</span><span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+      <span class="k">unless</span> <span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">key</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="s2">"must be one of: </span><span class="si">#{</span><span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
       <span class="k">end</span>
     <span class="k">end</span>
 
     <span class="n">rule</span><span class="p">(</span><span class="ss">:thumb_status</span><span class="p">)</span> <span class="k">do</span>
       <span class="k">next</span> <span class="k">if</span> <span class="n">value</span><span class="p">.</span><span class="nf">nil?</span>
-      <span class="k">unless</span> <span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">THUMB_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">key</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="s2">"must be one of: </span><span class="si">#{</span><span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">THUMB_STATUS_VALUES</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+      <span class="k">unless</span> <span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">THUMB_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">key</span><span class="p">.</span><span class="nf">failure</span><span class="p">(</span><span class="s2">"must be one of: </span><span class="si">#{</span><span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">THUMB_STATUS_VALUES</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
       <span class="k">end</span>
     <span class="k">end</span>
 
@@ -796,12 +796,12 @@
 
 <h3 id="63-using-contracts">6.3 Using Contracts</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">contract</span> <span class="o">=</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">ActionsContract</span><span class="p">.</span><span class="nf">new</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">contract</span> <span class="o">=</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">ActionsContract</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">contract</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="nf">to_unsafe_h</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="nf">success?</span>
   <span class="c1"># Validated and coerced data</span>
-  <span class="n">actions</span> <span class="o">=</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nf">to_h</span><span class="p">)</span>
+  <span class="n">actions</span> <span class="o">=</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nf">to_h</span><span class="p">)</span>
 <span class="k">else</span>
   <span class="c1"># Structured errors</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">errors: </span><span class="n">result</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">to_h</span> <span class="p">},</span> <span class="ss">status: :unprocessable_entity</span>
@@ -861,19 +861,19 @@
 <h3 id="71-the-problem-hard-coded-dependencies">7.1 The Problem: Hard-Coded Dependencies</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Tight coupling to class names</span>
-<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="k">class</span> <span class="nc">GameController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="k">def</span> <span class="nf">show</span>
-    <span class="n">flags</span> <span class="o">=</span> <span class="no">Visibility</span><span class="o">::</span><span class="no">ProfileVisibilityFlags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">ActionsBuilder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+    <span class="n">flags</span> <span class="o">=</span> <span class="no">Visibility</span><span class="o">::</span><span class="no">AvatarVisibilityFlags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">ActionsBuilder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">avatar: </span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
     <span class="c1"># ...</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
 <span class="c1"># Testing requires stubbing constants</span>
-<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ProfilesController</span> <span class="k">do</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">GameController</span> <span class="k">do</span>
   <span class="n">before</span> <span class="k">do</span>
-    <span class="n">allow</span><span class="p">(</span><span class="no">Visibility</span><span class="o">::</span><span class="no">ProfileVisibilityFlags</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:get</span><span class="p">).</span><span class="nf">and_return</span><span class="p">({})</span>
-    <span class="n">allow</span><span class="p">(</span><span class="no">Profiles</span><span class="o">::</span><span class="no">ActionsBuilder</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:call</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="no">Success</span><span class="p">({}))</span>
+    <span class="n">allow</span><span class="p">(</span><span class="no">Visibility</span><span class="o">::</span><span class="no">AvatarVisibilityFlags</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:get</span><span class="p">).</span><span class="nf">and_return</span><span class="p">({})</span>
+    <span class="n">allow</span><span class="p">(</span><span class="no">Avatars</span><span class="o">::</span><span class="no">ActionsBuilder</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:call</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="no">Success</span><span class="p">({}))</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -896,8 +896,8 @@
   <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Container</span><span class="o">::</span><span class="no">Mixin</span>
 
   <span class="c1"># Register services</span>
-  <span class="n">register</span><span class="p">(</span><span class="ss">:actions_builder</span><span class="p">)</span> <span class="p">{</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">ActionsBuilder</span> <span class="p">}</span>
-  <span class="n">register</span><span class="p">(</span><span class="ss">:visibility_flags</span><span class="p">)</span> <span class="p">{</span> <span class="no">Visibility</span><span class="o">::</span><span class="no">ProfileVisibilityFlags</span> <span class="p">}</span>
+  <span class="n">register</span><span class="p">(</span><span class="ss">:actions_builder</span><span class="p">)</span> <span class="p">{</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">ActionsBuilder</span> <span class="p">}</span>
+  <span class="n">register</span><span class="p">(</span><span class="ss">:visibility_flags</span><span class="p">)</span> <span class="p">{</span> <span class="no">Visibility</span><span class="o">::</span><span class="no">AvatarVisibilityFlags</span> <span class="p">}</span>
 
   <span class="c1"># Future additions</span>
   <span class="c1"># register(:email_service) { EmailService.new }</span>
@@ -924,12 +924,12 @@
 
 <h3 id="73-controller-with-injection">7.3 Controller with Injection</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
-<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/game_controller.rb</span>
+<span class="k">class</span> <span class="nc">GameController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="kp">include</span> <span class="no">Deps</span>  <span class="c1"># Inject all registered dependencies</span>
 
   <span class="k">def</span> <span class="nf">show</span>
-    <span class="n">flags</span> <span class="o">=</span> <span class="n">visibility_flags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>           <span class="c1"># Use injected service</span>
+    <span class="n">flags</span> <span class="o">=</span> <span class="n">visibility_flags</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span>           <span class="c1"># Use injected service</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>               <span class="c1"># Use injected builder</span>
     <span class="c1"># ...</span>
   <span class="k">end</span>
@@ -939,7 +939,7 @@
 <h3 id="74-testing-with-injection">7.4 Testing with Injection</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Spec: Easy stubbing via dependency override</span>
-<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ProfilesController</span> <span class="k">do</span>
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">GameController</span> <span class="k">do</span>
   <span class="n">let</span><span class="p">(</span><span class="ss">:mock_builder</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="s2">"ActionsBuilder"</span><span class="p">)</span> <span class="p">}</span>
   <span class="n">let</span><span class="p">(</span><span class="ss">:mock_flags</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="s2">"VisibilityFlags"</span><span class="p">)</span> <span class="p">}</span>
 
@@ -953,7 +953,7 @@
     <span class="n">expect</span><span class="p">(</span><span class="n">mock_flags</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:get</span><span class="p">).</span><span class="nf">and_return</span><span class="p">({})</span>
     <span class="n">expect</span><span class="p">(</span><span class="n">mock_builder</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:call</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="no">Success</span><span class="p">(</span><span class="n">default_actions</span><span class="p">))</span>
 
-    <span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
+    <span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">id: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -995,7 +995,7 @@
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Manual success/failure checks</span>
 <span class="k">def</span> <span class="nf">show</span>
-  <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">avatar: </span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
 
   <span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="nf">success?</span>
     <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="nf">value!</span>
@@ -1055,12 +1055,12 @@
 
 <h3 id="83-controller-with-pattern-matching">8.3 Controller with Pattern Matching</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
-<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/game_controller.rb</span>
+<span class="k">class</span> <span class="nc">GameController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="kp">include</span> <span class="no">ResultMatchable</span>  <span class="c1"># Add pattern matching</span>
 
   <span class="k">def</span> <span class="nf">show</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">profile: </span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">actions_builder</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="ss">avatar: </span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">current_user</span><span class="p">)</span>
 
     <span class="c1"># Simple extraction</span>
     <span class="n">context</span><span class="p">[</span><span class="ss">:actions</span><span class="p">]</span> <span class="o">=</span> <span class="n">unwrap_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -1073,7 +1073,7 @@
       <span class="n">m</span><span class="p">.</span><span class="nf">failure</span> <span class="p">{</span> <span class="o">|</span><span class="n">error</span><span class="o">|</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">"Actions failed: </span><span class="si">#{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="p">}</span>
     <span class="k">end</span>
 
-    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">AvatarBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -1141,7 +1141,7 @@
 <h3 id="91-the-problem-scattered-constants">9.1 The Problem: Scattered Constants</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Constants scattered across files</span>
-<span class="k">class</span> <span class="nc">ProfileBlueprint</span> <span class="o">&lt;</span> <span class="no">ApplicationBlueprint</span>
+<span class="k">class</span> <span class="nc">AvatarBlueprint</span> <span class="o">&lt;</span> <span class="no">ApplicationBlueprint</span>
   <span class="no">ACCESS_STATUS_VALUES</span> <span class="o">=</span> <span class="sx">%w[none requested approved denied removed shared]</span><span class="p">.</span><span class="nf">freeze</span>
   <span class="no">CACHE_TTL</span> <span class="o">=</span> <span class="mi">5</span><span class="p">.</span><span class="nf">minutes</span>
 <span class="k">end</span>
@@ -1150,7 +1150,7 @@
   <span class="no">EXPIRY_DAYS</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="k">end</span>
 
-<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="k">class</span> <span class="nc">GameController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="no">MAX_PER_PAGE</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -1166,17 +1166,17 @@
 
 <h3 id="92-the-solution-centralized-configuration">9.2 The Solution: Centralized Configuration</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/profile_config.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/avatar_config.rb</span>
 <span class="nb">require</span> <span class="s2">"dry/configurable"</span>
 
-<span class="k">class</span> <span class="nc">ProfileConfig</span>
+<span class="k">class</span> <span class="nc">AvatarConfig</span>
   <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Configurable</span>
 
   <span class="c1"># Actions settings</span>
   <span class="n">setting</span> <span class="ss">:actions</span> <span class="k">do</span>
     <span class="n">setting</span> <span class="ss">:cache_ttl</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">5</span><span class="p">.</span><span class="nf">minutes</span>
     <span class="n">setting</span> <span class="ss">:default_access_status</span><span class="p">,</span> <span class="ss">default: </span><span class="s2">"none"</span>
-    <span class="n">setting</span> <span class="ss">:default_profile_viewed</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">false</span>
+    <span class="n">setting</span> <span class="ss">:default_avatar_viewed</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">false</span>
     <span class="n">setting</span> <span class="ss">:default_is_saved</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">false</span>
 
     <span class="n">setting</span> <span class="ss">:access_status_values</span><span class="p">,</span> <span class="ss">default: </span><span class="sx">%w[none requested approved denied removed shared]</span><span class="p">.</span><span class="nf">freeze</span>
@@ -1207,7 +1207,7 @@
 
   <span class="c1"># Event publishing settings</span>
   <span class="n">setting</span> <span class="ss">:events</span> <span class="k">do</span>
-    <span class="n">setting</span> <span class="ss">:publish_profile_views</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
+    <span class="n">setting</span> <span class="ss">:publish_avatar_views</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
     <span class="n">setting</span> <span class="ss">:publish_access_events</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -1216,17 +1216,17 @@
 <h3 id="93-usage-in-code">9.3 Usage in Code</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Access nested settings with dot notation</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span>           <span class="c1"># =&gt; 5.minutes</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">status_mapping</span>      <span class="c1"># =&gt; {"pending" =&gt; "requested", ...}</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">visibility</span><span class="p">.</span><span class="nf">default_mode</span>     <span class="c1"># =&gt; "visible"</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">access</span><span class="p">.</span><span class="nf">request_expiry_days</span>  <span class="c1"># =&gt; 30</span>
+<span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span>           <span class="c1"># =&gt; 5.minutes</span>
+<span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">status_mapping</span>      <span class="c1"># =&gt; {"pending" =&gt; "requested", ...}</span>
+<span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">visibility</span><span class="p">.</span><span class="nf">default_mode</span>     <span class="c1"># =&gt; "visible"</span>
+<span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">access</span><span class="p">.</span><span class="nf">request_expiry_days</span>  <span class="c1"># =&gt; 30</span>
 
 <span class="c1"># Use in service objects</span>
 <span class="k">class</span> <span class="nc">ActionsBuilder</span>
   <span class="k">def</span> <span class="nf">default_actions_struct</span>
-    <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+    <span class="no">Avatars</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
       <span class="ss">access_status: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_access_status</span><span class="p">,</span>
-      <span class="ss">profile_viewed: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_profile_viewed</span><span class="p">,</span>
+      <span class="ss">avatar_viewed: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_avatar_viewed</span><span class="p">,</span>
       <span class="ss">is_saved: </span><span class="n">config</span><span class="p">.</span><span class="nf">default_is_saved</span>
     <span class="p">)</span>
   <span class="k">end</span>
@@ -1234,7 +1234,7 @@
   <span class="kp">private</span>
 
   <span class="k">def</span> <span class="nf">config</span>
-    <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span>
+    <span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -1244,15 +1244,15 @@
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ActionsBuilder</span> <span class="k">do</span>
   <span class="c1"># Override config for test</span>
   <span class="n">before</span> <span class="k">do</span>
-    <span class="n">allow</span><span class="p">(</span><span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:cache_ttl</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">allow</span><span class="p">(</span><span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:cache_ttl</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
   <span class="k">end</span>
 
   <span class="c1"># Or use configure block</span>
   <span class="n">around</span> <span class="k">do</span> <span class="o">|</span><span class="n">example</span><span class="o">|</span>
-    <span class="n">original</span> <span class="o">=</span> <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span>
-    <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">}</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span>
+    <span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">}</span>
     <span class="n">example</span><span class="p">.</span><span class="nf">run</span>
-    <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span> <span class="o">=</span> <span class="n">original</span> <span class="p">}</span>
+    <span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">actions</span><span class="p">.</span><span class="nf">cache_ttl</span> <span class="o">=</span> <span class="n">original</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -1260,13 +1260,13 @@
 <h3 id="95-before-vs-after">9.5 Before vs After</h3>
 
 <p><strong>Before:</strong></p>
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Hunt through 10 files to find all profile-related constants</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Hunt through 10 files to find all avatar-related constants</span>
 <span class="n">grep</span> <span class="o">-</span><span class="n">r</span> <span class="s2">"CACHE_TTL</span><span class="se">\|</span><span class="s2">EXPIRY_DAYS</span><span class="se">\|</span><span class="s2">MAX_"</span> <span class="n">app</span><span class="o">/</span>
 </code></pre></div></div>
 
 <p><strong>After:</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># One file, organized by domain</span>
-<span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span>  <span class="c1"># =&gt; nested configuration tree</span>
+<span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span>  <span class="c1"># =&gt; nested configuration tree</span>
 </code></pre></div></div>
 
 <h3 id="96-benefits">9.6 Benefits</h3>
@@ -1310,19 +1310,19 @@
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Manual parameter handling</span>
 <span class="k">class</span> <span class="nc">ActionsBuilder</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
-    <span class="vi">@profile</span> <span class="o">=</span> <span class="n">profile</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">avatar</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="vi">@avatar</span> <span class="o">=</span> <span class="n">avatar</span>
     <span class="vi">@client_user</span> <span class="o">=</span> <span class="n">client_user</span>
-    <span class="vi">@profile_user</span> <span class="o">=</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span>
+    <span class="vi">@avatar_user</span> <span class="o">=</span> <span class="n">avatar</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">player</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
-    <span class="n">new</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">avatar</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="n">new</span><span class="p">(</span><span class="ss">avatar: </span><span class="n">avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
   <span class="k">end</span>
 
   <span class="kp">private</span>
 
-  <span class="nb">attr_reader</span> <span class="ss">:profile</span><span class="p">,</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:profile_user</span>
+  <span class="nb">attr_reader</span> <span class="ss">:avatar</span><span class="p">,</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:avatar_user</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -1337,22 +1337,22 @@
 
 <h3 id="102-the-solution-declarative-parameters">10.2 The Solution: Declarative Parameters</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/profiles/actions_builder.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/services/avatars/actions_builder.rb</span>
 <span class="nb">require</span> <span class="s2">"dry/initializer"</span>
 
-<span class="k">module</span> <span class="nn">Profiles</span>
+<span class="k">module</span> <span class="nn">Avatars</span>
   <span class="k">class</span> <span class="nc">ActionsBuilder</span>
     <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Initializer</span>
 
     <span class="c1"># Required parameters</span>
-    <span class="n">param</span> <span class="ss">:profile</span>
+    <span class="n">param</span> <span class="ss">:avatar</span>
     <span class="n">param</span> <span class="ss">:client_user</span>
 
     <span class="c1"># Derived option with default</span>
-    <span class="n">option</span> <span class="ss">:profile_user</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span> <span class="p">}</span>
+    <span class="n">option</span> <span class="ss">:avatar_user</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="n">avatar</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">player</span> <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
-      <span class="n">new</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">avatar</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+      <span class="n">new</span><span class="p">(</span><span class="n">avatar</span><span class="p">,</span> <span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
     <span class="k">end</span>
 
     <span class="k">def</span> <span class="nf">call</span>
@@ -1364,7 +1364,7 @@
     <span class="kp">private</span>
 
     <span class="k">def</span> <span class="nf">valid_context?</span>
-      <span class="n">profile</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">client?</span>
+      <span class="n">avatar</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">client_user</span><span class="p">.</span><span class="nf">client?</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -1407,19 +1407,19 @@
 
 <p><strong>Before (19 lines):</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ActionsBuilder</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
-    <span class="vi">@profile</span> <span class="o">=</span> <span class="n">profile</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">avatar</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="vi">@avatar</span> <span class="o">=</span> <span class="n">avatar</span>
     <span class="vi">@client_user</span> <span class="o">=</span> <span class="n">client_user</span>
-    <span class="vi">@profile_user</span> <span class="o">=</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span>
+    <span class="vi">@avatar_user</span> <span class="o">=</span> <span class="n">avatar</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">player</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
-    <span class="n">new</span><span class="p">(</span><span class="ss">profile: </span><span class="n">profile</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">avatar</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="n">new</span><span class="p">(</span><span class="ss">avatar: </span><span class="n">avatar</span><span class="p">,</span> <span class="ss">client_user: </span><span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
   <span class="k">end</span>
 
   <span class="kp">private</span>
 
-  <span class="nb">attr_reader</span> <span class="ss">:profile</span><span class="p">,</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:profile_user</span>
+  <span class="nb">attr_reader</span> <span class="ss">:avatar</span><span class="p">,</span> <span class="ss">:client_user</span><span class="p">,</span> <span class="ss">:avatar_user</span>
 
   <span class="k">def</span> <span class="nf">call</span>
     <span class="c1"># ...</span>
@@ -1431,12 +1431,12 @@
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ActionsBuilder</span>
   <span class="kp">extend</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Initializer</span>
 
-  <span class="n">param</span> <span class="ss">:profile</span>
+  <span class="n">param</span> <span class="ss">:avatar</span>
   <span class="n">param</span> <span class="ss">:client_user</span>
-  <span class="n">option</span> <span class="ss">:profile_user</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="n">profile</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">user</span> <span class="p">}</span>
+  <span class="n">option</span> <span class="ss">:avatar_user</span><span class="p">,</span> <span class="ss">default: </span><span class="nb">proc</span> <span class="p">{</span> <span class="n">avatar</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">player</span> <span class="p">}</span>
 
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">profile</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
-    <span class="n">new</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">avatar</span><span class="p">:,</span> <span class="n">client_user</span><span class="p">:)</span>
+    <span class="n">new</span><span class="p">(</span><span class="n">avatar</span><span class="p">,</span> <span class="n">client_user</span><span class="p">).</span><span class="nf">call</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">call</span>
@@ -1485,30 +1485,30 @@
 <h3 id="111-the-problem-inline-side-effects">11.1 The Problem: Inline Side Effects</h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Side effects mixed with business logic</span>
-<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="k">class</span> <span class="nc">GameController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="k">def</span> <span class="nf">show</span>
-    <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="vi">@avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
 
     <span class="c1"># Business logic</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span>
 
     <span class="c1"># Side effect #1: Analytics</span>
-    <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"profile_viewed"</span><span class="p">,</span> <span class="p">{</span>
-      <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+    <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"avatar_viewed"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">avatar_id: </span><span class="vi">@avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
       <span class="ss">viewer_id: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span>
     <span class="p">})</span>
 
     <span class="c1"># Side effect #2: Logging</span>
     <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
-      <span class="ss">action: </span><span class="s2">"profile_view"</span><span class="p">,</span>
-      <span class="ss">resource: </span><span class="vi">@profile</span><span class="p">,</span>
-      <span class="ss">user: </span><span class="n">current_user</span>
+      <span class="ss">action: </span><span class="s2">"avatar_view"</span><span class="p">,</span>
+      <span class="ss">resource: </span><span class="vi">@avatar</span><span class="p">,</span>
+      <span class="ss">player: </span><span class="n">current_user</span>
     <span class="p">)</span>
 
     <span class="c1"># Side effect #3: Cache warming</span>
-    <span class="no">ProfileCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">should_warm_cache?</span>
+    <span class="no">AvatarCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">should_warm_cache?</span>
 
-    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">AvatarBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -1530,9 +1530,9 @@
 <span class="k">class</span> <span class="nc">EventPublisher</span>
   <span class="kp">include</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Events</span><span class="o">::</span><span class="no">Publisher</span><span class="p">[</span><span class="ss">:app</span><span class="p">]</span>
 
-  <span class="c1"># Profile events</span>
-  <span class="n">register_event</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">)</span>
-  <span class="n">register_event</span><span class="p">(</span><span class="s2">"profile.actions_computed"</span><span class="p">)</span>
+  <span class="c1"># Avatar events</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"avatar.viewed"</span><span class="p">)</span>
+  <span class="n">register_event</span><span class="p">(</span><span class="s2">"avatar.actions_computed"</span><span class="p">)</span>
 
   <span class="c1"># Access request events</span>
   <span class="n">register_event</span><span class="p">(</span><span class="s2">"access.requested"</span><span class="p">)</span>
@@ -1564,8 +1564,8 @@
     <span class="kp">private</span>
 
     <span class="k">def</span> <span class="nf">should_publish?</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
-      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">events</span><span class="p">.</span><span class="nf">publish_profile_views</span> <span class="k">if</span> <span class="n">event_name</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"profile."</span><span class="p">)</span>
-      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">ProfileConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">events</span><span class="p">.</span><span class="nf">publish_access_events</span> <span class="k">if</span> <span class="n">event_name</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"access."</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">events</span><span class="p">.</span><span class="nf">publish_avatar_views</span> <span class="k">if</span> <span class="n">event_name</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"avatar."</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kp">false</span> <span class="k">unless</span> <span class="no">AvatarConfig</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">events</span><span class="p">.</span><span class="nf">publish_access_events</span> <span class="k">if</span> <span class="n">event_name</span><span class="p">.</span><span class="nf">start_with?</span><span class="p">(</span><span class="s2">"access."</span><span class="p">)</span>
       <span class="kp">true</span>
     <span class="k">end</span>
   <span class="k">end</span>
@@ -1574,32 +1574,32 @@
 
 <h3 id="113-publishing-events">11.3 Publishing Events</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/profiles_controller.rb</span>
-<span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/controllers/api/v1/game_controller.rb</span>
+<span class="k">class</span> <span class="nc">GameController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="k">def</span> <span class="nf">show</span>
-    <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span>
+    <span class="vi">@avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span>
 
     <span class="c1"># Publish event - side effects handled by subscribers</span>
-    <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">,</span> <span class="p">{</span>
-      <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+    <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"avatar.viewed"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">avatar_id: </span><span class="vi">@avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
       <span class="ss">viewer_id: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
       <span class="ss">viewer_role: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">role</span>
     <span class="p">})</span>
 
-    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">AvatarBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">)</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="c1"># app/services/profiles/actions_builder.rb</span>
+<span class="c1"># app/services/avatars/actions_builder.rb</span>
 <span class="k">class</span> <span class="nc">ActionsBuilder</span>
   <span class="k">def</span> <span class="nf">call</span>
     <span class="n">actions</span> <span class="o">=</span> <span class="n">build_actions_struct</span>
 
     <span class="c1"># Publish event with computed data</span>
-    <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.actions_computed"</span><span class="p">,</span> <span class="p">{</span>
-      <span class="ss">profile_id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
-      <span class="ss">client_user_id: </span><span class="n">client_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+    <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"avatar.actions_computed"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="ss">avatar_id: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">client_player_id: </span><span class="n">client_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
       <span class="ss">access_status: </span><span class="n">actions</span><span class="p">.</span><span class="nf">access_status</span><span class="p">,</span>
       <span class="ss">has_chat: </span><span class="n">actions</span><span class="p">.</span><span class="nf">chat_id</span><span class="p">.</span><span class="nf">present?</span>
     <span class="p">})</span>
@@ -1614,18 +1614,18 @@
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/initializers/event_subscribers.rb</span>
 
 <span class="c1"># Block-based subscriber</span>
-<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">event</span><span class="o">|</span>
-  <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"profile_view"</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">)</span>
+<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="s2">"avatar.viewed"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">event</span><span class="o">|</span>
+  <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"avatar_view"</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="c1"># Object-based subscriber</span>
 <span class="k">class</span> <span class="nc">AuditListener</span>
-  <span class="k">def</span> <span class="nf">on_profile_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">on_avatar_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
     <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span>
-      <span class="ss">action: </span><span class="s2">"profile_view"</span><span class="p">,</span>
-      <span class="ss">resource_type: </span><span class="s2">"Profile"</span><span class="p">,</span>
-      <span class="ss">resource_id: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">],</span>
-      <span class="ss">user_id: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:viewer_id</span><span class="p">],</span>
+      <span class="ss">action: </span><span class="s2">"avatar_view"</span><span class="p">,</span>
+      <span class="ss">resource_type: </span><span class="s2">"Avatar"</span><span class="p">,</span>
+      <span class="ss">resource_id: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:avatar_id</span><span class="p">],</span>
+      <span class="ss">player_id: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:viewer_id</span><span class="p">],</span>
       <span class="ss">occurred_at: </span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:published_at</span><span class="p">]</span>
     <span class="p">)</span>
   <span class="k">end</span>
@@ -1643,15 +1643,15 @@
 
 <span class="c1"># Conditional subscriber</span>
 <span class="k">class</span> <span class="nc">CacheWarmerListener</span>
-  <span class="k">def</span> <span class="nf">on_profile_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">unless</span> <span class="n">should_warm_cache?</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">])</span>
+  <span class="k">def</span> <span class="nf">on_avatar_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">unless</span> <span class="n">should_warm_cache?</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:avatar_id</span><span class="p">])</span>
 
-    <span class="no">ProfileCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:profile_id</span><span class="p">])</span>
+    <span class="no">AvatarCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">payload</span><span class="p">[</span><span class="ss">:avatar_id</span><span class="p">])</span>
   <span class="k">end</span>
 
   <span class="kp">private</span>
 
-  <span class="k">def</span> <span class="nf">should_warm_cache?</span><span class="p">(</span><span class="n">profile_id</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">should_warm_cache?</span><span class="p">(</span><span class="n">avatar_id</span><span class="p">)</span>
     <span class="c1"># Logic to determine if cache should be warmed</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -1663,55 +1663,55 @@
 
 <p><strong>Before (controller with inline side effects):</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">show</span>
-  <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="vi">@avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
 
   <span class="c1"># Side effect #1</span>
-  <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"profile_viewed"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">})</span>
+  <span class="no">Analytics</span><span class="p">.</span><span class="nf">track</span><span class="p">(</span><span class="s2">"avatar_viewed"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">avatar_id: </span><span class="vi">@avatar</span><span class="p">.</span><span class="nf">id</span> <span class="p">})</span>
 
   <span class="c1"># Side effect #2</span>
-  <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">action: </span><span class="s2">"profile_view"</span><span class="p">,</span> <span class="ss">resource: </span><span class="vi">@profile</span><span class="p">)</span>
+  <span class="no">AuditLog</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="ss">action: </span><span class="s2">"avatar_view"</span><span class="p">,</span> <span class="ss">resource: </span><span class="vi">@avatar</span><span class="p">)</span>
 
   <span class="c1"># Side effect #3</span>
-  <span class="no">ProfileCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+  <span class="no">AvatarCacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
 
-  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">AvatarBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span> <span class="p">}</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <p><strong>After (clean controller, events handle side effects):</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">show</span>
-  <span class="vi">@profile</span> <span class="o">=</span> <span class="no">Profile</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="vi">@avatar</span> <span class="o">=</span> <span class="no">Avatar</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
 
-  <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">,</span> <span class="p">{</span>
-    <span class="ss">profile_id: </span><span class="vi">@profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+  <span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"avatar.viewed"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="ss">avatar_id: </span><span class="vi">@avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
     <span class="ss">viewer_id: </span><span class="n">current_user</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">id</span>
   <span class="p">})</span>
 
-  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">ProfileBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@profile</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">data: </span><span class="no">AvatarBlueprint</span><span class="p">.</span><span class="nf">render_as_hash</span><span class="p">(</span><span class="vi">@avatar</span><span class="p">)</span> <span class="p">}</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <h3 id="116-testing-events">11.6 Testing Events</h3>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">ProfilesController</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">GameController</span> <span class="k">do</span>
   <span class="n">describe</span> <span class="s2">"GET #show"</span> <span class="k">do</span>
-    <span class="n">it</span> <span class="s2">"publishes profile.viewed event"</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">"publishes avatar.viewed event"</span> <span class="k">do</span>
       <span class="n">expect</span><span class="p">(</span><span class="no">EventPublisher</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:publish</span><span class="p">).</span><span class="nf">with</span><span class="p">(</span>
-        <span class="s2">"profile.viewed"</span><span class="p">,</span>
-        <span class="n">hash_including</span><span class="p">(</span><span class="ss">profile_id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">viewer_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+        <span class="s2">"avatar.viewed"</span><span class="p">,</span>
+        <span class="n">hash_including</span><span class="p">(</span><span class="ss">avatar_id: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">viewer_id: </span><span class="n">player</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
       <span class="p">)</span>
 
-      <span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">id: </span><span class="n">profile</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
+      <span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">id: </span><span class="n">avatar</span><span class="p">.</span><span class="nf">id</span> <span class="p">}</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
 <span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="no">AuditListener</span> <span class="k">do</span>
-  <span class="n">describe</span> <span class="s2">"#on_profile_viewed"</span> <span class="k">do</span>
-    <span class="n">let</span><span class="p">(</span><span class="ss">:event</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="ss">payload: </span><span class="p">{</span> <span class="ss">profile_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">viewer_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">published_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="p">})</span> <span class="p">}</span>
+  <span class="n">describe</span> <span class="s2">"#on_avatar_viewed"</span> <span class="k">do</span>
+    <span class="n">let</span><span class="p">(</span><span class="ss">:event</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="ss">payload: </span><span class="p">{</span> <span class="ss">avatar_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">viewer_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">published_at: </span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="p">})</span> <span class="p">}</span>
 
     <span class="n">it</span> <span class="s2">"creates audit log entry"</span> <span class="k">do</span>
-      <span class="n">expect</span> <span class="p">{</span> <span class="n">subject</span><span class="p">.</span><span class="nf">on_profile_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">}.</span><span class="nf">to</span> <span class="n">change</span><span class="p">(</span><span class="no">AuditLog</span><span class="p">,</span> <span class="ss">:count</span><span class="p">).</span><span class="nf">by</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">expect</span> <span class="p">{</span> <span class="n">subject</span><span class="p">.</span><span class="nf">on_avatar_viewed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">}.</span><span class="nf">to</span> <span class="n">change</span><span class="p">(</span><span class="no">AuditLog</span><span class="p">,</span> <span class="ss">:count</span><span class="p">).</span><span class="nf">by</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -1760,7 +1760,7 @@
 
 <h3 id="121-dry-transaction-multi-step-business-operations">12.1 dry-transaction: Multi-Step Business Operations</h3>
 
-<p>Perfect for complex workflows like order processing or user registration:</p>
+<p>Perfect for complex workflows like order processing or player registration:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/transactions/create_order.rb</span>
 <span class="k">class</span> <span class="nc">CreateOrder</span>
@@ -1818,7 +1818,7 @@
 
 <span class="c1"># Provide effects at call site</span>
 <span class="n">result</span> <span class="o">=</span> <span class="no">Dry</span><span class="o">::</span><span class="no">Effects</span><span class="p">.</span><span class="nf">handler</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span>
-  <span class="ss">current_user: </span><span class="n">user</span><span class="p">,</span>
+  <span class="ss">current_user: </span><span class="n">player</span><span class="p">,</span>
   <span class="ss">resolve: </span><span class="p">{</span> <span class="ss">payment_gateway: </span><span class="no">StripeGateway</span><span class="p">.</span><span class="nf">new</span> <span class="p">}</span>
 <span class="p">)</span> <span class="p">{</span> <span class="no">ProcessPayment</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">}</span>
 </code></pre></div></div>
@@ -1903,30 +1903,30 @@
 <span class="n">result</span><span class="p">[</span><span class="ss">:access_status</span><span class="p">]</span> <span class="o">=</span> <span class="no">ACCESS_STATUS_VALUES</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="p">?</span> <span class="n">status</span> <span class="p">:</span> <span class="s2">"none"</span>
 
 <span class="c1"># After: The type IS the documentation</span>
-<span class="n">attribute</span> <span class="ss">:access_status</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">AccessStatus</span>  <span class="c1"># Enum is explicit</span>
+<span class="n">attribute</span> <span class="ss">:access_status</span><span class="p">,</span> <span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">AccessStatus</span>  <span class="c1"># Enum is explicit</span>
 </code></pre></div></div>
 
 <p><strong>2. Testability</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: Test through controller/blueprint</span>
 <span class="n">it</span> <span class="s2">"returns correct access_status"</span> <span class="k">do</span>
-  <span class="n">get</span> <span class="s2">"/profiles/1"</span><span class="p">,</span> <span class="ss">headers: </span><span class="n">auth_headers</span>
+  <span class="n">get</span> <span class="s2">"/avatars/1"</span><span class="p">,</span> <span class="ss">headers: </span><span class="n">auth_headers</span>
   <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">).</span><span class="nf">to</span> <span class="kp">include</span><span class="p">(</span><span class="s1">'"access_status":"approved"'</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="c1"># After: Unit test the struct directly</span>
 <span class="n">it</span> <span class="s2">"coerces invalid status to none"</span> <span class="k">do</span>
-  <span class="n">actions</span> <span class="o">=</span> <span class="no">Profiles</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">access_status: </span><span class="s2">"invalid"</span><span class="p">)</span>
+  <span class="n">actions</span> <span class="o">=</span> <span class="no">Avatars</span><span class="o">::</span><span class="no">Actions</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">access_status: </span><span class="s2">"invalid"</span><span class="p">)</span>
   <span class="n">expect</span><span class="p">(</span><span class="n">actions</span><span class="p">.</span><span class="nf">access_status</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span><span class="p">(</span><span class="s2">"none"</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <p><strong>3. Composability</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Combine types to build complex structures</span>
-<span class="no">CompanyProfile</span> <span class="o">=</span> <span class="no">Types</span><span class="o">::</span><span class="no">Hash</span><span class="p">.</span><span class="nf">schema</span><span class="p">(</span>
+<span class="no">CompanyAvatar</span> <span class="o">=</span> <span class="no">Types</span><span class="o">::</span><span class="no">Hash</span><span class="p">.</span><span class="nf">schema</span><span class="p">(</span>
   <span class="ss">name: </span><span class="no">Types</span><span class="o">::</span><span class="no">String</span><span class="p">,</span>
   <span class="ss">employees: </span><span class="no">Types</span><span class="o">::</span><span class="no">Array</span><span class="p">.</span><span class="nf">of</span><span class="p">(</span><span class="no">EmployeeStruct</span><span class="p">),</span>
   <span class="ss">settings: </span><span class="no">Types</span><span class="o">::</span><span class="no">Hash</span><span class="p">.</span><span class="nf">schema</span><span class="p">(</span>
-    <span class="ss">visibility: </span><span class="no">Types</span><span class="o">::</span><span class="no">Profiles</span><span class="o">::</span><span class="no">VisibilityMode</span><span class="p">,</span>
+    <span class="ss">visibility: </span><span class="no">Types</span><span class="o">::</span><span class="no">Avatars</span><span class="o">::</span><span class="no">VisibilityMode</span><span class="p">,</span>
     <span class="ss">features: </span><span class="no">Types</span><span class="o">::</span><span class="no">Array</span><span class="p">.</span><span class="nf">of</span><span class="p">(</span><span class="no">Types</span><span class="o">::</span><span class="no">String</span><span class="p">)</span>
   <span class="p">)</span>
 <span class="p">)</span>
@@ -1945,12 +1945,12 @@
 <span class="no">CacheWarmer</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
 <span class="c1"># After: Single event, multiple handlers</span>
-<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"profile.viewed"</span><span class="p">,</span> <span class="p">{</span> <span class="o">...</span> <span class="p">})</span>
+<span class="no">EventPublisher</span><span class="p">.</span><span class="nf">publish</span><span class="p">(</span><span class="s2">"avatar.viewed"</span><span class="p">,</span> <span class="p">{</span> <span class="o">...</span> <span class="p">})</span>
 </code></pre></div></div>
 
 <p><strong>6. Centralized Configuration</strong></p>
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Before: grep -r "CACHE_TTL" app/</span>
-<span class="c1"># After: ProfileConfig.config.actions.cache_ttl</span>
+<span class="c1"># After: AvatarConfig.config.actions.cache_ttl</span>
 </code></pre></div></div>
 
 <h3 id="132-tradeoffs">13.2 Tradeoffs</h3>
@@ -2121,7 +2121,7 @@
 
 <hr />
 
-<p><em>This post documents our integration of 11 dry-rb gems into the Wigiwork API. The patterns described here reduced our Profile Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.</em></p>
+<p><em>This post documents our integration of 11 dry-rb gems into the TestApp API. The patterns described here reduced our Avatar Actions payload logic from 70+ lines to 15, improved test coverage, established event-driven architecture, and created patterns that scale across 100+ endpoints.</em></p>
 
 
     </div>

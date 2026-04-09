@@ -5,14 +5,14 @@ date: 2026-01-24
 author: Max Lukin
 tags: [rails, database, seeding, testing, refactoring, architecture, performance, qa, ai-training]
 categories: [engineering, rails, best-practices, architecture]
-description: "A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate profiles with skills, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation."
+description: "A comprehensive guide to building an enterprise-grade database seeding system in Rails—from a 3,600-line monolith to a modular architecture supporting 100k+ full candidate avatars with abilities, work experiences, education, and all associations for AI training, QA stress testing, and frontend performance validation."
 ---
 
 > _"Good seed data is the difference between a demo that impresses and a demo that embarrasses."_
 
 Every growing Rails application faces the same challenge: how do you populate your database with realistic data for development, demos, testing, and stakeholder presentations? Simple `db/seeds.rb` files work for small projects, but as your application scales, so do your seeding requirements.
 
-This post documents how we transformed a 3,600-line monolithic seed file into an enterprise-ready data generation system that creates 100,000+ full candidate profiles with all associations—serving AI training, QA stress testing, and frontend performance validation.
+This post documents how we transformed a 3,600-line monolithic seed file into an enterprise-ready data generation system that creates 100,000+ full candidate avatars with all associations—serving AI training, QA stress testing, and frontend performance validation.
 
 ---
 
@@ -26,7 +26,7 @@ This post documents how we transformed a 3,600-line monolithic seed file into an
 6. [Feature 3: Conditional Execution via ENV Flags](#6-feature-3-conditional-execution-via-env-flags)
 7. [Feature 4: Progress Reporting with Timing](#7-feature-4-progress-reporting-with-timing)
 8. [Feature 5: Post-Seed Data Validation](#8-feature-5-post-seed-data-validation)
-9. [Feature 6: 100k+ Full Profile Scaling](#9-feature-6-100k-full-profile-scaling)
+9. [Feature 6: 100k+ Full Avatar Scaling](#9-feature-6-100k-full-avatar-scaling)
 10. [Benefits and Use Cases](#10-benefits-and-use-cases)
 11. [Testing the Seed System](#11-testing-the-seed-system)
 12. [Three Bonus Ideas Worth Implementing](#12-three-bonus-ideas-worth-implementing)
@@ -54,15 +54,15 @@ Most Rails projects start with something like this:
 
 ```ruby
 # db/seeds.rb
-User.create!(email: 'admin@example.com', password: 'password')
+Player.create!(email: 'admin@example.com', password: 'password')
 Company.create!(name: 'Test Company')
 # ... done
 ```
 
 Then requirements grow:
-- "We need 50 users with different roles"
-- "Profiles need skills, work experiences, education"
-- "QA needs 100,000 profiles for load testing"
+- "We need 50 players with different roles"
+- "Avatars need abilities, work experiences, education"
+- "QA needs 100,000 avatars for load testing"
 - "AI team needs realistic job title distributions"
 - "CEO wants the demo to look like a real platform"
 
@@ -120,7 +120,7 @@ module Seeds
       end
 
       def seed_admin_users
-        @admin_user = User.find_or_initialize_by(email: 'admin@bluegeko.com')
+        @admin_user = Player.find_or_initialize_by(email: 'admin@bluegeko.com')
         # ... 300 lines
       end
 
@@ -153,7 +153,7 @@ end
 | `@standard_user` | 8 |
 | `@full_data_candidate_users` | 5 |
 | `@demo_job_posts` | 5 |
-| `@admin_profile` | 2 |
+| `@admin_avatar` | 2 |
 
 These shared variables made refactoring terrifying—change one method, break five others.
 
@@ -184,14 +184,14 @@ db/seeds/
 ├── context.rb                  # State management (233 lines)
 ├── timing.rb                   # Progress tracking (186 lines)
 ├── validation.rb               # Data integrity (331 lines)
-├── batch_profiles.rb           # 100k scaling (825 lines)
+├── batch_avatars.rb           # 100k scaling (825 lines)
 ├── README.md                   # Documentation (1,797 lines)
 ├── SEEDS_REFACTORING.md        # Implementation notes (643 lines)
 └── steps/                      # 37 individual step files
     ├── 01_predefined_avatar_assets.rb
     ├── 02_company.rb
     ├── ...
-    └── 37_batch_profiles.rb
+    └── 37_batch_avatars.rb
 ```
 
 **Result: 3,610 lines → 37 focused files averaging 80 lines each**
@@ -243,7 +243,7 @@ module Seeds
     OPTIONAL_STEPS = {
       seed_reports: "SKIP_SEED_REPORTS",
       seed_full_data_candidates: "SEED_FULL_CANDIDATES",
-      seed_batch_profiles: "CREATE_BATCH_PROFILES"
+      seed_batch_avatars: "CREATE_BATCH_PROFILES"
     }.freeze
 
     class << self
@@ -256,7 +256,7 @@ module Seeds
         run_step :seed_company
         run_step :seed_job_titles
         # ... 34 more steps
-        run_step :seed_batch_profiles
+        run_step :seed_batch_avatars
 
         # Validate and summarize
         validate_seed_data
@@ -311,7 +311,7 @@ end
 ```ruby
 # Before: 95 instance variable references across 37 steps
 def seed_admin_users
-  @admin_user = User.create!(...)
+  @admin_user = Player.create!(...)
 end
 
 def seed_job_posts
@@ -336,14 +336,14 @@ module Seeds
       attr_accessor :company
       attr_accessor :admin_user, :standard_user
       attr_accessor :candidate_demo_user, :access_request_user
-      attr_accessor :admin_profile, :full_data_candidate_users
+      attr_accessor :admin_avatar, :full_data_candidate_users
       attr_accessor :demo_job_posts
 
       # Client roles
       attr_accessor :client_user, :client_owner, :client_manager
 
       # Batch processing
-      attr_accessor :batch_profile_result
+      attr_accessor :batch_avatar_result
 
       def initialize
         @full_data_candidate_users = []
@@ -355,12 +355,12 @@ module Seeds
         !@company.nil?
       end
 
-      def batch_profiles?
-        @batch_profile_result&.success? == true
+      def batch_avatars?
+        @batch_avatar_result&.success? == true
       end
 
-      def batch_profile_count
-        @batch_profile_result&.profiles_created || 0
+      def batch_avatar_count
+        @batch_avatar_result&.avatars_created || 0
       end
 
       # Dependency validation
@@ -375,7 +375,7 @@ module Seeds
           company: @company&.name,
           admin_user: @admin_user&.email,
           full_data_candidates: @full_data_candidate_users.size,
-          batch_profiles: batch_profile_count
+          batch_avatars: batch_avatar_count
         }
       end
     end
@@ -392,7 +392,7 @@ def seed_job_posts
 
   job = JobPost.create!(
     company: ctx.company,
-    user: ctx.admin_user,
+    player: ctx.admin_user,
     title: "Senior Engineer"
   )
   ctx.demo_job_posts << job
@@ -419,7 +419,7 @@ end
 |----------|----------|----------|
 | Skip slow reports | `SKIP_SEED_REPORTS=true` | Reports step skipped |
 | Create 40 full candidates | `SEED_FULL_CANDIDATES=true` | Rich candidate data |
-| Create 100k profiles | `CREATE_BATCH_PROFILES=true` | Batch processing enabled |
+| Create 100k avatars | `CREATE_BATCH_PROFILES=true` | Batch processing enabled |
 
 ### 6.2 Implementation
 
@@ -432,7 +432,7 @@ OPTIONAL_STEPS = {
   # Enable steps (default: skip)
   seed_full_data_candidates: "SEED_FULL_CANDIDATES",
   seed_full_data_candidates_job_board: "SEED_FULL_CANDIDATES",
-  seed_batch_profiles: "CREATE_BATCH_PROFILES"
+  seed_batch_avatars: "CREATE_BATCH_PROFILES"
 }.freeze
 
 def skip_step?(step_name)
@@ -456,7 +456,7 @@ rails db:seed
 # Full candidates for feature testing
 SEED_FULL_CANDIDATES=true rails db:seed
 
-# 100k profiles for QA stress testing
+# 100k avatars for QA stress testing
 CREATE_BATCH_PROFILES=true rails db:seed
 
 # Skip reports for faster iteration
@@ -548,7 +548,7 @@ end
 [ 1/37] Predefined avatar assets              
 [ 2/37] Company                               
 [ 3/37] Job titles                            
-[ 4/37] Admin users                           
+[ 4/37] Admin players                           
 ...
 [35/37] Summary                               
 [36/37] Demo recommendation                   
@@ -557,8 +557,8 @@ end
 SEED TIMING SUMMARY
 ============================================================
   seed_full_data_candidates                     12.34s
-  seed_random_profiles                           8.21s
-  seed_homepage_profiles                         4.56s
+  seed_random_avatars                           8.21s
+  seed_homepage_avatars                         4.56s
   seed_job_posts                                 3.12s
   ...
 ------------------------------------------------------------
@@ -584,12 +584,12 @@ SEED TIMING SUMMARY
 ```ruby
 # Seeds "complete" but data is broken
 def seed_admin_users
-  @admin_user = User.find_or_initialize_by(email: 'admin@bluegeko.com')
+  @admin_user = Player.find_or_initialize_by(email: 'admin@bluegeko.com')
   @admin_user.save  # No bang! Silent failure
 end
 
 # Later, in production demo...
-# "Why is there no admin user?!"
+# "Why is there no admin player?!"
 ```
 
 ### 8.2 The Solution: Validation Module
@@ -601,20 +601,20 @@ module Seeds
     module Validation
       CHECKS = {
         # Integrity checks (errors)
-        orphaned_profiles: -> { Profile.left_joins(:user).where(users: { id: nil }) },
-        candidates_without_profiles: -> { User.candidate.left_joins(:profile).where(profiles: { id: nil }) },
+        orphaned_avatars: -> { Avatar.left_joins(:player).where(players: { id: nil }) },
+        candidates_without_avatars: -> { Player.candidate.left_joins(:avatar).where(avatars: { id: nil }) },
         orphaned_job_posts: -> { JobPost.left_joins(:company).where(companies: { id: nil }) },
 
         # Minimum data checks (errors)
-        minimum_users: -> { User.count >= 5 },
-        minimum_profiles: -> { Profile.count >= 3 },
+        minimum_users: -> { Player.count >= 5 },
+        minimum_avatars: -> { Avatar.count >= 3 },
         minimum_companies: -> { Company.count >= 1 },
         minimum_job_posts: -> { JobPost.count >= 5 },
 
         # Quality checks (warnings)
-        profiles_with_skills: -> { Profile.joins(:skills).distinct.count > 0 },
-        profiles_with_work_experience: -> { Profile.joins(:work_experiences).distinct.count > 0 },
-        users_with_login_methods: -> { User.joins(:login_methods).distinct.count > 0 }
+        avatars_with_abilities: -> { Avatar.joins(:abilities).distinct.count > 0 },
+        avatars_with_work_experience: -> { Avatar.joins(:raid_logs).distinct.count > 0 },
+        users_with_access_keys: -> { Player.joins(:access_keys).distinct.count > 0 }
       }.freeze
 
       class << self
@@ -633,7 +633,7 @@ module Seeds
         private
 
         def run_integrity_checks(result)
-          %i[orphaned_profiles candidates_without_profiles orphaned_job_posts].each do |check|
+          %i[orphaned_avatars candidates_without_avatars orphaned_job_posts].each do |check|
             count = CHECKS[check].call.count
             if count > 0
               result.add_error(check, "Found #{count} #{check.to_s.humanize.downcase}")
@@ -655,20 +655,20 @@ end
 POST-SEED VALIDATION
 ============================================================
 Integrity Checks:
-  ✓ No orphaned profiles
-  ✓ No candidates without profiles
+  ✓ No orphaned avatars
+  ✓ No candidates without avatars
   ✓ No orphaned job posts
 
 Minimum Data Checks:
-  ✓ Users: 47 (minimum: 5)
-  ✓ Profiles: 42 (minimum: 3)
+  ✓ Players: 47 (minimum: 5)
+  ✓ Avatars: 42 (minimum: 3)
   ✓ Companies: 5 (minimum: 1)
   ✓ Job Posts: 25 (minimum: 5)
 
 Quality Checks:
-  ✓ Profiles with skills: 38
-  ✓ Profiles with work experience: 35
-  ⚠ Users with login methods: 0 (warning)
+  ✓ Avatars with abilities: 38
+  ✓ Avatars with work experience: 35
+  ⚠ Players with login methods: 0 (warning)
 
 ------------------------------------------------------------
 Result: PASSED (14 checks, 1 warning)
@@ -687,14 +687,14 @@ SEED_VALIDATION_STRICT=true rails db:seed
 
 ---
 
-## 9. Feature 6: 100k+ Full Profile Scaling
+## 9. Feature 6: 100k+ Full Avatar Scaling
 
 ### 9.1 The Challenge
 
-Our AI team needed 100,000 realistic candidate profiles for model training. QA needed the same for stress testing. Creating records one-by-one would take hours.
+Our AI team needed 100,000 realistic candidate avatars for model training. QA needed the same for stress testing. Creating records one-by-one would take hours.
 
 **Requirements:**
-- Full profiles with ALL associations
+- Full avatars with ALL associations
 - Category-appropriate job titles
 - Skills, work experiences, education
 - Portfolio, contact info, avatars
@@ -703,12 +703,12 @@ Our AI team needed 100,000 realistic candidate profiles for model training. QA n
 
 ### 9.2 What Gets Created
 
-Each batch profile is a **complete candidate** with:
+Each batch avatar is a **complete candidate** with:
 
-| Association | Per Profile | Total (100k) |
+| Association | Per Avatar | Total (100k) |
 |-------------|-------------|--------------|
-| User + Login Security | 1 | 100,000 |
-| Profile | 1 | 100,000 |
+| Player + Login Security | 1 | 100,000 |
+| Avatar | 1 | 100,000 |
 | Skills | 3-6 | ~450,000 |
 | Work Experiences | 2-4 | ~300,000 |
 | Education Items | 1-2 | ~150,000 |
@@ -751,10 +751,10 @@ CATEGORY_SKILLS = {
 ### 9.4 Implementation Highlights
 
 ```ruby
-# db/seeds/batch_profiles.rb
+# db/seeds/batch_avatars.rb
 module Seeds
   module Support
-    module BatchProfiles
+    module BatchAvatars
       DEFAULT_COUNT = 100_000
       CHUNK_SIZE = 500
 
@@ -778,22 +778,22 @@ module Seeds
           # Select random category
           category = categories.sample
 
-          # Create user (ActiveRecord for Devise)
-          user = create_batch_user(index: index)
+          # Create player (ActiveRecord for Devise)
+          player = create_batch_user(index: index)
 
-          # Create profile with category-appropriate job title
-          profile = create_batch_profile(user: user, category: category)
+          # Create avatar with category-appropriate job title
+          avatar = create_batch_avatar(player: player, category: category)
 
           # Create ALL associations
-          create_skills(profile, category.slug)
-          create_work_experiences(profile, category.slug)
-          create_education_items(profile)
-          create_languages(profile)
-          create_contact_infos(profile)
-          create_portfolio(profile)
-          create_location_setting(profile)
-          create_salary_expectation(profile)
-          create_avatar_data(profile)
+          create_abilities(avatar, category.slug)
+          create_raid_logs(avatar, category.slug)
+          create_training_logs(avatar)
+          create_dialects(avatar)
+          create_beacons(avatar)
+          create_portfolio(avatar)
+          create_map_rule(avatar)
+          create_bounty_rule(avatar)
+          create_avatar_data(avatar)
         end
       end
     end
@@ -804,7 +804,7 @@ end
 ### 9.5 Usage
 
 ```bash
-# Create 100,000 full profiles (default)
+# Create 100,000 full avatars (default)
 CREATE_BATCH_PROFILES=true rails db:seed
 
 # Create 10,000 for smaller tests
@@ -818,23 +818,23 @@ CREATE_BATCH_PROFILES=true BATCH_VERBOSE=true rails db:seed
 
 ```
 ======================================================================
-[BATCH] Starting FULL candidate profile creation
+[BATCH] Starting FULL candidate avatar creation
 ======================================================================
   Target count:     100,000
   Chunk size:       500
   Associations:     Skills, Work Exp, Education, Languages, Contacts, etc.
 ======================================================================
 
-  [=======>--------------------]  25.0% | Chunk 50/200 | 25000 profiles | 625,000 assoc
+  [=======>--------------------]  25.0% | Chunk 50/200 | 25000 avatars | 625,000 assoc
 
 ======================================================================
-[BATCH] Full candidate profile creation complete!
+[BATCH] Full candidate avatar creation complete!
 ======================================================================
-  Users created:        100,000
-  Profiles created:     100,000
+  Players created:        100,000
+  Avatars created:     100,000
   Associations created: 2,543,721
   Total duration:       3h 12m
-  Rate:                 8.7 profiles/second
+  Rate:                 8.7 avatars/second
 ======================================================================
 ```
 
@@ -855,9 +855,9 @@ CREATE_BATCH_PROFILES=true BATCH_VERBOSE=true rails db:seed
 | Stakeholder | Command | Result |
 |-------------|---------|--------|
 | **Daily Dev** | `rails db:seed` | ~30s, minimal data |
-| **Feature Testing** | `SEED_FULL_CANDIDATES=true rails db:seed` | ~2 min, 40 rich profiles |
-| **QA Stress Test** | `CREATE_BATCH_PROFILES=true rails db:seed` | ~3h, 100k profiles |
-| **AI Training** | `CREATE_BATCH_PROFILES=true BATCH_PROFILE_COUNT=500000 rails db:seed` | ~15h, 500k profiles |
+| **Feature Testing** | `SEED_FULL_CANDIDATES=true rails db:seed` | ~2 min, 40 rich avatars |
+| **QA Stress Test** | `CREATE_BATCH_PROFILES=true rails db:seed` | ~3h, 100k avatars |
+| **AI Training** | `CREATE_BATCH_PROFILES=true BATCH_PROFILE_COUNT=500000 rails db:seed` | ~15h, 500k avatars |
 | **CEO Demo** | `rails db:seed` | Production-like feel |
 | **New Engineer** | `rails db:seed` | Working environment in 30s |
 
@@ -870,7 +870,7 @@ CREATE_BATCH_PROFILES=true BATCH_VERBOSE=true rails db:seed
 | **Documentation** | None | 1,797-line README |
 | **Progress feedback** | Silent | Real-time with timing |
 | **Data validation** | None | 14 automated checks |
-| **Scalability** | ~100 profiles | 100,000+ profiles |
+| **Scalability** | ~100 avatars | 100,000+ avatars |
 | **Conditional execution** | Edit code | ENV flags |
 | **Onboarding time** | Days | Hours |
 | **Git conflicts** | Daily | Rare |
@@ -897,7 +897,7 @@ spec/seeds/
 │   ├── context_spec.rb           # Context object tests
 │   ├── timing_spec.rb            # Timing module tests
 │   ├── validation_spec.rb        # Validation tests
-│   └── batch_profiles_spec.rb    # Batch processing tests
+│   └── batch_avatars_spec.rb    # Batch processing tests
 ├── reference_data_spec.rb        # Reference data tests
 ├── integration_spec.rb           # Full seed run tests
 └── steps/
@@ -932,7 +932,7 @@ end
 | Context | 32 | 100% |
 | Timing | 28 | 100% |
 | Validation | 31 | 100% |
-| Batch Profiles | 49 | 100% |
+| Batch Avatars | 49 | 100% |
 | Reference Data | 89 | 100% |
 | Individual Steps | 126 | Key paths |
 | **Total** | **400+** | High |
@@ -943,7 +943,7 @@ end
 
 ### 12.1 Idea 1: Seed Data Snapshots
 
-**Problem:** Recreating 100k profiles takes 3 hours every time.
+**Problem:** Recreating 100k avatars takes 3 hours every time.
 
 **Solution:** Database snapshots for instant restore.
 
@@ -952,11 +952,11 @@ end
 module Seeds
   module Snapshots
     def save(name)
-      `pg_dump wigiwork_development > snapshots/#{name}.sql`
+      `pg_dump testapp_development > snapshots/#{name}.sql`
     end
 
     def restore(name)
-      `psql wigiwork_development < snapshots/#{name}.sql`
+      `psql testapp_development < snapshots/#{name}.sql`
     end
   end
 end
@@ -986,7 +986,7 @@ end
 
 # Usage
 with_consistent_faker do
-  seed_profiles  # Same names, emails, etc. every time
+  seed_avatars  # Same names, emails, etc. every time
 end
 ```
 
@@ -1004,16 +1004,16 @@ module Seeds
   module Metrics
     def report
       {
-        users: {
-          total: User.count,
-          by_role: User.group(:role).count,
-          with_profiles: User.joins(:profile).count
+        players: {
+          total: Player.count,
+          by_role: Player.group(:role).count,
+          with_avatars: Player.joins(:avatar).count
         },
-        profiles: {
-          total: Profile.count,
-          with_skills: Profile.joins(:skills).distinct.count,
-          avg_skills: Profile.joins(:skills).group(:id).count.values.sum.to_f / Profile.count,
-          by_category: Profile.joins(:category).group("categories.slug").count
+        avatars: {
+          total: Avatar.count,
+          with_abilities: Avatar.joins(:abilities).distinct.count,
+          avg_abilities: Avatar.joins(:abilities).group(:id).count.values.sum.to_f / Avatar.count,
+          by_category: Avatar.joins(:category).group("categories.slug").count
         },
         companies: {
           total: Company.count,
@@ -1028,15 +1028,15 @@ end
 **Output:**
 
 ```yaml
-Users:
+Players:
   total: 100,047
   by_role: { admin: 2, candidate: 100,040, client: 5 }
-  with_profiles: 100,042
+  with_avatars: 100,042
 
-Profiles:
+Avatars:
   total: 100,042
-  with_skills: 99,800
-  avg_skills: 4.2
+  with_abilities: 99,800
+  avg_abilities: 4.2
   by_category: { technology: 45,000, design: 15,000, ... }
 
 Companies:
@@ -1058,7 +1058,7 @@ Companies:
 | Number of files | 1 | 37 |
 | Test coverage | 0% | 400+ specs |
 | Documentation | 0 lines | 1,797 lines |
-| Max profiles | ~100 | 100,000+ |
+| Max avatars | ~100 | 100,000+ |
 | Progress feedback | None | Real-time |
 | Data validation | None | 14 checks |
 | Conditional execution | None | 5 ENV flags |
@@ -1098,4 +1098,4 @@ The technical improvements are measurable, but the real win is **confidence**:
 
 ---
 
-*This post documents the transformation of the Wigiwork seed system from a 3,600-line monolith to an enterprise-grade data generation platform. The patterns described here—modular architecture, context objects, conditional execution, progress tracking, validation, and batch processing—are applicable to any Rails application that has outgrown simple seeds.*
+*This post documents the transformation of the TestApp seed system from a 3,600-line monolith to an enterprise-grade data generation platform. The patterns described here—modular architecture, context objects, conditional execution, progress tracking, validation, and batch processing—are applicable to any Rails application that has outgrown simple seeds.*

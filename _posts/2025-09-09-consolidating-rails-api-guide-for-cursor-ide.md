@@ -71,7 +71,7 @@ Below are the categories and representative points you’ll find in the consolid
   end
   ```
   ```bash
-  curl -X POST "http://localhost:3000/api/v1/profiles/49/educations"     -H "Authorization: Bearer $TOKEN"     -H "Content-Type: multipart/form-data"     -F "education_item[item_type]=degree"     -F "education_item[title]=Bachelor of Science"     -F "education_item[degree]=BSc"     -F 'education_item[field_of_study]=Computer Science'     -F "education_item[currently_enrolled]=false"     -F "education_item[start_date]=2018-09-01"     -F "education_item[end_date]=2022-06-30"     -F "education_item[file_attributes][doc_type]=pdf"     -F "education_item[file_attributes][file]=@spec/fixtures/files/test.pdf;type=application/pdf"
+  curl -X POST "http://localhost:3000/api/v1/avatars/49/training_logs"     -H "Authorization: Bearer $TOKEN"     -H "Content-Type: multipart/form-data"     -F "training_log[item_type]=drill"     -F "training_log[title]=Arcane Mobility"     -F "training_log[rank]=B2"     -F 'training_log[specialization]=Traversal Systems'     -F "training_log[currently_active]=false"     -F "training_log[start_date]=2018-09-01"     -F "training_log[end_date]=2022-06-30"     -F "training_log[loadout_docs_attributes][doc_type]=pdf"     -F "training_log[loadout_docs_attributes][file]=@spec/fixtures/files/test.pdf;type=application/pdf"
   ```
 
 **Global exception handling**

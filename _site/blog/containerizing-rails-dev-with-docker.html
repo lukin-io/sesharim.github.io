@@ -234,7 +234,7 @@ Your production Dockerfile often excludes <code class="language-plaintext highli
       <span class="na">MYSQL_DB_PORT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3306"</span>
       <span class="na">MYSQL_DB_USER</span><span class="pi">:</span> <span class="s">root</span>
       <span class="na">MYSQL_DB_PASS</span><span class="pi">:</span> <span class="s">password</span>
-      <span class="na">MYSQL_NAME</span><span class="pi">:</span> <span class="s">wigiwork_development</span>
+      <span class="na">MYSQL_NAME</span><span class="pi">:</span> <span class="s">testapp_development</span>
 
       <span class="na">REDIS_URL</span><span class="pi">:</span> <span class="s">redis://redis:6379/0</span>
       <span class="na">APP_VERSION</span><span class="pi">:</span> <span class="s">devcontainer</span>
@@ -261,7 +261,7 @@ Your production Dockerfile often excludes <code class="language-plaintext highli
     <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:8.4</span>
     <span class="na">environment</span><span class="pi">:</span>
       <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
-      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">wigiwork_development</span>
+      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">testapp_development</span>
     <span class="na">ports</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s2">"</span><span class="s">3307:3306"</span> <span class="c1"># host:container for host access</span>
     <span class="na">healthcheck</span><span class="pi">:</span>
@@ -312,16 +312,16 @@ Your production Dockerfile often excludes <code class="language-plaintext highli
 
 <span class="na">development</span><span class="pi">:</span>
   <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
-  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("MYSQL_NAME", "wigiwork_development") %&gt;</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("MYSQL_NAME", "testapp_development") %&gt;</span>
 
 <span class="na">test</span><span class="pi">:</span>
   <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
-  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("DB_DATABASE", "wigiwork_test") %&gt;</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("DB_DATABASE", "testapp_test") %&gt;</span>
 </code></pre></div></div>
 
 <blockquote>
   <p>If you run Rails <strong>from the host</strong> against the containerized DB, use <code class="language-plaintext highlighter-rouge">127.0.0.1:3307</code> (not <code class="language-plaintext highlighter-rouge">mysql:3306</code>).
-Example: <code class="language-plaintext highlighter-rouge">DATABASE_URL=mysql2://root:password@127.0.0.1:3307/wigiwork_development</code></p>
+Example: <code class="language-plaintext highlighter-rouge">DATABASE_URL=mysql2://root:password@127.0.0.1:3307/testapp_development</code></p>
 </blockquote>
 
 <hr />

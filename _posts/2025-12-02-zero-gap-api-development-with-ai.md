@@ -92,22 +92,22 @@ interface ProfileCard {
 When database data is sparse, required fields still must satisfy the contract:
 
 ```ruby
-# app/blueprints/profile_card_blueprint.rb
-class ProfileCardBlueprint < Blueprinter::Base
+# app/blueprints/avatar_card_blueprint.rb
+class AvatarCardBlueprint < Blueprinter::Base
   identifier :id
 
-  field :username do |profile|
-    profile.username.presence || ""  # String → empty string
+  field :username do |avatar|
+    avatar.username.presence || ""  # String -> empty string
   end
 
-  field :skills do |profile|
-    profile.skills.presence || []    # Array → empty array
+  field :abilities do |avatar|
+    avatar.abilities.presence || []    # Array -> empty array
   end
 
-  field :availability do |profile|
+  field :availability do |avatar|
     {
-      status: profile.availability_status || "na",  # Enum → default value
-      updated_at: (profile.availability_updated_at || Time.current).iso8601
+      status: avatar.availability_status || "na",  # Enum -> default value
+      updated_at: (avatar.availability_updated_at || Time.current).iso8601
     }
   end
 end
@@ -188,8 +188,8 @@ When gaps are found, classify them correctly:
 **Type A: Implementation Issues** — Your code doesn't match REQUIREMENT_DOC
 
 ```
-[IMPL] GET /profiles/:id - [EXPECTED: returns avatar_url] vs [ACTUAL: field missing from Blueprint]
-[IMPL] POST /users - [EXPECTED: 422 for invalid email] vs [ACTUAL: returns 400]
+[IMPL] GET /avatars/:id - [EXPECTED: returns banner_url] vs [ACTUAL: field missing from Blueprint]
+[IMPL] POST /players - [EXPECTED: 422 for invalid email] vs [ACTUAL: returns 400]
 ```
 
 → **Fix ALL before proceeding.** Re-run verification after fixes.
@@ -509,4 +509,3 @@ Zero-gap development isn't about perfection—it's about **systematic verificati
 AI amplifies whatever process you give it. Give it contracts, gates, and verification—and it becomes the best pair programmer you've ever had.
 
 **The framework is the force multiplier. Experience is choosing to use it.**
-

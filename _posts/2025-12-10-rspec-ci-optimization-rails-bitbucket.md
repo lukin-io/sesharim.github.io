@@ -178,7 +178,7 @@ definitions:
     postgres:
       image: postgres:16
       variables:
-        POSTGRES_DB: wigiwork_test
+        POSTGRES_DB: testapp_test
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: password
 
@@ -307,7 +307,7 @@ bundle exec parallel_rspec spec/ -n 4
 # Run with specific pattern
 bundle exec parallel_rspec spec/models -n auto
 
-# Profile parallel execution
+# Avatar parallel execution
 PROFILE=1 bundle exec parallel_rspec spec/
 ```
 
@@ -323,15 +323,15 @@ Our integration specs used `let!` excessively:
 # Before: Every response block creates its own fixtures
 path '/api/v1/projects' do
   response '200', 'successful' do
-    let!(:user)    { create(:user) }     # Created immediately
-    let!(:profile) { create(:profile) }  # Created immediately
+    let!(:player)    { create(:player) }     # Created immediately
+    let!(:avatar) { create(:avatar) }  # Created immediately
     let!(:project) { create(:project) }  # Created immediately
     run_test!
   end
 
   response '422', 'validation error' do
-    let!(:user)    { create(:user) }     # DUPLICATE creation!
-    let!(:profile) { create(:profile) }  # DUPLICATE creation!
+    let!(:player)    { create(:player) }     # DUPLICATE creation!
+    let!(:avatar) { create(:avatar) }  # DUPLICATE creation!
     run_test!
   end
 end
@@ -350,20 +350,20 @@ Convert `let!` to `let` where the lazy evaluation chain works:
 # After: Lazy evaluation with explicit eager loading only when needed
 path '/api/v1/projects' do
   response '200', 'successful' do
-    let(:user)    { create(:user) }
-    let(:profile) { create(:profile, user: user) }
+    let(:player)    { create(:player) }
+    let(:avatar) { create(:avatar, player: player) }
     # Project must exist before request - keep as let!
-    let!(:project) { create(:project, profile: profile) }
+    let!(:project) { create(:project, avatar: avatar) }
 
-    let(:Authorization) { "Bearer #{jwt_for(user)}" }  # References user → triggers creation
-    let(:profile_id) { profile.id }  # References profile → triggers creation
+    let(:Authorization) { "Bearer #{jwt_for(player)}" }  # References player → triggers creation
+    let(:avatar_id) { avatar.id }  # References avatar → triggers creation
 
     run_test!
   end
 end
 ```
 
-**The key insight:** `let` is lazy—it only creates records when first accessed. If `Authorization` references `user`, and `profile_id` references `profile`, the chain triggers automatically.
+**The key insight:** `let` is lazy—it only creates records when first accessed. If `Authorization` references `player`, and `avatar_id` references `avatar`, the chain triggers automatically.
 
 **Use `let!` only when:**
 1. Record must exist in database before the request
@@ -375,17 +375,17 @@ end
 ```ruby
 # Before: 26 let! calls
 response '200', 'successful' do
-  let!(:user)    { create(:user) }
-  let!(:profile) { create(:profile, user: user) }
-  let!(:project) { Project.create!(profile: profile, ...) }
+  let!(:player)    { create(:player) }
+  let!(:avatar) { create(:avatar, player: player) }
+  let!(:project) { Project.create!(avatar: avatar, ...) }
   # ...
 end
 
 # After: 5 let! calls (only for records that must pre-exist)
 response '200', 'successful' do
-  let(:user)    { create(:user) }
-  let(:profile) { create(:profile, user: user) }
-  let!(:project) { Project.create!(profile: profile, ...) }
+  let(:player)    { create(:player) }
+  let(:avatar) { create(:avatar, player: player) }
+  let!(:project) { Project.create!(avatar: avatar, ...) }
   # ...
 end
 ```
@@ -398,18 +398,18 @@ For repeated patterns, use shared contexts:
 
 ```ruby
 # spec/support/shared_examples/company_authenticated_context.rb
-RSpec.shared_context 'authenticated company user' do
+RSpec.shared_context 'authenticated company player' do
   let(:company) { create(:company) }
-  let(:company_owner) { create(:user, :client, company: company, company_role: :owner) }
+  let(:company_owner) { create(:player, :client, company: company, company_role: :owner) }
   let(:Authorization) { "Bearer #{jwt_for(company_owner)}" }
   let(:company_id) { company.id }
 end
 
 # Usage in specs
 RSpec.describe 'Companies API' do
-  include_context 'authenticated company user'
+  include_context 'authenticated company player'
 
-  path '/api/v1/companies/{company_id}/profile' do
+  path '/api/v1/companies/{company_id}/avatar' do
     # company, company_owner, Authorization, company_id all available
     # Created lazily when first accessed
   end
@@ -576,12 +576,12 @@ end
 ```ruby
 # spec/support/test_prof.rb
 if defined?(TestProf)
-  # FactoryProf: Profile factory usage
+  # FactoryProf: Avatar factory usage
   TestProf::FactoryProf.configure do |config|
     config.mode = :flamegraph if ENV["FPROF_FLAMEGRAPH"]
   end
 
-  # EventProf: Profile SQL queries and factory creates
+  # EventProf: Avatar SQL queries and factory creates
   TestProf::EventProf.configure do |config|
     config.per_example = true if ENV["EVENT_PROF_EXAMPLES"]
   end
@@ -616,19 +616,19 @@ end
 ### 7.3 Profiling Commands
 
 ```bash
-# Profile slow examples (show top 10)
+# Avatar slow examples (show top 10)
 PROFILE=1 bundle exec rspec
 
-# Profile factory usage (find N+1 factories)
+# Avatar factory usage (find N+1 factories)
 FPROF=1 bundle exec rspec
 
-# Profile factory usage with flamegraph
+# Avatar factory usage with flamegraph
 FPROF=1 FPROF_FLAMEGRAPH=1 bundle exec rspec
 
-# Profile SQL queries
+# Avatar SQL queries
 EVENT_PROF=sql.active_record bundle exec rspec
 
-# Profile factory create events
+# Avatar factory create events
 EVENT_PROF=factory.create bundle exec rspec
 
 # Native factory profiling
@@ -638,14 +638,14 @@ FACTORY_PROF=1 bundle exec rspec
 PROFILE=1 FACTORY_PROF=1 bundle exec rspec
 ```
 
-### 7.4 Sample Factory Profile Output
+### 7.4 Sample Factory Avatar Output
 
 ```
 === FactoryBot Profiling Report ===
 Factory                                      Count       Time (ms)
 -------------------------------------------------------------------
-user                                           156         1234.56
-profile                                        142          987.65
+player                                           156         1234.56
+avatar                                        142          987.65
 company                                         89          654.32
 attachment                                      85          432.10
 job_post                                        45          321.00
@@ -669,19 +669,19 @@ For specs that can share fixtures across examples:
 require 'test_prof/recipes/rspec/let_it_be'
 
 # Usage in specs
-RSpec.describe ProfileBlueprint do
+RSpec.describe AvatarBlueprint do
   # Created once for ALL examples in this describe block
-  let_it_be(:user) { create(:user) }
-  let_it_be(:profile) { create(:profile, user: user) }
+  let_it_be(:player) { create(:player) }
+  let_it_be(:avatar) { create(:avatar, player: player) }
 
   it "serializes id" do
-    # user and profile are reused, not recreated
-    expect(described_class.render_as_hash(profile)).to include(id: profile.id)
+    # player and avatar are reused, not recreated
+    expect(described_class.render_as_hash(avatar)).to include(id: avatar.id)
   end
 
   it "serializes username" do
-    # Same user and profile from above
-    expect(described_class.render_as_hash(profile)).to include(username: profile.username)
+    # Same player and avatar from above
+    expect(described_class.render_as_hash(avatar)).to include(username: avatar.username)
   end
 end
 ```
@@ -706,8 +706,8 @@ RSpec.configure do |config|
   # Persist example status for --only-failures
   config.example_status_persistence_file_path = "spec/examples.txt"
 
-  # Profile slow examples (enable via PROFILE=1)
-  config.profile_examples = ENV["PROFILE"] ? 10 : false
+  # Avatar slow examples (enable via PROFILE=1)
+  config.avatar_examples = ENV["PROFILE"] ? 10 : false
 
   # Random order to surface order dependencies
   config.order = :random
@@ -719,7 +719,7 @@ end
 
 | Setting | Value | Rationale |
 |---------|-------|-----------|
-| `profile_examples` | Conditional | Only profile when explicitly requested |
+| `avatar_examples` | Conditional | Only avatar when explicitly requested |
 | `order` | `:random` | Surface hidden dependencies |
 | `example_status_persistence` | Enabled | Support `--only-failures` |
 | `filter_run_when_matching :focus` | Enabled | Focus on tagged tests during dev |
@@ -833,7 +833,7 @@ FACTORY_PROF=1 bundle exec rspec
 
 ## Key Takeaways
 
-1. **Profile before optimizing** — Measure, don't guess
+1. **Avatar before optimizing** — Measure, don't guess
 2. **Parallelize at multiple levels** — Pipeline steps + test processes
 3. **Lazy evaluation is your friend** — `let` over `let!`
 4. **Eliminate I/O** — In-memory beats disk every time
@@ -868,5 +868,5 @@ Slow tests become ignored tests. Ignored tests become broken tests. Broken tests
 
 ---
 
-*This post documents the optimization of the Wigiwork API test suite from timeout failures to sub-3-minute builds. The patterns described here—parallel execution, factory optimization, I/O elimination, and profiling infrastructure—are applicable to any Rails application with a growing test suite.*
+*This post documents the optimization of the TestApp API test suite from timeout failures to sub-3-minute builds. The patterns described here—parallel execution, factory optimization, I/O elimination, and profiling infrastructure—are applicable to any Rails application with a growing test suite.*
 
