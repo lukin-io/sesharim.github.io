@@ -285,10 +285,10 @@ CHECK_PROFILES = {
 }.freeze
 ```
 
-But the important part is not that there are two profiles.  
+But the important part is not that there are two characters.  
 It is that the script is **diff-aware**, **parallelized**, and **cheap enough to use every day**.
 
-### What the fast profile really does
+### What the fast character really does
 
 The default path is intentionally practical:
 
@@ -300,7 +300,7 @@ That last point is not cosmetic.
 
 The script checks changed files and auto-skips swagger if controllers, blueprints, routes, or API specs were untouched. That means routine work stays fast.
 
-### What the full profile adds
+### What the full character adds
 
 For heavier changes, `--full` adds:
 
@@ -322,7 +322,7 @@ There are several details in the actual source that matter a lot:
 #### 1) Parallel RSpec by default
 The script runs `parallel_rspec` with **8 workers** by default, with a sequential mode available when needed.
 
-#### 2) Fast profile excludes heavy specs
+#### 2) Fast character excludes heavy specs
 Fast mode excludes specs tagged `:full_only`, which keeps the common path fast without deleting deeper coverage.
 
 #### 3) Schema-aware parallel DB preparation
@@ -649,7 +649,7 @@ They want more **safe change per unit of time**.
 After re-reading all of the attached material, including the actual `bin/verify` and `bin/contract_audit` sources, I think there are four especially important ideas hiding in this story.
 
 ### 1) The best systems are strict and ergonomic at the same time
-Fast profile vs full profile.  
+Fast character vs full character.  
 Changed-lines mode vs `--all`.  
 `--only`.  
 `--fail-fast`.  

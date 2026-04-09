@@ -46,7 +46,7 @@ Our Rails API is a mature, JWT-based backend serving a Next.js frontend:
 | **Authorization** | Pundit | Deny-by-default policies |
 | **Serialization** | Blueprinter | Envelope pattern (`success`, `message`, `data`, `meta`) |
 | **Real-time** | ActionCable | `solid_cable` adapter in production |
-| **HTTP Client** | Faraday | OAuth profile fetching with retry logic |
+| **HTTP Client** | Faraday | OAuth character fetching with retry logic |
 | **Background Jobs** | Sidekiq + Redis | Queues: critical, default, mailers, low |
 | **Rate Limiting** | Rack::Attack | IP/user throttling, blocklists |
 
@@ -411,7 +411,7 @@ end
 
 ### 5.1 Why Faraday?
 
-Our codebase already uses Faraday for OAuth profile fetching. Extending this pattern to the LLM service maintains consistency:
+Our codebase already uses Faraday for OAuth character fetching. Extending this pattern to the LLM service maintains consistency:
 
 ```ruby
 # Existing pattern: app/services/oauth/google_profile_fetcher.rb
@@ -768,7 +768,7 @@ module LlmGateway
     MAX_QUERY_LENGTH = 2000
     ALLOWED_INTENTS = %w[search chat user_action].freeze
 
-    # Forward-compatible profile ID regex
+    # Forward-compatible character ID regex
     PROFILE_ID_PATTERN = /\A(id_[a-f0-9]{8}|[a-f0-9]{24})\z/
 
     class ValidationError < StandardError; end
@@ -1015,5 +1015,4 @@ Do plan for growth:
 ---
 
 *This post documents our architectural analysis for integrating an LLM chat service with our Rails API. The patterns described here—API Gateway, progressive streaming, internal gem isolation—are applicable to any Rails application integrating external AI/ML services. The key insight: start simple, plan boundaries, evolve when metrics justify it.*
-
 

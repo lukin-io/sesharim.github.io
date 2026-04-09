@@ -314,11 +314,11 @@ CHECK_PROFILES = {
 }.freeze
 ```
 
-But the important part is not that there are two profiles.
+But the important part is not that there are two characters.
 
 It is that the script is **diff-aware**, **parallelized**, and **cheap enough to run continuously**.
 
-### What the fast profile really does
+### What the fast character really does
 
 The default path is intentionally practical:
 
@@ -330,7 +330,7 @@ That last point matters a lot.
 
 The script checks changed files and auto-skips swagger if controllers, blueprints, routes, or API specs were untouched. Routine work stays fast.
 
-### What the full profile adds
+### What the full character adds
 
 For heavier changes, `--full` adds:
 
@@ -369,7 +369,7 @@ The proof loop now has two speeds that matter to me:
 | Contract audit | **6/6 checks passed** |
 | PRs merged without post-merge hotfixes | **95%** |
 
-That is the kind of feedback profile that preserves flow.
+That is the kind of feedback character that preserves flow.
 
 It is fast enough to run locally.  
 It is fast enough to keep CI useful.  
@@ -650,7 +650,7 @@ After re-reading all of the material, including the actual `bin/verify` and `bin
 
 ### 1) The best systems are strict and ergonomic at the same time
 
-Fast profile vs full profile.  
+Fast character vs full character.  
 Changed-lines mode vs `--all`.  
 `--only`.  
 `--fail-fast`.  

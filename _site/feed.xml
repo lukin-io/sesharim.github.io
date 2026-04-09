@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 Apr 2026 22:49:28 +0300</pubDate>
-    <lastBuildDate>Thu, 09 Apr 2026 22:49:28 +0300</lastBuildDate>
+    <pubDate>Thu, 09 Apr 2026 22:55:26 +0300</pubDate>
+    <lastBuildDate>Thu, 09 Apr 2026 22:55:26 +0300</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -580,11 +580,11 @@ That is mood-based engineering.&lt;/p&gt;
 &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;freeze&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;But the important part is not that there are two profiles.&lt;/p&gt;
+&lt;p&gt;But the important part is not that there are two characters.&lt;/p&gt;
 
 &lt;p&gt;It is that the script is &lt;strong&gt;diff-aware&lt;/strong&gt;, &lt;strong&gt;parallelized&lt;/strong&gt;, and &lt;strong&gt;cheap enough to run continuously&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-the-fast-profile-really-does&quot;&gt;What the fast profile really does&lt;/h3&gt;
+&lt;h3 id=&quot;what-the-fast-character-really-does&quot;&gt;What the fast character really does&lt;/h3&gt;
 
 &lt;p&gt;The default path is intentionally practical:&lt;/p&gt;
 
@@ -598,7 +598,7 @@ That is mood-based engineering.&lt;/p&gt;
 
 &lt;p&gt;The script checks changed files and auto-skips swagger if controllers, blueprints, routes, or API specs were untouched. Routine work stays fast.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-the-full-profile-adds&quot;&gt;What the full profile adds&lt;/h3&gt;
+&lt;h3 id=&quot;what-the-full-character-adds&quot;&gt;What the full character adds&lt;/h3&gt;
 
 &lt;p&gt;For heavier changes, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--full&lt;/code&gt; adds:&lt;/p&gt;
 
@@ -667,7 +667,7 @@ That is what makes the tool runnable every day.&lt;/p&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;That is the kind of feedback profile that preserves flow.&lt;/p&gt;
+&lt;p&gt;That is the kind of feedback character that preserves flow.&lt;/p&gt;
 
 &lt;p&gt;It is fast enough to run locally.&lt;br /&gt;
 It is fast enough to keep CI useful.&lt;br /&gt;
@@ -1032,7 +1032,7 @@ They want more &lt;strong&gt;safe change per unit of time&lt;/strong&gt;.&lt;/p&
 
 &lt;h3 id=&quot;1-the-best-systems-are-strict-and-ergonomic-at-the-same-time&quot;&gt;1) The best systems are strict and ergonomic at the same time&lt;/h3&gt;
 
-&lt;p&gt;Fast profile vs full profile.&lt;br /&gt;
+&lt;p&gt;Fast character vs full character.&lt;br /&gt;
 Changed-lines mode vs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--all&lt;/code&gt;.&lt;br /&gt;
 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--only&lt;/code&gt;.&lt;br /&gt;
 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--fail-fast&lt;/code&gt;.&lt;br /&gt;
@@ -2829,7 +2829,7 @@ Result: PASSED (14 checks, 1 warning)
     &lt;li&gt;But LLMs still create &lt;strong&gt;rule drift&lt;/strong&gt; (they quote rules, then violate them).&lt;/li&gt;
     &lt;li&gt;We fixed drift with &lt;strong&gt;guardrails&lt;/strong&gt;, not more prose: &lt;strong&gt;Hard-Fail rule IDs&lt;/strong&gt;, &lt;strong&gt;STOP gates&lt;/strong&gt;, &lt;strong&gt;mandatory evidence audits&lt;/strong&gt;, and &lt;strong&gt;negative examples&lt;/strong&gt;.&lt;/li&gt;
     &lt;li&gt;Entry point stays tiny and stable; the enforcement lives in versioned docs.&lt;/li&gt;
-    &lt;li&gt;We keep two profiles: &lt;strong&gt;Frozen (v1.0)&lt;/strong&gt; for speed, &lt;strong&gt;Strict (v1.1)&lt;/strong&gt; for enforcement.&lt;/li&gt;
+    &lt;li&gt;We keep two characters: &lt;strong&gt;Frozen (v1.0)&lt;/strong&gt; for speed, &lt;strong&gt;Strict (v1.1)&lt;/strong&gt; for enforcement.&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
@@ -2900,7 +2900,7 @@ Strictness evolves only inside &lt;code class=&quot;language-plaintext highlight
 
 &lt;h2 id=&quot;frozen-vs-strict-why-we-keep-both&quot;&gt;Frozen vs Strict: why we keep both&lt;/h2&gt;
 
-&lt;p&gt;We ended up with two prompt profiles:&lt;/p&gt;
+&lt;p&gt;We ended up with two prompt characters:&lt;/p&gt;
 
 &lt;h3 id=&quot;frozen-v10&quot;&gt;Frozen (v1.0)&lt;/h3&gt;
 &lt;ul&gt;

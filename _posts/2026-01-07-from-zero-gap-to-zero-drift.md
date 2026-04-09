@@ -14,7 +14,7 @@ description: "A practical upgrade to the Zero-Gap framework: how we reduced AI r
 > - But LLMs still create **rule drift** (they quote rules, then violate them).
 > - We fixed drift with **guardrails**, not more prose: **Hard-Fail rule IDs**, **STOP gates**, **mandatory evidence audits**, and **negative examples**.
 > - Entry point stays tiny and stable; the enforcement lives in versioned docs.
-> - We keep two profiles: **Frozen (v1.0)** for speed, **Strict (v1.1)** for enforcement.
+> - We keep two characters: **Frozen (v1.0)** for speed, **Strict (v1.1)** for enforcement.
 
 ---
 
@@ -76,7 +76,7 @@ This prevents the most common drift source: copying outdated prompt blobs across
 
 ## Frozen vs Strict: why we keep both
 
-We ended up with two prompt profiles:
+We ended up with two prompt characters:
 
 ### Frozen (v1.0)
 - Optimized for: **brevity**, human readability, speed
