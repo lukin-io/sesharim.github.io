@@ -35,9 +35,9 @@ The real operating number is **5x**. That is the number I use once I include wha
 
 This post is the production result of the ideas I described earlier in:
 
-- [Building a Browser-Based MMORPG with Ruby on Rails](/2025-11-27-building-browser-mmorpg-with-rails-and-ai)
-- [Zero-Gap API Development](/2025-12-02-zero-gap-api-development-with-ai)
-- [From Zero-Gap to Zero-Drift](/2026-01-07-from-zero-gap-to-zero-drift)
+- [Building a Browser-Based MMORPG with Ruby on Rails](https://lukin.io/blog/building-browser-mmorpg-with-rails-and-ai)
+- [Zero-Gap API Development](https://lukin.io/blog/zero-gap-api-development-with-ai)
+- [From Zero-Gap to Zero-Drift](https://lukin.io/blog/from-zero-gap-to-zero-drift)
 
 Those posts explained the pieces. This one is about what happened when I ran those ideas every day, against real work, for months.
 

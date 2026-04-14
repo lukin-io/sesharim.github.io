@@ -5,8 +5,8 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 Apr 2026 22:55:26 +0300</pubDate>
-    <lastBuildDate>Thu, 09 Apr 2026 22:55:26 +0300</lastBuildDate>
+    <pubDate>Tue, 14 Apr 2026 14:54:34 +0300</pubDate>
+    <lastBuildDate>Tue, 14 Apr 2026 14:54:34 +0300</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -91,9 +91,9 @@
 &lt;p&gt;This post is the production result of the ideas I described earlier in:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/2025-11-27-building-browser-mmorpg-with-rails-and-ai&quot;&gt;Building a Browser-Based MMORPG with Ruby on Rails&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2025-12-02-zero-gap-api-development-with-ai&quot;&gt;Zero-Gap API Development&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2026-01-07-from-zero-gap-to-zero-drift&quot;&gt;From Zero-Gap to Zero-Drift&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lukin.io/blog/building-browser-mmorpg-with-rails-and-ai&quot;&gt;Building a Browser-Based MMORPG with Ruby on Rails&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lukin.io/blog/zero-gap-api-development-with-ai&quot;&gt;Zero-Gap API Development&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lukin.io/blog/from-zero-gap-to-zero-drift&quot;&gt;From Zero-Gap to Zero-Drift&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Those posts explained the pieces. This one is about what happened when I ran those ideas every day, against real work, for months.&lt;/p&gt;

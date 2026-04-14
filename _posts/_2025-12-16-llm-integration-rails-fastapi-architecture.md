@@ -414,7 +414,7 @@ end
 Our codebase already uses Faraday for OAuth character fetching. Extending this pattern to the LLM service maintains consistency:
 
 ```ruby
-# Existing pattern: app/services/oauth/google_profile_fetcher.rb
+# Existing pattern: app/services/oauth/google_character_fetcher.rb
 def connection
   @connection ||= Faraday.new(url: GOOGLE_API_URL) do |f|
     f.request :json
@@ -769,14 +769,14 @@ module LlmGateway
     ALLOWED_INTENTS = %w[search chat user_action].freeze
 
     # Forward-compatible character ID regex
-    PROFILE_ID_PATTERN = /\A(id_[a-f0-9]{8}|[a-f0-9]{24})\z/
+    CHARACTER_ID_PATTERN = /\A(id_[a-f0-9]{8}|[a-f0-9]{24})\z/
 
     class ValidationError < StandardError; end
 
     def self.validate_chat_params!(params)
       validate_query!(params[:query])
       validate_intent!(params[:user_intent]) if params[:user_intent]
-      validate_profile_id!(params[:profile_id]) if params[:profile_id]
+      validate_character_id!(params[:character_id]) if params[:character_id]
     end
 
     private_class_method def self.validate_query!(query)
@@ -784,9 +784,9 @@ module LlmGateway
       raise ValidationError, "Query too long" if query.length > MAX_QUERY_LENGTH
     end
 
-    private_class_method def self.validate_profile_id!(id)
-      return if id.match?(PROFILE_ID_PATTERN)
-      raise ValidationError, "Invalid profile_id format"
+    private_class_method def self.validate_character_id!(id)
+      return if id.match?(CHARACTER_ID_PATTERN)
+      raise ValidationError, "Invalid character_id format"
     end
   end
 end
@@ -1015,4 +1015,3 @@ Do plan for growth:
 ---
 
 *This post documents our architectural analysis for integrating an LLM chat service with our Rails API. The patterns described here—API Gateway, progressive streaming, internal gem isolation—are applicable to any Rails application integrating external AI/ML services. The key insight: start simple, plan boundaries, evolve when metrics justify it.*
-
