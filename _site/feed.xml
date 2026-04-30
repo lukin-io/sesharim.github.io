@@ -5,9 +5,1085 @@
     <description>Experienced Ruby on Rails and Go developer specializing in scalable web applications</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Apr 2026 14:54:34 +0300</pubDate>
-    <lastBuildDate>Tue, 14 Apr 2026 14:54:34 +0300</lastBuildDate>
+    <pubDate>Thu, 30 Apr 2026 23:25:55 +0300</pubDate>
+    <lastBuildDate>Thu, 30 Apr 2026 23:25:55 +0300</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>Why Test Refactoring Matters: Turning 12-Minute Builds Into a 39-Second Proof Loop</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;“Slow tests do not only slow CI. They change how often you are willing to prove that the system still works.”&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Metric&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Before&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Current&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Change&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Old build/proof loop used for planning math&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~12 min&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;39.42s local fast verification&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~18.3x faster&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Initial broad profiled RSpec runtime&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;4m 8.6s&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;2m 43.1s split profiled runtime&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~34% faster&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SQL events&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;571,641&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;413,055&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;-158,586 / ~28% fewer&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Factory calls&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;36,133&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;31,935&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;-4,198 / ~12% fewer&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Fast verification proof&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;n/a&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;8,659 examples / 0 failures / 28 pending&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;green&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Parallel RSpec phase&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;n/a&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;32.35s&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;green&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Full &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; local loop&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;n/a&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;39.42s&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;green&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Processed executable test files&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;n/a&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~72 / 714&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;~10.1%&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Current heavy-tail status&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;n/a&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;39 tests still use broad local reference context&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;next target&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The important part is not that 10% of files were touched.&lt;/p&gt;
+
+&lt;p&gt;The important part is that the &lt;strong&gt;right 10%&lt;/strong&gt; was touched first.&lt;/p&gt;
+
+&lt;p&gt;That 10.1% of executable test files produced:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;~34% less profiled runtime&lt;/li&gt;
+  &lt;li&gt;~28% fewer SQL events&lt;/li&gt;
+  &lt;li&gt;a fast local proof loop around 39 seconds&lt;/li&gt;
+  &lt;li&gt;no API behavior changes&lt;/li&gt;
+  &lt;li&gt;no removed assertions&lt;/li&gt;
+  &lt;li&gt;no reduction in request/integration confidence&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you are shipping around &lt;strong&gt;10 PRs per day&lt;/strong&gt;, and each PR gets about &lt;strong&gt;3 commits&lt;/strong&gt;, that is roughly:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10 PR/day * 3 commits = 30 proof loops/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With a 12-minute build:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;30 * 12 min = 360 min/day = 6 hours/day waiting on proof
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With the current 39.42-second local proof loop:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;30 * 39.42s = 1,182.6s = 19.7 min/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So the saved time is:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;360 min - 19.7 min = 340.3 min/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That is &lt;strong&gt;5 hours 40 minutes per day&lt;/strong&gt; back.&lt;/p&gt;
+
+&lt;p&gt;Or, if you reinvest only the saved waiting time into additional current-speed proof loops:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;340.3 min / 0.657 min = ~518 extra proof loops/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That does not mean you should make 518 more commits per day.&lt;/p&gt;
+
+&lt;p&gt;It means the old loop made verification expensive enough that you would naturally batch risk. The new loop makes verification cheap enough that you can commit smaller, check more often, and keep moving without gambling.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-cost-of-not-refactoring&quot;&gt;The cost of not refactoring&lt;/h2&gt;
+
+&lt;p&gt;The easiest way to undervalue test performance is to look at one build.&lt;/p&gt;
+
+&lt;p&gt;One 12-minute build is annoying.&lt;/p&gt;
+
+&lt;p&gt;Thirty 12-minute proof loops per day is a workflow tax.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Cadence&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Old 12-minute loop&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Current 39.42-second loop&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Time recovered&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1 proof loop&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;12 min&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;39.42 sec&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;11m 20s&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;30 proof loops/day&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;6h/day&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;19.7m/day&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;5h 40m/day&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;150 proof loops/week&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;30h/week&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1h 38m/week&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;28h 22m/week&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;600 proof loops/month&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;120h/month&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;6h 34m/month&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;113h 26m/month&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This is why slow tests are not only a developer-experience issue.&lt;/p&gt;
+
+&lt;p&gt;They change engineering behavior:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you commit less often&lt;/li&gt;
+  &lt;li&gt;you batch more risk&lt;/li&gt;
+  &lt;li&gt;you delay verification&lt;/li&gt;
+  &lt;li&gt;you wait longer to discover drift&lt;/li&gt;
+  &lt;li&gt;you become tempted to skip checks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Fast tests do not guarantee quality.&lt;/p&gt;
+
+&lt;p&gt;But slow tests make quality expensive enough that people naturally start negotiating with it.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-honest-caveat&quot;&gt;The honest caveat&lt;/h2&gt;
+
+&lt;p&gt;There are two “current time” numbers worth separating:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Current number&lt;/th&gt;
+      &lt;th&gt;What it means&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;39.42s&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Local &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin/verify&lt;/code&gt; fast loop: RuboCop, parallel RSpec, RSwag generation. This is the day-to-day proof loop.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;2m 43.1s&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Instrumented TestProf split profile. This pays profiling overhead and is used for diagnosis, not every commit.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The old &lt;strong&gt;~12 min&lt;/strong&gt; number is the build-time pain point. The new &lt;strong&gt;39.42s&lt;/strong&gt; is the observed local fast verification loop after parallelization and test cleanup. CI still has container, bundle, database, and service overhead, so I do not treat local time as a perfect CI replacement.&lt;/p&gt;
+
+&lt;p&gt;But the engineering lesson is still valid:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The closer the proof loop gets to seconds instead of minutes, the more often you can afford to prove correctness.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-this-refactor-happened&quot;&gt;Why this refactor happened&lt;/h2&gt;
+
+&lt;p&gt;The trigger was simple: CI started hitting build-time limits.&lt;/p&gt;
+
+&lt;p&gt;The request/integration step was the visible pain:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rspec spec/integration spec/requests &lt;span class=&quot;nt&quot;&gt;--tag&lt;/span&gt; ~full_only &lt;span class=&quot;nt&quot;&gt;--fail-fast&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--format&lt;/span&gt; progress
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At first, the temptation is obvious:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;increase CI timeout&lt;/li&gt;
+  &lt;li&gt;split one huge file&lt;/li&gt;
+  &lt;li&gt;skip slow tests&lt;/li&gt;
+  &lt;li&gt;move on&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We did increase the Bitbucket &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max-time&lt;/code&gt; guard to 12 minutes, but that was not the fix. That was only a safety margin.&lt;/p&gt;
+
+&lt;p&gt;The actual fix was to profile the suite and stop guessing.&lt;/p&gt;
+
+&lt;p&gt;The first broad profile showed the shape of the problem:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Run&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Examples&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Runtime&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;SQL events&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;SQL time&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Factories&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Initial broad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/&lt;/code&gt; profile&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;8,659&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;4m 8.6s&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;571,641&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1m 57.4s&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;36,133&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Almost half the profiled runtime was SQL.&lt;/p&gt;
+
+&lt;p&gt;That matters because SQL-heavy tests are rarely fixed by staring at one assertion. The cost usually lives in setup:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;create(:user)&lt;/code&gt; cascades&lt;/li&gt;
+  &lt;li&gt;profile auto-creation&lt;/li&gt;
+  &lt;li&gt;company/reference catalogs&lt;/li&gt;
+  &lt;li&gt;callbacks&lt;/li&gt;
+  &lt;li&gt;chat/message graphs&lt;/li&gt;
+  &lt;li&gt;access-request state machines&lt;/li&gt;
+  &lt;li&gt;serializer renders that pull large association trees&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So the question changed from:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Which test is slow?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;to:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Which setup is repeated, realistic, and unnecessary for the behavior under test?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That is a better question.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-operating-rule-faster-not-weaker&quot;&gt;The operating rule: faster, not weaker&lt;/h2&gt;
+
+&lt;p&gt;The rule for the session was strict:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Optimize tests without losing confidence.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That meant no cheap wins like deleting assertions or converting request tests into shallow unit tests just to make the graph look better.&lt;/p&gt;
+
+&lt;p&gt;The safety rules were:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rule&lt;/th&gt;
+      &lt;th&gt;How it was applied&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Keep request/integration confidence&lt;/td&gt;
+      &lt;td&gt;Request tests still hit real endpoints, auth, serializers, callbacks, and DB writes.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Keep mutation behavior real&lt;/td&gt;
+      &lt;td&gt;Command, callback, uniqueness, destroy, chat/message, access-request, and job-state examples keep persisted rows.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build_stubbed&lt;/code&gt; only for read-only checks&lt;/td&gt;
+      &lt;td&gt;Policy predicates, logger metadata, and serializer-only cases can be stubbed when the DB is not the behavior.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;let_it_be&lt;/code&gt; only for stable records&lt;/td&gt;
+      &lt;td&gt;Shared users, companies, jobs, and profiles are read-only parents; rows mutated by examples stay local.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Decouple app tests from seed runtime&lt;/td&gt;
+      &lt;td&gt;App tests use explicit factory-backed local reference data, not &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lib/tasks/seeds/**&lt;/code&gt;.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Do not remove assertions for speed&lt;/td&gt;
+      &lt;td&gt;The target is setup shape, not coverage reduction.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This distinction matters.&lt;/p&gt;
+
+&lt;p&gt;Bad test optimization asks:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;How do we make the suite green faster?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Good test optimization asks:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Which expensive work is unrelated to the behavior this example proves?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;what-we-did-not-do&quot;&gt;What we did not do&lt;/h2&gt;
+
+&lt;p&gt;This part matters because “test optimization” often sounds like a polite way to say “less coverage.”&lt;/p&gt;
+
+&lt;p&gt;That was not the deal.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Shortcut&lt;/th&gt;
+      &lt;th&gt;Why we did not take it&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Delete slow tests&lt;/td&gt;
+      &lt;td&gt;Deleted tests make dashboards faster and confidence lower. That is not optimization.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Mock request/integration behavior&lt;/td&gt;
+      &lt;td&gt;Request tests are expensive because they prove routing, auth, controller envelopes, policies, serializers, callbacks, and DB behavior together.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Replace mutation tests with read-only doubles&lt;/td&gt;
+      &lt;td&gt;Commands, callbacks, uniqueness, destroy behavior, chat/messages, access requests, credits, and job state need persisted rows.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Hide seed problems by deleting seed tests&lt;/td&gt;
+      &lt;td&gt;Seed runtime tests remain in the repo. They are skipped in the default suite and can be run when seed work is active.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Change API code to satisfy faster tests&lt;/td&gt;
+      &lt;td&gt;This was test-only work. API behavior, JSON shape, authorization, and persistence rules stayed unchanged.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Split huge files just to make charts look better&lt;/td&gt;
+      &lt;td&gt;Splitting can help ownership, but it does not remove SQL or factory cost by itself. Setup shape was the real target.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The strongest signal from the session was this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;We got faster by removing unrelated setup, not by reducing the behavioral contract.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;what-changed&quot;&gt;What changed&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-added-profiling-as-a-real-workflow&quot;&gt;1. Added profiling as a real workflow&lt;/h3&gt;
+
+&lt;p&gt;We made TestProf the profiling path and used:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FPROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;sql.active_record &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_EXAMPLES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_TOP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;40 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rspec spec/integration spec/requests &lt;span class=&quot;nt&quot;&gt;--tag&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;~full_only&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--format&lt;/span&gt; progress
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FPROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;sql.active_record &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_EXAMPLES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_TOP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;40 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rspec spec/bin spec/blueprints spec/channels spec/config spec/controllers spec/db &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  spec/forms spec/initializers spec/jobs spec/lib spec/mailers spec/middleware spec/models &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  spec/policies spec/queries spec/routing spec/services spec/smoke spec/tasks spec/validators &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--tag&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;~full_only&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--format&lt;/span&gt; progress
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That gave two useful views:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EventProf&lt;/code&gt; showed SQL cost by file and example&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FactoryProf&lt;/code&gt; showed factory cascades and top-level setup cost&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Once the suite had numbers, the refactor stopped being emotional.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-split-ci-by-work-type&quot;&gt;2. Split CI by work type&lt;/h3&gt;
+
+&lt;p&gt;The Bitbucket flow now separates:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;lint/security&lt;/li&gt;
+  &lt;li&gt;unit/model/blueprint/policy/service/job/query/form/lib tests&lt;/li&gt;
+  &lt;li&gt;request/integration tests&lt;/li&gt;
+  &lt;li&gt;Swagger generation&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;full_only&lt;/code&gt; tests&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Request/integration and non-request tests can run in parallel workers.&lt;/p&gt;
+
+&lt;p&gt;The result is not just shorter wall time. It also makes slow areas easier to reason about. A slow request test and a slow model test are usually slow for different reasons.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-removed-seed-runtime-from-app-tests&quot;&gt;3. Removed seed runtime from app tests&lt;/h3&gt;
+
+&lt;p&gt;This was a key cleanup.&lt;/p&gt;
+
+&lt;p&gt;The app tests used to lean on seeded reference data. That made them realistic, but it also tied normal verification to seed runtime behavior and large catalogs.&lt;/p&gt;
+
+&lt;p&gt;We replaced that with explicit factory-backed local reference data:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;company types&lt;/li&gt;
+  &lt;li&gt;company industries&lt;/li&gt;
+  &lt;li&gt;company sizes&lt;/li&gt;
+  &lt;li&gt;profile taxonomy&lt;/li&gt;
+  &lt;li&gt;job post categories&lt;/li&gt;
+  &lt;li&gt;platforms&lt;/li&gt;
+  &lt;li&gt;contact types&lt;/li&gt;
+  &lt;li&gt;education levels&lt;/li&gt;
+  &lt;li&gt;business ID validation rules&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Seed tests still exist. They are not deleted. They are skipped in the default suite and can be run locally when working on seeds.&lt;/p&gt;
+
+&lt;p&gt;This made the boundary cleaner:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Area&lt;/th&gt;
+      &lt;th&gt;Responsibility&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;App tests&lt;/td&gt;
+      &lt;td&gt;Verify app behavior with explicit local reference rows.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Seed tests&lt;/td&gt;
+      &lt;td&gt;Verify seed runtime when seed work is being changed.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;4-started-splitting-broad-local-reference-data&quot;&gt;4. Started splitting broad local reference data&lt;/h3&gt;
+
+&lt;p&gt;After moving away from seed runtime, a new cost appeared: the replacement local reference context was intentionally broad.&lt;/p&gt;
+
+&lt;p&gt;That was the right first move for reliability, but it became the next optimization target.&lt;/p&gt;
+
+&lt;p&gt;The broad context created:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;company options&lt;/li&gt;
+  &lt;li&gt;profile taxonomy&lt;/li&gt;
+  &lt;li&gt;platforms&lt;/li&gt;
+  &lt;li&gt;contact types&lt;/li&gt;
+  &lt;li&gt;education levels&lt;/li&gt;
+  &lt;li&gt;profile link titles&lt;/li&gt;
+  &lt;li&gt;business ID validation rows&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some tests only needed one slice.&lt;/p&gt;
+
+&lt;p&gt;So the first split introduced narrower contexts:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local company reference data&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local company types&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local company industries&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local company sizes&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local business id validation rules&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local education levels&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local contact types&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Then seven tests moved off the broad context:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/services/companies/business_id_validator_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/business_id_validation_setting_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/company_size_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/company_type_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/company_industry_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/contact_types_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/public/vocabulary/education_levels_spec.rb&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Focused result:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Batch&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Examples&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Runtime&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;SQL events&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Factories&lt;/th&gt;
+      &lt;th&gt;Result&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Narrow reference-context batch&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;106&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0.92s&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1,558&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;160&lt;/td&gt;
+      &lt;td&gt;0 failures&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;5-optimized-the-heaviest-files-first&quot;&gt;5. Optimized the heaviest files first&lt;/h3&gt;
+
+&lt;p&gt;This is where the 10% number becomes important.&lt;/p&gt;
+
+&lt;p&gt;We did not process 10% of files randomly.&lt;/p&gt;
+
+&lt;p&gt;We processed roughly &lt;strong&gt;72 of 714 executable test files&lt;/strong&gt;, or &lt;strong&gt;~10.1%&lt;/strong&gt;, sorted by profiling impact.&lt;/p&gt;
+
+&lt;p&gt;That included:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;request workflow tests&lt;/li&gt;
+  &lt;li&gt;policy tests&lt;/li&gt;
+  &lt;li&gt;blueprint tests&lt;/li&gt;
+  &lt;li&gt;model tests&lt;/li&gt;
+  &lt;li&gt;service tests&lt;/li&gt;
+  &lt;li&gt;seed/reference support boundaries&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Examples of file-level wins:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Test file&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Before&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;After&lt;/th&gt;
+      &lt;th&gt;Main change&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/policies/work_experience_policy_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;~1,320 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;74 SQL&lt;/td&gt;
+      &lt;td&gt;Role/company policy matrix moved to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build_stubbed&lt;/code&gt;; scope records stayed persisted.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/policies/profile_policy_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;~1,358 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;83 SQL&lt;/td&gt;
+      &lt;td&gt;Policy predicates moved to stubbed users/profiles; scope stayed persisted.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/blueprints/messages/location_setting_blueprint_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;~1,207 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;10 SQL&lt;/td&gt;
+      &lt;td&gt;Serializer-only behavior stopped creating a full persisted profile graph.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/blueprints/profile_note_blueprint_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;~742 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0 SQL&lt;/td&gt;
+      &lt;td&gt;Plain object replaced DB-backed setup for serializer-only behavior.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/services/visibility/visibility_flags_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;~1,702 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;219 SQL&lt;/td&gt;
+      &lt;td&gt;Read examples use stubbed/assigned profile; update behavior stayed persisted.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/company_size_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1,545 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;153 SQL&lt;/td&gt;
+      &lt;td&gt;Narrow company-size reference context.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/company_type_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1,560 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;256 SQL&lt;/td&gt;
+      &lt;td&gt;Narrow company-type reference context.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/models/company_industry_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1,628 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;687 SQL&lt;/td&gt;
+      &lt;td&gt;Company type + industry rows only.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/users/profiles/request_access_spec.rb&lt;/code&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;5,659 SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1,847 SQL&lt;/td&gt;
+      &lt;td&gt;Stable actors shared; access, credits, chats, and jobs stayed real.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This is why profiler order matters.&lt;/p&gt;
+
+&lt;p&gt;If the current 10.1% of files produced a 34% runtime reduction, the naive math says:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;34% / 10.1% = 3.37x impact per file-percent
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If that scaled linearly to 100%, it would imply:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;3.37 * 100% = 337% runtime reduction
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That is impossible.&lt;/p&gt;
+
+&lt;p&gt;And that impossibility is the point.&lt;/p&gt;
+
+&lt;p&gt;The first 10% was not normal. It was the expensive slice. Profiling let us find the part of the suite where small, careful changes had disproportionate return.&lt;/p&gt;
+
+&lt;p&gt;The realistic lesson is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Do not optimize all tests equally. Optimize the tests that are paying rent in every build.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-time-math-at-shipping-cadence&quot;&gt;The time math at shipping cadence&lt;/h2&gt;
+
+&lt;p&gt;Assume this daily cadence:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10 PRs/day
+3 commits/PR
+30 proof loops/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;old-loop-12-minutes&quot;&gt;Old loop: 12 minutes&lt;/h3&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;30 * 12 min = 360 min/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;6 hours/day&lt;/li&gt;
+  &lt;li&gt;30 hours/week&lt;/li&gt;
+  &lt;li&gt;120 hours/month&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That is not a test suite.&lt;/p&gt;
+
+&lt;p&gt;That is a part-time job waiting for CI.&lt;/p&gt;
+
+&lt;h3 id=&quot;current-fast-loop-3942-seconds&quot;&gt;Current fast loop: 39.42 seconds&lt;/h3&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;39.42s = 0.657 min
+30 * 0.657 min = 19.7 min/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;19.7 minutes/day&lt;/li&gt;
+  &lt;li&gt;1 hour 38 minutes/week&lt;/li&gt;
+  &lt;li&gt;6 hours 34 minutes/month&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;time-recovered&quot;&gt;Time recovered&lt;/h3&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;360 min/day - 19.7 min/day = 340.3 min/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;5 hours 40 minutes/day&lt;/li&gt;
+  &lt;li&gt;28 hours 22 minutes/week&lt;/li&gt;
+  &lt;li&gt;113 hours/month&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you spend that recovered time only on additional current-speed proof loops:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;340.3 min/day / 0.657 min = ~518 extra proof loops/day
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, this is not a recommendation to make hundreds of commits.&lt;/p&gt;
+
+&lt;p&gt;It is a way to feel the magnitude.&lt;/p&gt;
+
+&lt;p&gt;A slow build taxes every commit. A fast proof loop makes small commits cheap.&lt;/p&gt;
+
+&lt;h3 id=&quot;conservative-profiler-time-version&quot;&gt;Conservative profiler-time version&lt;/h3&gt;
+
+&lt;p&gt;If we use the slower instrumented profile number instead:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2m 43.1s = 2.718 min
+30 * 2.718 min = 81.5 min/day
+360 - 81.5 = 278.5 min/day saved
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Even with the conservative number, the suite gives back:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;4 hours 38 minutes/day&lt;/li&gt;
+  &lt;li&gt;23 hours 12 minutes/week&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That is still huge.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-this-matters-more-with-ai-assisted-development&quot;&gt;Why this matters more with AI-assisted development&lt;/h2&gt;
+
+&lt;p&gt;With AI, generating a patch is no longer the bottleneck.&lt;/p&gt;
+
+&lt;p&gt;The bottleneck becomes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;proving the patch&lt;/li&gt;
+  &lt;li&gt;reviewing the patch&lt;/li&gt;
+  &lt;li&gt;finding subtle drift&lt;/li&gt;
+  &lt;li&gt;avoiding slow feedback loops&lt;/li&gt;
+  &lt;li&gt;keeping confidence high while throughput rises&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you can create 10 PRs a day, but each proof loop costs 12 minutes, the system pushes you toward bad habits:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;bigger commits&lt;/li&gt;
+  &lt;li&gt;fewer local checks&lt;/li&gt;
+  &lt;li&gt;more batching&lt;/li&gt;
+  &lt;li&gt;delayed feedback&lt;/li&gt;
+  &lt;li&gt;risk discovered late&lt;/li&gt;
+  &lt;li&gt;more review anxiety&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That is how technical debt quietly taxes AI productivity.&lt;/p&gt;
+
+&lt;p&gt;AI can generate code quickly, but CI decides how quickly you can trust it.&lt;/p&gt;
+
+&lt;p&gt;This is why test refactoring belongs in the same conversation as AI productivity. It is not janitorial work. It is throughput infrastructure.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;what-stayed-reliable&quot;&gt;What stayed reliable&lt;/h2&gt;
+
+&lt;p&gt;The most important result is not speed. It is speed without weakening the test suite.&lt;/p&gt;
+
+&lt;p&gt;The current proof still runs:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Check&lt;/th&gt;
+      &lt;th&gt;Current result&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RuboCop&lt;/td&gt;
+      &lt;td&gt;clean&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Parallel RSpec&lt;/td&gt;
+      &lt;td&gt;8,659 examples, 0 failures, 28 pending&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RSwag Swaggerize&lt;/td&gt;
+      &lt;td&gt;generated successfully&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Contract audit&lt;/td&gt;
+      &lt;td&gt;6/6 checks passed&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;And the behavioral boundaries stayed intact:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;request tests still exercise real routes&lt;/li&gt;
+  &lt;li&gt;authentication is still real&lt;/li&gt;
+  &lt;li&gt;serializers are still rendered&lt;/li&gt;
+  &lt;li&gt;DB-backed mutation behavior stays DB-backed&lt;/li&gt;
+  &lt;li&gt;authorization scopes remain persisted where scope behavior is under test&lt;/li&gt;
+  &lt;li&gt;seed tests remain in the repository&lt;/li&gt;
+  &lt;li&gt;app tests no longer accidentally depend on seed runtime&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is the difference between optimization and coverage erosion.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;what-is-still-left&quot;&gt;What is still left&lt;/h2&gt;
+
+&lt;p&gt;This is not done.&lt;/p&gt;
+
+&lt;p&gt;The remaining heaviest chunk is still visible:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;continue splitting broad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;with local reference data&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/llm_gateway/sessions_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/profiles/profile_cards_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/companies/profile/public_jobs_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/companies/team_management_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/users/conversation_messages_spec.rb&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;broad &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spec/requests/api/v1/profiles_spec.rb&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There are still 39 tests using the broad local reference context.&lt;/p&gt;
+
+&lt;p&gt;There are still request tests with 4,000-6,700 SQL events each.&lt;/p&gt;
+
+&lt;p&gt;There are still workflow tests where the cost is real and should not be mocked away.&lt;/p&gt;
+
+&lt;p&gt;That is fine.&lt;/p&gt;
+
+&lt;p&gt;The goal is not to make every test microscopic.&lt;/p&gt;
+
+&lt;p&gt;The goal is to make expensive tests expensive for a reason.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;how-to-start-tomorrow&quot;&gt;How to start tomorrow&lt;/h2&gt;
+
+&lt;p&gt;If I had to start this again in another Rails API, I would not begin by editing tests.&lt;/p&gt;
+
+&lt;p&gt;I would begin with a short checklist:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Step&lt;/th&gt;
+      &lt;th&gt;Command or action&lt;/th&gt;
+      &lt;th&gt;Why&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Install or enable TestProf&lt;/td&gt;
+      &lt;td&gt;You need numbers before opinions.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FPROF=1 EVENT_PROF=sql.active_record&lt;/code&gt; on the slowest suite&lt;/td&gt;
+      &lt;td&gt;This finds SQL and factory pressure.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Sort files by SQL events and factory count&lt;/td&gt;
+      &lt;td&gt;Optimize cost, not file count.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;Pick one file&lt;/td&gt;
+      &lt;td&gt;Small batches keep reliability easy to verify.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;Identify examples above ~250 SQL events&lt;/td&gt;
+      &lt;td&gt;Those examples usually have setup duplication.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;Move stable read-only setup to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;let_it_be&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Avoid rebuilding the same parent graph.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build_stubbed&lt;/code&gt; only for pure read/predicate checks&lt;/td&gt;
+      &lt;td&gt;Do not fake DB behavior that is under test.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;Keep mutation rows per-example&lt;/td&gt;
+      &lt;td&gt;State transitions must stay isolated.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;Rerun the focused file&lt;/td&gt;
+      &lt;td&gt;Prove the local change first.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;Rerun full verification&lt;/td&gt;
+      &lt;td&gt;Make sure the suite still tells the truth.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The first useful command is usually:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FPROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;sql.active_record &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_EXAMPLES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_TOP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;40 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rspec spec/path/to/heavy_spec.rb &lt;span class=&quot;nt&quot;&gt;--format&lt;/span&gt; progress
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The first useful question is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;What did this example create that it never actually used?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That question is where most safe wins start.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;the-practical-playbook&quot;&gt;The practical playbook&lt;/h2&gt;
+
+&lt;p&gt;This is the pattern I would reuse:&lt;/p&gt;
+
+&lt;h3 id=&quot;1-measure-before-changing&quot;&gt;1. Measure before changing&lt;/h3&gt;
+
+&lt;p&gt;Use SQL and factory profiling:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FPROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;sql.active_record &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_EXAMPLES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;nv&quot;&gt;EVENT_PROF_TOP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;40 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rspec spec/path/to/heavy_spec.rb &lt;span class=&quot;nt&quot;&gt;--format&lt;/span&gt; progress
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Do not guess.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-sort-by-cost-not-file-count&quot;&gt;2. Sort by cost, not file count&lt;/h3&gt;
+
+&lt;p&gt;The current 10.1% progress produced a 34% runtime reduction because the files were chosen by cost.&lt;/p&gt;
+
+&lt;p&gt;Randomly refactoring 10% of files would not do that.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-separate-read-behavior-from-mutation-behavior&quot;&gt;3. Separate read behavior from mutation behavior&lt;/h3&gt;
+
+&lt;p&gt;Use:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build_stubbed&lt;/code&gt; for pure read/predicate checks&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;let_it_be&lt;/code&gt; for stable read-only parents&lt;/li&gt;
+  &lt;li&gt;persisted per-example rows for mutations, callbacks, uniqueness, scopes, and state transitions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-split-broad-fixtures-into-narrow-catalogs&quot;&gt;4. Split broad fixtures into narrow catalogs&lt;/h3&gt;
+
+&lt;p&gt;This is especially important for reference data.&lt;/p&gt;
+
+&lt;p&gt;If a test only needs education levels, do not load company industries, platforms, categories, specializations, and business ID rules.&lt;/p&gt;
+
+&lt;h3 id=&quot;5-keep-request-tests-honest&quot;&gt;5. Keep request tests honest&lt;/h3&gt;
+
+&lt;p&gt;Do not replace request tests with unit tests just because request tests are slower.&lt;/p&gt;
+
+&lt;p&gt;Request tests buy confidence across:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;routing&lt;/li&gt;
+  &lt;li&gt;auth&lt;/li&gt;
+  &lt;li&gt;controller envelope&lt;/li&gt;
+  &lt;li&gt;policy&lt;/li&gt;
+  &lt;li&gt;serializer&lt;/li&gt;
+  &lt;li&gt;DB state&lt;/li&gt;
+  &lt;li&gt;callbacks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Only move assertions down to blueprint/model/service tests when the request test is only duplicating shape checks already covered elsewhere.&lt;/p&gt;
+
+&lt;h3 id=&quot;6-make-verification-cheap-enough-to-run-constantly&quot;&gt;6. Make verification cheap enough to run constantly&lt;/h3&gt;
+
+&lt;p&gt;The goal is not only faster CI.&lt;/p&gt;
+
+&lt;p&gt;The goal is a proof loop cheap enough that you naturally run it before you are nervous.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;closing&quot;&gt;Closing&lt;/h2&gt;
+
+&lt;p&gt;Test refactoring is easy to postpone because it rarely ships a visible feature.&lt;/p&gt;
+
+&lt;p&gt;But at high throughput, slow verification is not a background inconvenience. It is a tax on every commit.&lt;/p&gt;
+
+&lt;p&gt;At &lt;strong&gt;10 PRs/day&lt;/strong&gt; and &lt;strong&gt;3 commits/PR&lt;/strong&gt;, a 12-minute build turns into &lt;strong&gt;6 hours/day&lt;/strong&gt; of waiting.&lt;/p&gt;
+
+&lt;p&gt;At the current &lt;strong&gt;39.42-second&lt;/strong&gt; proof loop, that same cadence costs about &lt;strong&gt;20 minutes/day&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;That is the difference between:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;batching risk because proof is expensive&lt;/li&gt;
+  &lt;li&gt;proving continuously because proof is cheap&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is why the refactor mattered.&lt;/p&gt;
+
+&lt;p&gt;Not because the suite became pretty.&lt;/p&gt;
+
+&lt;p&gt;Because the suite became usable at the speed the work was happening.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 30 Apr 2026 00:00:00 +0300</pubDate>
+        <link>http://localhost:4000/blog/why-test-refactoring-matters</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/why-test-refactoring-matters</guid>
+        
+        <category>rails</category>
+        
+        <category>rspec</category>
+        
+        <category>ci</category>
+        
+        <category>testprof</category>
+        
+        <category>profiling</category>
+        
+        <category>technical-debt</category>
+        
+        <category>productivity</category>
+        
+        <category>verification</category>
+        
+        
+        <category>engineering</category>
+        
+        <category>rails</category>
+        
+        <category>best-practices</category>
+        
+        <category>testing</category>
+        
+        <category>ci</category>
+        
+      </item>
     
       <item>
         <title>How I Turned AI Into a 5x Backend Force Multiplier as One Principal Engineer</title>
@@ -8995,873 +10071,6 @@ Final documentation (AFTER verification):
         <category>AI</category>
         
         <category>best-practices</category>
-        
-      </item>
-    
-      <item>
-        <title>Building a Browser-Based MMORPG with Ruby on Rails: Documentation-Driven Development with AI</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;&lt;em&gt;“The hardest part of building a game isn’t the code—it’s keeping 50+ interconnected systems coherent while shipping features fast.”&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Most game development tutorials show you how to build a simple demo. Real games need &lt;strong&gt;authentication&lt;/strong&gt;, &lt;strong&gt;real-time combat&lt;/strong&gt;, &lt;strong&gt;economies&lt;/strong&gt;, &lt;strong&gt;social systems&lt;/strong&gt;, &lt;strong&gt;moderation&lt;/strong&gt;, and dozens of other features that must work together seamlessly.&lt;/p&gt;
-
-&lt;p&gt;In this post, I’ll share our experience building &lt;strong&gt;Elselands&lt;/strong&gt;—a browser-based, turn-based MMORPG inspired by classic games like Neverlands.ru. We’ll cover:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Documentation-driven development&lt;/strong&gt; that scales with complexity&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Feature decomposition&lt;/strong&gt; from Game Design Document to implementation&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Flow documentation&lt;/strong&gt; as the source of truth for implementation&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;“Inspired-by” patterns&lt;/strong&gt; for borrowing proven mechanics&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Testing strategies&lt;/strong&gt; for game systems&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;AI-assisted development&lt;/strong&gt; that actually works for senior engineers&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Practical lessons&lt;/strong&gt; from building 100+ interconnected systems&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;1-the-challenge-building-an-mmorpg-as-a-rails-monolith&quot;&gt;1. The Challenge: Building an MMORPG as a Rails Monolith&lt;/h2&gt;
-
-&lt;h3 id=&quot;11-why-rails-for-a-game&quot;&gt;1.1 Why Rails for a Game?&lt;/h3&gt;
-
-&lt;p&gt;Browser-based MMORPGs have unique requirements:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Requirement&lt;/th&gt;
-      &lt;th&gt;Why Rails Works&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Server-authoritative logic&lt;/td&gt;
-      &lt;td&gt;All game state lives in PostgreSQL, no client-side cheating&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Real-time updates&lt;/td&gt;
-      &lt;td&gt;ActionCable + Redis pub/sub handles chat, combat, presence&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Rapid iteration&lt;/td&gt;
-      &lt;td&gt;Convention over configuration means less boilerplate&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Rich UI without SPA complexity&lt;/td&gt;
-      &lt;td&gt;Hotwire (Turbo + Stimulus) delivers reactive UIs server-side&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Moderation &amp;amp; admin tools&lt;/td&gt;
-      &lt;td&gt;ActiveAdmin, Flipper, audit logging come free&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Our stack:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Ruby 3.4.4 + Rails 8.1.1&lt;/strong&gt; (full-stack Hotwire monolith)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;PostgreSQL 18&lt;/strong&gt; (primary datastore)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Redis&lt;/strong&gt; (cache, Action Cable, Sidekiq)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Hotwire&lt;/strong&gt; (Turbo Frames, Turbo Streams, Stimulus)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Sidekiq 8&lt;/strong&gt; (background jobs for combat/chat/events)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;12-the-complexity-problem&quot;&gt;1.2 The Complexity Problem&lt;/h3&gt;
-
-&lt;p&gt;A typical MMORPG has:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;10+ major systems (auth, combat, economy, crafting, quests, etc.)&lt;/li&gt;
-  &lt;li&gt;50+ models with complex relationships&lt;/li&gt;
-  &lt;li&gt;Hundreds of services, jobs, and controllers&lt;/li&gt;
-  &lt;li&gt;Real-time features requiring WebSockets&lt;/li&gt;
-  &lt;li&gt;Moderation, analytics, and admin tooling&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Without a structured approach, this becomes unmaintainable. We solved it with &lt;strong&gt;documentation-driven development&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;2-documentation-driven-development-from-gdd-to-implementation&quot;&gt;2. Documentation-Driven Development: From GDD to Implementation&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-the-documentation-hierarchy&quot;&gt;2.1 The Documentation Hierarchy&lt;/h3&gt;
-
-&lt;p&gt;We structured our documentation in three layers:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;doc/
-├── design/
-│   └── gdd.md              # Game Design Document (WHAT we&apos;re building)
-├── features/
-│   ├── 0_technical.md      # Infrastructure &amp;amp; architecture
-│   ├── 1_auth.md           # Authentication &amp;amp; accounts
-│   ├── 3_player.md         # Character systems
-│   ├── 8_gameplay_mechanics.md
-│   └── ...                 # One file per major system
-└── flow/
-    ├── 0_technical.md      # HOW each feature is implemented
-    ├── 1_auth_presence.md
-    ├── 8_gameplay_mechanics.md
-    └── ...                 # Implementation details with file references
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Key insight:&lt;/strong&gt; The GDD tells you &lt;em&gt;what&lt;/em&gt; to build. Feature docs break it into &lt;em&gt;systems&lt;/em&gt;. Flow docs tell you &lt;em&gt;exactly how&lt;/em&gt; it’s implemented.&lt;/p&gt;
-
-&lt;h3 id=&quot;22-the-game-design-document-gdd&quot;&gt;2.2 The Game Design Document (GDD)&lt;/h3&gt;
-
-&lt;p&gt;Our GDD is intentionally high-level:&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gu&quot;&gt;## Gameplay Mechanics&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Player Movement**&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Tile-based grid movement
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Turn-based actions per player input
-&lt;span class=&quot;p&quot;&gt;
--&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Combat System**&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; PvE: Encounters against monsters and NPCs
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; PvP: Player duels, group battles, arena tournaments
-&lt;span class=&quot;p&quot;&gt;
--&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Character Progression**&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Experience points and leveling
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Stat points allocation per level
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Reputation and faction alignment
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This is the &lt;strong&gt;north star&lt;/strong&gt;—it never mentions implementation details like controllers or database schemas. It’s what you show stakeholders and use for high-level planning.&lt;/p&gt;
-
-&lt;h3 id=&quot;23-feature-documentation-breaking-down-the-gdd&quot;&gt;2.3 Feature Documentation: Breaking Down the GDD&lt;/h3&gt;
-
-&lt;p&gt;Each major system gets its own feature doc (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;doc/features/*.md&lt;/code&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;# 8_gameplay_mechanics.md&lt;/span&gt;
-
-&lt;span class=&quot;gu&quot;&gt;## Player Movement&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Grid-based tile system with terrain modifiers
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Turn-per-action enforcement (server-side)
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Cooldown multipliers for different terrain types
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Spawn points and respawn timers
-
-&lt;span class=&quot;gu&quot;&gt;## Combat System&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Turn-based initiative order
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Body-part targeting (head, torso, stomach, legs)
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Action points and mana management
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Status effects and buff/debuff system
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Feature docs are &lt;strong&gt;implementation-ready specifications&lt;/strong&gt;—detailed enough that an engineer knows what to build, but not yet tied to specific files.&lt;/p&gt;
-
-&lt;h3 id=&quot;24-flow-documentation-the-implementation-source-of-truth&quot;&gt;2.4 Flow Documentation: The Implementation Source of Truth&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;This is where the magic happens.&lt;/strong&gt; Flow docs (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;doc/flow/*.md&lt;/code&gt;) describe &lt;em&gt;exactly&lt;/em&gt; how each feature is implemented:&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;# 8_gameplay_mechanics.md — Flow Documentation&lt;/span&gt;
-
-&lt;span class=&quot;gu&quot;&gt;## Combat Skill System&lt;/span&gt;
-
-&lt;span class=&quot;gu&quot;&gt;### Use Case: Player uses a skill during combat&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;1.&lt;/span&gt; Player clicks skill icon → &lt;span class=&quot;sb&quot;&gt;`turn_combat_controller.js#useSkill()`&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;2.&lt;/span&gt; Stimulus sends action to &lt;span class=&quot;sb&quot;&gt;`CombatController#action`&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;3.&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`TurnBasedCombatService`&lt;/span&gt; validates action points and mana
-&lt;span class=&quot;p&quot;&gt;4.&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`Game::Combat::SkillExecutor`&lt;/span&gt; applies skill effects
-&lt;span class=&quot;p&quot;&gt;5.&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`CombatLogEntry`&lt;/span&gt; records the action
-&lt;span class=&quot;p&quot;&gt;6.&lt;/span&gt; Turbo Stream broadcasts update to all participants
-
-&lt;span class=&quot;gu&quot;&gt;### Key Behaviors&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Skills consume both action points AND mana slots
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Body-part targeting affects damage multipliers
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Critical hits based on agility vs target defense
-
-&lt;span class=&quot;gu&quot;&gt;### Responsible for Implementation Files&lt;/span&gt;
-| Purpose | File |
-|---------|------|
-| Combat service | &lt;span class=&quot;sb&quot;&gt;`app/services/game/combat/turn_based_combat_service.rb`&lt;/span&gt; |
-| Skill executor | &lt;span class=&quot;sb&quot;&gt;`app/services/game/combat/skill_executor.rb`&lt;/span&gt; |
-| Stimulus controller | &lt;span class=&quot;sb&quot;&gt;`app/javascript/controllers/turn_combat_controller.js`&lt;/span&gt; |
-| Combat view | &lt;span class=&quot;sb&quot;&gt;`app/views/combat/_battle.html.erb`&lt;/span&gt; |
-| Action config | &lt;span class=&quot;sb&quot;&gt;`config/gameplay/combat_actions.yml`&lt;/span&gt; |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Why flow docs matter:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Context preservation&lt;/strong&gt; — When returning to a feature after weeks, you know exactly where everything is&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;AI assistance&lt;/strong&gt; — Feed the flow doc to your AI assistant, and it understands the entire system&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Onboarding&lt;/strong&gt; — New engineers can trace any feature from UI to database&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Code review&lt;/strong&gt; — Reviewers can verify changes match the documented architecture&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;3-the-inspired-by-pattern-borrowing-proven-mechanics&quot;&gt;3. The “Inspired-By” Pattern: Borrowing Proven Mechanics&lt;/h2&gt;
-
-&lt;h3 id=&quot;31-why-reinvent-the-wheel&quot;&gt;3.1 Why Reinvent the Wheel?&lt;/h3&gt;
-
-&lt;p&gt;Classic games like Neverlands.ru have battle-tested UI/UX patterns. Instead of designing from scratch, we:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Analyze&lt;/strong&gt; the original implementation (JavaScript, CSS, HTML)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Document&lt;/strong&gt; the original patterns in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;doc/features/neverlands_inspired.md&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Adapt&lt;/strong&gt; to modern Rails/Hotwire patterns&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Track&lt;/strong&gt; implementation status&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;32-example-turn-based-combat-system&quot;&gt;3.2 Example: Turn-Based Combat System&lt;/h3&gt;
-
-&lt;p&gt;We received this Neverlands JavaScript:&lt;/p&gt;
-
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Original Neverlands combat logic&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;CountOD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;totalOD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pos_atk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;totalOD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pos_ochd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pos_atk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pos_blk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;totalOD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pos_ochd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pos_blk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// pos_ochd contains action point costs per body part&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;totalOD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Body part configuration&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pos_vars&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Head&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Torso&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Stomach&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Groin&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Left Leg&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Right Leg&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pos_ochd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Action point costs&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;33-our-adaptation&quot;&gt;3.3 Our Adaptation&lt;/h3&gt;
-
-&lt;p&gt;We translated this to a Rails service with YAML configuration:&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/gameplay/combat_actions.yml&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;body_parts&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;action_cost&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;damage_multiplier&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1.5&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;block_bonus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.8&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;torso&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;action_cost&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;damage_multiplier&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1.0&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;block_bonus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1.0&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;stomach&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;action_cost&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;damage_multiplier&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1.1&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;block_bonus&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.9&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# app/services/game/combat/turn_based_combat_service.rb&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Game::Combat::TurnBasedCombatService&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@battle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;YAML&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;load_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;config/gameplay/combat_actions.yml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;calculate_action_points_used&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blocks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;attacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;body_parts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;action_cost&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;blocks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;body_parts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;action_cost&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And a Stimulus controller replacing the inline JavaScript:&lt;/p&gt;
-
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// app/javascript/controllers/turn_combat_controller.js&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Controller&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@hotwired/stimulus&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Controller&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;targets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;attackSelect&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;blockSelect&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;actionPoints&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;submitButton&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;values&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;maxActions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;nf&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;updateActionPoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;nf&quot;&gt;updateActionPoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;used&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;calculateUsedPoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;remaining&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;maxActionsValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;used&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;actionPointsTarget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remaining&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;maxActionsValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;submitButtonTarget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;disabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;remaining&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;nf&quot;&gt;calculateUsedPoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;attackSelectTargets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;configValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body_parts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]?.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;action_cost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;blockSelectTargets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;configValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body_parts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]?.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;action_cost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;34-documentation-structure-for-inspired-features&quot;&gt;3.4 Documentation Structure for Inspired Features&lt;/h3&gt;
-
-&lt;p&gt;We maintain a dedicated file tracking all borrowed patterns:&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;# doc/features/neverlands_inspired.md&lt;/span&gt;
-
-&lt;span class=&quot;gu&quot;&gt;## Implementation Status Summary&lt;/span&gt;
-
-| # | Feature | Status | Key Files |
-|---|---------|--------|-----------|
-| 1 | Chat System | ✅ Implemented | &lt;span class=&quot;sb&quot;&gt;`chat_controller.js`&lt;/span&gt;, &lt;span class=&quot;sb&quot;&gt;`moderation_service.rb`&lt;/span&gt; |
-| 2 | Arena/PvP | ✅ Implemented | &lt;span class=&quot;sb&quot;&gt;`arena_controller.rb`&lt;/span&gt;, &lt;span class=&quot;sb&quot;&gt;`matchmaker.rb`&lt;/span&gt; |
-| 3 | Turn-Based Combat | ✅ Implemented | &lt;span class=&quot;sb&quot;&gt;`turn_based_combat_service.rb`&lt;/span&gt; |
-| 4 | Combat Log | ✅ Implemented | &lt;span class=&quot;sb&quot;&gt;`log_builder.rb`&lt;/span&gt;, &lt;span class=&quot;sb&quot;&gt;`statistics_calculator.rb`&lt;/span&gt; |
-
-&lt;span class=&quot;gu&quot;&gt;## Chat System&lt;/span&gt;
-
-&lt;span class=&quot;gu&quot;&gt;### Original Neverlands Examples&lt;/span&gt;
-[Original JavaScript code here]
-
-&lt;span class=&quot;gu&quot;&gt;### Elselands Implementation&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Files:**&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`chat_controller.js`&lt;/span&gt;, &lt;span class=&quot;sb&quot;&gt;`realtime_chat_channel.rb`&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;gs&quot;&gt;**Key Adaptations:**&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Replaced &lt;span class=&quot;sb&quot;&gt;`onclick`&lt;/span&gt; with Stimulus &lt;span class=&quot;sb&quot;&gt;`data-action`&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; WebSocket via ActionCable instead of polling
-&lt;span class=&quot;p&quot;&gt;  -&lt;/span&gt; Server-side moderation before broadcast
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Benefits:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Reference material&lt;/strong&gt; — Original examples are preserved for future iterations&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Implementation tracking&lt;/strong&gt; — Clear status of what’s done vs. planned&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Knowledge transfer&lt;/strong&gt; — Anyone can understand why we made certain choices&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;4-testing-strategies-for-game-systems&quot;&gt;4. Testing Strategies for Game Systems&lt;/h2&gt;
-
-&lt;h3 id=&quot;41-test-categories&quot;&gt;4.1 Test Categories&lt;/h3&gt;
-
-&lt;p&gt;Game systems require different testing strategies than typical CRUD apps:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Category&lt;/th&gt;
-      &lt;th&gt;Purpose&lt;/th&gt;
-      &lt;th&gt;Example&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Unit Tests&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;Individual service logic&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TurnBasedCombatService&lt;/code&gt; action point calculation&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Request Tests&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;API endpoints&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST /combat/action&lt;/code&gt; with attack data&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Channel Tests&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;WebSocket functionality&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BattleChannel&lt;/code&gt; broadcasts updates&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;Helper Tests&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;View helpers&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;format_combat_log_message&lt;/code&gt; output&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;&lt;strong&gt;System Tests&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;End-to-end flows&lt;/td&gt;
-      &lt;td&gt;Full combat from start to victory&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;42-testing-real-time-features&quot;&gt;4.2 Testing Real-Time Features&lt;/h3&gt;
-
-&lt;p&gt;ActionCable channels need special setup:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# spec/channels/battle_channel_spec.rb&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;rails_helper&quot;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BattleChannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;type: :channel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;stub_connection&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;current_user: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;subscribes to battle stream&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;battle_id: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscription&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_confirmed&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscription&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_stream_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;receives combat updates&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;battle_id: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;no&quot;&gt;BattleChannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;broadcast_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;type: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;turn_update&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;round: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_broadcasted_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;43-testing-deterministic-combat&quot;&gt;4.3 Testing Deterministic Combat&lt;/h3&gt;
-
-&lt;p&gt;Combat must be reproducible for debugging and replays:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# spec/services/game/combat/turn_based_combat_service_spec.rb&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Game&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Combat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;TurnBasedCombatService&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:with_participants&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;described_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;#submit_turn&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;consumes action points correctly&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;attacks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;body_part: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;head&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;body_part: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;torso&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;blocks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;body_part: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stomach&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
-
-      &lt;span class=&quot;c1&quot;&gt;# Head (3) + Torso (2) + Stomach (2) = 7 action points&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;calculate_action_points_used&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blocks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;with seeded RNG for reproducibility&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;produces consistent damage rolls&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-        &lt;span class=&quot;no&quot;&gt;Game&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Utils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rng&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12345&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;result1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;resolve_attack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attacker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;head&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;no&quot;&gt;Game&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Utils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rng&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12345&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;result2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;resolve_attack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attacker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;head&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:damage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:damage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;44-coverage-goals&quot;&gt;4.4 Coverage Goals&lt;/h3&gt;
-
-&lt;p&gt;We maintain explicit coverage targets:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Category&lt;/th&gt;
-      &lt;th&gt;Target&lt;/th&gt;
-      &lt;th&gt;Rationale&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Models&lt;/td&gt;
-      &lt;td&gt;90%&lt;/td&gt;
-      &lt;td&gt;Core game logic lives here&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Services&lt;/td&gt;
-      &lt;td&gt;95%&lt;/td&gt;
-      &lt;td&gt;Business logic must be bulletproof&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Controllers&lt;/td&gt;
-      &lt;td&gt;85%&lt;/td&gt;
-      &lt;td&gt;Request/response handling&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Channels&lt;/td&gt;
-      &lt;td&gt;80%&lt;/td&gt;
-      &lt;td&gt;Real-time features are critical&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Helpers&lt;/td&gt;
-      &lt;td&gt;90%&lt;/td&gt;
-      &lt;td&gt;UI consistency&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Views&lt;/td&gt;
-      &lt;td&gt;60%&lt;/td&gt;
-      &lt;td&gt;Basic rendering verification&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;System&lt;/td&gt;
-      &lt;td&gt;40%&lt;/td&gt;
-      &lt;td&gt;Key user flows&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;5-ai-assisted-development-making-it-work-for-senior-engineers&quot;&gt;5. AI-Assisted Development: Making It Work for Senior Engineers&lt;/h2&gt;
-
-&lt;h3 id=&quot;51-the-problem-with-generic-ai-assistance&quot;&gt;5.1 The Problem with Generic AI Assistance&lt;/h3&gt;
-
-&lt;p&gt;Most AI coding assistants fail on complex projects because they lack:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Project context&lt;/strong&gt; — They don’t know your architecture&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Convention awareness&lt;/strong&gt; — They generate code that doesn’t match your style&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Domain knowledge&lt;/strong&gt; — They don’t understand game mechanics&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;52-our-solution-structured-prompting-with-documentation&quot;&gt;5.2 Our Solution: Structured Prompting with Documentation&lt;/h3&gt;
-
-&lt;p&gt;We created a documentation hierarchy that the AI can reference:&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gh&quot;&gt;# README.md (excerpt)&lt;/span&gt;
-
-&lt;span class=&quot;gu&quot;&gt;## 📄 Documentation Map&lt;/span&gt;
-
-| File | When to Reference / Purpose |
-|------|----------------------------|
-| &lt;span class=&quot;gs&quot;&gt;**AGENT.md**&lt;/span&gt; | Always loaded, highest authority |
-| &lt;span class=&quot;gs&quot;&gt;**GUIDE.md**&lt;/span&gt; | Rails standards or general best practices |
-| &lt;span class=&quot;gs&quot;&gt;**MMO_ADDITIONAL_GUIDE.md**&lt;/span&gt; | Gameplay/MMORPG domain-specific conventions |
-| &lt;span class=&quot;gs&quot;&gt;**doc/gdd.md**&lt;/span&gt; | Game design vision, classes, mechanics |
-| &lt;span class=&quot;ge&quot;&gt;**&lt;/span&gt;doc/features/&lt;span class=&quot;ge&quot;&gt;*.md*&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;*&lt;/span&gt; | Per-system breakdown (technical specs) |
-| &lt;span class=&quot;ge&quot;&gt;**&lt;/span&gt;doc/flow/&lt;span class=&quot;ge&quot;&gt;*.md*&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;*&lt;/span&gt; | Implementation details with file references |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;53-effective-prompting-patterns&quot;&gt;5.3 Effective Prompting Patterns&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Pattern 1: Feature Implementation&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;I want to start implementing the Player feature from &lt;span class=&quot;sb&quot;&gt;`doc/features/3_player.md`&lt;/span&gt;.
-
-Please follow:
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`AGENT.md`&lt;/span&gt; (always)
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`GUIDE.md`&lt;/span&gt; for general Rails patterns
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`MMO_ADDITIONAL_GUIDE.md`&lt;/span&gt; for gameplay logic architecture
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Use &lt;span class=&quot;sb&quot;&gt;`MMO_ENGINE_SKELETON.md`&lt;/span&gt; for engine placement
-
-&lt;span class=&quot;gs&quot;&gt;**Task:**&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;1.&lt;/span&gt; Read &lt;span class=&quot;sb&quot;&gt;`doc/features/3_player.md`&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;2.&lt;/span&gt; Identify required models, services, and UI components
-&lt;span class=&quot;p&quot;&gt;3.&lt;/span&gt; Provide a detailed plan (files + responsibilities)
-&lt;span class=&quot;p&quot;&gt;4.&lt;/span&gt; Wait for my confirmation before writing any code
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Pattern 2: Inspired-By Implementation&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Here&apos;s the Neverlands JavaScript for their arena system:
-[paste code]
-
-Please:
-&lt;span class=&quot;p&quot;&gt;1.&lt;/span&gt; Analyze the original implementation
-&lt;span class=&quot;p&quot;&gt;2.&lt;/span&gt; Document it in &lt;span class=&quot;sb&quot;&gt;`doc/features/neverlands_inspired.md`&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;3.&lt;/span&gt; Propose a Rails/Hotwire adaptation using our patterns
-&lt;span class=&quot;p&quot;&gt;4.&lt;/span&gt; Update flow docs with implementation details
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Pattern 3: Bug Fix with Context&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;I&apos;m seeing this error in the arena system:
-[paste error]
-
-Context:
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Check &lt;span class=&quot;sb&quot;&gt;`doc/flow/11_arena_pvp.md`&lt;/span&gt; for the arena architecture
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; The ArenaMatch model uses an enum that might conflict
-
-Find the root cause and propose a fix that matches our conventions.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;54-why-this-works-for-senior-engineers&quot;&gt;5.4 Why This Works for Senior Engineers&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;You drive the architecture&lt;/strong&gt; — AI implements your decisions, doesn’t make them&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Documentation is the contract&lt;/strong&gt; — Changes must match documented patterns&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Context is preserved&lt;/strong&gt; — Flow docs keep AI informed across sessions&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Code review is efficient&lt;/strong&gt; — You verify against documented expectations&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;55-prompts-that-accelerate-development&quot;&gt;5.5 Prompts That Accelerate Development&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;For rapid prototyping:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Using AGENT.md rules, implement the next step from doc/features/3_player.md.
-Use GUIDE.md for Rails logic, and MMO_ADDITIONAL_GUIDE.md for gameplay structure.
-Touch only the necessary files.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;For code quality:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;After implementation, run:
-&lt;span class=&quot;p&quot;&gt;1.&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`bundle exec rspec`&lt;/span&gt; for tests
-&lt;span class=&quot;p&quot;&gt;2.&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`bundle exec standardrb`&lt;/span&gt; for linting
-&lt;span class=&quot;p&quot;&gt;3.&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`bundle exec brakeman`&lt;/span&gt; for security
-
-Fix any issues before considering this complete.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;For documentation updates:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Update the corresponding flow doc (&lt;span class=&quot;sb&quot;&gt;`doc/flow/X.md`&lt;/span&gt;) with:
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Use cases covered
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Key behaviors implemented
-&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; Responsible files table
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;6-practical-lessons-from-100-systems&quot;&gt;6. Practical Lessons from 100+ Systems&lt;/h2&gt;
-
-&lt;h3 id=&quot;61-what-worked&quot;&gt;6.1 What Worked&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;1. Flow docs as the source of truth&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Every PR must update the relevant flow doc. This creates a living architecture document that’s always accurate.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;2. “Responsible Files” tables in flow docs&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gu&quot;&gt;### Responsible for Implementation Files&lt;/span&gt;
-| Purpose | File |
-|---------|------|
-| Combat service | &lt;span class=&quot;sb&quot;&gt;`app/services/game/combat/turn_based_combat_service.rb`&lt;/span&gt; |
-| Controller | &lt;span class=&quot;sb&quot;&gt;`app/controllers/combat_controller.rb`&lt;/span&gt; |
-| Stimulus | &lt;span class=&quot;sb&quot;&gt;`app/javascript/controllers/turn_combat_controller.js`&lt;/span&gt; |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This makes it trivial to find code when debugging or extending features.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;3. YAML configuration for game data&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Instead of hardcoding values, we use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config/gameplay/*.yml&lt;/code&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;combat_actions.yml&lt;/code&gt; — Body parts, action costs, multipliers&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;terrain_modifiers.yml&lt;/code&gt; — Movement cooldowns by terrain&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;biomes.yml&lt;/code&gt; — Encounter tables by region&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Changes don’t require code deployments, and game designers can read/modify the configs.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;4. Turbo Streams for real-time without complexity&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Instead of building a custom WebSocket protocol:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Broadcasting combat updates&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Turbo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;StreamsChannel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;broadcast_update_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-  &lt;span class=&quot;vi&quot;&gt;@battle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;target: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;combat-log&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;partial: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;combat_logs/entry&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;locals: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;entry: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log_entry&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The frontend gets updates automatically without custom JavaScript.&lt;/p&gt;
-
-&lt;h3 id=&quot;62-what-wed-do-differently&quot;&gt;6.2 What We’d Do Differently&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;1. Start with comprehensive factories earlier&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;We had to backfill factories for models like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NpcTemplate&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WebhookEndpoint&lt;/code&gt;, etc. Building factories alongside models saves debugging time.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;2. Enum naming requires foresight&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;ActiveRecord reserves certain method names (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;group&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;order&lt;/code&gt;, etc.). We had to rename &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fight_type: :group&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fight_type: :team_battle&lt;/code&gt; to avoid conflicts.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;3. Migration idempotency from day one&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Adding &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if column_exists?&lt;/code&gt; checks to migrations would have prevented issues when re-running migrations:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;change&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column_exists?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:battles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:share_token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;add_column&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:battles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:share_token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:string&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;63-performance-considerations&quot;&gt;6.3 Performance Considerations&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;Real-time features need Redis pub/sub:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# config/cable.yml&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;adapter&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= ENV.fetch(&quot;REDIS_CABLE_URL&quot;) %&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;channel_prefix&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;elselands_production&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Separate Redis instances for different concerns:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Purpose&lt;/th&gt;
-      &lt;th&gt;Environment Variable&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Rails cache&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIS_CACHE_URL&lt;/code&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Sidekiq queues&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIS_SIDEKIQ_URL&lt;/code&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Action Cable&lt;/td&gt;
-      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIS_CABLE_URL&lt;/code&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;This prevents a Sidekiq backup from affecting real-time chat.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;7-the-complete-development-workflow&quot;&gt;7. The Complete Development Workflow&lt;/h2&gt;
-
-&lt;h3 id=&quot;71-adding-a-new-feature&quot;&gt;7.1 Adding a New Feature&lt;/h3&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. GDD → Does this feature align with the game vision?
-       ↓
-2. Feature Doc → Create doc/features/X.md with:
-   - System requirements
-   - User-facing functionality
-   - Integration points
-       ↓
-3. Flow Doc → Create doc/flow/X.md with:
-   - Use cases (step-by-step flows)
-   - Key behaviors
-   - &quot;Responsible Files&quot; table (initially planned)
-       ↓
-4. Implementation → Using AI + documentation:
-   - Generate models/migrations
-   - Create services with tests
-   - Build controllers and views
-   - Add Stimulus controllers for interactivity
-       ↓
-5. Testing → Run full test suite:
-   - bundle exec rspec
-   - bundle exec standardrb
-   - bundle exec brakeman
-       ↓
-6. Documentation Update → Update flow doc with:
-   - Actual file paths
-   - Implementation notes
-   - Any deviations from plan
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;72-debugging-with-documentation&quot;&gt;7.2 Debugging with Documentation&lt;/h3&gt;
-
-&lt;p&gt;When something breaks:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Find the flow doc&lt;/strong&gt; for that feature&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Trace the use case&lt;/strong&gt; — Which step is failing?&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Check the “Responsible Files”&lt;/strong&gt; — Go directly to the right code&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Verify against “Key Behaviors”&lt;/strong&gt; — Is the code doing what it should?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;73-onboarding-new-engineers&quot;&gt;7.3 Onboarding New Engineers&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Read &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;README.md&lt;/code&gt; for project overview&lt;/li&gt;
-  &lt;li&gt;Read &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AGENT.md&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GUIDE.md&lt;/code&gt; for conventions&lt;/li&gt;
-  &lt;li&gt;Pick a feature, read its flow doc&lt;/li&gt;
-  &lt;li&gt;Trace from UI to database using “Responsible Files”&lt;/li&gt;
-  &lt;li&gt;Make a small change, run tests, verify&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;8-conclusion-documentation-as-a-force-multiplier&quot;&gt;8. Conclusion: Documentation as a Force Multiplier&lt;/h2&gt;
-
-&lt;p&gt;Building a complex game is hard. Building it fast and maintaining quality is harder. Our documentation-driven approach made it possible:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Challenge&lt;/th&gt;
-      &lt;th&gt;Solution&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Keeping 100+ systems coherent&lt;/td&gt;
-      &lt;td&gt;Feature docs define boundaries&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Finding code in a large codebase&lt;/td&gt;
-      &lt;td&gt;Flow docs with “Responsible Files”&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Preserving context across sessions&lt;/td&gt;
-      &lt;td&gt;Flow docs are always up-to-date&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Effective AI assistance&lt;/td&gt;
-      &lt;td&gt;Structured prompts with documentation&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Onboarding new engineers&lt;/td&gt;
-      &lt;td&gt;Self-documenting architecture&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Borrowing proven patterns&lt;/td&gt;
-      &lt;td&gt;“Inspired-by” documentation&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;The upfront investment in documentation pays dividends throughout the project. Every hour spent documenting saves five hours of confusion later.&lt;/p&gt;
-
-&lt;h3 id=&quot;key-takeaways&quot;&gt;Key Takeaways&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;GDD → Features → Flows&lt;/strong&gt; creates a traceable path from vision to implementation&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Flow docs with “Responsible Files”&lt;/strong&gt; make code discoverable&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;“Inspired-by” patterns&lt;/strong&gt; let you borrow proven mechanics responsibly&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;AI works best with structured context&lt;/strong&gt; — feed it your documentation&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Tests are non-negotiable&lt;/strong&gt; for game systems with complex interactions&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;YAML configuration&lt;/strong&gt; separates game data from code logic&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Whether you’re building an MMORPG, a complex SaaS, or any large Rails application, these patterns will help you ship faster while maintaining quality.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Rails 8.1 + Hotwire&lt;/strong&gt;: &lt;a href=&quot;https://hotwired.dev&quot;&gt;hotwired.dev&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;ActionCable Guide&lt;/strong&gt;: &lt;a href=&quot;https://guides.rubyonrails.org/action_cable_overview.html&quot;&gt;guides.rubyonrails.org/action_cable_overview.html&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Stimulus Handbook&lt;/strong&gt;: &lt;a href=&quot;https://stimulus.hotwired.dev/handbook&quot;&gt;stimulus.hotwired.dev/handbook&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Flipper Feature Flags&lt;/strong&gt;: &lt;a href=&quot;https://github.com/flippercloud/flipper&quot;&gt;github.com/flippercloud/flipper&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;em&gt;This post was written while building Elselands—a browser-based MMORPG recreating the classic Neverlands.ru experience with modern Rails tooling. The documentation-driven approach described here enabled rapid development of 9 major Neverlands-inspired systems, 100+ models, and comprehensive test coverage in a fraction of the time traditional development would require.&lt;/em&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 27 Nov 2025 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/building-browser-mmorpg-with-rails-and-ai</guid>
-        
-        <category>rails</category>
-        
-        <category>mmorpg</category>
-        
-        <category>game-development</category>
-        
-        <category>hotwire</category>
-        
-        <category>actioncable</category>
-        
-        <category>ai</category>
-        
-        <category>documentation</category>
-        
-        <category>architecture</category>
-        
-        
-        <category>engineering</category>
-        
-        <category>rails</category>
-        
-        <category>game-development</category>
-        
-        <category>AI</category>
         
       </item>
     
