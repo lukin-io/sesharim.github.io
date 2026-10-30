@@ -98,6 +98,8 @@ npm run build:css
 
 The site is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the `master` branch.
 
+The build uses Ubuntu 24.04, Ruby 3.4.4 and Node.js 20. Keep the build runner pinned while Ruby is pinned to 3.4.4: `ubuntu-latest` can move to an image without that Ruby release. See [ruby/setup-ruby's supported platforms](https://github.com/ruby/setup-ruby#supported-platforms).
+
 The CI pipeline:
 1. Sets up Ruby and Node.js environments
 2. Installs Ruby dependencies (Bundler)
@@ -112,7 +114,7 @@ The CI pipeline:
 - `assets/css/styles.css` - Compiled CSS (generated, don't edit)
 - `_layouts/` - Jekyll layouts
 - `_posts/` - Blog posts
-- `.github/workflows/deploy.yml` - CI/CD configuration
+- `.github/workflows/ci.yml` - CI/CD configuration
 
 ## Technologies
 

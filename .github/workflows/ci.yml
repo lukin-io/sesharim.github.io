@@ -19,7 +19,8 @@ concurrency:
 jobs:
   build:
     name: Build site
-    runs-on: ubuntu-latest
+    # Ruby 3.4.4 has a prebuilt binary for 24.04, but not 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
       JEKYLL_ENV: production
