@@ -4,7 +4,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FEFAE0">
 
-  {% seo %}
+  {% comment %}jekyll-seo-tag 2.8.0 emits a lowercase imageObject type for image metadata maps.{% endcomment %}
+  {% capture seo_tags %}{% seo %}{% endcapture %}
+  {{ seo_tags | replace: '"@type":"imageObject"', '"@type":"ImageObject"' }}
   {% if page.robots %}
   <meta name="robots" content="{{ page.robots }}">
   {% endif %}

@@ -4,7 +4,8 @@ email: lukin.maksim@gmail.com
 description: Experienced Ruby on Rails and Go developer specializing in scalable web applications
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://lukin.io"
-twitter_username: lukin_io
+twitter:
+  username: lukin_io
 github_username:  lukin-io
 future: true
 

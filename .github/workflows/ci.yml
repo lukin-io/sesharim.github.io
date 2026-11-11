@@ -17,8 +17,48 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  relay-python:
+    name: Test relay Python
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Test isolated UDP forwarding and diagnostics
+        working-directory: assets/downloads/vpn-relay
+        run: python -B -m unittest discover -s tests -v
+      - name: Verify downloadable kit matches reviewed source
+        working-directory: assets/downloads/vpn-relay
+        run: |
+          sha256sum --check SHA256SUMS
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          files = [line.split("  ", 1)[1] for line in Path("SHA256SUMS").read_text().splitlines()]
+          files.append("SHA256SUMS")
+          with ZipFile("vpn-relay-kit.zip") as archive:
+              assert set(archive.namelist()) == {"vpn-relay/" + name for name in files}
+              for name in files:
+                  assert archive.read("vpn-relay/" + name) == Path(name).read_bytes(), name
+          print("Downloadable ZIP matches the source and checksum manifest.")
+          PY
+
+  relay-powershell:
+    name: Validate Windows relay
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PowerShell 5.1 syntax, config, and firewall scope
+        shell: powershell
+        working-directory: assets/downloads/vpn-relay
+        run: .\tests\validate-powershell.ps1
+
   build:
     name: Build site
+    needs: [relay-python, relay-powershell]
     # Ruby 3.4.4 has a prebuilt binary for 24.04, but not 26.04.
     runs-on: ubuntu-24.04
     timeout-minutes: 10

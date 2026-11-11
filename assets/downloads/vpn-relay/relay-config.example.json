@@ -1,0 +1,19 @@
+{
+  "configured": false,
+  "office_tailscale_ip": "CHANGE_ME_OFFICE_TAILSCALE_IPV4",
+  "mac_tailscale_ip": "CHANGE_ME_MAC_TAILSCALE_IPV4",
+  "profiles": {
+    "DEV": {
+      "gateway_ip": "192.0.2.10",
+      "gateway_port": 1194,
+      "office_port": 11194,
+      "mac_port": 11195
+    },
+    "LIVE": {
+      "gateway_ip": "192.0.2.20",
+      "gateway_port": 1194,
+      "office_port": 11196,
+      "mac_port": 11197
+    }
+  }
+}
