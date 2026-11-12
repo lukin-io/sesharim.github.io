@@ -2,6 +2,7 @@
 layout: post
 title: "VPN Blocked? Restore OpenVPN Access with a Tailscale Relay"
 date: 2026-11-11
+last_modified_at: 2026-11-12
 author: Max Lukin
 tags: [vpn, openvpn, wireguard, tailscale, networking, troubleshooting, macos, windows]
 categories: [engineering, networking, devops]
@@ -481,7 +482,7 @@ Use `LIVE` for the corresponding Mac diagnosis. The Mac output includes current 
 
 | Symptom | What to check | What to do next |
 | --- | --- | --- |
-| OpenVPN times out, but the remote PC is online | Is the Mac loopback relay listening? Does its latest log end with `time_limit`? | Start the missing relay. Restarting the office PC does not fix a stopped Mac process. |
+| OpenVPN times out, but Tailscale and the remote PC are online | Check the current Mac job, loopback listener, and latest stop/error log, especially after a reboot. | Start the missing Mac relay. Until-stopped mode does not provide reboot autostart. |
 | `Get-NetIPAddress` cannot find the expected IP | Tailscale service/backend state, `tailscale ip -4`, and Windows interface addresses. | Wait for readiness, sign in if needed, or correct a changed node address. The exception alone does not distinguish those causes. |
 | Port already occupied | Read the current socket owner's PID and address. | Keep the correct existing relay or stop it deliberately. Do not launch duplicates or kill an old PID copied from notes. |
 | Tailscale ping replies, office counters stay at zero | Configured source/destination IPs and ports, Windows rule, and tailnet policy. | Fix the UDP access path. Tailscale's own ping does not test the application's UDP listener. |
@@ -490,6 +491,7 @@ Use `LIVE` for the corresponding Mac diagnosis. The Mac output includes current 
 | “Authentication failed” | Correct profile, username, password, keyboard layout, and server policy. | Correct the login. Transport has progressed further than a silent timeout. |
 | Windows receive error `10054` | The reported operation and side. | The kit records and tolerates this specific receive-stage reset. Do not extend that handler to unrelated errors. |
 | Upstream send says “An invalid argument was supplied” | Save the timestamp, stage, numeric code, endpoints, and packet length from the new log. | Restart after checking configuration, then investigate recurrence. The original cause remains unresolved. |
+| Mac relay stops with `upstream_send errno=49` | Preserve the log and check the current local Tailscale address and route. | Verify the Tailscale path is usable, then restart the stopped relay through its controller. This error alone does not identify the triggering event. |
 | Connected label, unusable work apps | Routes, private DNS over UDP/TCP, and a real work endpoint. | Fix the failed layer; the label alone is insufficient. |
 | Works until a later password/renewal prompt | Client authentication settings and server renewal policy. | Remove temporary diagnostic overrides you introduced; preserve organization requirements. |
 | Stops after closing a terminal or controlling app | Which process owns the relay and how it was started. | Use the Mac controller/launchers; leave the Windows relay window running. |
@@ -509,6 +511,34 @@ STOPPED reason=time_limit elapsed_s=28800.1
 Restarting the Mac relay restored authentication and useful traffic. We then changed everyday operation to run until stopped **on both ends**, with explicit bounded modes retained for diagnostics.
 
 The old Mac timer used a monotonic clock that excluded system sleep. A displayed wall-clock expiry was only an estimate. The terminal log event and missing listener were stronger evidence than a predicted time.
+
+### November 12: Tailscale connected, Mac relays absent
+
+The next incident had a different cause. Both Tailscale devices appeared online and a live probe received a DERP reply, but neither Mac relay job was loaded and neither local UDP listener existed. The previous DEV process had ended on a signal before a recorded Mac boot; the signal's sender was not established. Removing the timer had not installed reboot autostart.
+
+Restarting the Mac relays restored DEV authentication. Route checks, private DNS over UDP/TCP, and certificate-verified HTTPS then passed. No office-PC restart or relay change was needed. LIVE's local relay was restarted, but its VPN authentication and traffic were not retested that day.
+
+For the same missing-listener case:
+
+1. Keep Tailscale connected on both machines and confirm that the matching office relay reports `LISTENING`.
+2. Disconnect the affected OpenVPN profile. From the Mac kit folder, preserve the diagnosis and its reported log paths:
+
+~~~bash
+cd "$HOME/vpn-relay"
+python3 mac-relay-control.py diagnose DEV --human
+~~~
+
+3. If there is no running managed relay and no conflicting socket owner, start it and check again:
+
+~~~bash
+python3 mac-relay-control.py start DEV
+python3 mac-relay-control.py diagnose DEV --human
+~~~
+
+4. Confirm that the managed job owns its expected local listener. Use `LIVE` instead for that environment; do not launch duplicate processes.
+5. Reconnect OpenVPN and repeat the route, DNS, and HTTPS checks in step 9. A local listener proves only the local relay is ready.
+
+A separate earlier LIVE run had stopped at `upstream_send errno=49`, which this Mac mapped to `EADDRNOTAVAIL`: the requested local address was unavailable. It occurred after sleep/resume, but we did not establish what triggered it. Preserve the error, verify the current Tailscale path, and restart the stopped relay; do not treat it as a password error or proof of filtering. [Apple's error definition](https://developer.apple.com/documentation/foundation/posixerror/eaddrnotavail).
 
 ### Windows UDP resets need narrow handling
 
