@@ -2,7 +2,7 @@
 layout: post
 title: "VPN Blocked? Restore OpenVPN Access with a Tailscale Relay"
 date: 2026-11-11
-last_modified_at: 2026-11-12
+last_modified_at: 2026-11-16
 author: Max Lukin
 tags: [vpn, openvpn, wireguard, tailscale, networking, troubleshooting, macos, windows]
 categories: [engineering, networking, devops]
@@ -539,6 +539,14 @@ python3 mac-relay-control.py diagnose DEV --human
 5. Reconnect OpenVPN and repeat the route, DNS, and HTTPS checks in step 9. A local listener proves only the local relay is ready.
 
 A separate earlier LIVE run had stopped at `upstream_send errno=49`, which this Mac mapped to `EADDRNOTAVAIL`: the requested local address was unavailable. It occurred after sleep/resume, but we did not establish what triggered it. Preserve the error, verify the current Tailscale path, and restart the stopped relay; do not treat it as a password error or proof of filtering. [Apple's error definition](https://developer.apple.com/documentation/foundation/posixerror/eaddrnotavail).
+
+### November 16: two separate stopped layers
+
+A later LIVE timeout exposed two blockers: Tailscale was disconnected, and the Mac LIVE relay had no running process or UDP listener. Its `launchd` job definition was still loaded, which did not mean the process was alive. The latest relay log showed an unlimited run ending on November 13 with `upstream_send errno=49`, not a timer expiry. The disconnected Tailscale state observed on November 16 does not establish what caused that earlier crash.
+
+The recovery order matters: cancel the failed OpenVPN attempt, reconnect Tailscale, confirm a peer reply, then use the existing starter for the stopped Mac relay. Recheck its listener before connecting OpenVPN and repeating step 9's traffic tests. Leave an already-running relay for the other environment alone.
+
+After those steps, LIVE authenticated and passed private DNS over UDP/TCP and certificate-verified HTTPS, with routes checked before and after. No office-PC restart or relay change was needed, and DEV was left untouched. This was a short recovery check, not a new uptime or renewal test.
 
 ### Windows UDP resets need narrow handling
 
