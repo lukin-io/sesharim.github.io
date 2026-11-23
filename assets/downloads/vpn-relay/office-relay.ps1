@@ -24,7 +24,11 @@ $tailscaleExe = Join-Path $env:ProgramFiles 'Tailscale\tailscale.exe'
 if ($env:OS -ne 'Windows_NT') { throw 'Run on native Windows.' }
 $relayName = $Environment
 $script:relayLogPath = $null
-$listener = $null; $upstream = $null; $latestMac = $null; $timer = $null
+$listener = $null; $latestMac = $null; $timer = $null
+$gatewayState = [pscustomobject]@{
+    Socket = $null; RetryAt = 0.0; RetryDelay = 2.0
+    Recoveries = 0L; Reconnects = 0L; DroppedPackets = 0L
+}
 $sentPackets = 0L; $sentBytes = 0L
 $replyPackets = 0L; $replyBytes = 0L; $rejectedPackets = 0L
 $macReceiveResets = 0L; $gatewayReceiveResets = 0L
@@ -130,6 +134,73 @@ function Get-EndpointText($udp, [string] $property) {
     catch { }
     return 'unavailable'
 }
+function New-GatewaySocket {
+    $candidate = [Net.Sockets.UdpClient]::new([Net.Sockets.AddressFamily]::InterNetwork)
+    try {
+        $candidate.Client.ReceiveTimeout = 1000
+        $candidate.Client.SendTimeout = 1000
+        # A fresh socket lets Windows select the current local address/route.
+        # It remains connected exclusively to the original fixed VPN gateway.
+        $candidate.Connect($gatewayIp, $gatewayPort)
+        return $candidate
+    }
+    catch {
+        $candidate.Close()
+        throw
+    }
+}
+function Set-GatewayRetry($state, [double] $elapsedSeconds) {
+    if ($null -ne $state.Socket) { $state.Socket.Close(); $state.Socket = $null }
+    $delay = $state.RetryDelay
+    $state.RetryAt = $elapsedSeconds + $delay
+    $state.RetryDelay = [Math]::Min(10.0, $delay * 2.0)
+    Write-RelayEvent 'GATEWAY_RETRY_WAIT' "retry_s=$delay; Mac listener remains open; packets are dropped until a fresh upstream is ready"
+}
+function Send-GatewayPacket($state, [byte[]] $packet, [double] $elapsedSeconds) {
+    if ($null -eq $state.Socket) {
+        $state.DroppedPackets++
+        return $false
+    }
+    try {
+        [void] $state.Socket.Send($packet, $packet.Length)
+        $state.RetryDelay = 2.0
+        return $true
+    }
+    catch {
+        $failure = Get-SocketFailure $_.Exception
+        # Confirmed failure: an established Windows UDP socket rejected Send
+        # with WSAEINVAL (10022). Do not hide unrelated/programming errors.
+        if ($null -eq $failure -or
+            $failure.SocketErrorCode -ne [Net.Sockets.SocketError]::InvalidArgument -or
+            $failure.NativeErrorCode -ne 10022) { throw }
+        $state.DroppedPackets++
+        $state.Recoveries++
+        $localEndpoint = Get-EndpointText $state.Socket 'LocalEndPoint'
+        $remoteEndpoint = Get-EndpointText $state.Socket 'RemoteEndPoint'
+        Write-RelayEvent 'GATEWAY_RECOVERING' "stage=gateway_send socket_error=InvalidArgument native_code=10022 packet_bytes=$($packet.Length) local_endpoint=$localEndpoint remote_endpoint=$remoteEndpoint recoveries=$($state.Recoveries); failed packet dropped; connection/application may retry"
+        Set-GatewayRetry $state $elapsedSeconds
+        return $false
+    }
+}
+function Update-GatewaySocket($state, [double] $elapsedSeconds) {
+    if ($null -ne $state.Socket -or $elapsedSeconds -lt $state.RetryAt) { return }
+    try {
+        $state.Socket = New-GatewaySocket
+        $state.Reconnects++
+        $localEndpoint = Get-EndpointText $state.Socket 'LocalEndPoint'
+        Write-RelayEvent 'GATEWAY_SOCKET_READY' "gateway=${gatewayIp}:${gatewayPort} local_endpoint=$localEndpoint reconnects=$($state.Reconnects); socket ready, gateway reply not yet verified"
+        # Reset backoff only after a successful Send, not merely UDP Connect.
+    }
+    catch {
+        $failure = Get-SocketFailure $_.Exception
+        # Only retry socket setup failures consistent with an unavailable
+        # address/route or the same 10022 incident. Other failures stay fatal.
+        if ($null -eq $failure -or
+            $failure.NativeErrorCode -notin @(10022, 10049, 10050, 10051, 10064, 10065, 10060)) { throw }
+        Write-RelayEvent 'GATEWAY_RETRY_FAILED' "stage=gateway_connect socket_error=$($failure.SocketErrorCode) native_code=$($failure.NativeErrorCode)"
+        Set-GatewayRetry $state $elapsedSeconds
+    }
+}
 if ($Action -eq 'Start') {
     if (-not $PSCmdlet.ShouldProcess("${officeIp}:${listenPort} -> ${gatewayIp}:${gatewayPort}", "Write local diagnostics; wait for Tailscale; disable DNS/subnet-route acceptance; run relay $limitText")) { return }
     try {
@@ -200,17 +271,15 @@ try {
     $listener.Client.SendTimeout = 1000
     $listener.Client.Bind([Net.IPEndPoint]::new($officeIp, $listenPort))
     $stage = 'gateway_connect'
-    $upstream = [Net.Sockets.UdpClient]::new([Net.Sockets.AddressFamily]::InterNetwork)
-    $upstream.Client.ReceiveTimeout = 1000
-    $upstream.Client.SendTimeout = 1000
-    # Connected UDP accepts/sends only the fixed gateway endpoint.
-    $upstream.Connect($gatewayIp, $gatewayPort)
+    $gatewayState.Socket = New-GatewaySocket
     $stopReason = 'interrupted_or_stopped'
     Write-RelayEvent 'LISTENING' "listener=${officeIp}:${listenPort} gateway=${gatewayIp}:${gatewayPort} duration_mode=$limitMode limit=$limitText; Ctrl+C stops"
     while ($RunUntilStopped -or $timer.Elapsed.TotalMinutes -lt $MaxMinutes) {
+        $stage = 'gateway_connect'
+        Update-GatewaySocket $gatewayState $timer.Elapsed.TotalSeconds
         $ready = New-Object System.Collections.ArrayList
         [void] $ready.Add($listener.Client)
-        [void] $ready.Add($upstream.Client)
+        if ($null -ne $gatewayState.Socket) { [void] $ready.Add($gatewayState.Socket.Client) }
         # Select waits up to one second (microseconds), avoiding an idle busy loop.
         $stage = 'select'
         [Net.Sockets.Socket]::Select($ready, $null, $null, 1000000)
@@ -229,12 +298,16 @@ try {
                     $latestMac = [Net.IPEndPoint]::new($macIp, $sender.Port)
                     $packetBytes = $packet.Length
                     $stage = 'gateway_send'
-                    [void] $upstream.Send($packet, $packet.Length)
-                    $sentPackets++; $sentBytes += $packet.Length
+                    if (Send-GatewayPacket $gatewayState $packet $timer.Elapsed.TotalSeconds) {
+                        $sentPackets++; $sentBytes += $packet.Length
+                    }
                 }
-                else {
+                elseif ($null -ne $gatewayState.Socket -and
+                        [object]::ReferenceEquals($socket, $gatewayState.Socket.Client)) {
+                    # The same Select result may still contain a socket closed
+                    # by gateway_send recovery. Never receive from that entry.
                     $stage = 'gateway_receive'
-                    [byte[]] $packet = $upstream.Receive([ref] $sender)
+                    [byte[]] $packet = $gatewayState.Socket.Receive([ref] $sender)
                     if (-not $sender.Address.Equals($gatewayIp) -or $sender.Port -ne $gatewayPort) {
                         $rejectedPackets++
                         continue
@@ -274,7 +347,7 @@ try {
             }
         }
         if ($timer.Elapsed.TotalSeconds -ge $nextReport) {
-            Write-RelayEvent 'COUNTERS' "GatewayOut=$sentPackets/$sentBytes bytes; MacReplies=$replyPackets/$replyBytes bytes; Rejected=$rejectedPackets; MacReceiveResets=$macReceiveResets; GatewayReceiveResets=$gatewayReceiveResets"
+            Write-RelayEvent 'COUNTERS' "GatewayOut=$sentPackets/$sentBytes bytes; MacReplies=$replyPackets/$replyBytes bytes; Rejected=$rejectedPackets; MacReceiveResets=$macReceiveResets; GatewayReceiveResets=$gatewayReceiveResets; GatewayRecoveries=$($gatewayState.Recoveries); GatewayReconnects=$($gatewayState.Reconnects); RecoveryDrops=$($gatewayState.DroppedPackets)"
             $nextReport += 30
         }
     }
@@ -292,7 +365,7 @@ catch {
     }
     $side = 'preflight_or_control'; $failedUdp = $null
     if ($stage -like 'mac_*') { $side = 'mac'; $failedUdp = $listener }
-    if ($stage -like 'gateway_*') { $side = 'gateway'; $failedUdp = $upstream }
+    if ($stage -like 'gateway_*') { $side = 'gateway'; $failedUdp = $gatewayState.Socket }
     $localEndpoint = Get-EndpointText $failedUdp 'LocalEndPoint'
     $remoteEndpoint = Get-EndpointText $failedUdp 'RemoteEndPoint'
     Write-RelayEvent 'FATAL' "stage=$stage side=$side exception_type=$errorType socket_error=$socketCode native_code=$nativeCode packet_bytes=$packetBytes local_endpoint=$localEndpoint remote_endpoint=$remoteEndpoint"
@@ -301,10 +374,10 @@ catch {
 finally {
     # No child listener process exists: process termination also closes both sockets.
     if ($null -ne $listener) { $listener.Close() }
-    if ($null -ne $upstream) { $upstream.Close() }
+    if ($null -ne $gatewayState.Socket) { $gatewayState.Socket.Close() }
     $elapsed = 0
     if ($null -ne $timer) { $timer.Stop(); $elapsed = [Math]::Round($timer.Elapsed.TotalSeconds, 1) }
     if ($Action -eq 'Start') {
-        Write-RelayEvent 'STOPPED' "reason=$stopReason stage=$stage elapsed_s=$elapsed duration_mode=$limitMode GatewayOut=$sentPackets/$sentBytes bytes; MacReplies=$replyPackets/$replyBytes bytes; Rejected=$rejectedPackets; MacReceiveResets=$macReceiveResets; GatewayReceiveResets=$gatewayReceiveResets"
+        Write-RelayEvent 'STOPPED' "reason=$stopReason stage=$stage elapsed_s=$elapsed duration_mode=$limitMode GatewayOut=$sentPackets/$sentBytes bytes; MacReplies=$replyPackets/$replyBytes bytes; Rejected=$rejectedPackets; MacReceiveResets=$macReceiveResets; GatewayReceiveResets=$gatewayReceiveResets; GatewayRecoveries=$($gatewayState.Recoveries); GatewayReconnects=$($gatewayState.Reconnects); RecoveryDrops=$($gatewayState.DroppedPackets)"
     }
 }

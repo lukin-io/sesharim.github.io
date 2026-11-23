@@ -1,5 +1,9 @@
 MANUAL OPENVPN-OVER-TAILSCALE RELAY KIT
 
+Updated November 23, 2026: Mac source/interface recovery and Windows gateway
+send-error recovery. Explicitly restart both ends when upgrading; downloading
+new files does not replace code in a running process or the Mac runtime copy.
+
 This kit carries one existing OpenVPN UDP connection through an authorized
 Windows office computer. It is not a VPN server, exit node, public proxy or
 replacement for the original OpenVPN encryption/authentication.
@@ -21,7 +25,8 @@ FILES AND REQUIREMENTS
 - No router port forwarding, public relay listener or Tailscale exit node is needed.
 - DEV is required; LIVE is optional. The names are labels, not hardcoded work sites.
 - relay-config.example.json is deliberately unusable until edited.
-- mac-relay.py is the generic forwarder; relay_config.py validates its config.
+- mac-relay.py uses mac_relay_core.py for forwarding and Tailscale path recovery;
+  relay_config.py validates its config. Keep all three files together.
 - mac-relay-control.py manages manual launchd jobs and reports status/diagnostics.
 - office-relay.ps1 and relay-config.ps1 implement the restricted Windows relay.
 - office-firewall.ps1 provides explicit Plan/Add/Remove for an exact inbound rule.
@@ -99,7 +104,7 @@ this rule. Review the effective tailnet/access policy; grants are additive.
 4. START THE OFFICE RELAY, THEN THE MAC RELAY
 
 Windows: double-click start-office-dev.cmd (or start-office-live.cmd).
-Leave that console open. It runs until stopped, unless a real error interrupts it.
+Leave that console open. It runs until stopped, unless an unhandled error interrupts it.
 It pauses on return so the reason remains visible. Ctrl+C stops the relay.
 
 Start waits briefly for an already-starting Tailscale interface. This is a 30-second
@@ -119,11 +124,13 @@ Alternatively:
 Mac jobs are manually bootstrapped into the logged-in user's launchd domain.
 RunAtLoad=true, KeepAlive=false. No files are placed in ~/Library/LaunchAgents.
 Closing Terminal or the app that launched the command does not own the relay's
-lifetime. Logout/reboot and actual process/network failures can still stop it;
-there is no automatic startup or crash restart. Do not run the controller with sudo.
+lifetime. Recoverable upstream/network failures now recreate the socket while
+the relay process stays alive. Logout/reboot, process termination and unrelated
+fatal errors still stop it; there is no automatic startup or arbitrary crash
+restart. Do not run the controller with sudo.
 
 The runtime directory is ~/Library/Application Support/VPNRelay, mode 0700. It
-contains private copies of the generic relay/config module, validated config
+contains private copies of the generic relay/core/config modules, validated config
 snapshots, job definitions and mode 0600 logs. The actual Python executable used
 to run the controller is recorded in ProgramArguments; no Homebrew path is assumed.
 
@@ -148,10 +155,18 @@ and after connecting; it must remain usable outside the work tunnel:
   route -n get YOUR_OFFICE_TAILSCALE_IPV4
 
 Verify the routes for your work DNS/test destination, explicit UDP and TCP DNS,
-and verified HTTPS. Use your own work DNS IP; none is shipped with this kit:
-  dig @YOUR_WORK_DNS_IPV4 example.com +notcp +ignore +time=3 +tries=1
-  dig +tcp @YOUR_WORK_DNS_IPV4 example.com +time=3 +tries=1
+and verified HTTPS. Use your own work DNS IP and known internal hostname;
+neither is shipped with this kit:
+  dig @YOUR_WORK_DNS_IPV4 YOUR_KNOWN_INTERNAL_HOSTNAME A +notcp +ignore +time=3 +tries=1
+  dig @YOUR_WORK_DNS_IPV4 YOUR_KNOWN_INTERNAL_HOSTNAME A +tcp +time=3 +tries=1
+  curl -q --noproxy '*' --head --connect-timeout 5 --max-time 10 https://YOUR_KNOWN_WORK_HOST/
+
+Use a harmless work endpoint that supports HEAD, or its normal read-only request.
+Keep TLS verification enabled. For full-tunnel profiles only, public HTTPS is an
+additional forwarding probe after confirming its route uses the work tunnel:
+  route -n get 1.1.1.1
   curl -q --noproxy '*' --head --max-time 5 https://1.1.1.1/
+A public probe or public-name lookup does not establish internal app access.
 
 If those destinations should traverse the work VPN, verify their routes first.
 Repeat after several minutes. Preserve ordinary system DNS tests separately from
@@ -168,11 +183,30 @@ socket ownership, last stop/error/counters and, for diagnose, a limited Tailscal
 status summary. They send no test packets. A local listener or an online office
 peer does NOT prove that the office relay, gateway or VPN traffic is working.
 
+The Mac relay requires the configured Tailscale source address and verified utun
+interface. It waits without forwarding when that path is absent, and recreates
+its upstream socket on an interface change or recoverable socket error. Waiting
+packets are dropped, not queued. A local_ready status checks the Mac listener,
+source and current route only. stale_upstream identifies an old/wrong socket;
+waiting_for_tailscale and recovering_upstream identify recovery in progress.
+Do not send arbitrary UDP probes to the office relay port: it remembers the
+latest accepted Mac source port, so a probe can divert OpenVPN's replies.
+
 Windows logs are under %LOCALAPPDATA%\VPNRelay\logs. Logs contain timestamps,
 readiness states, selected endpoint metadata, counts and numeric socket errors;
 no packet payloads or raw Tailscale status JSON are logged. Receive error 10054
 is tolerated only on receive stages, counted by side, with its first occurrence
-logged. Send 10022 and other unhandled errors remain fatal; they are not ignored.
+logged. The observed gateway_send InvalidArgument/native10022 now closes only
+the upstream socket and retries with 2, 4, 8, then at most 10 seconds between
+attempts. Successful sends reset the delay. The Mac listener/filter and fixed
+gateway stay unchanged. Failed/waiting packets are counted and dropped; they
+are never replayed. Only selected address/route failures during replacement
+setup retry; unrelated errors remain fatal. GATEWAY_RECOVERING,
+GATEWAY_RETRY_WAIT, GATEWAY_RETRY_FAILED and GATEWAY_SOCKET_READY describe the
+state. GatewayRecoveries, GatewayReconnects and RecoveryDrops are counters.
+Socket-ready does not prove gateway replies or VPN authentication. Retry the
+VPN if its attempt expired during recovery. An old exited process needs its
+office launcher; the Mac starter cannot restart a Windows process.
 
 Disconnect OpenVPN before deliberate relay maintenance. On Mac:
   python3 mac-relay-control.py stop DEV
@@ -202,12 +236,27 @@ preferences deliberately if you want them back. The kit does not remove devices
 from your tailnet or delete VPN profiles. Runtime logs/config copies remain for
 diagnosis; you can delete the kit's runtime directory after both jobs are stopped.
 
+UPGRADE OR ROLL BACK
+
+Disconnect OpenVPN and preserve current diagnosis/logs. Explicitly stop each
+running Mac relay through its existing controller and each Windows relay with
+Ctrl+C; confirm the listener is gone. Keep the old folder as a backup. Extract
+the new kit into a separate folder on each computer, then copy your private
+relay-config.json into each new folder. Do not include that edited config in
+bug reports or public uploads. Review/unblock the new scripts, check Windows
+readiness and ports, and start office first, Mac second from the new folders.
+Check local_ready, then connect and verify routes, private DNS and work HTTPS.
+Unchanged addresses/ports need neither a broader firewall rule nor a new VPN
+profile. To roll back, stop the new processes before using the old launchers.
+
 DEVELOPER VERIFICATION
 
 Portable tests (Python 3.10+):
   python3 -B -m unittest discover -s tests -v
 Native Windows PowerShell 5.1 parser and isolated configuration/scope tests:
   powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\tests\validate-powershell.ps1
+Native Windows gateway-recovery fault tests:
+  powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\tests\test-office-gateway-recovery.ps1
 
 The Python suite uses temporary files inside tests/ and sockets bound only to
 loopback. It checks binary forwarding, rejection of an unrelated upstream sender,
@@ -216,6 +265,12 @@ loopback-source integration case skips on systems without that source address;
 the source guard still has direct checks. Controller tests use fixtures, not
 real launchd operations. PowerShell tests parse scripts and use synthetic objects;
 they do not invoke Tailscale or real firewall operations.
+
+Recovery tests inject missing/changed routes, socket failures, and Windows10022
+to check retry/backoff, rejected senders, preserved listeners and fatal unrelated
+errors. The Windows recovery harness must run on Windows because the synthetic
+SocketException native code maps differently on macOS/Linux. These tests do not
+reproduce the original OS event, a real VPN renewal, or overnight uptime.
 
 SHA256SUMS covers the distributed source files (not itself or the ZIP). It detects
 content differences against the supplied manifest, not independent authenticity.

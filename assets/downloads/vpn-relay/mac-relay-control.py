@@ -17,6 +17,7 @@ import tempfile
 import time
 
 from relay_config import load_config, select_profile, snapshot_config
+from mac_relay_core import inspect_tailscale_route
 
 
 PYTHON = str(Path(sys.executable).resolve())
@@ -137,6 +138,30 @@ def inspect_listener(port):
         return {"endpoint": endpoint, "checked": False, "error": type(error).__name__}
 
 
+def inspect_upstream(pid, office_ip, office_port):
+    """Read the actual connected socket; a loopback listener alone is not readiness."""
+    if not pid:
+        return {"checked": True, "sockets": []}
+    try:
+        result = subprocess.run(
+            ["/usr/sbin/lsof", "-nP", "-a", "-p", str(pid), "-iUDP", "-Fn"],
+            capture_output=True, text=True, timeout=2,
+        )
+        if result.returncode not in (0, 1) or result.stderr.strip():
+            return {"checked": False, "error": "Could not inspect relay upstream socket"}
+        remote = f"{office_ip}:{office_port}"
+        sockets = []
+        for line in result.stdout.splitlines():
+            if line.startswith("n") and "->" in line:
+                local, peer = line[1:].split("->", 1)
+                if peer == remote:
+                    source, port = local.rsplit(":", 1)
+                    sockets.append({"source_ip": source, "source_port": port, "remote": peer})
+        return {"checked": True, "sockets": sockets}
+    except (OSError, ValueError, subprocess.TimeoutExpired) as error:
+        return {"checked": False, "error": type(error).__name__}
+
+
 def read_tail(filename):
     if not isinstance(filename, str) or not filename:
         return ""
@@ -171,7 +196,7 @@ def run_evidence(job, metadata_path):
     if "seconds" in saved_run and saved_run["seconds"] is None:
         evidence["limit_mode"] = "until_stopped"
         evidence["estimated_expiry_utc"] = None
-        evidence["expiry_note"] = "No scheduled expiry. Stop explicitly; process/network failures can still interrupt the relay. No automatic restart."
+        evidence["expiry_note"] = "No scheduled expiry. Running relays retry recoverable upstream/network errors. Login startup and restart after process termination are not configured."
     else:
         seconds = saved_run.get("seconds")
         evidence["limit_mode"] = "bounded" if isinstance(seconds, int) and 1 <= seconds <= 28800 else "unknown"
@@ -189,7 +214,7 @@ def run_evidence(job, metadata_path):
             evidence["stderr_nonempty"] = bool(content.strip())
             continue
         for line in content.splitlines():
-            match = re.match(r"^(\S+) (STOPPED|SOCKET_ERROR|ROUTE_ERROR|COUNTERS|FIRST_REPLY_DATAGRAM) (.*)$", line)
+            match = re.match(r"^(\S+) (STOPPED|SOCKET_ERROR|ROUTE_ERROR|COUNTERS|FIRST_REPLY_DATAGRAM|WAITING_FOR_TAILSCALE|UPSTREAM_READY|SOCKET_RECOVERING) (.*)$", line)
             if match:
                 fields = dict(re.findall(r"([a-z_]+)=([^\s]+)", match.group(3)))
                 event = {"utc": match.group(1), **fields}
@@ -201,12 +226,14 @@ def run_evidence(job, metadata_path):
                     evidence["route_error"] = event
                 elif match.group(2) == "FIRST_REPLY_DATAGRAM":
                     evidence["first_reply"] = event
-                else:
+                elif match.group(2) == "COUNTERS":
                     evidence["last_counters"] = event
+                else:
+                    evidence["last_network_event"] = {"event": match.group(2), **event}
     return evidence
 
 
-def local_diagnosis(environment, job, listener, evidence):
+def local_diagnosis(environment, job, listener, evidence, upstream=None, route=None, expected_source=None):
     bindings = listener.get("bindings", [])
     running = bool(job.get("pid")) or job.get("state") == "running"
     owns = any(b["pid"] == job.get("pid") and b["address"] == listener["endpoint"] for b in bindings)
@@ -214,10 +241,19 @@ def local_diagnosis(environment, job, listener, evidence):
         if not listener["checked"]:
             return "unknown", "The relay process is running, but its listener could not be checked.", "Retry status; do not start a duplicate."
         if owns:
+            if not upstream or not upstream.get("checked"):
+                return "upstream_unknown", "The local listener exists, but its upstream socket could not be checked.", "Retry the check; local listening alone does not establish a working path."
+            sockets = upstream.get("sockets", [])
+            if any(s["source_ip"] != expected_source for s in sockets):
+                return "stale_upstream", "The relay uses the wrong source address instead of its Tailscale address.", "Disconnect OpenVPN, connect Tailscale, then stop and start this Mac relay."
+            if not route or not route.get("ready") or route.get("source_ip") != expected_source:
+                return "waiting_for_tailscale", "The relay listener exists, but the expected Tailscale route is not ready.", "Connect Tailscale. Updated running relays wait and recreate their upstream socket automatically; then retry OpenVPN."
+            if not sockets:
+                return "recovering_upstream", "The listener is running but the upstream socket is not ready yet.", "Wait a few seconds and check again; inspect the latest network event if recovery does not finish."
             limit = ("This run has no scheduled expiry; use the stop launcher when finished."
                      if evidence.get("limit_mode") == "until_stopped" else
                      "This is a bounded or unconfirmed run; check run_evidence for its runtime limit.")
-            return "local_ready", f"{environment} relay is listening locally; office forwarding and VPN traffic are not verified by this status.", "Keep the office relay and Tailscale running, then connect the work VPN. " + limit
+            return "local_ready", f"{environment} relay has its local listener, correct Tailscale source and route; office forwarding and VPN traffic are not verified by this status.", "Keep the office relay and Tailscale running, then connect the work VPN. " + limit
         return "listener_missing", "The relay process is running without its expected loopback listener.", "Inspect the relay logs; disconnect the work VPN before a deliberate stop/start."
     if bindings:
         return "unmanaged_listener", "The loopback port has an owner outside this running launchd job.", "Inspect the reported owner; do not start a duplicate or kill an unverified PID."
@@ -281,14 +317,16 @@ def show_status(environment, target, metadata_path, config_path, diagnose=False,
             print(f"{environment} relay: configuration unavailable. {error}\n{output['next_action']}")
         else:
             print(json.dumps(output, indent=2))
-        return
+        return 2
     listener = inspect_listener(settings.mac_port)
     evidence = run_evidence(job, metadata_path)
-    cause, summary, action = local_diagnosis(environment, job, listener, evidence)
+    upstream = inspect_upstream(job.get("pid"), settings.office_tailscale_ip, settings.office_port)
+    route = inspect_tailscale_route(settings.office_tailscale_ip, settings.mac_tailscale_ip) if job.get("pid") else None
+    cause, summary, action = local_diagnosis(environment, job, listener, evidence, upstream, route, settings.mac_tailscale_ip)
     output = {"summary": summary, "local_status": cause, "next_action": action,
               "environment": environment, "service": target,
               "runtime_directory": str(RUNTIME), **job,
-              "listener": listener, "run_evidence": evidence}
+              "listener": listener, "upstream": upstream, "office_route": route, "run_evidence": evidence}
     if diagnose:
         output["tailscale"] = tailscale_status(settings.office_tailscale_ip)
         ts = output["tailscale"]
@@ -299,6 +337,9 @@ def show_status(environment, target, metadata_path, config_path, diagnose=False,
         print(f"{environment} relay: {summary}\n\nNext: {action}")
         print(f"\nLocal state: {cause}; launchd: {job['state']}; PID: {job.get('pid') or 'none'}")
         print(f"Listener: {listener['endpoint']}; checked: {listener['checked']}; owners: {listener.get('bindings', [])}")
+        print(f"Upstream: {upstream}; expected source: {settings.mac_tailscale_ip}")
+        if route:
+            print(f"Office route: {route}")
         print(f"Run mode: {evidence.get('limit_mode', 'unknown')}. {evidence.get('expiry_note', '')}")
         if evidence.get("last_stop"):
             stopped = evidence["last_stop"]
@@ -307,6 +348,13 @@ def show_status(environment, target, metadata_path, config_path, diagnose=False,
             print(f"Launchd last exit: {job['last_exit_status']}")
         if evidence.get("socket_error"):
             print(f"Socket failure: {evidence['socket_error']}")
+        if evidence.get("last_network_event"):
+            print(f"Latest network event: {evidence['last_network_event']}")
+        if evidence.get("last_counters"):
+            counters = evidence["last_counters"]
+            print(f"Packets at {counters.get('utc')}: sent={counters.get('up_packets', '?')}, replies={counters.get('reply_packets', '?')}")
+            if int(counters.get("up_packets", 0)) > 0 and int(counters.get("reply_packets", 0)) == 0:
+                print("WARNING: this run has sent packets but received no replies. The full VPN path has NOT been verified.")
         if diagnose:
             ts = output["tailscale"]
             print(f"\nTailscale: checked={ts.get('checked')}; state={ts.get('backend_state', 'unknown')}; office online={ts.get('office_online', 'unknown')}")
@@ -318,6 +366,7 @@ def show_status(environment, target, metadata_path, config_path, diagnose=False,
                 print(f"{key}: {evidence[key]}")
     else:
         print(json.dumps(output, indent=2))
+    return 0 if cause == "local_ready" else 2
 
 
 def start(environment, target, label, metadata_path, config_path, seconds):
@@ -326,12 +375,13 @@ def start(environment, target, label, metadata_path, config_path, seconds):
     filename, port = "mac-relay.py", settings.mac_port
     job = inspect_job(target)
     if job["pid"] or job["state"] == "running":
-        raise RuntimeError(f"{environment} relay is already running; use status or stop")
+        return show_status(environment, target, metadata_path, config_path)
     check_port_free(port)
     if job["loaded"]:
         bootout(target)
 
     script = RUNTIME / filename
+    private_write(RUNTIME / "mac_relay_core.py", (SOURCE / "mac_relay_core.py").read_bytes())
     private_write(script, (SOURCE / filename).read_bytes())
     private_write(RUNTIME / "relay_config.py", (SOURCE / "relay_config.py").read_bytes())
     runtime_config = RUNTIME / f"{environment.lower()}-config.json"
@@ -384,7 +434,7 @@ def start(environment, target, label, metadata_path, config_path, seconds):
         except (OSError, RuntimeError, subprocess.TimeoutExpired):
             print("Warning: startup cleanup was not confirmed; inspect status before retrying", file=sys.stderr)
         raise
-    show_status(environment, target, metadata_path, config_path)
+    return show_status(environment, target, metadata_path, config_path)
 
 
 def stop(environment, target, metadata_path, config_path):
@@ -428,11 +478,11 @@ def main():
     metadata_path = RUNTIME / f"{args.environment.lower()}.json"
     try:
         if args.action in ("status", "diagnose"):
-            show_status(args.environment, target, metadata_path, args.config, diagnose=args.action == "diagnose", human=args.human)
+            return show_status(args.environment, target, metadata_path, args.config, diagnose=args.action == "diagnose", human=args.human)
         else:
             with mutation_lock():
                 if args.action == "start":
-                    start(args.environment, target, label, metadata_path, args.config, args.seconds)
+                    return start(args.environment, target, label, metadata_path, args.config, args.seconds)
                 else:
                     stop(args.environment, target, metadata_path, args.config)
     except (OSError, ValueError, RuntimeError, subprocess.TimeoutExpired) as error:

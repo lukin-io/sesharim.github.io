@@ -17,6 +17,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from relay_config import RelaySettings, load_config, select_profile, snapshot_config
+from mac_relay_core import Upstream
 
 
 def module(name, filename):
@@ -77,6 +78,30 @@ class ConfigTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.load()
 
 
+class LoopbackUpstream:
+    """Integration fixture only: real connected UDP sockets without a system route."""
+    def __init__(self, office, expected_source, event):
+        self.office, self.expected_source = office, expected_source
+        self.socket = None
+        self.next_check = 0
+
+    def refresh(self, timeout=2):
+        if self.socket is None:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.socket.bind((self.expected_source, 0))
+            self.socket.connect(self.office)
+            self.socket.setblocking(False)
+        self.next_check = time.monotonic() + 2
+
+    def close(self):
+        if self.socket is not None:
+            self.socket.close()
+            self.socket = None
+
+    def recover(self, error, stage):
+        raise error
+
+
 class ForwarderTests(unittest.TestCase):
     def setUp(self):
         self.office = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -98,7 +123,7 @@ class ForwarderTests(unittest.TestCase):
 
     def begin(self, seconds=None):
         self.thread = threading.Thread(target=lambda: self.result.append(
-            relay.run_relay(self.settings, seconds, self.stop, self.report)))
+            relay.run_relay(self.settings, seconds, self.stop, self.report, LoopbackUpstream)))
         self.thread.start()
         self.addCleanup(self.finish)
         self.assertTrue(self.started.wait(2), self.events)
@@ -141,12 +166,9 @@ class ForwarderTests(unittest.TestCase):
             reopened.bind(("127.0.0.1", self.settings.mac_port))
 
     def test_loopback_source_restriction(self):
-        self.assertTrue(relay.allowed_client(("127.0.0.1", 12345)))
-        self.assertFalse(relay.allowed_client(("127.0.0.2", 12345)))
-        self.assertFalse(relay.allowed_client(("127.0.0.1", 0)))
         self.begin()
         try: rogue = self.client("127.0.0.2")
-        except OSError: self.skipTest("OS has no second loopback source; pure source guard checked above")
+        except OSError: self.skipTest("OS has no second loopback source; synthetic dispatcher guard has separate coverage")
         rogue.sendto(b"rejected fixture", ("127.0.0.1", self.settings.mac_port))
         self.office.settimeout(0.2)
         with self.assertRaises(socket.timeout): self.office.recvfrom(65535)
@@ -171,11 +193,16 @@ class ForwarderTests(unittest.TestCase):
         self.assertIsInstance(error["errno"], int)
         self.assertNotIn("packet", error)
 
-    def test_route_source_mismatch_fails_before_forwarding(self):
-        settings = RelaySettings("DEV", "127.0.0.1", "127.0.0.2", "192.0.2.10", 1194,
-                                 self.office.getsockname()[1], self.settings.mac_port)
-        self.assertEqual(relay.run_relay(settings, 1, report=self.report), 1)
-        self.assertEqual(self.events[-1][1]["reason"], "wrong_source_route")
+    def test_wrong_route_waits_without_sending(self):
+        checker = mock.Mock(return_value={"ready": False, "reason": "route_not_utun"})
+        factory = mock.Mock()
+        def upstream(office, source, event):
+            return Upstream(office, source, event=event, route_checker=checker,
+                            socket_factory=factory)
+        self.assertEqual(relay.run_relay(self.settings, 0.1, report=self.report,
+                                        upstream_factory=upstream), 0)
+        factory.assert_not_called()
+        self.assertEqual(self.events[-1][1]["reason"], "time_limit")
         self.assertEqual(self.events[-1][1]["up_packets"], 0)
 
 
@@ -213,6 +240,8 @@ class ControllerTests(unittest.TestCase):
                 mock.patch.object(control, "inspect_listener", return_value=listener) as inspect, \
                 mock.patch.object(control, "run_evidence", return_value={"limit_mode": "until_stopped"}), \
                 mock.patch.object(control, "tailscale_status", return_value={"checked": False}) as ts, \
+                mock.patch.object(control, "inspect_upstream", return_value={"checked": True, "sockets": [{"source_ip": "100.100.100.11"}]}) as upstream, \
+                mock.patch.object(control, "inspect_tailscale_route", return_value={"ready": True, "source_ip": "100.100.100.11"}) as route, \
                 mock.patch.object(control.sys, "platform", "darwin"), \
                 mock.patch.object(control.os, "getuid", return_value=501), \
                 mock.patch.object(control.sys, "argv", ["controller", "diagnose", "DEV", "--config", str(self.path)]), \
@@ -222,6 +251,62 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(result["local_status"], "local_ready")
         inspect.assert_called_once_with(11195)
         ts.assert_called_once_with("100.100.100.10")
+        upstream.assert_called_once_with(42, "100.100.100.10", 11194)
+        route.assert_called_once_with("100.100.100.10", "100.100.100.11")
+
+    def test_readiness_requires_listener_source_and_route(self):
+        job = {"pid": 42, "state": "running"}
+        listener = {"checked": True, "endpoint": "127.0.0.1:11195",
+                    "bindings": [{"pid": 42, "address": "127.0.0.1:11195"}]}
+        for upstream, route, expected in (
+            ({"checked": False}, None, "upstream_unknown"),
+            ({"checked": True, "sockets": [{"source_ip": "192.0.2.20"}]},
+             {"ready": True, "source_ip": "100.100.100.11"}, "stale_upstream"),
+            ({"checked": True, "sockets": [{"source_ip": "100.100.100.11"}]},
+             {"ready": False}, "waiting_for_tailscale"),
+            ({"checked": True, "sockets": []},
+             {"ready": True, "source_ip": "100.100.100.11"}, "recovering_upstream"),
+            ({"checked": True, "sockets": [{"source_ip": "100.100.100.11"}]},
+             {"ready": True, "source_ip": "100.100.100.11"}, "local_ready"),
+        ):
+            with self.subTest(expected=expected):
+                result = control.local_diagnosis("DEV", job, listener, {}, upstream,
+                                                 route, "100.100.100.11")
+                self.assertEqual(result[0], expected)
+                if expected == "local_ready":
+                    self.assertIn("VPN traffic are not verified", result[1])
+
+    def test_upstream_inspection_uses_exact_configured_destination(self):
+        result = mock.Mock(returncode=0, stderr="", stdout=(
+            "n127.0.0.1:11195\n"
+            "n192.0.2.20:54321->100.100.100.10:11194\n"
+            "n100.100.100.11:54322->100.100.100.10:11196\n"))
+        with mock.patch.object(control.subprocess, "run", return_value=result):
+            parsed = control.inspect_upstream(42, "100.100.100.10", 11194)
+        self.assertEqual(parsed, {"checked": True, "sockets": [
+            {"source_ip": "192.0.2.20", "source_port": "54321", "remote": "100.100.100.10:11194"}]})
+
+    def test_repeated_start_checks_running_job_without_mutation(self):
+        with mock.patch.object(control, "inspect_job", return_value={"pid": 42, "state": "running"}), \
+             mock.patch.object(control, "show_status", return_value=2) as status, \
+             mock.patch.object(control, "bootout") as bootout, \
+             mock.patch.object(control, "private_write") as write:
+            self.assertEqual(control.start("DEV", "target", "label", self.base / "metadata.json",
+                                            self.path, None), 2)
+        status.assert_called_once_with("DEV", "target", self.base / "metadata.json", self.path)
+        bootout.assert_not_called()
+        write.assert_not_called()
+
+    def test_recovery_log_tail_remains_visible_without_start_line(self):
+        log = ("2026-01-01T00:00:01Z SOCKET_RECOVERING stage=upstream_send errno=49\n"
+               "2026-01-01T00:00:02Z WAITING_FOR_TAILSCALE reason=route_unavailable\n"
+               "2026-01-01T00:00:03Z UPSTREAM_READY upstream_source=100.100.100.11:54321\n"
+               "2026-01-01T00:00:04Z COUNTERS up_packets=20 reply_packets=15 waiting_drops=2\n")
+        with mock.patch.object(control, "read_tail", return_value=log):
+            evidence = control.run_evidence({"loaded": True, "stdout_path": "run.log"},
+                                            self.base / "missing.json")
+        self.assertEqual(evidence["last_network_event"]["event"], "UPSTREAM_READY")
+        self.assertEqual(evidence["last_counters"]["waiting_drops"], "2")
 
     def test_stop_succeeds_without_readable_config(self):
         output = io.StringIO()
@@ -259,6 +344,7 @@ class ControllerTests(unittest.TestCase):
                 launch.assert_called_once_with("bootstrap", "gui/501", str(runtime / "dev.plist"))
                 status.assert_called_once_with("DEV", target, runtime / "dev.json", self.path)
                 self.assertEqual(load_config(runtime / "dev-config.json"), load_config(self.path))
+                self.assertEqual((runtime / "mac_relay_core.py").read_bytes(), (ROOT / "mac_relay_core.py").read_bytes())
 
 
 if __name__ == "__main__":

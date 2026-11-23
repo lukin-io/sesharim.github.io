@@ -55,6 +55,10 @@ jobs:
         shell: powershell
         working-directory: assets/downloads/vpn-relay
         run: .\tests\validate-powershell.ps1
+      - name: Test Windows gateway socket recovery
+        shell: powershell
+        working-directory: assets/downloads/vpn-relay
+        run: .\tests\test-office-gateway-recovery.ps1
 
   build:
     name: Build site
